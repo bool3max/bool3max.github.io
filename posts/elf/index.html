@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Understanding the ELF file structure - bool3max&#39;s blog</title>
+<meta name="description" content="Personal blog">
+
+<link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
+
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1597182994" />
+<style>
+
+    [data-theme="dark"] {   
+        --font-color: #eee;
+--bg-color: #212121;
+
+--link-color:#599ada;
+--link-state-color:#ff5858;
+--link-state-border-color: rgba(238, 54, 54, 0.5);
+
+--thead-bg-color: #343a40;
+--table-border-color: lightgrey;
+
+--pre-color: #333;
+--pre-bg-color: #f1f1f1;
+
+--bq-color: #ccc;
+--hr-color: #333;
+
+--pagination-bg-color: #373737;
+--pagination-link-color: #b6b6b6;
+
+--post-info-color: grey;
+
+--switcher-color: #333;
+--switcher-bg-color: #fff;
+
+    }
+
+</style>
+
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1597182994" />
+
+
+
+
+
+<meta property="og:title" content="Understanding the ELF file structure" />
+<meta property="og:description" content="I recently took it upon myself to, at least at the surface level, understand how the ELF (&quot;Executable and Linkable Format&quot;) works. In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.
+The result of that is p3elf, during the development of which I familiarized myself with ELF, binary IO in python, as well as setuptools and publishing python packages on PyPI." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/elf/" />
+<meta property="article:published_time" content="2020-08-09T18:54:26+02:00" />
+<meta property="article:modified_time" content="2020-08-09T18:54:26+02:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Understanding the ELF file structure"/>
+<meta name="twitter:description" content="I recently took it upon myself to, at least at the surface level, understand how the ELF (&quot;Executable and Linkable Format&quot;) works. In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.
+The result of that is p3elf, during the development of which I familiarized myself with ELF, binary IO in python, as well as setuptools and publishing python packages on PyPI."/>
+
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header"> 
+            
+                <h1 class="site-title">
+    <a href="/">bool3max&#39;s blog</a>
+</h1>
+<nav>
+    
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    
+    
+    <article class="post">
+        <header class="post-header">
+            <h1 class="post-title draft">Understanding the ELF file structure</h1>
+        </header>
+        <div class="content">
+            <p>I recently took it upon myself to, at least at the surface level, understand how the ELF (&quot;<em>Executable and Linkable Format</em>&quot;) works.
+In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.</p>
+<p>The result of that is <a href="https://github.com/bool3max/p3elf"><strong>p3elf</strong></a>, during the development of which I familiarized myself with ELF, binary IO in python, as well as <code>setuptools</code> and publishing python packages on <a href="https://pypi.org/project/p3elf">PyPI</a>.</p>
+<p>This post will mainly serve as a short future reference of the structure of ELF files.</p>
+<h1 id="structure">Structure</h1>
+<p>The <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable and Linkable Format</a> Wikipedia article is an excellent reference for the structure and fields of ELF files, though I found it to be a little ambiguous in certain places.</p>
+<h2 id="file-header">File header</h2>
+<p>Every ELF file begins with a <strong>file header</strong>. It contains general metadata about the binary, and its size is known in advance - it is <code>64</code> bytes long on 64bit binaries, and <code>56</code> bytes long on 32bit ones.</p>
+<p>Notable fields here include:</p>
+<ul>
+<li><strong><code>EI_CLASS</code></strong>: denotes the <em>byteclass</em> of the binary (<code>0x1</code>: 32bit, <code>0x2</code>: 64bit)
+<ul>
+<li>this field is particularly important because the lengths and offsets of many other fields in the file depend on it</li>
+</ul>
+</li>
+<li><strong><code>EI_DATA</code></strong>: denotes the <em>endianness</em> of the binary
+<ul>
+<li>important for the same reasons as EI_CLASS</li>
+</ul>
+</li>
+<li><strong><code>EI_OSABI</code></strong>: denotes the <em>ABI</em>, but is often set to <code>0x0</code> (<em>System V</em>) regardless of the actual platform</li>
+<li><strong><code>E_TYPE</code></strong>: type of object file (executable, relocatable, etc.)</li>
+<li><strong><code>E_MACHINE</code></strong>: denotes the target ISA, e.g. <code>0x3E</code> for <code>'amd64'</code></li>
+<li><strong><code>E_PHOFF</code></strong>, <strong><code>E_SHOFF</code></strong>, <strong><code>E_SHNUM</code></strong>, <strong><code>E_PHNUM</code></strong>, <strong><code>E_SHENTSIZE</code></strong>, <strong><code>E_PHENTSIZE</code></strong>
+<ul>
+<li>offsets, counts, and sizes of <strong>section headers</strong> and <strong>program headers</strong> - more on these later</li>
+</ul>
+</li>
+</ul>
+<h2 id="program-headers">Program headers</h2>
+<hr>
+
+        </div>
+        
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-08-09</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+
+
+        </main>
+        
+            <footer class="common-footer">
+    
+    
+
+    <div class="common-footer-bottom">
+        <div class="copyright">
+            <p>© Bogdan Mitrović, 2020<br>
+            Powered by <a target="_blank" rel="noopener noreferrer" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" rel="noopener noreferrer" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+            </p>  
+        </div> 
+    </div>
+
+    
+
+
+    
+</footer>
+
+        
+    </div>
+</body>
+</html>

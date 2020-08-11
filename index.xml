@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bool3max&#39;s blog</title>
+    <link>https://bool3max.github.io/</link>
+    <description>bool3max&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 09 Aug 2020 18:54:26 +0200</lastBuildDate>
+    
+    <atom:link href="https://bool3max.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Understanding the ELF file structure</title>
+      <link>https://bool3max.github.io/posts/elf/</link>
+      <pubDate>Sun, 09 Aug 2020 18:54:26 +0200</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/elf/</guid>
+      <description>&lt;p&gt;I recently took it upon myself to, at least at the surface level, understand how the ELF (&amp;quot;&lt;em&gt;Executable and Linkable Format&lt;/em&gt;&amp;quot;) works.
+In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.&lt;/p&gt;
+&lt;p&gt;The result of that is &lt;a href=&#34;https://github.com/bool3max/p3elf&#34;&gt;&lt;strong&gt;p3elf&lt;/strong&gt;&lt;/a&gt;, during the development of which I familiarized myself with ELF, binary IO in python, as well as &lt;code&gt;setuptools&lt;/code&gt; and publishing python packages on &lt;a href=&#34;https://pypi.org/project/p3elf&#34;&gt;PyPI&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This post will mainly serve as a short future reference of the structure of ELF files.&lt;/p&gt;
+&lt;h1 id=&#34;structure&#34;&gt;Structure&lt;/h1&gt;
+&lt;p&gt;The &lt;a href=&#34;https://en.wikipedia.org/wiki/Executable_and_Linkable_Format&#34;&gt;Executable and Linkable Format&lt;/a&gt; Wikipedia article is an excellent reference for the structure and fields of ELF files, though I found it to be a little ambiguous in certain places.&lt;/p&gt;
+&lt;h2 id=&#34;file-header&#34;&gt;File header&lt;/h2&gt;
+&lt;p&gt;Every ELF file begins with a &lt;strong&gt;file header&lt;/strong&gt;. It contains general metadata about the binary, and its size is known in advance - it is &lt;code&gt;64&lt;/code&gt; bytes long on 64bit binaries, and &lt;code&gt;56&lt;/code&gt; bytes long on 32bit ones.&lt;/p&gt;
+&lt;p&gt;Notable fields here include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;EI_CLASS&lt;/code&gt;&lt;/strong&gt;: denotes the &lt;em&gt;byteclass&lt;/em&gt; of the binary (&lt;code&gt;0x1&lt;/code&gt;: 32bit, &lt;code&gt;0x2&lt;/code&gt;: 64bit)
+&lt;ul&gt;
+&lt;li&gt;this field is particularly important because the lengths and offsets of many other fields in the file depend on it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;EI_DATA&lt;/code&gt;&lt;/strong&gt;: denotes the &lt;em&gt;endianness&lt;/em&gt; of the binary
+&lt;ul&gt;
+&lt;li&gt;important for the same reasons as EI_CLASS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;EI_OSABI&lt;/code&gt;&lt;/strong&gt;: denotes the &lt;em&gt;ABI&lt;/em&gt;, but is often set to &lt;code&gt;0x0&lt;/code&gt; (&lt;em&gt;System V&lt;/em&gt;) regardless of the actual platform&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;E_TYPE&lt;/code&gt;&lt;/strong&gt;: type of object file (executable, relocatable, etc.)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;E_MACHINE&lt;/code&gt;&lt;/strong&gt;: denotes the target ISA, e.g. &lt;code&gt;0x3E&lt;/code&gt; for &lt;code&gt;&#39;amd64&#39;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;E_PHOFF&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code&gt;E_SHOFF&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code&gt;E_SHNUM&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code&gt;E_PHNUM&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code&gt;E_SHENTSIZE&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code&gt;E_PHENTSIZE&lt;/code&gt;&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;offsets, counts, and sizes of &lt;strong&gt;section headers&lt;/strong&gt; and &lt;strong&gt;program headers&lt;/strong&gt; - more on these later&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;program-headers&#34;&gt;Program headers&lt;/h2&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
