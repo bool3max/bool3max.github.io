@@ -1,8 +1,0 @@
-baseURL = "https://bool3max.github.io/"
-languageCode = "en-us"
-title = "bool3max's blog"
-theme = "anubis"
-
-[params]
-author = "Bogdan Mitrović"
-description = ""
