@@ -6,10 +6,77 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Aug 2020 18:54:26 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 12 Aug 2020 02:51:42 +0200</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The 0xFFFFFFFF problem</title>
+      <link>https://bool3max.github.io/posts/int_problem/</link>
+      <pubDate>Wed, 12 Aug 2020 02:51:42 +0200</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/int_problem/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;This is a pretty old document that I wrote for myself back when I was first learning C, but the explanation is pretty good so I published it here for future reference. I hope to soon push a reference document that explains some tricky concepts and things from the C standard that are not so easy to remember off the top of the head (such as type conversion, declarations, storage durations, scopes, etc&amp;hellip;)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;For future reference, always refer to the latest C standard as it has answers to many questions of the same nature such as this one. The C11 draft can be found &lt;a href=&#34;https://port70.net/~nsz/c/c11/n1570.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Recently, I posted &lt;a href=&#34;https://stackoverflow.com/questions/51160300/why-do-c-compilers-not-warn-when-assigning-integer-value-too-high-for-signed-typ?noredirect=1#comment89304841_51160300&#34;&gt;this question to StackOverflow&lt;/a&gt; about the following program:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;) {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0xFFFFFFFF&lt;/span&gt;;
+    printf(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, n); &lt;span style=&#34;color:#75715e&#34;&gt;//was originaly %u
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this explanation, I will disregard the fact that I used the wrong conversion specifier in my &lt;code&gt;printf&lt;/code&gt; call (used &lt;code&gt;%u&lt;/code&gt; instead of &lt;code&gt;%d&lt;/code&gt;), thus I will replace it with the correct one, and will come back to the topic of &lt;code&gt;%u&lt;/code&gt; later on in the explanation.&lt;/p&gt;
+&lt;p&gt;So, what exactly is happening here? Initially, I was confused as to why this program&amp;rsquo;s output was &lt;code&gt;-1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s break the &amp;ldquo;problem&amp;rdquo; down into pieces and analyze each statement and operand separately:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The hexadecimal constant &lt;code&gt;0xFFFFFFFF&lt;/code&gt;, is in decimal form equal to &lt;code&gt;2 ^ 32 - 1&lt;/code&gt;, or &lt;code&gt;4294967295&lt;/code&gt;, and in binary form, equal to &lt;code&gt;11111111111111111111111111111111&lt;/code&gt;. By the compiler, &lt;strong&gt;it is treated as an &lt;em&gt;unsigned integer&lt;/em&gt;&lt;/strong&gt;, and not as a series of bits. Yes, it can be represented as a series of 32 bits &lt;em&gt;(all 1&amp;rsquo;s)&lt;/em&gt;, but to the compiler that is apparently irrelevant. In C99, hexadecimal and octal constants are tested in the following order:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;int&lt;/li&gt;
+&lt;li&gt;unsigned int&lt;/li&gt;
+&lt;li&gt;long int&lt;/li&gt;
+&lt;li&gt;unsigned long int&lt;/li&gt;
+&lt;li&gt;long long int&lt;/li&gt;
+&lt;li&gt;unsigned long long int&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The first type that is large enough to accomodate the size of the constant is the one that the compiler will use to identify the it.
+In this case, &lt;code&gt;0xFFFFFFFF&lt;/code&gt; is too large to fit in the first contender (&lt;code&gt;int&lt;/code&gt;, or rather &lt;code&gt;signed int&lt;/code&gt;), but is just the right size to be treated as an &lt;code&gt;unsigned int&lt;/code&gt;, and thus the compiler treats it as that.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Next, let&amp;rsquo;s look at the left operand of the &lt;code&gt;=&lt;/code&gt; operator, &lt;code&gt;int&lt;/code&gt;. When used by itself, it is the equivalent of &lt;code&gt;singed int&lt;/code&gt;, and thus I will refer to it as that from now on. The largest positive number that a &lt;code&gt;signed int&lt;/code&gt; can store is equal to &lt;code&gt;2 ^ 31 - 1&lt;/code&gt;, or &lt;code&gt;2147483647&lt;/code&gt; in decimal form, due to the need of being able to represent negative integers, and thus having one less bit to work with.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The types of the operands on both sides of the &lt;code&gt;=&lt;/code&gt; operator &lt;strong&gt;don&amp;rsquo;t match&lt;/strong&gt;. One is a &lt;code&gt;signed int&lt;/code&gt;, the other an &lt;code&gt;unsigned int&lt;/code&gt;. Thus, C has to &lt;em&gt;implicitly&lt;/em&gt; convert the right operant &lt;em&gt;to the type of the left operand&lt;/em&gt;. (in assignment, &lt;strong&gt;the right operand always has to abide by the type of the left one&lt;/strong&gt;). The result of this conversion isn&amp;rsquo;t specified in the C standard, and is therefore implemenation defined.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Per my current understanding, the binary representation of &lt;code&gt;0xFFFFFFFF&lt;/code&gt;, or rather &lt;code&gt;0b11111111111111111111111111111111&lt;/code&gt; is simply copied into the address of our &lt;code&gt;signed int n&lt;/code&gt; varible. Since the variable is a &lt;code&gt;signed integer&lt;/code&gt;, it utilizes &lt;strong&gt;2&amp;rsquo;s complement&lt;/strong&gt;. In 2&amp;rsquo;s complement, a binary representation of &lt;strong&gt;all 1s&lt;/strong&gt; is always equal to &lt;em&gt;&lt;strong&gt;-1&lt;/strong&gt;&lt;/em&gt; in decimal form, and therefore &lt;em&gt;&lt;strong&gt;that is the output of our printf() call&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Why are all 1s always equal to -1 (decimal) in 2&amp;rsquo;s complement? Let&amp;rsquo;s look at the following example using an 8bit number (although the same rules apply for any other number of bits, &lt;em&gt;including 32&lt;/em&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;in a regular unsigned system, 1 (decimal) is equal to &lt;code&gt;0b00000001&lt;/code&gt; in binary. Very obvious.&lt;/li&gt;
+&lt;li&gt;Let&amp;rsquo;s get the negative value of this number (-1) using the 2s complement operation:
+&lt;ul&gt;
+&lt;li&gt;first we invert the bits: &lt;code&gt;0b00000001&lt;/code&gt; -&amp;gt; &lt;code&gt;0b11111110&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;then we add 1        : &lt;code&gt;0b11111110&lt;/code&gt; -&amp;gt; &lt;code&gt;0b11111111&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Upon completion of the 2s complement operation, we ended up with a binary representation of the negative version of our original number (-1)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;As you can see, we&amp;rsquo;ve ended up with the number -1 (decimal), that is in binary equal to all 1s (all bits). The same is true when the operation is applied to a number consisting of any number of bits.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;the-u-problem&#34;&gt;The &lt;code&gt;%u&lt;/code&gt; problem&lt;/h2&gt;
+&lt;p&gt;As I said, in my original question I (for some unknown reason?) substituted the &lt;code&gt;%d&lt;/code&gt; conversion specifier with the &lt;code&gt;%u&lt;/code&gt; conversion specifier, resulting in the following statement:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;printf(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%u&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, n);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This statement prints out &lt;code&gt;4294967295&lt;/code&gt;. Why? Let&amp;rsquo;s find out:&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;%u&lt;/code&gt; conversion expects an unsigned integer as the argument. We&amp;rsquo;ve, however, supplied it a &lt;em&gt;singed&lt;/em&gt; integer. However, this time there is no conversion, as the conversion from &lt;code&gt;int&lt;/code&gt; to &lt;code&gt;unsigned int&lt;/code&gt; is impossible, nonexistent, and therefore the behaviour is undefined.&lt;/p&gt;
+&lt;p&gt;In the case of GCC, &lt;code&gt;%u&lt;/code&gt; (or rather, &lt;code&gt;printf&lt;/code&gt;) &lt;em&gt;assumes&lt;/em&gt; that the value passed to it is of the correct type (&lt;code&gt;uint&lt;/code&gt; in this case), and prints its value accordingly. &lt;code&gt;0xFFFFFFFF&lt;/code&gt; in an unsigned system has the decimal value &lt;em&gt;4294967295&lt;/em&gt;, which is then simply printed.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Understanding the ELF file structure</title>
