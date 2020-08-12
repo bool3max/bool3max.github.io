@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1597182994" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1597192853" />
 <style>
 
     [data-theme="dark"] {   
@@ -48,7 +48,7 @@
 
 </style>
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1597182994" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1597192853" />
 
 
 
@@ -97,13 +97,13 @@ The result of that is p3elf, during the development of which I familiarized myse
     
     <article class="post">
         <header class="post-header">
-            <h1 class="post-title draft">Understanding the ELF file structure</h1>
+            <h1 class="post-title favorite">Understanding the ELF file structure</h1>
         </header>
         <div class="content">
             <p>I recently took it upon myself to, at least at the surface level, understand how the ELF (&quot;<em>Executable and Linkable Format</em>&quot;) works.
 In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.</p>
 <p>The result of that is <a href="https://github.com/bool3max/p3elf"><strong>p3elf</strong></a>, during the development of which I familiarized myself with ELF, binary IO in python, as well as <code>setuptools</code> and publishing python packages on <a href="https://pypi.org/project/p3elf">PyPI</a>.</p>
-<p>This post will mainly serve as a short future reference of the structure of ELF files.</p>
+<p>This post will mainly serve as a short future reference of the structure of ELF files and will most likely be updated in the future.</p>
 <h1 id="structure">Structure</h1>
 <p>The <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable and Linkable Format</a> Wikipedia article is an excellent reference for the structure and fields of ELF files, though I found it to be a little ambiguous in certain places.</p>
 <h2 id="file-header">File header</h2>
@@ -123,13 +123,86 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 <li><strong><code>EI_OSABI</code></strong>: denotes the <em>ABI</em>, but is often set to <code>0x0</code> (<em>System V</em>) regardless of the actual platform</li>
 <li><strong><code>E_TYPE</code></strong>: type of object file (executable, relocatable, etc.)</li>
 <li><strong><code>E_MACHINE</code></strong>: denotes the target ISA, e.g. <code>0x3E</code> for <code>'amd64'</code></li>
-<li><strong><code>E_PHOFF</code></strong>, <strong><code>E_SHOFF</code></strong>, <strong><code>E_SHNUM</code></strong>, <strong><code>E_PHNUM</code></strong>, <strong><code>E_SHENTSIZE</code></strong>, <strong><code>E_PHENTSIZE</code></strong>
+<li><strong><code>E_PHOFF</code></strong>, <strong><code>E_SHOFF</code></strong>, <strong><code>E_PHOFF</code></strong>,  <strong><code>E_SHNUM</code></strong>, <strong><code>E_PHNUM</code></strong>, <strong><code>E_SHENTSIZE</code></strong>, <strong><code>E_PHENTSIZE</code></strong>
 <ul>
 <li>offsets, counts, and sizes of <strong>section headers</strong> and <strong>program headers</strong> - more on these later</li>
 </ul>
 </li>
 </ul>
-<h2 id="program-headers">Program headers</h2>
+<h2 id="segments--program-headers">Segments &amp; Program headers</h2>
+<p>Every ELF file is divided into <em>segments</em>, which are further divided into one or more <em>sections</em>.</p>
+<p>Every program header corresponds to one segment and provides info and metadata about it. Because of that, we know the number of segments in advance - it&rsquo;s the <strong><code>E_PHNUM</code></strong> field in the file header.</p>
+<p>The first segment is the &ldquo;program header table&rdquo; - i.e. the segment that contains all of the program headers (which in turn describe other segments).</p>
+<p>The first program header (<code>PT_TYPE</code> 0x00000006, i.e. <code>PT_PHDR</code>) (the one that describes the entire program header table segment) is found at offset <strong><code>E_PHOFF</code></strong> and is <strong><code>E_PHENTSIZE</code></strong> bytes long. Because every program header is the same size, and because they all follow the first one (of which we know the offset), we can traverse through them pretty easily.</p>
+<p>Notable fields in every program header include:</p>
+<ul>
+<li><strong><code>P_TYPE</code></strong>
+<ul>
+<li>the type of segment that this header describes</li>
+</ul>
+</li>
+<li><strong><code>P_OFFSET</code></strong>
+<ul>
+<li>the offset from the beginning of the file to the <em>segment</em> that this header describes</li>
+</ul>
+</li>
+<li><strong><code>P_FILESZ</code></strong>
+<ul>
+<li>the size of the segment that this header describes</li>
+</ul>
+</li>
+<li><strong><code>P_FLAGS</code></strong>
+<ul>
+<li>segment-specific flags that provide additional information about the segment that this header describes</li>
+</ul>
+</li>
+</ul>
+<h2 id="sections--section-headers">Sections &amp; Section headers</h2>
+<p>Every one of the aforementioned segments consists of one or more <em>sections</em>, each of which is associated with a <em>section header</em> that describes it.</p>
+<p>The first section header is found at offset <strong><code>E_SHOFF</code></strong>, and is <strong><code>E_SHENTSIZE</code></strong> bytes long. It is always &ldquo;empty&rdquo; - its <code>SH_TYPE</code> is 0x0 (i.e. <code>SHT_NULL</code>) and it doesn&rsquo;t point to any section.</p>
+<p>There are <strong><code>E_SHNUM</code></strong> section headers, from which we can conduct that there are also <strong><code>E_SHNUM</code></strong> sections.</p>
+<p>Notable fields in every section header include:</p>
+<ul>
+<li><strong><code>SH_NAME</code></strong>
+<ul>
+<li>an offset to a null-terminated string in the <strong><code>.shstrtab</code></strong> section denoting the section&rsquo;s name</li>
+<li><strong><code>.shstrtab</code></strong> is a special section (that has its own section header, like any other) that contains null terminating strings describing the names of all other sections</li>
+<li>programs can use the <code>EI_SHSTRNDX</code> (the integer index of the <code>.shstrndx</code> section, where 0 &lt; <code>EI_SHSTRNDX</code> &lt; (<code>EI_SHNUM</code> - 1) ) field in the file header to easily seek to this section</li>
+</ul>
+</li>
+<li><strong><code>SH_TYPE</code></strong>
+<ul>
+<li>the type of the section that this headers describes</li>
+</ul>
+</li>
+<li><strong><code>SH_FLAGS</code></strong>
+<ul>
+<li>addtional attributes about the section</li>
+</ul>
+</li>
+<li><strong><code>SH_OFFSET</code></strong>
+<ul>
+<li>the offset from the beginning of the file to the section that this header describes</li>
+</ul>
+</li>
+<li><strong><code>SH_SIZE</code></strong>
+<ul>
+<li>the size of this section</li>
+</ul>
+</li>
+<li><strong><code>SH_ENTSIZE</code></strong>
+<ul>
+<li>size of each entry in this section, for sections that have dynamic entries, otherwise <code>0</code></li>
+<li>for example, this field is set to <code>0</code> in the header that describes the <code>.shstrab</code> section as it contains null-terminating strings of varying lengths</li>
+</ul>
+</li>
+<li><strong><code>SH_LINK</code></strong>
+<ul>
+<li>section index of an associated section (its use depends on the type of section that this header describes)</li>
+</ul>
+</li>
+</ul>
+<p>Famous examples of <em>sections</em> include <strong>.text</strong> (actual executable instructions), <strong>.data</strong>, <strong>.rodata</strong> (read-only data), <strong>.symtab</strong> (the symbol table) and others. There may also exist platform-specific sections, for example a really cool one produced by binutils&rsquo; <code>ld</code> linker, <code>.note.gnu.build-id</code>, which is a sha1/md5 hash of the output file. Or <code>.comment</code>, which includes the version of the GCC stack that was used to build the ELF.</p>
 <hr>
 
         </div>
@@ -166,6 +239,8 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
             </p>  
         </div> 
     </div>
+
+    
 
     
 
