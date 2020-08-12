@@ -22,7 +22,7 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;p&gt;The result of that is &lt;a href=&#34;https://github.com/bool3max/p3elf&#34;&gt;&lt;strong&gt;p3elf&lt;/strong&gt;&lt;/a&gt;, during the development of which I familiarized myself with ELF, binary IO in python, as well as &lt;code&gt;setuptools&lt;/code&gt; and publishing python packages on &lt;a href=&#34;https://pypi.org/project/p3elf&#34;&gt;PyPI&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;This post will mainly serve as a short future reference of the structure of ELF files and will most likely be updated in the future.&lt;/p&gt;
 &lt;h1 id=&#34;structure&#34;&gt;Structure&lt;/h1&gt;
-&lt;p&gt;The &lt;a href=&#34;https://en.wikipedia.org/wiki/Executable_and_Linkable_Format&#34;&gt;Executable and Linkable Format&lt;/a&gt; Wikipedia article is an excellent reference for the structure and fields of ELF files, though I found it to be a little ambiguous in certain places.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&#34;https://en.wikipedia.org/wiki/Executable_and_Linkable_Format&#34;&gt;Executable and Linkable Format&lt;/a&gt; Wikipedia article is an excellent reference for the structure and fields of ELF files, though I found it to be a little ambiguous in certain places. Some concepts are not completely obvious unless you have prior experience with ELF.&lt;/p&gt;
 &lt;h2 id=&#34;file-header&#34;&gt;File header&lt;/h2&gt;
 &lt;p&gt;Every ELF file begins with a &lt;strong&gt;file header&lt;/strong&gt;. It contains general metadata about the binary, and its size is known in advance - it is &lt;code&gt;64&lt;/code&gt; bytes long on 64bit binaries, and &lt;code&gt;56&lt;/code&gt; bytes long on 32bit ones.&lt;/p&gt;
 &lt;p&gt;Notable fields here include:&lt;/p&gt;

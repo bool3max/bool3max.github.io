@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1597192853" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1597193110" />
 <style>
 
     [data-theme="dark"] {   
@@ -48,7 +48,7 @@
 
 </style>
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1597192853" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1597193110" />
 
 
 
@@ -105,7 +105,7 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 <p>The result of that is <a href="https://github.com/bool3max/p3elf"><strong>p3elf</strong></a>, during the development of which I familiarized myself with ELF, binary IO in python, as well as <code>setuptools</code> and publishing python packages on <a href="https://pypi.org/project/p3elf">PyPI</a>.</p>
 <p>This post will mainly serve as a short future reference of the structure of ELF files and will most likely be updated in the future.</p>
 <h1 id="structure">Structure</h1>
-<p>The <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable and Linkable Format</a> Wikipedia article is an excellent reference for the structure and fields of ELF files, though I found it to be a little ambiguous in certain places.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">Executable and Linkable Format</a> Wikipedia article is an excellent reference for the structure and fields of ELF files, though I found it to be a little ambiguous in certain places. Some concepts are not completely obvious unless you have prior experience with ELF.</p>
 <h2 id="file-header">File header</h2>
 <p>Every ELF file begins with a <strong>file header</strong>. It contains general metadata about the binary, and its size is known in advance - it is <code>64</code> bytes long on 64bit binaries, and <code>56</code> bytes long on 32bit ones.</p>
 <p>Notable fields here include:</p>
