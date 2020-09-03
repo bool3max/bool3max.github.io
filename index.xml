@@ -133,6 +133,146 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
     </item>
     
     <item>
+      <title>Miscellaneous C notes</title>
+      <link>https://bool3max.github.io/posts/c_misc/</link>
+      <pubDate>Wed, 14 Nov 2018 18:05:02 +0200</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/c_misc/</guid>
+      <description>&lt;p&gt;This document serves as a reference (not a tutorial) to various concepts of the C langauge and standard which I may not always remember at the top of my head.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;type-conversion&#34;&gt;Type Conversion&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Implicit conversion&lt;/strong&gt; - any type conversion done by the compiler, which does not involve casting (e.g. assignment conversion, or usual arithmetic conversion &amp;ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument) &amp;ndash; &lt;strong&gt;RULES:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;integer ranks&lt;/strong&gt; (excluding extended and enumerated types):
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;long long int, unsigned long long int&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;long int, unsigned long int&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;int, unsigned int&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;short int, unsigned short int&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;char, singed char, unsigned char&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;_Bool&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;integer promotion&lt;/strong&gt;: convert any type whose rank is less than &lt;code&gt;int&lt;/code&gt; or &lt;code&gt;unsigned int&lt;/code&gt; to &lt;code&gt;int&lt;/code&gt; (provided it can fit) or else &lt;code&gt;unsigned int&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Usual arithmetic conversions&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;either operand is floating type&lt;/em&gt;:
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;float -&amp;gt; double -&amp;gt; long double&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;convert the other operand to the same floating type&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;neither operand is a floating type&lt;/em&gt;:
+&lt;ul&gt;
+&lt;li&gt;First, perform integer promotion on both operands&lt;/li&gt;
+&lt;li&gt;If types of both operands are now the same, &lt;strong&gt;the process ends, if not&lt;/strong&gt;, perform the following rules, and stop at the first one that applies
+&lt;ol&gt;
+&lt;li&gt;If both operands have &lt;code&gt;signed&lt;/code&gt; types or if both operands have &lt;code&gt;unsigned&lt;/code&gt; types, convert the operand whose type rank is lower to the type of the operand whose type rank is higher&lt;/li&gt;
+&lt;li&gt;If the operand with the unsigned type has a rank HIGHER or EQUAL to the rank of the signed operand, convert the operand with the singed type to the type of the operand with the unsigned type&lt;/li&gt;
+&lt;li&gt;If the operand with the signed type can represent all of the values of the type with the unsigned operand, convert the unsigned operand to the type of the signed operand&lt;/li&gt;
+&lt;li&gt;If none of the above rules apply, convert BOTH operands to the &lt;code&gt;unsigned&lt;/code&gt; &amp;ldquo;version&amp;rdquo; of the type of the signed operand&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Assignment conversion&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;The usual arithmetic conversion rules do not apply here. In assignment conversion, the value of the expression on the right is simply converted to the type of the variable on the left. An overflow can happen if the value of the expression on the right is too large to be represented using the type of the variable on the left. (&lt;em&gt;side&lt;/em&gt; here represents the left/rights sides of the &lt;code&gt;=&lt;/code&gt; operator)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Explicit conversion&lt;/strong&gt; - type conversion done using casts&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;declarations&#34;&gt;Declarations&lt;/h2&gt;
+&lt;p&gt;Before we begin, we have to understand that every variable in C has &lt;strong&gt;3&lt;/strong&gt; properties. These are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Storage duration&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;It determines when the memory for the variable is allocted, and when it is realeased/freed.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Storage for variables with &lt;strong&gt;automatic storage duration&lt;/strong&gt; is allocated when the block containing the variable is entered, and it is deallocated when the block containing the variable is terminated.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A variable with &lt;strong&gt;static storage duration&lt;/strong&gt; stays at the same storage duration as long as the program is running, allowing it to keep its value indefinitely. All variables declared with static storage duration and without an explicit initializer are &lt;strong&gt;zeroed-out&lt;/strong&gt; (be that inside a block using &lt;code&gt;static&lt;/code&gt;, or at file scope without a storage class)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Scope&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;The scope of the variable determines the portion of the program from which the variable can be referenced.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Block scope&lt;/strong&gt;: The variable is &amp;ldquo;visible&amp;rdquo; from its point of declaration up until the end of the enclosing block.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;File scope&lt;/strong&gt;: The variable is &amp;ldquo;visible&amp;rdquo; from its point of declaration up until the end of the enclosing file.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Linkeage&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;The linkeage of an object determines to which extent it can be shared among the different &amp;ldquo;files&amp;rdquo; (compilation units) in a program.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;External linkage&lt;/strong&gt;: A variable with &lt;em&gt;external linkage&lt;/em&gt; may be shared with multiple files in a program (perhaps all?)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Internal linkage&lt;/strong&gt;: A variable with &lt;em&gt;internal linkage&lt;/em&gt; is limited to the file in which it is declared and can not be shared with multiple files in a program.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;No linkage&lt;/strong&gt;: A variable with no linkage cannot be shared at all, and is only visible inside of the function in which it is declared.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;default-properties&#34;&gt;&lt;strong&gt;Default properties&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;The default properties of variables depend on the location in which they were declared.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Variables declared &lt;em&gt;&lt;strong&gt;inside a block&lt;/strong&gt;&lt;/em&gt; (including a function body):
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;automatic storage duration&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;block scope&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;no linkage&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Variables declared &lt;em&gt;&lt;strong&gt;outside any block&lt;/strong&gt;&lt;/em&gt; (the root of the file):
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;static storage duration&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;file scope&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;&lt;strong&gt;external linkage&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;syntax&#34;&gt;&lt;strong&gt;Syntax&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;In &lt;strong&gt;C&lt;/strong&gt;, declarations have the following general syntax:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;declaration-specifiers declarators_and_initializers ;&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Declaration specifiers&lt;/strong&gt; describe the properties of the variables/functions being declared, while &lt;strong&gt;declarators&lt;/strong&gt; give them names and provide some additional properties.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Declaration specifiers&lt;/strong&gt;&lt;/em&gt; (4 categories):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Storage classes&lt;/strong&gt;: There are (4) of them: &lt;code&gt;auto, static, extern, register&lt;/code&gt;. At most one can be present in a declaration, and if so, it should come first.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Type qualifiers&lt;/strong&gt;: There are (3) of them: &lt;code&gt;const, volatile, restrict&lt;/code&gt;. A declaration may contain zero or more type qualifiers.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Type specifiers&lt;/strong&gt;: &lt;code&gt;void, char, short, int, long, float, double, signed, unsigned&lt;/code&gt;. They may be combined, and the order in which they appear doesn&amp;rsquo;t matter. They also include specifications of &lt;code&gt;structs, unions, and enums&lt;/code&gt;, and names created using &lt;code&gt;typedef&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Function specifier&lt;/strong&gt; (C99 only): &lt;code&gt;inline&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I won&amp;rsquo;t cover each category of declaration-specifiers separately as it would be too much. Each category and keyword is described thoroughly in &lt;em&gt;Chapter 18&lt;/em&gt; (K.N. King. C).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Declarators&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;They provide the declarations with identifying names, along with additional type information (&lt;code&gt;*, [], etc...&lt;/code&gt; for for pointers and array types).&lt;/li&gt;
+&lt;li&gt;They may be accompanied by initializers.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;union, struct, and enum&lt;/code&gt; declarations can omit the declarators, in which case they declare just the tag and/or enum constant (as an either complete or incomplete type)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+    <item>
       <title>The 0xFFFFFFFF problem</title>
       <link>https://bool3max.github.io/posts/int_problem/</link>
       <pubDate>Thu, 13 Sep 2018 02:51:42 +0200</pubDate>
