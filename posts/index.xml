@@ -119,7 +119,7 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Famous examples of &lt;em&gt;sections&lt;/em&gt; include &lt;strong&gt;.text&lt;/strong&gt; (actual executable instructions), &lt;strong&gt;.data&lt;/strong&gt;, &lt;strong&gt;.rodata&lt;/strong&gt; (read-only data), &lt;strong&gt;.symtab&lt;/strong&gt; (the symbol table) and others. There may also exist platform-specific sections, for example a really cool one produced by binutils&amp;rsquo; &lt;code&gt;ld&lt;/code&gt; linker, &lt;code&gt;.note.gnu.build-id&lt;/code&gt;, which is a sha1/md5 hash of the output file. Or &lt;code&gt;.comment&lt;/code&gt;, which includes the version of the GCC stack that was used to build the ELF.&lt;/p&gt;
+&lt;p&gt;Famous examples of &lt;em&gt;sections&lt;/em&gt; include &lt;strong&gt;.text&lt;/strong&gt; (actual executable instructions), &lt;strong&gt;.data&lt;/strong&gt;, &lt;strong&gt;.rodata&lt;/strong&gt; (read-only data), &lt;strong&gt;.symtab&lt;/strong&gt; (the symbol table) and others. There may also exist platform-specific sections, for example a really cool one produced by binutils&#39; &lt;code&gt;ld&lt;/code&gt; linker, &lt;code&gt;.note.gnu.build-id&lt;/code&gt;, which is a sha1/md5 hash of the output file. Or &lt;code&gt;.comment&lt;/code&gt;, which includes the version of the GCC stack that was used to build the ELF.&lt;/p&gt;
 &lt;h2 id=&#34;tools-and-references&#34;&gt;Tools and references&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;the best tools to use for interacting with ELF files are &lt;code&gt;readelf&lt;/code&gt;, &lt;code&gt;objdump&lt;/code&gt;, and &lt;code&gt;size&lt;/code&gt;. They are all part of GNU&amp;rsquo;s &lt;a href=&#34;https://www.gnu.org/software/binutils/&#34;&gt;&lt;code&gt;binutils&lt;/code&gt;&lt;/a&gt; so you most likely already have them installed.&lt;/li&gt;
@@ -268,7 +268,6 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;hr&gt;
 </description>
     </item>
     
@@ -290,7 +289,7 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
     printf(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, n); &lt;span style=&#34;color:#75715e&#34;&gt;//was originaly %u
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this explanation, I will disregard the fact that I used the wrong conversion specifier in my &lt;code&gt;printf&lt;/code&gt; call (used &lt;code&gt;%u&lt;/code&gt; instead of &lt;code&gt;%d&lt;/code&gt;), thus I will replace it with the correct one, and will come back to the topic of &lt;code&gt;%u&lt;/code&gt; later on in the explanation.&lt;/p&gt;
-&lt;p&gt;So, what exactly is happening here? Initially, I was confused as to why this program&amp;rsquo;s output was &lt;code&gt;-1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So, what exactly is happening here? Initially, I was confused as to why this program&amp;rsquo;s output was &lt;code&gt;-1&lt;/code&gt; (at least on a linux/gcc 64bit platform).&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s break the &amp;ldquo;problem&amp;rdquo; down into pieces and analyze each statement and operand separately:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -303,7 +302,7 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;li&gt;long long int&lt;/li&gt;
 &lt;li&gt;unsigned long long int&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The first type that is large enough to accomodate the size of the constant is the one that the compiler will use to identify the it.
+&lt;p&gt;The first type that is large enough to accomodate the size of the constant is the one that the compiler will use to identify it.
 In this case, &lt;code&gt;0xFFFFFFFF&lt;/code&gt; is too large to fit in the first contender (&lt;code&gt;int&lt;/code&gt;, or rather &lt;code&gt;signed int&lt;/code&gt;), but is just the right size to be treated as an &lt;code&gt;unsigned int&lt;/code&gt;, and thus the compiler treats it as that.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;

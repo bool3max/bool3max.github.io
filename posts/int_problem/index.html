@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1599136216" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1601205871" />
 <style>
 
     [data-theme="dark"] {   
@@ -48,7 +48,7 @@
 
 </style>
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1599136216" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1601205871" />
 
 
 
@@ -112,7 +112,7 @@
     printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, n); <span style="color:#75715e">//was originaly %u
 </span><span style="color:#75715e"></span>}
 </code></pre></div><p>In this explanation, I will disregard the fact that I used the wrong conversion specifier in my <code>printf</code> call (used <code>%u</code> instead of <code>%d</code>), thus I will replace it with the correct one, and will come back to the topic of <code>%u</code> later on in the explanation.</p>
-<p>So, what exactly is happening here? Initially, I was confused as to why this program&rsquo;s output was <code>-1</code>.</p>
+<p>So, what exactly is happening here? Initially, I was confused as to why this program&rsquo;s output was <code>-1</code> (at least on a linux/gcc 64bit platform).</p>
 <p>Let&rsquo;s break the &ldquo;problem&rdquo; down into pieces and analyze each statement and operand separately:</p>
 <ul>
 <li>
@@ -125,7 +125,7 @@
 <li>long long int</li>
 <li>unsigned long long int</li>
 </ul>
-<p>The first type that is large enough to accomodate the size of the constant is the one that the compiler will use to identify the it.
+<p>The first type that is large enough to accomodate the size of the constant is the one that the compiler will use to identify it.
 In this case, <code>0xFFFFFFFF</code> is too large to fit in the first contender (<code>int</code>, or rather <code>signed int</code>), but is just the right size to be treated as an <code>unsigned int</code>, and thus the compiler treats it as that.</p>
 </li>
 <li>
