@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Type Conversion and Declarations in C - bool3max&#39;s blog</title>
+<meta name="description" content="Personal blog">
+
+<link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
+
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1601296712" />
+<style>
+
+    [data-theme="dark"] {   
+        --font-color: #eee;
+--bg-color: #212121;
+
+--link-color:#599ada;
+--link-state-color:#ff5858;
+--link-state-border-color: rgba(238, 54, 54, 0.5);
+
+--thead-bg-color: #343a40;
+--table-border-color: lightgrey;
+
+--pre-color: #333;
+--pre-bg-color: #f1f1f1;
+
+--bq-color: #ccc;
+--hr-color: #333;
+
+--pagination-bg-color: #373737;
+--pagination-link-color: #b6b6b6;
+
+--post-info-color: grey;
+
+--switcher-color: #333;
+--switcher-bg-color: #fff;
+
+    }
+
+</style>
+
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1601296712" />
+
+
+
+
+
+<meta property="og:title" content="Type Conversion and Declarations in C" />
+<meta property="og:description" content="This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
+ Type Conversion   Implicit conversion - any type conversion done by the compiler, which does not involve casting (e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument) &ndash; RULES:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/c_tc_and_decl/" />
+<meta property="article:published_time" content="2018-11-14T18:05:02+02:00" />
+<meta property="article:modified_time" content="2018-11-14T18:05:02+02:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Type Conversion and Declarations in C"/>
+<meta name="twitter:description" content="This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
+ Type Conversion   Implicit conversion - any type conversion done by the compiler, which does not involve casting (e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument) &ndash; RULES:"/>
+
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header"> 
+            
+                <h1 class="site-title">
+    <a href="/">bool3max&#39;s blog</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="https://bool3max.github.io/posts/" title="Archive">Archive</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    
+    
+    <article class="post">
+        <header class="post-header">
+            <h1 class="post-title">Type Conversion and Declarations in C</h1>
+        </header>
+        <div class="content">
+            <p>This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.</p>
+<hr>
+<h2 id="type-conversion">Type Conversion</h2>
+<ul>
+<li>
+<p><strong>Implicit conversion</strong> - any type conversion done by the compiler, which does not involve casting (e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument) &ndash; <strong>RULES:</strong></p>
+<ul>
+<li><strong>integer ranks</strong> (excluding extended and enumerated types):
+<ul>
+<li><code>long long int, unsigned long long int</code></li>
+<li><code>long int, unsigned long int</code></li>
+<li><code>int, unsigned int</code></li>
+<li><code>short int, unsigned short int</code></li>
+<li><code>char, singed char, unsigned char</code></li>
+<li><code>_Bool</code></li>
+</ul>
+</li>
+<li><strong>integer promotion</strong>: convert any type whose rank is less than <code>int</code> or <code>unsigned int</code> to <code>int</code> (provided it can fit) or else <code>unsigned int</code></li>
+<li><strong>Usual arithmetic conversions</strong>:
+<ul>
+<li><em>either operand is floating type</em>:
+<ul>
+<li><strong>float -&gt; double -&gt; long double</strong></li>
+<li>convert the other operand to the same floating type</li>
+</ul>
+</li>
+<li><em>neither operand is a floating type</em>:
+<ul>
+<li>First, perform integer promotion on both operands</li>
+<li>If types of both operands are now the same, <strong>the process ends, if not</strong>, perform the following rules, and stop at the first one that applies
+<ol>
+<li>If both operands have <code>signed</code> types or if both operands have <code>unsigned</code> types, convert the operand whose type rank is lower to the type of the operand whose type rank is higher</li>
+<li>If the operand with the unsigned type has a rank HIGHER or EQUAL to the rank of the signed operand, convert the operand with the singed type to the type of the operand with the unsigned type</li>
+<li>If the operand with the signed type can represent all of the values of the type with the unsigned operand, convert the unsigned operand to the type of the signed operand</li>
+<li>If none of the above rules apply, convert BOTH operands to the <code>unsigned</code> &ldquo;version&rdquo; of the type of the signed operand</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Assignment conversion</strong>:
+<ul>
+<li>The usual arithmetic conversion rules do not apply here. In assignment conversion, the value of the expression on the right is simply converted to the type of the variable on the left. An overflow can happen if the value of the expression on the right is too large to be represented using the type of the variable on the left. (<em>side</em> here represents the left/rights sides of the <code>=</code> operator)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Explicit conversion</strong> - type conversion done using casts</p>
+</li>
+</ul>
+<hr>
+<h2 id="declarations">Declarations</h2>
+<p>Before we begin, we have to understand that every variable in C has <strong>3</strong> properties. These are:</p>
+<ul>
+<li>
+<p><strong>Storage duration</strong>:</p>
+<p>It determines when the memory for the variable is allocted, and when it is realeased/freed.</p>
+<ul>
+<li>
+<p>Storage for variables with <strong>automatic storage duration</strong> is allocated when the block containing the variable is entered, and it is deallocated when the block containing the variable is terminated.</p>
+</li>
+<li>
+<p>A variable with <strong>static storage duration</strong> stays at the same storage duration as long as the program is running, allowing it to keep its value indefinitely. All variables declared with static storage duration and without an explicit initializer are <strong>zeroed-out</strong> (be that inside a block using <code>static</code>, or at file scope without a storage class)</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Scope</strong>:</p>
+<p>The scope of the variable determines the portion of the program from which the variable can be referenced.</p>
+<ul>
+<li><strong>Block scope</strong>: The variable is &ldquo;visible&rdquo; from its point of declaration up until the end of the enclosing block.</li>
+<li><strong>File scope</strong>: The variable is &ldquo;visible&rdquo; from its point of declaration up until the end of the enclosing file.</li>
+</ul>
+</li>
+<li>
+<p><strong>Linkeage</strong>:</p>
+<p>The linkeage of an object determines to which extent it can be shared among the different &ldquo;files&rdquo; (compilation units) in a program.</p>
+<ul>
+<li><strong>External linkage</strong>: A variable with <em>external linkage</em> may be shared with multiple files in a program (perhaps all?)</li>
+<li><strong>Internal linkage</strong>: A variable with <em>internal linkage</em> is limited to the file in which it is declared and can not be shared with multiple files in a program.</li>
+<li><strong>No linkage</strong>: A variable with no linkage cannot be shared at all, and is only visible inside of the function in which it is declared.</li>
+</ul>
+</li>
+</ul>
+<h3 id="default-properties"><strong>Default properties</strong></h3>
+<p>The default properties of variables depend on the location in which they were declared.</p>
+<ul>
+<li>Variables declared <em><strong>inside a block</strong></em> (including a function body):
+<ul>
+<li><em><strong>automatic storage duration</strong></em></li>
+<li><em><strong>block scope</strong></em></li>
+<li><em><strong>no linkage</strong></em></li>
+</ul>
+</li>
+<li>Variables declared <em><strong>outside any block</strong></em> (the root of the file):
+<ul>
+<li><em><strong>static storage duration</strong></em></li>
+<li><em><strong>file scope</strong></em></li>
+<li><em><strong>external linkage</strong></em></li>
+</ul>
+</li>
+</ul>
+<h3 id="syntax"><strong>Syntax</strong></h3>
+<p>In <strong>C</strong>, declarations have the following general syntax:</p>
+<p><em><strong>declaration-specifiers declarators_and_initializers ;</strong></em></p>
+<p><strong>Declaration specifiers</strong> describe the properties of the variables/functions being declared, while <strong>declarators</strong> give them names and provide some additional properties.</p>
+<ul>
+<li>
+<p><em><strong>Declaration specifiers</strong></em> (4 categories):</p>
+<ul>
+<li><strong>Storage classes</strong>: There are (4) of them: <code>auto, static, extern, register</code>. At most one can be present in a declaration, and if so, it should come first.</li>
+<li><strong>Type qualifiers</strong>: There are (3) of them: <code>const, volatile, restrict</code>. A declaration may contain zero or more type qualifiers.</li>
+<li><strong>Type specifiers</strong>: <code>void, char, short, int, long, float, double, signed, unsigned</code>. They may be combined, and the order in which they appear doesn&rsquo;t matter. They also include specifications of <code>structs, unions, and enums</code>, and names created using <code>typedef</code>.</li>
+<li><strong>Function specifier</strong> (C99 only): <code>inline</code>.</li>
+</ul>
+<blockquote>
+<p>I won&rsquo;t cover each category of declaration-specifiers separately as it would be too much. Each category and keyword is described thoroughly in <em>Chapter 18</em> (K.N. King. C).</p>
+</blockquote>
+</li>
+<li>
+<p><em><strong>Declarators</strong></em></p>
+<ul>
+<li>They provide the declarations with identifying names, along with additional type information (<code>*, [], etc...</code> for for pointers and array types).</li>
+<li>They may be accompanied by initializers.</li>
+<li><code>union, struct, and enum</code> declarations can omit the declarators, in which case they declare just the tag and/or enum constant (as an either complete or incomplete type)</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+        
+
+
+<div class="post-info">
+    
+        <div class="post-date">2018-11-14</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+
+
+        </main>
+        
+            <footer class="common-footer">
+    
+    
+
+    <div class="common-footer-bottom">
+        <div class="copyright">
+            <p>© Bogdan Mitrović, 2020<br>
+            Powered by <a target="_blank" rel="noopener noreferrer" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" rel="noopener noreferrer" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+            </p>  
+        </div> 
+    </div>
+
+    
+
+    
+
+
+    
+</footer>
+
+        
+    </div>
+</body>
+</html>

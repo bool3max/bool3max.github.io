@@ -133,12 +133,12 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
     </item>
     
     <item>
-      <title>Miscellaneous C notes</title>
-      <link>https://bool3max.github.io/posts/c_misc/</link>
+      <title>Type Conversion and Declarations in C</title>
+      <link>https://bool3max.github.io/posts/c_tc_and_decl/</link>
       <pubDate>Wed, 14 Nov 2018 18:05:02 +0200</pubDate>
       
-      <guid>https://bool3max.github.io/posts/c_misc/</guid>
-      <description>&lt;p&gt;This document serves as a reference (not a tutorial) to various concepts of the C langauge and standard which I may not always remember at the top of my head.&lt;/p&gt;
+      <guid>https://bool3max.github.io/posts/c_tc_and_decl/</guid>
+      <description>&lt;p&gt;This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;type-conversion&#34;&gt;Type Conversion&lt;/h2&gt;
 &lt;ul&gt;
