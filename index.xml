@@ -181,7 +181,7 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Assignment conversion&lt;/strong&gt;:
 &lt;ul&gt;
-&lt;li&gt;The usual arithmetic conversion rules do not apply here. In assignment conversion, the value of the expression on the right is simply converted to the type of the variable on the left. An overflow can happen if the value of the expression on the right is too large to be represented using the type of the variable on the left. (&lt;em&gt;side&lt;/em&gt; here represents the left/rights sides of the &lt;code&gt;=&lt;/code&gt; operator)&lt;/li&gt;
+&lt;li&gt;The usual arithmetic conversion rules do not apply here. In assignment conversion, the value of the expression on the right is simply converted to the type of the object on the left. An overflow can happen if the value of the expression on the right is too large to be represented using the type of the object on the left. (&lt;em&gt;side&lt;/em&gt; here represents the left/rights sides of the &lt;code&gt;=&lt;/code&gt; operator)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -192,49 +192,49 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;declarations&#34;&gt;Declarations&lt;/h2&gt;
-&lt;p&gt;Before we begin, we have to understand that every variable in C has &lt;strong&gt;3&lt;/strong&gt; properties. These are:&lt;/p&gt;
+&lt;p&gt;Before we begin, we have to understand that every object in C has &lt;strong&gt;3&lt;/strong&gt; properties. These are:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Storage duration&lt;/strong&gt;:&lt;/p&gt;
-&lt;p&gt;It determines when the memory for the variable is allocted, and when it is realeased/freed.&lt;/p&gt;
+&lt;p&gt;It determines when the memory for the object is allocted, and when it is realeased/freed.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;Storage for variables with &lt;strong&gt;automatic storage duration&lt;/strong&gt; is allocated when the block containing the variable is entered, and it is deallocated when the block containing the variable is terminated.&lt;/p&gt;
+&lt;p&gt;Storage for objects with &lt;strong&gt;automatic storage duration&lt;/strong&gt; is allocated when the block containing the object is entered, and it is deallocated when the block containing the object is terminated.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;A variable with &lt;strong&gt;static storage duration&lt;/strong&gt; stays at the same storage duration as long as the program is running, allowing it to keep its value indefinitely. All variables declared with static storage duration and without an explicit initializer are &lt;strong&gt;zeroed-out&lt;/strong&gt; (be that inside a block using &lt;code&gt;static&lt;/code&gt;, or at file scope without a storage class)&lt;/p&gt;
+&lt;p&gt;An object with &lt;strong&gt;static storage duration&lt;/strong&gt; stays at the same storage duration as long as the program is running, allowing it to keep its value indefinitely. All objects declared with static storage duration and without an explicit initializer are &lt;strong&gt;zeroed-out&lt;/strong&gt; (be that inside a block using &lt;code&gt;static&lt;/code&gt;, or at file scope without a storage class)&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Scope&lt;/strong&gt;:&lt;/p&gt;
-&lt;p&gt;The scope of the variable determines the portion of the program from which the variable can be referenced.&lt;/p&gt;
+&lt;p&gt;The scope of the object determines the portion of the program from which the object can be referenced.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Block scope&lt;/strong&gt;: The variable is &amp;ldquo;visible&amp;rdquo; from its point of declaration up until the end of the enclosing block.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;File scope&lt;/strong&gt;: The variable is &amp;ldquo;visible&amp;rdquo; from its point of declaration up until the end of the enclosing file.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Block scope&lt;/strong&gt;: The object is &amp;ldquo;visible&amp;rdquo; from its point of declaration up until the end of the enclosing block.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;File scope&lt;/strong&gt;: The object is &amp;ldquo;visible&amp;rdquo; from its point of declaration up until the end of the enclosing file.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Linkeage&lt;/strong&gt;:&lt;/p&gt;
 &lt;p&gt;The linkeage of an object determines to which extent it can be shared among the different &amp;ldquo;files&amp;rdquo; (compilation units) in a program.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;External linkage&lt;/strong&gt;: A variable with &lt;em&gt;external linkage&lt;/em&gt; may be shared with multiple files in a program (perhaps all?)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Internal linkage&lt;/strong&gt;: A variable with &lt;em&gt;internal linkage&lt;/em&gt; is limited to the file in which it is declared and can not be shared with multiple files in a program.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;No linkage&lt;/strong&gt;: A variable with no linkage cannot be shared at all, and is only visible inside of the function in which it is declared.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;External linkage&lt;/strong&gt;: An object with &lt;em&gt;external linkage&lt;/em&gt; may be shared with multiple files in a program (perhaps all?)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Internal linkage&lt;/strong&gt;: An object with &lt;em&gt;internal linkage&lt;/em&gt; is limited to the file in which it is declared and can not be shared with multiple files in a program.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;No linkage&lt;/strong&gt;: An object with no linkage cannot be shared at all, and is only visible inside of the function in which it is declared.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;default-properties&#34;&gt;&lt;strong&gt;Default properties&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;The default properties of variables depend on the location in which they were declared.&lt;/p&gt;
+&lt;p&gt;The default properties of objects depend on the location in which they were declared.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Variables declared &lt;em&gt;&lt;strong&gt;inside a block&lt;/strong&gt;&lt;/em&gt; (including a function body):
+&lt;li&gt;objects declared &lt;em&gt;&lt;strong&gt;inside a block&lt;/strong&gt;&lt;/em&gt; (including a function body):
 &lt;ul&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;automatic storage duration&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;block scope&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;no linkage&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;Variables declared &lt;em&gt;&lt;strong&gt;outside any block&lt;/strong&gt;&lt;/em&gt; (the root of the file):
+&lt;li&gt;objects declared &lt;em&gt;&lt;strong&gt;outside any block&lt;/strong&gt;&lt;/em&gt; (the root of the file):
 &lt;ul&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;static storage duration&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;&lt;em&gt;&lt;strong&gt;file scope&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
@@ -245,7 +245,7 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;h3 id=&#34;syntax&#34;&gt;&lt;strong&gt;Syntax&lt;/strong&gt;&lt;/h3&gt;
 &lt;p&gt;In &lt;strong&gt;C&lt;/strong&gt;, declarations have the following general syntax:&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;&lt;strong&gt;declaration-specifiers declarators_and_initializers ;&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Declaration specifiers&lt;/strong&gt; describe the properties of the variables/functions being declared, while &lt;strong&gt;declarators&lt;/strong&gt; give them names and provide some additional properties.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Declaration specifiers&lt;/strong&gt; describe the properties of the objects/functions being declared, while &lt;strong&gt;declarators&lt;/strong&gt; give them names and provide some additional properties.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;em&gt;&lt;strong&gt;Declaration specifiers&lt;/strong&gt;&lt;/em&gt; (4 categories):&lt;/p&gt;

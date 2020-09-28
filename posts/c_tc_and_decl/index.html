@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1601296718" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1601297041" />
 <style>
 
     [data-theme="dark"] {   
@@ -48,7 +48,7 @@
 
 </style>
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1601296718" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1601297041" />
 
 
 
@@ -145,7 +145,7 @@
 </li>
 <li><strong>Assignment conversion</strong>:
 <ul>
-<li>The usual arithmetic conversion rules do not apply here. In assignment conversion, the value of the expression on the right is simply converted to the type of the variable on the left. An overflow can happen if the value of the expression on the right is too large to be represented using the type of the variable on the left. (<em>side</em> here represents the left/rights sides of the <code>=</code> operator)</li>
+<li>The usual arithmetic conversion rules do not apply here. In assignment conversion, the value of the expression on the right is simply converted to the type of the object on the left. An overflow can happen if the value of the expression on the right is too large to be represented using the type of the object on the left. (<em>side</em> here represents the left/rights sides of the <code>=</code> operator)</li>
 </ul>
 </li>
 </ul>
@@ -156,49 +156,49 @@
 </ul>
 <hr>
 <h2 id="declarations">Declarations</h2>
-<p>Before we begin, we have to understand that every variable in C has <strong>3</strong> properties. These are:</p>
+<p>Before we begin, we have to understand that every object in C has <strong>3</strong> properties. These are:</p>
 <ul>
 <li>
 <p><strong>Storage duration</strong>:</p>
-<p>It determines when the memory for the variable is allocted, and when it is realeased/freed.</p>
+<p>It determines when the memory for the object is allocted, and when it is realeased/freed.</p>
 <ul>
 <li>
-<p>Storage for variables with <strong>automatic storage duration</strong> is allocated when the block containing the variable is entered, and it is deallocated when the block containing the variable is terminated.</p>
+<p>Storage for objects with <strong>automatic storage duration</strong> is allocated when the block containing the object is entered, and it is deallocated when the block containing the object is terminated.</p>
 </li>
 <li>
-<p>A variable with <strong>static storage duration</strong> stays at the same storage duration as long as the program is running, allowing it to keep its value indefinitely. All variables declared with static storage duration and without an explicit initializer are <strong>zeroed-out</strong> (be that inside a block using <code>static</code>, or at file scope without a storage class)</p>
+<p>An object with <strong>static storage duration</strong> stays at the same storage duration as long as the program is running, allowing it to keep its value indefinitely. All objects declared with static storage duration and without an explicit initializer are <strong>zeroed-out</strong> (be that inside a block using <code>static</code>, or at file scope without a storage class)</p>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>Scope</strong>:</p>
-<p>The scope of the variable determines the portion of the program from which the variable can be referenced.</p>
+<p>The scope of the object determines the portion of the program from which the object can be referenced.</p>
 <ul>
-<li><strong>Block scope</strong>: The variable is &ldquo;visible&rdquo; from its point of declaration up until the end of the enclosing block.</li>
-<li><strong>File scope</strong>: The variable is &ldquo;visible&rdquo; from its point of declaration up until the end of the enclosing file.</li>
+<li><strong>Block scope</strong>: The object is &ldquo;visible&rdquo; from its point of declaration up until the end of the enclosing block.</li>
+<li><strong>File scope</strong>: The object is &ldquo;visible&rdquo; from its point of declaration up until the end of the enclosing file.</li>
 </ul>
 </li>
 <li>
 <p><strong>Linkeage</strong>:</p>
 <p>The linkeage of an object determines to which extent it can be shared among the different &ldquo;files&rdquo; (compilation units) in a program.</p>
 <ul>
-<li><strong>External linkage</strong>: A variable with <em>external linkage</em> may be shared with multiple files in a program (perhaps all?)</li>
-<li><strong>Internal linkage</strong>: A variable with <em>internal linkage</em> is limited to the file in which it is declared and can not be shared with multiple files in a program.</li>
-<li><strong>No linkage</strong>: A variable with no linkage cannot be shared at all, and is only visible inside of the function in which it is declared.</li>
+<li><strong>External linkage</strong>: An object with <em>external linkage</em> may be shared with multiple files in a program (perhaps all?)</li>
+<li><strong>Internal linkage</strong>: An object with <em>internal linkage</em> is limited to the file in which it is declared and can not be shared with multiple files in a program.</li>
+<li><strong>No linkage</strong>: An object with no linkage cannot be shared at all, and is only visible inside of the function in which it is declared.</li>
 </ul>
 </li>
 </ul>
 <h3 id="default-properties"><strong>Default properties</strong></h3>
-<p>The default properties of variables depend on the location in which they were declared.</p>
+<p>The default properties of objects depend on the location in which they were declared.</p>
 <ul>
-<li>Variables declared <em><strong>inside a block</strong></em> (including a function body):
+<li>objects declared <em><strong>inside a block</strong></em> (including a function body):
 <ul>
 <li><em><strong>automatic storage duration</strong></em></li>
 <li><em><strong>block scope</strong></em></li>
 <li><em><strong>no linkage</strong></em></li>
 </ul>
 </li>
-<li>Variables declared <em><strong>outside any block</strong></em> (the root of the file):
+<li>objects declared <em><strong>outside any block</strong></em> (the root of the file):
 <ul>
 <li><em><strong>static storage duration</strong></em></li>
 <li><em><strong>file scope</strong></em></li>
@@ -209,7 +209,7 @@
 <h3 id="syntax"><strong>Syntax</strong></h3>
 <p>In <strong>C</strong>, declarations have the following general syntax:</p>
 <p><em><strong>declaration-specifiers declarators_and_initializers ;</strong></em></p>
-<p><strong>Declaration specifiers</strong> describe the properties of the variables/functions being declared, while <strong>declarators</strong> give them names and provide some additional properties.</p>
+<p><strong>Declaration specifiers</strong> describe the properties of the objects/functions being declared, while <strong>declarators</strong> give them names and provide some additional properties.</p>
 <ul>
 <li>
 <p><em><strong>Declaration specifiers</strong></em> (4 categories):</p>
