@@ -6,10 +6,93 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 09 Aug 2020 18:54:26 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 28 Sep 2020 15:45:48 +0200</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Why I prefer fish over bash for scripting</title>
+      <link>https://bool3max.github.io/posts/fish_scripting_over_bash/</link>
+      <pubDate>Mon, 28 Sep 2020 15:45:48 +0200</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/fish_scripting_over_bash/</guid>
+      <description>&lt;p&gt;Scripting with &lt;a href=&#34;https://github.com/fish-shell/fish-shell&#34;&gt;&lt;code&gt;fish&lt;/code&gt;&lt;/a&gt; is simple. It is readable. You don&amp;rsquo;t need to have deep experience with it in order to understand the syntax.&lt;/p&gt;
+&lt;p&gt;Compared to &lt;code&gt;bash&lt;/code&gt;, it feels &lt;em&gt;intuitive&lt;/em&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;everything-is-a-builtin&#34;&gt;Everything is a builtin&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;builtins&lt;/code&gt; are commands that you call from the shell, but unlike regular commands that execute external binaries and spawn new processes, they are built right into the shell (e.g. &lt;code&gt;echo&lt;/code&gt;, &lt;code&gt;math&lt;/code&gt;, &lt;code&gt;set&lt;/code&gt;, &lt;code&gt;count&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;The core syntax of &lt;code&gt;fish&lt;/code&gt; is very simple, and most all of the operations are done via calling builtins.&lt;/p&gt;
+&lt;p&gt;Want to set a variable? Use the &lt;code&gt;set&lt;/code&gt; builtin. Want to declare a function? Use the &lt;code&gt;function&lt;/code&gt; builtin. Want perform some sort of calculation? Use the &lt;code&gt;math&lt;/code&gt; builtin. Want to find out what some other builtin does? Use the &lt;code&gt;help&lt;/code&gt; builtin.&lt;/p&gt;
+&lt;p&gt;In fact, prior to &lt;code&gt;fish 3.0&lt;/code&gt;, even conditional command execution was done using &lt;code&gt;and&lt;/code&gt; and &lt;code&gt;or&lt;/code&gt; builtins (&lt;em&gt;unconditional&lt;/em&gt; command chaining is still done using the seimicolon &lt;code&gt;;&lt;/code&gt;):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ git commit; and git push
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;(it still is, though support for &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt; and &lt;code&gt;||&lt;/code&gt; syntax was added).&lt;/p&gt;
+&lt;h3 id=&#34;string-replacement&#34;&gt;String replacement&lt;/h3&gt;
+&lt;p&gt;In &lt;code&gt;bash&lt;/code&gt;, string replacement is done using the &lt;code&gt;${$text//pattern/replacement}&lt;/code&gt; syntax. For example, if you wanted to replace every instance of &lt;code&gt;&#39;foo&#39;&lt;/code&gt; with &lt;code&gt;&#39;bar&#39;&lt;/code&gt; in a certain text, you could do it like so:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;replaced_text&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;$text//foo/bar&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In &lt;code&gt;fish&lt;/code&gt;, however, this is done using the &lt;code&gt;string&lt;/code&gt; builtin:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;set replaced_text &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;string replace -a foo bar $text&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;array-item-count&#34;&gt;Array item count&lt;/h3&gt;
+&lt;p&gt;In &lt;code&gt;fish&lt;/code&gt;, getting the number of items in an array is done using the &lt;code&gt;count&lt;/code&gt; builtin:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;set N &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;count $array&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In &lt;code&gt;bash&lt;/code&gt;, the syntax is, to no surprise, more obscure:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;N&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${#&lt;/span&gt;args[@]&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;math&#34;&gt;Math&lt;/h3&gt;
+&lt;p&gt;In &lt;code&gt;fish&lt;/code&gt;, mathematical operations are peformed using the &lt;code&gt;math&lt;/code&gt; builtin, and unlike in bash, they support decimal numbers as well as functions:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;3 + sqrt(4) = &amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;math &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; + &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;sqrt(4)&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; + sqrt&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;4&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Since &lt;code&gt;bash&lt;/code&gt; doesn&amp;rsquo;t support decimal operations nor mathematical functions, you&amp;rsquo;d have to call external processes to do the work for you.&lt;/p&gt;
+&lt;p&gt;For someone who isn&amp;rsquo;t familiar with shell scripting, the &lt;code&gt;fish&lt;/code&gt; versions of these example operations are going to make much more sense at first (and probably second) glance.&lt;/p&gt;
+&lt;p&gt;This philosophy makes scripts insanely &lt;em&gt;readable&lt;/em&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;argument-substitution-is-more-intuitive&#34;&gt;Argument substitution is more intuitive&lt;/h2&gt;
+&lt;p&gt;This was one of my first serious gripes back when I was first learning &lt;code&gt;bash&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s assume that &lt;code&gt;barg&lt;/code&gt; is a readily available program that simply prints its commandline arguments (as well as the number of them), to standard out, one per line:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ barg &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+
+User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+
+&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Parameter substition in &lt;code&gt;fish&lt;/code&gt; &lt;em&gt;makes sense&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Expanding a single variable results in a &lt;em&gt;&lt;strong&gt;single argument&lt;/strong&gt;&lt;/em&gt; on the commandline. For example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ set arg &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello there, you!&amp;#34;&lt;/span&gt;
+$ barg $arg
+
+User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+Hello there, you!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It is only if you pass in an array of &lt;em&gt;multiple values&lt;/em&gt;, that the resulting commandline ends up with multiple values, for example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ set args &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello there, you!&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;--some-long-option&amp;#34;&lt;/span&gt;
+$ barg $args
+
+User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+
+Hello there, you!
+--some-long-option
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Again, it is intuitive and it makes sense.&lt;/p&gt;
+&lt;p&gt;Now let&amp;rsquo;s take a look at the same examples, but in &lt;code&gt;bash&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ arg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello there, you!&amp;#34;&lt;/span&gt;
+$ barg $arg
+
+User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+
+Hello
+there,
+you!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The source operand was split on spaces, and a single variable substitution resulted in &lt;em&gt;3&lt;/em&gt; different commandline arguments.&lt;/p&gt;
+&lt;p&gt;To avoid this, you have to encapsulate substituion in double quotes (&lt;code&gt;&amp;quot; &amp;quot;&lt;/code&gt;):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ arg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello there, you!&amp;#34;&lt;/span&gt;
+$ barg &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$args&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+
+User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+Hello there, you!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To me this makes no sense, however from a historical point of view I can see why it is: in &lt;code&gt;fish&lt;/code&gt;, declaring arrays of multiple values each of which expands to a signle value is easy, unlike in &lt;code&gt;bash&lt;/code&gt;, where, if you&amp;rsquo;d written something like &lt;code&gt;arguments=&amp;quot;-a -D --long-opt&amp;quot;&lt;/code&gt;, you would probably in fact &lt;em&gt;want&lt;/em&gt; it to expand to 3 different arguments.&lt;/p&gt;
+&lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;These are just some of the examples. The truth strength of &lt;code&gt;fish&lt;/code&gt; lies in its power as an interactive shell - robust automatic completion, autosuggestions, configurability, colors, etc&amp;hellip;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Understanding the ELF file structure</title>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Why I prefer fish over bash for scripting - bool3max&#39;s blog</title>
+<meta name="description" content="Personal blog">
+
+<link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
+
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1601659022" />
+<style>
+
+    [data-theme="dark"] {   
+        --font-color: #eee;
+--bg-color: #212121;
+
+--link-color:#599ada;
+--link-state-color:#ff5858;
+--link-state-border-color: rgba(238, 54, 54, 0.5);
+
+--thead-bg-color: #343a40;
+--table-border-color: lightgrey;
+
+--pre-color: #333;
+--pre-bg-color: #f1f1f1;
+
+--bq-color: #ccc;
+--hr-color: #333;
+
+--pagination-bg-color: #373737;
+--pagination-link-color: #b6b6b6;
+
+--post-info-color: grey;
+
+--switcher-color: #333;
+--switcher-bg-color: #fff;
+
+    }
+
+</style>
+
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1601659022" />
+
+
+
+
+
+<meta property="og:title" content="Why I prefer fish over bash for scripting" />
+<meta property="og:description" content="Scripting with fish is simple. It is readable. You don&rsquo;t need to have deep experience with it in order to understand the syntax.
+Compared to bash, it feels intuitive.
+Everything is a builtin builtins are commands that you call from the shell, but unlike regular commands that execute external binaries and spawn new processes, they are built right into the shell (e.g. echo, math, set, count).
+The core syntax of fish is very simple, and most all of the operations are done via calling builtins." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/fish_scripting_over_bash/" />
+<meta property="article:published_time" content="2020-09-28T15:45:48+02:00" />
+<meta property="article:modified_time" content="2020-09-28T15:45:48+02:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Why I prefer fish over bash for scripting"/>
+<meta name="twitter:description" content="Scripting with fish is simple. It is readable. You don&rsquo;t need to have deep experience with it in order to understand the syntax.
+Compared to bash, it feels intuitive.
+Everything is a builtin builtins are commands that you call from the shell, but unlike regular commands that execute external binaries and spawn new processes, they are built right into the shell (e.g. echo, math, set, count).
+The core syntax of fish is very simple, and most all of the operations are done via calling builtins."/>
+
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header"> 
+            
+                <h1 class="site-title">
+    <a href="/">bool3max&#39;s blog</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="https://bool3max.github.io/posts/" title="Archive">Archive</a>
+    
+</nav>
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    
+    
+    <article class="post">
+        <header class="post-header">
+            <h1 class="post-title">Why I prefer fish over bash for scripting</h1>
+        </header>
+        <div class="content">
+            <p>Scripting with <a href="https://github.com/fish-shell/fish-shell"><code>fish</code></a> is simple. It is readable. You don&rsquo;t need to have deep experience with it in order to understand the syntax.</p>
+<p>Compared to <code>bash</code>, it feels <em>intuitive</em>.</p>
+<h2 id="everything-is-a-builtin">Everything is a builtin</h2>
+<p><code>builtins</code> are commands that you call from the shell, but unlike regular commands that execute external binaries and spawn new processes, they are built right into the shell (e.g. <code>echo</code>, <code>math</code>, <code>set</code>, <code>count</code>).</p>
+<p>The core syntax of <code>fish</code> is very simple, and most all of the operations are done via calling builtins.</p>
+<p>Want to set a variable? Use the <code>set</code> builtin. Want to declare a function? Use the <code>function</code> builtin. Want perform some sort of calculation? Use the <code>math</code> builtin. Want to find out what some other builtin does? Use the <code>help</code> builtin.</p>
+<p>In fact, prior to <code>fish 3.0</code>, even conditional command execution was done using <code>and</code> and <code>or</code> builtins (<em>unconditional</em> command chaining is still done using the seimicolon <code>;</code>):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ git commit; and git push
+</code></pre></div><p>(it still is, though support for <code>&amp;&amp;</code> and <code>||</code> syntax was added).</p>
+<h3 id="string-replacement">String replacement</h3>
+<p>In <code>bash</code>, string replacement is done using the <code>${$text//pattern/replacement}</code> syntax. For example, if you wanted to replace every instance of <code>'foo'</code> with <code>'bar'</code> in a certain text, you could do it like so:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">replaced_text<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>$text//foo/bar<span style="color:#e6db74">}</span>
+</code></pre></div><p>In <code>fish</code>, however, this is done using the <code>string</code> builtin:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">set replaced_text <span style="color:#f92672">(</span>string replace -a foo bar $text<span style="color:#f92672">)</span>
+</code></pre></div><h3 id="array-item-count">Array item count</h3>
+<p>In <code>fish</code>, getting the number of items in an array is done using the <code>count</code> builtin:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">set N <span style="color:#f92672">(</span>count $array<span style="color:#f92672">)</span>
+</code></pre></div><p>In <code>bash</code>, the syntax is, to no surprise, more obscure:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">N<span style="color:#f92672">=</span><span style="color:#e6db74">${#</span>args[@]<span style="color:#e6db74">}</span>
+</code></pre></div><h3 id="math">Math</h3>
+<p>In <code>fish</code>, mathematical operations are peformed using the <code>math</code> builtin, and unlike in bash, they support decimal numbers as well as functions:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ echo <span style="color:#e6db74">&#39;3 + sqrt(4) = &#39;</span> <span style="color:#f92672">(</span>math <span style="color:#ae81ff">3</span> + <span style="color:#e6db74">&#39;sqrt(4)&#39;</span><span style="color:#f92672">)</span>
+
+<span style="color:#ae81ff">3</span> + sqrt<span style="color:#f92672">(</span>4<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</code></pre></div><p>Since <code>bash</code> doesn&rsquo;t support decimal operations nor mathematical functions, you&rsquo;d have to call external processes to do the work for you.</p>
+<p>For someone who isn&rsquo;t familiar with shell scripting, the <code>fish</code> versions of these example operations are going to make much more sense at first (and probably second) glance.</p>
+<p>This philosophy makes scripts insanely <em>readable</em>.</p>
+<h2 id="argument-substitution-is-more-intuitive">Argument substitution is more intuitive</h2>
+<p>This was one of my first serious gripes back when I was first learning <code>bash</code>.</p>
+<p>Let&rsquo;s assume that <code>barg</code> is a readily available program that simply prints its commandline arguments (as well as the number of them), to standard out, one per line:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ barg <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span>
+
+User arguments passed: <span style="color:#ae81ff">3</span>
+
+<span style="color:#ae81ff">1</span>
+<span style="color:#ae81ff">2</span>
+<span style="color:#ae81ff">3</span>
+</code></pre></div><p>Parameter substition in <code>fish</code> <em>makes sense</em>.</p>
+<p>Expanding a single variable results in a <em><strong>single argument</strong></em> on the commandline. For example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ set arg <span style="color:#e6db74">&#34;Hello there, you!&#34;</span>
+$ barg $arg
+
+User arguments passed: <span style="color:#ae81ff">1</span>
+
+Hello there, you!
+</code></pre></div><p>It is only if you pass in an array of <em>multiple values</em>, that the resulting commandline ends up with multiple values, for example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ set args <span style="color:#e6db74">&#34;Hello there, you!&#34;</span> <span style="color:#e6db74">&#34;--some-long-option&#34;</span>
+$ barg $args
+
+User arguments passed: <span style="color:#ae81ff">2</span>
+
+Hello there, you!
+--some-long-option
+</code></pre></div><p>Again, it is intuitive and it makes sense.</p>
+<p>Now let&rsquo;s take a look at the same examples, but in <code>bash</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ arg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Hello there, you!&#34;</span>
+$ barg $arg
+
+User arguments passed: <span style="color:#ae81ff">3</span>
+
+Hello
+there,
+you!
+</code></pre></div><p>The source operand was split on spaces, and a single variable substitution resulted in <em>3</em> different commandline arguments.</p>
+<p>To avoid this, you have to encapsulate substituion in double quotes (<code>&quot; &quot;</code>):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ arg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Hello there, you!&#34;</span>
+$ barg <span style="color:#e6db74">&#34;</span>$args<span style="color:#e6db74">&#34;</span>
+
+User arguments passed: <span style="color:#ae81ff">1</span>
+
+Hello there, you!
+</code></pre></div><p>To me this makes no sense, however from a historical point of view I can see why it is: in <code>fish</code>, declaring arrays of multiple values each of which expands to a signle value is easy, unlike in <code>bash</code>, where, if you&rsquo;d written something like <code>arguments=&quot;-a -D --long-opt&quot;</code>, you would probably in fact <em>want</em> it to expand to 3 different arguments.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>These are just some of the examples. The truth strength of <code>fish</code> lies in its power as an interactive shell - robust automatic completion, autosuggestions, configurability, colors, etc&hellip;</p>
+
+        </div>
+        
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-09-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+
+
+        </main>
+        
+            <footer class="common-footer">
+    
+    
+
+    <div class="common-footer-bottom">
+        <div class="copyright">
+            <p>© Bogdan Mitrović, 2020<br>
+            Powered by <a target="_blank" rel="noopener noreferrer" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" rel="noopener noreferrer" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+            </p>  
+        </div> 
+    </div>
+
+    
+
+    
+
+
+    
+</footer>
+
+        
+    </div>
+</body>
+</html>
