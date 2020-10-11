@@ -90,7 +90,7 @@ User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
 Hello there, you!
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To me this makes no sense, however from a historical point of view I can see why it is: in &lt;code&gt;fish&lt;/code&gt;, declaring arrays of multiple values each of which expands to a signle value is easy, unlike in &lt;code&gt;bash&lt;/code&gt;, where, if you&amp;rsquo;d written something like &lt;code&gt;arguments=&amp;quot;-a -D --long-opt&amp;quot;&lt;/code&gt;, you would probably in fact &lt;em&gt;want&lt;/em&gt; it to expand to 3 different arguments.&lt;/p&gt;
 &lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
-&lt;p&gt;These are just some of the examples. The truth strength of &lt;code&gt;fish&lt;/code&gt; lies in its power as an interactive shell - robust automatic completion, autosuggestions, configurability, colors, etc&amp;hellip;&lt;/p&gt;
+&lt;p&gt;These are just some of the examples. The true strength of &lt;code&gt;fish&lt;/code&gt; lies in its power as an interactive shell - robust automatic completion, autosuggestions, configurability, colors, etc&amp;hellip;&lt;/p&gt;
 </description>
     </item>
     
