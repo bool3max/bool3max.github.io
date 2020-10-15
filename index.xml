@@ -6,10 +6,107 @@
     <description>bool3max&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 28 Sep 2020 15:45:48 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 12 Oct 2020 16:22:05 +0200</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Python3 OOP/classes &#34;gotchas&#34;</title>
+      <link>https://bool3max.github.io/posts/python3_oop_guide/</link>
+      <pubDate>Mon, 12 Oct 2020 16:22:05 +0200</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/python3_oop_guide/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;This is not a tutorial, but rather a personal document that I write for myself in order to cement the knowledge and explain &amp;ldquo;tricky&amp;rdquo; concepts and gotchas when it comes to OOP and classes in &lt;code&gt;python3&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Useful resources:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.python.org/3/tutorial/classes.html&#34;&gt;Official python &amp;lsquo;Classes&amp;rsquo; tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.python.org/3/reference/datamodel.html&#34;&gt;Data model section of the official python &amp;lsquo;Language Reference&amp;rsquo;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://realpython.com/python-super/#an-overview-of-pythons-super-function&#34;&gt;&amp;ldquo;Supercharge your classes with Python super() article on realpython.org&amp;rdquo;&lt;/a&gt; - &lt;em&gt;a really good read&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;how-does-self-actually-work&#34;&gt;How does &lt;code&gt;self&lt;/code&gt; actually work?&lt;/h1&gt;
+&lt;p&gt;Consider the following class definition:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Dog&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self, name):
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;speak&lt;/span&gt;(self, age):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;My name is {self.name} and I am {age} years old.&amp;#34;&lt;/span&gt;
+
+jake &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Dog(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Jake&amp;#34;&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(jake&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;speak(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
+
+&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;My name is Jake and I am 3 years old.&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When we call &lt;code&gt;jake.speak&lt;/code&gt;, the &lt;code&gt;self&lt;/code&gt; arguement is &amp;ldquo;automatically&amp;rdquo; passed into the method because the method belongs to an already instantiated instance of a class.&lt;/p&gt;
+&lt;p&gt;We can achieve the same effect by instantiating &lt;code&gt;jake&lt;/code&gt;, then calling &lt;code&gt;Dog.speak&lt;/code&gt; directly while passing the value of the &lt;code&gt;self&lt;/code&gt; argument manually, like so:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;jake &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Dog(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;jake&amp;#34;&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(Dog&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;speak(jake, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
+
+&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;My name is Jake and I am 3 years old.&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The same is true for the &lt;code&gt;__init__&lt;/code&gt; method, which is a method like any other, except that it is called automatically when instantiating new instances of the class.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; types
+
+jake &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; types&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;SimpleNamespace()
+Dog&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__init__(jake, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Jake&amp;#34;&lt;/span&gt;)
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(jake&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;name)
+
+&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Jake&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Of course this is undesirable, as now we cannot access other methods defined in the class (e.g. &lt;code&gt;speak&lt;/code&gt;).&lt;/p&gt;
+&lt;h1 id=&#34;super-and-method-resolution-order-mro&#34;&gt;&lt;code&gt;super()&lt;/code&gt; and Method Resolution Order (MRO)&lt;/h1&gt;
+&lt;p&gt;Method Resolution Order (&lt;em&gt;MRO&lt;/em&gt;) is the order in which method lookup is performed by the interpreter for an instance of a given class.&lt;/p&gt;
+&lt;p&gt;Defined classes have an &lt;code&gt;__mro__&lt;/code&gt; attribute that results in a tuple describing the MRO.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Instances don&amp;rsquo;t have this method defined, but this can very easily be circumvented using the special &lt;em&gt;&lt;code&gt;instance&lt;/code&gt;&lt;/em&gt;.&lt;code&gt;__class__&lt;/code&gt; attribute, which returns the reference of the class that the instance belongs to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(instance&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__class__&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__mro__)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/blockquote&gt;
+&lt;p&gt;Examine the following code:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;A&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mymethod&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mymethod of class A&amp;#34;&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;B&lt;/span&gt;(A):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mymethod&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mymethod of class B&amp;#34;&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;(B):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mymethod&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mymethod of class C&amp;#34;&lt;/span&gt;
+    
+instance &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; C()
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C.__mro__ = {C.__mro__}&amp;#34;&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(instance&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mymethod())
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This then logs:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;C&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__mro__ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;__main__&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;C&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;__main__&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;B&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;__main__&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;A&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;object&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;)&lt;/span&gt;
+mymethod of &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This means that any method lookups done on &lt;em&gt;instances&lt;/em&gt; of class C will first be done on methods defined class C, then class B, then class A, and then in the &amp;ldquo;base&amp;rdquo; &lt;em&gt;object&lt;/em&gt; class, &lt;strong&gt;stopping at the first class in which the desired method is found&lt;/strong&gt;, because every class in the &amp;ldquo;chain&amp;rdquo; inherits the next one (C inherits B, which inherits A which by default inherits &lt;code&gt;object&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;In our case, the &lt;em&gt;&lt;strong&gt;mymethod&lt;/strong&gt;&lt;/em&gt; method was in fact defined in the first class listed in the &lt;code&gt;__mro__&lt;/code&gt; tuple, so naturally, it is &lt;code&gt;C.mymethod&lt;/code&gt; that gets called in the end.&lt;/p&gt;
+&lt;p&gt;If we remove the &lt;code&gt;mymethod&lt;/code&gt; method from the &lt;code&gt;C&lt;/code&gt; class, &lt;strong&gt;the MRO will stay the same&lt;/strong&gt;, however since &lt;code&gt;mymethod&lt;/code&gt; doesn&amp;rsquo;t exist inside of the &lt;code&gt;C&lt;/code&gt; class anymore, it will instead &amp;ldquo;come&amp;rdquo; from the next one in the MRO chain that it &lt;em&gt;is&lt;/em&gt; defined in, in this case the &lt;code&gt;B&lt;/code&gt; class.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;(B):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;pass&lt;/span&gt;
+
+instance &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; C()
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C.__mro__ = {C.__mro__}&amp;#34;&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(instance&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mymethod())
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;this logs:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;C&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__mro__ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;__main__&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;C&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;__main__&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;B&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;__main__&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;A&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;object&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;)&lt;/span&gt;
+mymethod of &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;B&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;super-explained&#34;&gt;&lt;code&gt;super()&lt;/code&gt; explained&lt;/h2&gt;
+&lt;p&gt;The &lt;a href=&#34;https://docs.python.org/3/library/functions.html#super&#34;&gt;official super() builtin documentation&lt;/a&gt; explains its use and functionality pretty well, but to explain it using an example: let&amp;rsquo;s say that we wanted the &lt;code&gt;mymethod&lt;/code&gt; method in the C class to return the same string returned by the &lt;code&gt;mymethod&lt;/code&gt; method of the A class, with an additional &lt;code&gt;!&lt;/code&gt; appended
+at the end.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Obviously that is a simplified example, in the real world &lt;code&gt;A.mymethod&lt;/code&gt; could execute some long, complicated logic that we wish to re-implement (alongside some &lt;em&gt;other&lt;/em&gt; logic) inside of &lt;code&gt;C.mymethod&lt;/code&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Inside of the &lt;code&gt;C&lt;/code&gt; class we can accomplish this by calling &lt;code&gt;super()&lt;/code&gt; which creates a &lt;em&gt;proxy object&lt;/em&gt; that delegeates all method calls to the appropriate class:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;(B):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mymethod&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; super(B, self)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mymethod() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;!!!&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The output will therefore be: &lt;code&gt;mymethod of class A!!!&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;super()&lt;/code&gt; is more useful when you provide no arguments to it however, as it automatically goes up the hierarchy and provides you with the first class that defines the appropriate method (or attribute, as &lt;code&gt;super()&lt;/code&gt; works for attribute lookups as well).&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Why I prefer fish over bash for scripting</title>
