@@ -6,10 +6,30 @@
     <description>bool3max&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 12 Oct 2020 16:22:05 +0200</lastBuildDate>
+    <lastBuildDate>Fri, 16 Oct 2020 14:23:54 +0200</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Languages versus their implementations</title>
+      <link>https://bool3max.github.io/posts/languages_versus_implementations/</link>
+      <pubDate>Fri, 16 Oct 2020 14:23:54 +0200</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/languages_versus_implementations/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Python&lt;/strong&gt; is a programming language. It is nothing more but one large document of text and code examples (a &lt;em&gt;standard&lt;/em&gt;) that describes exactly how the language is to behave. You can&amp;rsquo;t run it, download it, or execute it. That&amp;rsquo;s it, it&amp;rsquo;s just text.&lt;/p&gt;
+&lt;p&gt;The latest edition of it is up on the official Python website as the &lt;a href=&#34;https://docs.python.org/3/reference/index.html&#34;&gt;&lt;strong&gt;The Python Language Reference&lt;/strong&gt;&lt;/a&gt;. As Python also consists of a standard library of functions, a document that describes how the modules and their respective functions are to behave is also readily available as
+&lt;a href=&#34;https://docs.python.org/3/library/index.html&#34;&gt;&lt;strong&gt;The Python Standard Library&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;CPython&lt;/strong&gt; on the other hand is the reference implementation of &lt;strong&gt;Python&lt;/strong&gt;. It is an actual piece of software (written in C) that you can download and execute for platforms that support it. It&amp;rsquo;s an interpreter that runs code written in Python as described by the &amp;lsquo;Python Language Rererence&amp;rsquo;, to which it conforms.&lt;/p&gt;
+&lt;p&gt;You can browse its source code &lt;a href=&#34;https://github.com/python/cpython&#34;&gt;here&lt;/a&gt; (&lt;a href=&#34;https://www.python.org/downloads/source/&#34;&gt;or download it as a tarball here&lt;/a&gt;), and download it for your respective platform &lt;a href=&#34;https://www.python.org/downloads/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Other implementations of the Python language exist, too. Examples include IronPython, Jython, PyPy, and others. They all conform to the standard to some degree, and they can all execute valid Python code, but they do it in different ways (&lt;em&gt;Jython&lt;/em&gt; is an implementation that executes Python in a JVM).&lt;/p&gt;
+&lt;h1 id=&#34;another-example&#34;&gt;Another example&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;C&lt;/strong&gt; is a programming language. &lt;em&gt;Its&lt;/em&gt; standard is published by ISO and ANSI. Again, it is nothing but a large document full of text and code examples, that, again, describes all of the internals of the language as well as how it should behave, in great detail. Unfortunately it is copyrighted and ISO requries that you pay for it (&lt;a href=&#34;https://softwareengineering.stackexchange.com/questions/326249/why-isnt-the-c-standard-free&#34;&gt;&lt;em&gt;and here&amp;rsquo;s why&lt;/em&gt;&lt;/a&gt;), however drafts can be commonly found on the internet.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s the &lt;a href=&#34;https://port70.net/~nsz/c/c11/n1570.html&#34;&gt;&lt;strong&gt;N1570 draft of the C11 standard&lt;/strong&gt;&lt;/a&gt; (it is absolutely &lt;em&gt;massive&lt;/em&gt;).&lt;/p&gt;
+&lt;p&gt;Implementations of the C standard are compilers. Obvious examples include &lt;strong&gt;gcc&lt;/strong&gt;, &lt;strong&gt;clang&lt;/strong&gt;, or &lt;strong&gt;MSVC&lt;/strong&gt;. (&lt;strong&gt;gcc&lt;/strong&gt; isn&amp;rsquo;t &lt;em&gt;actually&lt;/em&gt; a proper implementation of the C standard as it doesn&amp;rsquo;t supply a C standard library implementation (which is a part of the standard), however it is usually paired with &lt;strong&gt;glibc&lt;/strong&gt;, the &lt;a href=&#34;https://www.gnu.org/software/libc/&#34;&gt;GNU C Library&lt;/a&gt;). They take C code and compile it to machine code that can then be properly executed.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Python3 OOP/classes &#34;gotchas&#34;</title>
