@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1602863282" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1602865637" />
 <style>
 
     [data-theme="dark"] {   
@@ -48,7 +48,7 @@
 
 </style>
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1602863282" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1602865637" />
 
 
 
@@ -120,7 +120,9 @@ The core syntax of fish is very simple, and most all of the operations are done 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">replaced_text<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>$text//foo/bar<span style="color:#e6db74">}</span>
 </code></pre></div><p>In <code>fish</code>, however, this is done using the <code>string</code> builtin:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">set replaced_text <span style="color:#f92672">(</span>string replace -a foo bar $text<span style="color:#f92672">)</span>
-</code></pre></div><h3 id="array-item-count">Array item count</h3>
+</code></pre></div><p>If it wasn&rsquo;t for the variable name, newcomers would have absolutely no idea what the fuck was going on in the <code>bash</code> version, whereas the <code>fish</code> versions almost completely &ldquo;spells out&rdquo;
+the entire operation.</p>
+<h3 id="array-item-count">Array item count</h3>
 <p>In <code>fish</code>, getting the number of items in an array is done using the <code>count</code> builtin:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">set N <span style="color:#f92672">(</span>count $array<span style="color:#f92672">)</span>
 </code></pre></div><p>In <code>bash</code>, the syntax is, to no surprise, more obscure:</p>
