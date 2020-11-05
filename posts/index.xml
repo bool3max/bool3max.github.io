@@ -118,6 +118,8 @@ Traceback (most recent call last):
 &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; InfiniteIterable(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;):
     &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(n)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This accomplishes the exact same task as manually writing the iterable does, but in a more readable manner. It is essentially just syntatic sugar.&lt;/p&gt;
+&lt;h3 id=&#34;a-caveat&#34;&gt;A caveat&lt;/h3&gt;
+&lt;p&gt;In these two implementations, I accessed members using the subscript notation &lt;strong&gt;&lt;code&gt;[]&lt;/code&gt;&lt;/strong&gt; (so me calling the argument &amp;ldquo;&lt;code&gt;original_iterable&lt;/code&gt;&amp;rdquo; is a bit misleading), which is implemented using the &lt;strong&gt;&lt;code&gt;__getitem__&lt;/code&gt;&lt;/strong&gt; method under the hood. Therefore, if the original argument does not define this method, my implementation would not work. Most of the builtin types do, so it&amp;rsquo;s not a problem.&lt;/p&gt;
 </description>
     </item>
     

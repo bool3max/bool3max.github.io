@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1604580178" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1604593377" />
 <style>
 
     [data-theme="dark"] {   
@@ -48,7 +48,7 @@
 
 </style>
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1604580178" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1604593377" />
 
 
 
@@ -203,6 +203,8 @@ Traceback (most recent call last):
 <span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> InfiniteIterable(<span style="color:#e6db74">&#34;abc&#34;</span>):
     <span style="color:#66d9ef">print</span>(n)
 </code></pre></div><p>This accomplishes the exact same task as manually writing the iterable does, but in a more readable manner. It is essentially just syntatic sugar.</p>
+<h3 id="a-caveat">A caveat</h3>
+<p>In these two implementations, I accessed members using the subscript notation <strong><code>[]</code></strong> (so me calling the argument &ldquo;<code>original_iterable</code>&rdquo; is a bit misleading), which is implemented using the <strong><code>__getitem__</code></strong> method under the hood. Therefore, if the original argument does not define this method, my implementation would not work. Most of the builtin types do, so it&rsquo;s not a problem.</p>
 
         </div>
         
