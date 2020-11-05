@@ -6,10 +6,120 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 16 Oct 2020 14:23:54 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 05 Nov 2020 00:32:02 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Iterators and Generators in Python3</title>
+      <link>https://bool3max.github.io/posts/python_generators/</link>
+      <pubDate>Thu, 05 Nov 2020 00:32:02 +0100</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/python_generators/</guid>
+      <description>&lt;p&gt;Recently I needed a way to infinitely loop over a list in Python. Traditionally, this is extremely easy to do with simple indexing if the size of the list is known in advance. For example, an approach could look something like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;l &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;]
+i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; True:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(l[i])
+    i &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; len(l):
+        i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Eventually I settled on a an inbuilt approach using the &lt;code&gt;itertools&lt;/code&gt; module from the standard library. Consequently the code became a lot cleaner:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; itertools
+l &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;]
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; itertools&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cycle(l):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(n)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But for the fun of it, I decided to try to re-implement &lt;code&gt;itertools.cycle&lt;/code&gt; myself, and in order to do that, I first have to understand how generators work in &lt;code&gt;python3&lt;/code&gt;. I already do, but I will explain it here, after which I will demonstrate the &lt;code&gt;itertools.cycle&lt;/code&gt; re-implementation.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Both iterators and generators have their own short sections in the offical &lt;a href=&#34;https://docs.python.org/3/tutorial/classes.html#iterators&#34;&gt;python3 tutorial&lt;/a&gt;. This post is my own explanation of them.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;iterators&#34;&gt;Iterators&lt;/h1&gt;
+&lt;p&gt;Iterators are just a fancy name for classes that define an &lt;code&gt;__iter__&lt;/code&gt; method. That &lt;code&gt;__iter__&lt;/code&gt; method in turn returns another object (an iterator object), which defines a &lt;code&gt;__next__&lt;/code&gt; method, that returns the &lt;em&gt;&amp;ldquo;next&amp;rdquo;&lt;/em&gt; iteration of a sequence that you loop over using operators such as &lt;strong&gt;&lt;code&gt;for&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;For example, in the following code:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;: 
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(n)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;, behind the scenes, &lt;strong&gt;&lt;code&gt;for&lt;/code&gt;&lt;/strong&gt; calls &lt;code&gt;iter()&lt;/code&gt; on &lt;code&gt;&amp;quot;abc&amp;quot;&lt;/code&gt;, which in turns calls &lt;strong&gt;&lt;code&gt;&amp;quot;abc&amp;quot;.__iter()&lt;/code&gt;&lt;/strong&gt;. Since &lt;strong&gt;&lt;code&gt;&amp;quot;123&amp;quot;&lt;/code&gt;&lt;/strong&gt; is of type &lt;strong&gt;&lt;code&gt;str&lt;/code&gt;&lt;/strong&gt;, a class that defines the &lt;code&gt;__iter__&lt;/code&gt; method, that one is called, and an iterator object is returned.&lt;/p&gt;
+&lt;p&gt;Then, &lt;strong&gt;&lt;code&gt;for&lt;/code&gt;&lt;/strong&gt; simply calls the &lt;strong&gt;&lt;code&gt;__next__&lt;/code&gt;&lt;/strong&gt; method on that interator object, passing its return value to you in the form of a variable, until &lt;strong&gt;&lt;code&gt;__next__&lt;/code&gt;&lt;/strong&gt; raises a &lt;strong&gt;&lt;code&gt;StopIteration&lt;/code&gt;&lt;/strong&gt; exception, at which point the loop stops.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;It actually calls &lt;code&gt;next()&lt;/code&gt; on the iterator object, which in turns calls its &lt;code&gt;__next__&lt;/code&gt; method. The &lt;code&gt;next()&lt;/code&gt; builtin is handy because it provides another parameter that can be used to specify a value to be returned if the iterator object is already exahusted.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;example&#34;&gt;Example&lt;/h3&gt;
+&lt;p&gt;We can see this in action:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; iterator &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; string&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__iter__()
+
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(iterator&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__next__())
+&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;a&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(iterator&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__next__())
+&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;b&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(iterator&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__next__())
+&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;c&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(iterator&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__next__())
+Traceback (most recent call last):
+  File &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;lt;stdin&amp;gt;&amp;#34;&lt;/span&gt;, line &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;module&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;StopIteration&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As we can see, when we exhaust the iterator, a &lt;code&gt;StopIteration&lt;/code&gt; exception is raised.&lt;/p&gt;
+&lt;p&gt;Using the built-in &lt;strong&gt;&lt;code&gt;next()&lt;/code&gt;&lt;/strong&gt; function we have a greater degree of control: we can designate a value to be returned in the case where &lt;code&gt;__next__&lt;/code&gt; would exhaust the object (and raise an exception):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; iterator &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; string&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__iter__()
+
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(next(iterator, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
+&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;a&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(next(iterator, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
+&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;b&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(next(iterator, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
+&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;c&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(next(iterator, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
+&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(next(iterator, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
+&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;Instead of directly calling &lt;code&gt;object.__iter__()&lt;/code&gt;, you should probably use the built-in &lt;a href=&#34;https://docs.python.org/3/library/functions.html#iter&#34;&gt;&lt;strong&gt;&lt;code&gt;iter()&lt;/code&gt;&lt;/strong&gt;&lt;/a&gt; method, as it has a little added functionality depending on the use case, but ultimately does the same thing (iterate over an object, that is).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;re-implementing-itertoolscycle-using-iterators&#34;&gt;Re-implementing &lt;strong&gt;&lt;code&gt;itertools.cycle&lt;/code&gt;&lt;/strong&gt; using iterators&lt;/h2&gt;
+&lt;p&gt;Knowing all this, we can write a custom class that can infinitely iterate over another iterable:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;InfiniteIterable&lt;/span&gt;:
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self, original):
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;original_iterable &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; original
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;len &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; len(original)
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __iter__(self):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; self
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;__next__&lt;/span&gt;(self):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;i &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; (self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;len &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+            self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+        ret &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;original_iterable[self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;i]
+        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;i &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; ret
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; InfiniteIterable(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(n)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Since we never raise a &lt;strong&gt;&lt;code&gt;StopIteration&lt;/code&gt;&lt;/strong&gt; exception from our &lt;code&gt;__next__&lt;/code&gt; method, the iterator never halts!&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Since our custom class is an iterable object in and of itself (i.e. it defines an &lt;code&gt;__next__&lt;/code&gt; method), &lt;code&gt;__iter__&lt;/code&gt; just returns &lt;code&gt;self&lt;/code&gt;! But if we didn&amp;rsquo;t want to implement iteration logic from within this class, we could make &lt;code&gt;__iter__&lt;/code&gt; return an instance of some other class.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;generators&#34;&gt;Generators&lt;/h1&gt;
+&lt;p&gt;Generators are just simpler, syntatic-sugary ways to quickly create iterators from within regular functions. That&amp;rsquo;s it. When you want to &amp;ldquo;return&amp;rdquo; the next value, you use the &lt;strong&gt;&lt;code&gt;yield&lt;/code&gt;&lt;/strong&gt; statement. When your function returns, the generator raises &lt;strong&gt;&lt;code&gt;StopIteration&lt;/code&gt;&lt;/strong&gt; itself, making the proccess of writing complex iterators really simple.&lt;/p&gt;
+&lt;h2 id=&#34;implementing-infiniteiterable-using-generators&#34;&gt;Implementing &lt;strong&gt;&lt;code&gt;InfiniteIterable&lt;/code&gt;&lt;/strong&gt; using generators&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;InfiniteIterable&lt;/span&gt;(original_iterable):
+    i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; True:
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;yield&lt;/span&gt; original_iterable[i]
+        i &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; (len(original_iterable) &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
+            i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; InfiniteIterable(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(n)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This accomplishes the exact same task as manually writing the iterable does, but in a more readable manner. It is essentially just syntatic sugar.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Languages versus their implementations</title>
