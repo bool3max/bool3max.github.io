@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1604537202" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1604537397" />
 <style>
 
     [data-theme="dark"] {   
@@ -48,7 +48,7 @@
 
 </style>
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1604537202" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1604537397" />
 
 
 
@@ -126,10 +126,10 @@ l <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <s
 <p>For example, in the following code:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> <span style="color:#e6db74">&#34;abc&#34;</span>: 
     <span style="color:#66d9ef">print</span>(n)
-</code></pre></div><p>, behind the scenes, <strong><code>for</code></strong> calls <code>iter()</code> on <code>&quot;abc&quot;</code>, which in turns calls <strong><code>&quot;abc&quot;.__iter()</code></strong>. Since <strong><code>&quot;123&quot;</code></strong> is of type <strong><code>str</code></strong>, a class that defines the <code>__iter__</code> method, that one is called, and an iterator object is returned.</p>
+</code></pre></div><p>, behind the scenes, <strong><code>for</code></strong> calls <code>iter()</code> on <code>&quot;abc&quot;</code>, which in turn calls <strong><code>&quot;abc&quot;.__iter__()</code></strong>. Since <strong><code>&quot;123&quot;</code></strong> is of type <strong><code>str</code></strong>, a class that defines the <code>__iter__</code> method, that one is called, and an iterator object is returned.</p>
 <p>Then, <strong><code>for</code></strong> simply calls the <strong><code>__next__</code></strong> method on that interator object, passing its return value to you in the form of a variable, until <strong><code>__next__</code></strong> raises a <strong><code>StopIteration</code></strong> exception, at which point the loop stops.</p>
 <blockquote>
-<p>It actually calls <code>next()</code> on the iterator object, which in turns calls its <code>__next__</code> method. The <code>next()</code> builtin is handy because it provides another parameter that can be used to specify a value to be returned if the iterator object is already exahusted.</p>
+<p>It actually calls <code>next()</code> on the iterator object, which in turn calls its <code>__next__</code> method. The <code>next()</code> builtin is handy because it provides another parameter that can be used to specify a value to be returned if the iterator object is already exahusted.</p>
 </blockquote>
 <h3 id="example">Example</h3>
 <p>We can see this in action:</p>
