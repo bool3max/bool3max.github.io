@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1604593377" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1604761862" />
 <style>
 
     [data-theme="dark"] {   
@@ -48,7 +48,7 @@
 
 </style>
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1604593377" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1604761862" />
 
 
 
@@ -122,7 +122,11 @@ l <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <s
 <p>Both iterators and generators have their own short sections in the offical <a href="https://docs.python.org/3/tutorial/classes.html#iterators">python3 tutorial</a>. This post is my own explanation of them.</p>
 </blockquote>
 <h1 id="iterators">Iterators</h1>
-<p>Iterators are just a fancy name for classes that define an <code>__iter__</code> method. That <code>__iter__</code> method in turn returns another object (an iterator object), which defines a <code>__next__</code> method, that returns the <em>&ldquo;next&rdquo;</em> iteration of a sequence that you loop over using operators such as <strong><code>for</code></strong>.</p>
+<p>Iterators are objects that define a <strong><code>__next__</code></strong> method that is called every time the next value of the iterable is desired. They can be <em>iterared</em> over, yielding their members one by one.</p>
+<p>An object is said to be iterable if it defines an <strong><code>__iter__</code></strong> method that returns an above mentioned <em><strong>iterator</strong></em>.</p>
+<blockquote>
+<p>It can be a little confusing. Think of it like this: strings are <em>iterable</em> (able to be iterated over) because their base class (<strong><code>str</code></strong>) defines an <strong><code>__iter__</code></strong> method that returns an <strong>iterator</strong> object which has a <strong><code>__next__</code></strong> method.</p>
+</blockquote>
 <p>For example, in the following code:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> <span style="color:#e6db74">&#34;abc&#34;</span>: 
     <span style="color:#66d9ef">print</span>(n)

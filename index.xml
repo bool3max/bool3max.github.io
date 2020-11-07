@@ -37,7 +37,11 @@ l &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;
 &lt;p&gt;Both iterators and generators have their own short sections in the offical &lt;a href=&#34;https://docs.python.org/3/tutorial/classes.html#iterators&#34;&gt;python3 tutorial&lt;/a&gt;. This post is my own explanation of them.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h1 id=&#34;iterators&#34;&gt;Iterators&lt;/h1&gt;
-&lt;p&gt;Iterators are just a fancy name for classes that define an &lt;code&gt;__iter__&lt;/code&gt; method. That &lt;code&gt;__iter__&lt;/code&gt; method in turn returns another object (an iterator object), which defines a &lt;code&gt;__next__&lt;/code&gt; method, that returns the &lt;em&gt;&amp;ldquo;next&amp;rdquo;&lt;/em&gt; iteration of a sequence that you loop over using operators such as &lt;strong&gt;&lt;code&gt;for&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Iterators are objects that define a &lt;strong&gt;&lt;code&gt;__next__&lt;/code&gt;&lt;/strong&gt; method that is called every time the next value of the iterable is desired. They can be &lt;em&gt;iterared&lt;/em&gt; over, yielding their members one by one.&lt;/p&gt;
+&lt;p&gt;An object is said to be iterable if it defines an &lt;strong&gt;&lt;code&gt;__iter__&lt;/code&gt;&lt;/strong&gt; method that returns an above mentioned &lt;em&gt;&lt;strong&gt;iterator&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;It can be a little confusing. Think of it like this: strings are &lt;em&gt;iterable&lt;/em&gt; (able to be iterated over) because their base class (&lt;strong&gt;&lt;code&gt;str&lt;/code&gt;&lt;/strong&gt;) defines an &lt;strong&gt;&lt;code&gt;__iter__&lt;/code&gt;&lt;/strong&gt; method that returns an &lt;strong&gt;iterator&lt;/strong&gt; object which has a &lt;strong&gt;&lt;code&gt;__next__&lt;/code&gt;&lt;/strong&gt; method.&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;For example, in the following code:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;: 
     &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(n)
