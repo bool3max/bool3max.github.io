@@ -107,7 +107,8 @@
             &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;args, &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;kwargs) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; n
         &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; inner
     &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; decorator
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now this decorator can be applied to any function, regardless of the arguments it takes (or does not take!).&lt;/p&gt;
+</description>
     </item>
     
     <item>
