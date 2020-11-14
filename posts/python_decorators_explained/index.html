@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1605376093" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1605376236" />
 <style>
 
     [data-theme="dark"] {   
@@ -48,7 +48,7 @@
 
 </style>
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1605376093" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1605376236" />
 
 
 
@@ -171,7 +171,7 @@ def increment(func): def add_one(x, y): return func(x, y) &#43; 1 return add_one
 </code></pre></div><p>By observing the result we can see that first <strong><code>5 + 4</code></strong> was divided by two, and then one was added to result.</p>
 <h2 id="decorators-with-parameters">Decorators with parameters</h2>
 <p>Unfortunately it isn&rsquo;t as simple as making the decorator function accept additional arguments, and I was quite bummed to find that out.</p>
-<p>Instead, a decorator with a parameter should actually be a function that takes an argument and returns a function which in turn returns another function. In other words, we have to call a function with a parameter that will then return a decorator function (built upon that paramater). Confusing (and I still don&rsquo;t understand why, however there is probably a good exaplanation for it), so let&rsquo;s rewrite the <strong><code>divtwo</code></strong> decorator so that it accepts the number to divide by as an argument:</p>
+<p>Instead, a decorator with a parameter should actually be a function that takes an argument and returns a function which in turn returns another function. In other words, we have to call a function with a parameter that will then return a decorator function (built upon that paramater). <strong>You can think of it just like the decorators we&rsquo;ve written above, but now they are returned from yet another function</strong>. Confusing (and I still don&rsquo;t understand why, however there is probably a good exaplanation for it), so let&rsquo;s rewrite the <strong><code>divtwo</code></strong> decorator so that it accepts the number to divide by as an argument:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">divby</span>(n):
     <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">decorator</span>(func): 
         <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">inner</span>(a, b):
