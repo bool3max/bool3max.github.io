@@ -18,7 +18,7 @@
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1605375936" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1605376093" />
 <style>
 
     [data-theme="dark"] {   
@@ -50,7 +50,7 @@
 
 </style>
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1605375936" />
+<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1605376093" />
 
 
 
@@ -60,7 +60,7 @@
 <meta property="og:description" content="Personal blog" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://bool3max.github.io/" />
-<meta property="og:updated_time" content="2020-11-05T00:32:02+01:00" />
+<meta property="og:updated_time" content="2020-11-14T18:42:28+01:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="bool3max&#39;s blog"/>
@@ -99,6 +99,34 @@
     </div>
 
     
+    
+        <article class="post-list">
+    <header class="post-header">
+        <h1 class="post-title"><a href="/posts/python_decorators_explained/">Briefly explaining Python3 Decorators</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Decorators are a way to modify behavior of functions using other functions.
+Take a look at the following routine:
+def sum(x, y): return x + y Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:
+def increment(func): def add_one(x, y): return func(x, y) + 1 return add_one @increment def sum(x, y): return x + y &gt; sum(5, 4) 10 Under the hood, sum becomes increment(sum), i.
+    </div>
+
+    
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-11-14</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+</article>
     
         <article class="post-list">
     <header class="post-header">
@@ -275,32 +303,6 @@ The result of that is p3elf, during the development of which I familiarized myse
 <div class="post-info">
     
         <div class="post-date">2018-09-13</div>
-    
-    <div class="post-taxonomies">
-        
-            
-    </div>
-</div>
-
-</article>
-    
-        <article class="post-list">
-    <header class="post-header">
-        <h1 class="post-title"><a href="/posts/python_decorators_explained/">Briefly explaining Python3 Decorators</a></h1>
-    </header>
-
-    <div class="content post-summary">
-        Decorators are a way to modify behavior of functions using other functions.
-Take a look at the following routine:
-def sum(x, y): return x + y Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:
-def increment(func): def add_one(x, y): return func(x, y) + 1 return add_one @increment def sum(x, y): return x + y &gt; sum(5, 4) 10 Under the hood, sum becomes increment(sum), i.
-    </div>
-
-    
-    
-
-
-<div class="post-info">
     
     <div class="post-taxonomies">
         

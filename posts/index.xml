@@ -6,10 +6,109 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 05 Nov 2020 00:32:02 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 14 Nov 2020 18:42:28 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Briefly explaining Python3 Decorators</title>
+      <link>https://bool3max.github.io/posts/python_decorators_explained/</link>
+      <pubDate>Sat, 14 Nov 2020 18:42:28 +0100</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/python_decorators_explained/</guid>
+      <description>&lt;p&gt;Decorators are a way to modify behavior of functions using other functions.&lt;/p&gt;
+&lt;p&gt;Take a look at the following routine:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;increment&lt;/span&gt;(func):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;add_one&lt;/span&gt;(x, y):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(x, y) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; add_one
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@increment&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; sum(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)
+&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Under the hood, &lt;code&gt;sum&lt;/code&gt; becomes &lt;code&gt;increment(sum)&lt;/code&gt;, i.e. &lt;strong&gt;&lt;code&gt;sum = increment(sum)&lt;/code&gt;&lt;/strong&gt;. The function is modified, i.e. &lt;em&gt;&lt;strong&gt;decorated&lt;/strong&gt;&lt;/em&gt; by a new function returned by the decorator applied to it, which is why return values of decorators always have to be &lt;em&gt;&lt;strong&gt;callable&lt;/strong&gt;&lt;/em&gt; (i.e. - functions - though any object that implements the &lt;strong&gt;&lt;code&gt;__call__&lt;/code&gt;&lt;/strong&gt; method is considered callabe).&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s pretty much all there is to decorators.&lt;/p&gt;
+&lt;p&gt;This can be a little confusing, so to recap what is happening here:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The reference to our original &lt;strong&gt;&lt;code&gt;sum&lt;/code&gt;&lt;/strong&gt; function is passed into its decorator, &lt;strong&gt;&lt;code&gt;increment&lt;/code&gt;&lt;/strong&gt;, and it is called&lt;/li&gt;
+&lt;li&gt;From within it we construct a new inner function (&lt;strong&gt;&lt;code&gt;add_one&lt;/code&gt;&lt;/strong&gt;), which is returned, and our original function is overwritten by it
+&lt;ul&gt;
+&lt;li&gt;from within this function we call our original &lt;strong&gt;&lt;code&gt;sum&lt;/code&gt;&lt;/strong&gt; function - passing in any arguments (we have a reference to it!), adding one to its return value and returning it&lt;/li&gt;
+&lt;li&gt;this function has to take in the same number of arguments as the original function, because we intend to call our original function from within this new one&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;another-example&#34;&gt;Another example&lt;/h2&gt;
+&lt;p&gt;Knowing all this, we can, as an example, create a decorator that simply completely overwrites the result of any function it decorates.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;overwrite&lt;/span&gt;(f):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OVERWRITTEN&amp;#34;&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@overwrite&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;some_complex_routine&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;args):
+    &lt;span style=&#34;color:#75715e&#34;&gt;# lots of complex logic here...&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;some complex result&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; some_complex_routine()
+&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OVERWRITTEN&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Here I use the &lt;a href=&#34;https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions&#34;&gt;lambda notation&lt;/a&gt; to create and return a simple function using a one-liner.&lt;/p&gt;
+&lt;p&gt;It is the equivalent of writing this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;overwrite&lt;/span&gt;(f):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;inner&lt;/span&gt;():
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OVERWRITTEN&amp;#34;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; inner
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;chaining-multiple-decorators&#34;&gt;Chaining multiple decorators&lt;/h2&gt;
+&lt;p&gt;Decorating a single function using multiple decorators is possible, and the decorators are applied &amp;ldquo;from the bottom up&amp;rdquo; - i.e. the decorator &amp;ldquo;closest to&amp;rdquo; the function declaration is the one that gets applied first:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;plusone&lt;/span&gt;(func):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;addone&lt;/span&gt;(x, y):
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(x, y) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; addone
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divtwo&lt;/span&gt;(func):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; a, b: func(a, b) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@plusone&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@divtwo&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; sum(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)
+&lt;span style=&#34;color:#ae81ff&#34;&gt;5.5&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;By observing the result we can see that first &lt;strong&gt;&lt;code&gt;5 + 4&lt;/code&gt;&lt;/strong&gt; was divided by two, and then one was added to result.&lt;/p&gt;
+&lt;h2 id=&#34;decorators-with-parameters&#34;&gt;Decorators with parameters&lt;/h2&gt;
+&lt;p&gt;Unfortunately it isn&amp;rsquo;t as simple as making the decorator function accept additional arguments, and I was quite bummed to find that out.&lt;/p&gt;
+&lt;p&gt;Instead, a decorator with a parameter should actually be a function that takes an argument and returns a function which in turn returns another function. In other words, we have to call a function with a parameter that will then return a decorator function (built upon that paramater). Confusing (and I still don&amp;rsquo;t understand why, however there is probably a good exaplanation for it), so let&amp;rsquo;s rewrite the &lt;strong&gt;&lt;code&gt;divtwo&lt;/code&gt;&lt;/strong&gt; decorator so that it accepts the number to divide by as an argument:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divby&lt;/span&gt;(n):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;decorator&lt;/span&gt;(func): 
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;inner&lt;/span&gt;(a, b):
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(a, b) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; n
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; inner
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; decorator
+
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@divby&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; sum(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)
+&lt;span style=&#34;color:#ae81ff&#34;&gt;3.0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now the decorator has an argument which we can control on a per-function basis.&lt;/p&gt;
+&lt;p&gt;Since our decorator routine consists of simple one-liner statements we can rewrite it entirely using lambdas, however I personally think that, while more concise, it is less readable:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divby&lt;/span&gt;(n):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; func: &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; a, b: func(a, b) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; n
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;decorating-functions-regardless-of-their-arguments&#34;&gt;Decorating functions regardless of their arguments&lt;/h2&gt;
+&lt;p&gt;The decorators I&amp;rsquo;ve written so far all assume that the decorated function accepts 2 arguments, and as such only works on those. We can fix this by using the familiar &lt;strong&gt;&lt;code&gt;*args, **kwargs&lt;/code&gt;&lt;/strong&gt; notation:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divby&lt;/span&gt;(n):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;decorator&lt;/span&gt;(func): 
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;inner&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;args, &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;kwargs):
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;args, &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;kwargs) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; n
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; inner
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; decorator
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>Iterators and Generators in Python3</title>
@@ -654,105 +753,6 @@ In this case, &lt;code&gt;0xFFFFFFFF&lt;/code&gt; is too large to fit in the fir
 &lt;p&gt;The &lt;code&gt;%u&lt;/code&gt; conversion expects an unsigned integer as the argument. We&amp;rsquo;ve, however, supplied it a &lt;em&gt;singed&lt;/em&gt; integer. However, this time there is no conversion, as the conversion from &lt;code&gt;int&lt;/code&gt; to &lt;code&gt;unsigned int&lt;/code&gt; is impossible, nonexistent, and therefore the behaviour is undefined.&lt;/p&gt;
 &lt;p&gt;In the case of GCC, &lt;code&gt;%u&lt;/code&gt; (or rather, &lt;code&gt;printf&lt;/code&gt;) &lt;em&gt;assumes&lt;/em&gt; that the value passed to it is of the correct type (&lt;code&gt;uint&lt;/code&gt; in this case), and prints its value accordingly. &lt;code&gt;0xFFFFFFFF&lt;/code&gt; in an unsigned system has the decimal value &lt;em&gt;4294967295&lt;/em&gt;, which is then simply printed.&lt;/p&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>Briefly explaining Python3 Decorators</title>
-      <link>https://bool3max.github.io/posts/python_decorators_explained/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://bool3max.github.io/posts/python_decorators_explained/</guid>
-      <description>&lt;p&gt;Decorators are a way to modify behavior of functions using other functions.&lt;/p&gt;
-&lt;p&gt;Take a look at the following routine:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;increment&lt;/span&gt;(func):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;add_one&lt;/span&gt;(x, y):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(x, y) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; add_one
-
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@increment&lt;/span&gt;
-&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; sum(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)
-&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Under the hood, &lt;code&gt;sum&lt;/code&gt; becomes &lt;code&gt;increment(sum)&lt;/code&gt;, i.e. &lt;strong&gt;&lt;code&gt;sum = increment(sum)&lt;/code&gt;&lt;/strong&gt;. The function is modified, i.e. &lt;em&gt;&lt;strong&gt;decorated&lt;/strong&gt;&lt;/em&gt; by a new function returned by the decorator applied to it, which is why return values of decorators always have to be &lt;em&gt;&lt;strong&gt;callable&lt;/strong&gt;&lt;/em&gt; (i.e. - functions - though any object that implements the &lt;strong&gt;&lt;code&gt;__call__&lt;/code&gt;&lt;/strong&gt; method is considered callabe).&lt;/p&gt;
-&lt;p&gt;That&amp;rsquo;s pretty much all there is to decorators.&lt;/p&gt;
-&lt;p&gt;This can be a little confusing, so to recap what is happening here:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The reference to our original &lt;strong&gt;&lt;code&gt;sum&lt;/code&gt;&lt;/strong&gt; function is passed into its decorator, &lt;strong&gt;&lt;code&gt;increment&lt;/code&gt;&lt;/strong&gt;, and it is called&lt;/li&gt;
-&lt;li&gt;From within it we construct a new inner function (&lt;strong&gt;&lt;code&gt;add_one&lt;/code&gt;&lt;/strong&gt;), which is returned, and our original function is overwritten by it
-&lt;ul&gt;
-&lt;li&gt;from within this function we call our original &lt;strong&gt;&lt;code&gt;sum&lt;/code&gt;&lt;/strong&gt; function - passing in any arguments (we have a reference to it!), adding one to its return value and returning it&lt;/li&gt;
-&lt;li&gt;this function has to take in the same number of arguments as the original function, because we intend to call our original function from within this new one&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;another-example&#34;&gt;Another example&lt;/h2&gt;
-&lt;p&gt;Knowing all this, we can, as an example, create a decorator that simply completely overwrites the result of any function it decorates.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;overwrite&lt;/span&gt;(f):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OVERWRITTEN&amp;#34;&lt;/span&gt;
-
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@overwrite&lt;/span&gt;
-&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;some_complex_routine&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;args):
-    &lt;span style=&#34;color:#75715e&#34;&gt;# lots of complex logic here...&lt;/span&gt;
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;some complex result&amp;#34;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; some_complex_routine()
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OVERWRITTEN&amp;#34;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Here I use the &lt;a href=&#34;https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions&#34;&gt;lambda notation&lt;/a&gt; to create and return a simple function using a one-liner.&lt;/p&gt;
-&lt;p&gt;It is the equivalent of writing this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;overwrite&lt;/span&gt;(f):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;inner&lt;/span&gt;():
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OVERWRITTEN&amp;#34;&lt;/span&gt;
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; inner
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;chaining-multiple-decorators&#34;&gt;Chaining multiple decorators&lt;/h2&gt;
-&lt;p&gt;Decorating a single function using multiple decorators is possible, and the decorators are applied &amp;ldquo;from the bottom up&amp;rdquo; - i.e. the decorator &amp;ldquo;closest to&amp;rdquo; the function declaration is the one that gets applied first:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;plusone&lt;/span&gt;(func):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;addone&lt;/span&gt;(x, y):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(x, y) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; addone
-
-&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divtwo&lt;/span&gt;(func):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; a, b: func(a, b) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
-
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@plusone&lt;/span&gt;
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@divtwo&lt;/span&gt;
-&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; sum(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)
-&lt;span style=&#34;color:#ae81ff&#34;&gt;5.5&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;By observing the result we can see that first &lt;strong&gt;&lt;code&gt;5 + 4&lt;/code&gt;&lt;/strong&gt; was divided by two, and then one was added to result.&lt;/p&gt;
-&lt;h2 id=&#34;decorators-with-parameters&#34;&gt;Decorators with parameters&lt;/h2&gt;
-&lt;p&gt;Unfortunately it isn&amp;rsquo;t as simple as making the decorator function accept additional arguments, and I was quite bummed to find that out.&lt;/p&gt;
-&lt;p&gt;Instead, a decorator with a parameter should actually be a function that takes an argument and returns a function which in turn returns another function. In other words, we have to call a function with a parameter that will then return a decorator function (built upon that paramater). Confusing (and I still don&amp;rsquo;t understand why, however there is probably a good exaplanation for it), so let&amp;rsquo;s rewrite the &lt;strong&gt;&lt;code&gt;divtwo&lt;/code&gt;&lt;/strong&gt; decorator so that it accepts the number to divide by as an argument:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divby&lt;/span&gt;(n):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;decorator&lt;/span&gt;(func): 
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;inner&lt;/span&gt;(a, b):
-            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(a, b) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; n
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; inner
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; decorator
-
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@divby&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)
-&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; sum(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)
-&lt;span style=&#34;color:#ae81ff&#34;&gt;3.0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now the decorator has an argument which we can control on a per-function basis.&lt;/p&gt;
-&lt;p&gt;Since our decorator routine consists of simple one-liner statements we can rewrite it entirely using lambdas, however I personally think that, while more concise, it is less readable:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divby&lt;/span&gt;(n):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; func: &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; a, b: func(a, b) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; n
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;decorating-functions-regardless-of-their-arguments&#34;&gt;Decorating functions regardless of their arguments&lt;/h2&gt;
-&lt;p&gt;The decorators I&amp;rsquo;ve written so far all assume that the decorated function accepts 2 arguments, and as such only works on those. We can fix this by using the familiar &lt;strong&gt;&lt;code&gt;*args, **kwargs&lt;/code&gt;&lt;/strong&gt; notation:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divby&lt;/span&gt;(n):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;decorator&lt;/span&gt;(func): 
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;inner&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;args, &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;kwargs):
-            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;args, &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;kwargs) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; n
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; inner
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; decorator
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
   </channel>
