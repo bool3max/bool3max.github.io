@@ -11,46 +11,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer-when-downgrade">
 
-<title>bool3max&#39;s blog - bool3max&#39;s blog</title>
+<title>bool3max&#39;s blog</title>
 <meta name="description" content="Personal blog">
 
 <link rel="alternate" type="application/rss+xml" href="https://bool3max.github.io/index.xml" title="bool3max's blog" />
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
 
-<link rel="stylesheet" href="https://bool3max.github.io/css/light.css?rnd=1605376303" />
-<style>
 
-    [data-theme="dark"] {   
-        --font-color: #eee;
---bg-color: #212121;
 
---link-color:#599ada;
---link-state-color:#ff5858;
---link-state-border-color: rgba(238, 54, 54, 0.5);
+    
 
---thead-bg-color: #343a40;
---table-border-color: lightgrey;
 
---pre-color: #333;
---pre-bg-color: #f1f1f1;
 
---bq-color: #ccc;
---hr-color: #333;
 
---pagination-bg-color: #373737;
---pagination-link-color: #b6b6b6;
 
---post-info-color: grey;
+    
+    
+    
 
---switcher-color: #333;
---switcher-bg-color: #fff;
+    
+        <link rel="stylesheet" href="https://bool3max.github.io/css/style.bf67952500c522fa4be2b487513979e2a6f82a03826f34db9e4592670b2a1c3b.css" integrity="sha256-v2eVJQDFIvpL4rSHUTl54qb4KgOCbzTbnkWSZwsqHDs=">
+    
 
-    }
 
-</style>
-
-<link rel="stylesheet" href="https://bool3max.github.io/css/style.css?rnd=1605376303" />
 
 
 
@@ -60,11 +44,12 @@
 <meta property="og:description" content="Personal blog" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://bool3max.github.io/" />
-<meta property="og:updated_time" content="2020-11-14T18:42:28+01:00" />
+<meta property="og:updated_time" content="2020-11-21T14:52:04+01:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="bool3max&#39;s blog"/>
 <meta name="twitter:description" content="Personal blog"/>
+
 
 
 
@@ -83,12 +68,16 @@
                 <h1 class="site-title">
     <a href="/">bool3max&#39;s blog</a>
 </h1>
-<nav>
-    
-    
-    <a class="" href="https://bool3max.github.io/posts/" title="Archive">Archive</a>
-    
-</nav>
+
+    <nav>
+        
+        
+        <a class="" href="https://github.com/bool3max/" title="GitHub">GitHub</a>
+        
+        <a class="" href="https://bool3max.github.io/posts/" title="Archive">Archive</a>
+        
+    </nav>
+
 
             
         </header>
@@ -102,6 +91,33 @@
     
         <article class="post-list">
     <header class="post-header">
+        <h1 class="post-title"><a href="/posts/context_managers_and_with_python3/">Context Managers and the &#39;with&#39; keyword in Python3</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        Context Managers in python3 are a simple but powerful feature.
+The most common example is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation do the work for you:
+with open(&#34;file&#34;, &#34;rb&#34;) as file: ... Instead of having to manually call file.close() later on, once the &ldquo;with&rdquo; block ends the associated cleanup (in this case flushing the file to disk and closing the file descriptors) is automatically performed.
+    </div>
+    
+    
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-11-21</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header class="post-header">
         <h1 class="post-title"><a href="/posts/python_decorators_explained/">Briefly explaining Python3 Decorators</a></h1>
     </header>
 
@@ -111,7 +127,7 @@ Take a look at the following routine:
 def sum(x, y): return x + y Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:
 def increment(func): def add_one(x, y): return func(x, y) + 1 return add_one @increment def sum(x, y): return x + y &gt; sum(5, 4) 10 Under the hood, sum becomes increment(sum), i.
     </div>
-
+    
     
     
 
@@ -137,7 +153,7 @@ def increment(func): def add_one(x, y): return func(x, y) + 1 return add_one @in
         Recently I needed a way to infinitely loop over a list in Python. Traditionally, this is extremely easy to do with simple indexing if the size of the list is known in advance. For example, an approach could look something like this:
 l = [1, 2, 3] i = 0 while True: print(l[i]) i += 1 if i == len(l): i = 0 Eventually I settled on a an inbuilt approach using the itertools module from the standard library.
     </div>
-
+    
     
     
 
@@ -163,7 +179,7 @@ l = [1, 2, 3] i = 0 while True: print(l[i]) i += 1 if i == len(l): i = 0 Eventua
         Python is a programming language. It is nothing more but one large document of text and code examples (a standard) that describes exactly how the language is to behave. You can&rsquo;t run it, download it, or execute it. That&rsquo;s it, it&rsquo;s just text.
 The latest edition of it is up on the official Python website as the The Python Language Reference. As Python also consists of a standard library of functions, a document that describes how the modules and their respective functions are to behave is also readily available as The Python Standard Library.
     </div>
-
+    
     
     
 
@@ -190,7 +206,7 @@ The latest edition of it is up on the official Python website as the The Python 
  Useful resources:
  Official python &lsquo;Classes&rsquo; tutorial Data model section of the official python &lsquo;Language Reference&rsquo; &ldquo;Supercharge your classes with Python super() article on realpython.org&rdquo; - a really good read  How does self actually work?
     </div>
-
+    
     
     
 
@@ -218,7 +234,7 @@ Compared to bash, it feels intuitive.
 Everything is a builtin builtins are commands that you call from the shell, but unlike regular commands that execute external binaries and spawn new processes, they are built right into the shell (e.g. echo, math, set, count).
 The core syntax of fish is very simple, and most all of the operations are done via calling builtins.
     </div>
-
+    
     
     
 
@@ -244,7 +260,7 @@ The core syntax of fish is very simple, and most all of the operations are done 
         I recently took it upon myself to, at least at the surface level, understand how the ELF (&quot;Executable and Linkable Format&quot;) works. In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.
 The result of that is p3elf, during the development of which I familiarized myself with ELF, binary IO in python, as well as setuptools and publishing python packages on PyPI.
     </div>
-
+    
     
     
 
@@ -270,7 +286,7 @@ The result of that is p3elf, during the development of which I familiarized myse
         This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
  Type Conversion   Implicit conversion - any type conversion done by the compiler, which does not involve casting (e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument) &ndash; RULES:
     </div>
-
+    
     
     
 
@@ -295,7 +311,7 @@ The result of that is p3elf, during the development of which I familiarized myse
     <div class="content post-summary">
         This is a pretty old document that I wrote for myself back when I was first learning C, but the explanation is pretty good so I published it here for future reference. I hope to soon push a reference document that explains some tricky concepts and things from the C standard that are not so easy to remember off the top of the head (such as type conversion, declarations, storage durations, scopes, etc&hellip;)
     </div>
-
+    
     
     
 
@@ -315,6 +331,7 @@ The result of that is p3elf, during the development of which I familiarized myse
     
 
 
+
         </main>
         
             <footer class="common-footer">
@@ -322,19 +339,87 @@ The result of that is p3elf, during the development of which I familiarized myse
     
 
     <div class="common-footer-bottom">
+        
         <div class="copyright">
             <p>© Bogdan Mitrović, 2020<br>
             Powered by <a target="_blank" rel="noopener noreferrer" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" rel="noopener noreferrer" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
             </p>  
         </div> 
+
+        
+
+    
+
+
+
+    <button class="theme-switcher">
+        Dark theme
+    </button>
+
+    <script>
+    const STORAGE_KEY = 'user-color-scheme'
+    const defaultTheme = "dark"
+
+    let currentTheme
+    let switchButton
+    let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+    const autoChangeScheme = e => {
+        currentTheme = e.matches ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', currentTheme)
+        changeButtonText()
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        switchButton = document.querySelector('.theme-switcher')
+        currentTheme = detectCurrentScheme()
+        if (currentTheme == 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark')
+        }
+        if (currentTheme == 'auto') {
+            autoChangeScheme(autoDefinedScheme);
+            autoDefinedScheme.addListener(autoChangeScheme);
+        }
+        changeButtonText()
+        switchButton.addEventListener('click', switchTheme, false)
+    })
+
+    function detectCurrentScheme() {
+        if (localStorage.getItem(STORAGE_KEY)) {
+            return localStorage.getItem(STORAGE_KEY)
+        } 
+        if (defaultTheme) {
+            return defaultTheme
+        } 
+        if (!window.matchMedia) {
+            return 'light'
+        } 
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark'
+        }
+        return 'light'
+    }
+
+    function changeButtonText()
+    {   
+        switchButton.textContent = currentTheme == 'dark' ?  "Light theme" : "Dark theme"
+    }
+
+    function switchTheme(e) {
+        if (currentTheme == 'dark') {
+            localStorage.setItem(STORAGE_KEY, 'light')
+            document.documentElement.setAttribute('data-theme', 'light')
+            currentTheme = 'light'
+        } else {
+            localStorage.setItem(STORAGE_KEY, 'dark')
+            document.documentElement.setAttribute('data-theme', 'dark')
+            currentTheme = 'dark'
+        }
+        changeButtonText()
+    }
+    </script>
+   
     </div>
-
-    
-
-    
-
-
-    
 </footer>
 
         

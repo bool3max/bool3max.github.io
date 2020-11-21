@@ -6,10 +6,46 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 14 Nov 2020 18:42:28 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 21 Nov 2020 14:52:04 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Context Managers and the &#39;with&#39; keyword in Python3</title>
+      <link>https://bool3max.github.io/posts/context_managers_and_with_python3/</link>
+      <pubDate>Sat, 21 Nov 2020 14:52:04 +0100</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/context_managers_and_with_python3/</guid>
+      <description>&lt;p&gt;Context Managers in &lt;code&gt;python3&lt;/code&gt; are a simple but powerful feature.&lt;/p&gt;
+&lt;p&gt;The most common example is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation do the work for you:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;file&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;rb&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; file:
+    &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Instead of having to manually call &lt;code&gt;file.close()&lt;/code&gt; later on, once the &amp;ldquo;&lt;code&gt;with&lt;/code&gt;&amp;rdquo; block ends the associated cleanup (in this case flushing the file to disk and closing the file descriptors) is automatically performed.&lt;/p&gt;
+&lt;p&gt;This is all accomplished using 2 underlying methods defined in the context manager (in the above case the object returned by the &lt;code&gt;open()&lt;/code&gt; call):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;__enter__&lt;/code&gt;&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;this method is called right before the block of code underneath the &lt;code&gt;with&lt;/code&gt; statement is entered&lt;/li&gt;
+&lt;li&gt;its return value is the one passed to us in form of the variable declared after the &lt;strong&gt;&lt;code&gt;as&lt;/code&gt;&lt;/strong&gt; keyword&lt;/li&gt;
+&lt;li&gt;once it finishes executing the block of code underneath the &lt;code&gt;with&lt;/code&gt; statement is executed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;__exit__&lt;/code&gt;&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;this method is called after the &lt;strong&gt;&lt;code&gt;with&lt;/code&gt;&lt;/strong&gt; block of code finishes executed&lt;/li&gt;
+&lt;li&gt;it gets passed 3 additional arguments that contain information about the exception that occurred inside of the &lt;strong&gt;&lt;code&gt;with&lt;/code&gt;&lt;/strong&gt; code block (if no exception occurred they are all &lt;strong&gt;&lt;code&gt;None&lt;/code&gt;&lt;/strong&gt;):
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;exception_type&lt;/code&gt;&lt;/strong&gt;: the class of the exception&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;exception_value&lt;/code&gt;&lt;/strong&gt;: its associated value&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;exception_traceback&lt;/code&gt;&lt;/strong&gt;: traceback information in form of the traceback class (&lt;code&gt;types.TracebackType&lt;/code&gt; in the &lt;code&gt;types&lt;/code&gt; module)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Briefly explaining Python3 Decorators</title>
