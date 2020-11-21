@@ -110,7 +110,7 @@ with open(&#34;file&#34;, &#34;rb&#34;) as file: ... Instead of having to manual
 <li><strong><code>__exit__</code></strong>
 <ul>
 <li>this method is called after the <strong><code>with</code></strong> block of code finishes executed</li>
-<li>it gets passed 3 additional arguments that contain information about the exception that occurred inside of the <strong><code>with</code></strong> code block (if no exception occurred they are all <strong><code>None</code></strong>):
+<li>it gets passed 3 additional arguments that contain information about the first exception that occurred inside of the <strong><code>with</code></strong> code block (if no exception occurred they are all <strong><code>None</code></strong>):
 <ul>
 <li><strong><code>exception_type</code></strong>: the class of the exception</li>
 <li><strong><code>exception_value</code></strong>: its associated value</li>

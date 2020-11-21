@@ -34,7 +34,7 @@
 &lt;li&gt;&lt;strong&gt;&lt;code&gt;__exit__&lt;/code&gt;&lt;/strong&gt;
 &lt;ul&gt;
 &lt;li&gt;this method is called after the &lt;strong&gt;&lt;code&gt;with&lt;/code&gt;&lt;/strong&gt; block of code finishes executed&lt;/li&gt;
-&lt;li&gt;it gets passed 3 additional arguments that contain information about the exception that occurred inside of the &lt;strong&gt;&lt;code&gt;with&lt;/code&gt;&lt;/strong&gt; code block (if no exception occurred they are all &lt;strong&gt;&lt;code&gt;None&lt;/code&gt;&lt;/strong&gt;):
+&lt;li&gt;it gets passed 3 additional arguments that contain information about the first exception that occurred inside of the &lt;strong&gt;&lt;code&gt;with&lt;/code&gt;&lt;/strong&gt; code block (if no exception occurred they are all &lt;strong&gt;&lt;code&gt;None&lt;/code&gt;&lt;/strong&gt;):
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;&lt;code&gt;exception_type&lt;/code&gt;&lt;/strong&gt;: the class of the exception&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;&lt;code&gt;exception_value&lt;/code&gt;&lt;/strong&gt;: its associated value&lt;/li&gt;
