@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>The basics of operations on FIFOs on Linux - bool3max&#39;s blog</title>
+<meta name="description" content="Personal blog">
+
+<link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
+
+
+
+    
+
+
+
+
+
+    
+    
+    
+
+    
+        <link rel="stylesheet" href="https://bool3max.github.io/css/style.bf67952500c522fa4be2b487513979e2a6f82a03826f34db9e4592670b2a1c3b.css" integrity="sha256-v2eVJQDFIvpL4rSHUTl54qb4KgOCbzTbnkWSZwsqHDs=">
+    
+
+
+
+
+
+
+
+<meta property="og:title" content="The basics of operations on FIFOs on Linux" />
+<meta property="og:description" content="This post summarizes behavior of different operations on FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.
+All of this information is available in the fifo(7) and pipe(7) manpages.
+Opening   opening a FIFO for reading will block until it is also open for writing on the other end (&ldquo;other end&rdquo; here meaning inside another process or another thread in the same process)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/" />
+<meta property="article:published_time" content="2020-11-24T20:36:49+01:00" />
+<meta property="article:modified_time" content="2020-11-24T20:36:49+01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="The basics of operations on FIFOs on Linux"/>
+<meta name="twitter:description" content="This post summarizes behavior of different operations on FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.
+All of this information is available in the fifo(7) and pipe(7) manpages.
+Opening   opening a FIFO for reading will block until it is also open for writing on the other end (&ldquo;other end&rdquo; here meaning inside another process or another thread in the same process)."/>
+
+
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header"> 
+            
+                <h1 class="site-title">
+    <a href="/">bool3max&#39;s blog</a>
+</h1>
+
+    <nav>
+        
+        
+        <a class="" href="https://github.com/bool3max/" title="GitHub">GitHub</a>
+        
+        <a class="" href="https://bool3max.github.io/posts/" title="Archive">Archive</a>
+        
+    </nav>
+
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    
+    
+    <article class="post">
+        <header class="post-header">
+            <h1 class="post-title">The basics of operations on FIFOs on Linux</h1>
+        </header>
+        <div class="content">
+            <p>This post summarizes behavior of different operations on FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.</p>
+<p>All of this information is available in the <a href="https://linux.die.net/man/7/fifo"><code>fifo(7)</code></a> and <a href="https://linux.die.net/man/7/pipe"><code>pipe(7)</code></a> manpages.</p>
+<h1 id="opening">Opening</h1>
+<ul>
+<li>
+<p>opening a FIFO for reading will block until it is also open for writing on the other end (&ldquo;other end&rdquo; here meaning inside another process or another thread in the same process).</p>
+</li>
+<li>
+<p>opening a FIFO for writing will block until it is also open for reading on the other end (same rules apply).</p>
+</li>
+<li>
+<p>opening a FIFO for reading <em>and</em> writing (<code>O_RDWR</code>) will <em>always</em> succeed, though this behavior is undefined by POSIX so I think I&rsquo;ll skip using it.</p>
+<ul>
+<li>this is the only way to open a FIFO on the writing end which has not yet been opened on the reading end</li>
+</ul>
+</li>
+</ul>
+<h3 id="o_nonblock-non-blocking-mode"><code>O_NONBLOCK</code> (non-blocking mode)</h3>
+<ul>
+<li>
+<p>read-only</p>
+<ul>
+<li>the call immediately succeeds even if the FIFO is not yet open on the writing end</li>
+</ul>
+</li>
+<li>
+<p>write-only</p>
+<ul>
+<li>the call immediately fails with <code>ENXIO</code> (no such device or address), unless, of course, the file is already opened for reading on the other end</li>
+</ul>
+</li>
+</ul>
+<h1 id="reading-and-writing">Reading and writing</h1>
+<ul>
+<li>
+<p>attempting to read from a FIFO which doesn&rsquo;t have any data in it OR which is not open on the writing end will result in the <code>read()</code> call returning <strong><code>0</code></strong>.</p>
+<ul>
+<li>reading from a FIFO not open on the writing end can happen if the reading end was opened using non-blocking mode, or if the reading end was properly opened in blocking mode, but the writing end had since been closed</li>
+</ul>
+</li>
+<li>
+<p>attempting to write to a FIFO which is not open on the read end will result in the process being sent a <strong><code>SIGPIPE</code></strong> signal (the default action for which is TERM, i.e. to terminate the process)</p>
+<ul>
+<li>again, this can happen when a FIFO has been properly opened for writing, but the reading end had since been closed</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+        
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-11-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+
+
+        </main>
+        
+            <footer class="common-footer">
+    
+    
+
+    <div class="common-footer-bottom">
+        
+        <div class="copyright">
+            <p>© Bogdan Mitrović, 2020<br>
+            Powered by <a target="_blank" rel="noopener noreferrer" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" rel="noopener noreferrer" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+            </p>  
+        </div> 
+
+        
+
+    
+
+
+
+    <button class="theme-switcher">
+        Dark theme
+    </button>
+
+    <script>
+    const STORAGE_KEY = 'user-color-scheme'
+    const defaultTheme = "dark"
+
+    let currentTheme
+    let switchButton
+    let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+    const autoChangeScheme = e => {
+        currentTheme = e.matches ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', currentTheme)
+        changeButtonText()
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        switchButton = document.querySelector('.theme-switcher')
+        currentTheme = detectCurrentScheme()
+        if (currentTheme == 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark')
+        }
+        if (currentTheme == 'auto') {
+            autoChangeScheme(autoDefinedScheme);
+            autoDefinedScheme.addListener(autoChangeScheme);
+        }
+        changeButtonText()
+        switchButton.addEventListener('click', switchTheme, false)
+    })
+
+    function detectCurrentScheme() {
+        if (localStorage.getItem(STORAGE_KEY)) {
+            return localStorage.getItem(STORAGE_KEY)
+        } 
+        if (defaultTheme) {
+            return defaultTheme
+        } 
+        if (!window.matchMedia) {
+            return 'light'
+        } 
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark'
+        }
+        return 'light'
+    }
+
+    function changeButtonText()
+    {   
+        switchButton.textContent = currentTheme == 'dark' ?  "Light theme" : "Dark theme"
+    }
+
+    function switchTheme(e) {
+        if (currentTheme == 'dark') {
+            localStorage.setItem(STORAGE_KEY, 'light')
+            document.documentElement.setAttribute('data-theme', 'light')
+            currentTheme = 'light'
+        } else {
+            localStorage.setItem(STORAGE_KEY, 'dark')
+            document.documentElement.setAttribute('data-theme', 'dark')
+            currentTheme = 'dark'
+        }
+        changeButtonText()
+    }
+    </script>
+   
+    </div>
+</footer>
+
+        
+    </div>
+</body>
+</html>

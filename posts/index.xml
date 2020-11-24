@@ -6,10 +6,66 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 21 Nov 2020 14:52:04 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 24 Nov 2020 20:36:49 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The basics of operations on FIFOs on Linux</title>
+      <link>https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/</link>
+      <pubDate>Tue, 24 Nov 2020 20:36:49 +0100</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/</guid>
+      <description>&lt;p&gt;This post summarizes behavior of different operations on FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.&lt;/p&gt;
+&lt;p&gt;All of this information is available in the &lt;a href=&#34;https://linux.die.net/man/7/fifo&#34;&gt;&lt;code&gt;fifo(7)&lt;/code&gt;&lt;/a&gt; and &lt;a href=&#34;https://linux.die.net/man/7/pipe&#34;&gt;&lt;code&gt;pipe(7)&lt;/code&gt;&lt;/a&gt; manpages.&lt;/p&gt;
+&lt;h1 id=&#34;opening&#34;&gt;Opening&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;opening a FIFO for reading will block until it is also open for writing on the other end (&amp;ldquo;other end&amp;rdquo; here meaning inside another process or another thread in the same process).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;opening a FIFO for writing will block until it is also open for reading on the other end (same rules apply).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;opening a FIFO for reading &lt;em&gt;and&lt;/em&gt; writing (&lt;code&gt;O_RDWR&lt;/code&gt;) will &lt;em&gt;always&lt;/em&gt; succeed, though this behavior is undefined by POSIX so I think I&amp;rsquo;ll skip using it.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;this is the only way to open a FIFO on the writing end which has not yet been opened on the reading end&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;o_nonblock-non-blocking-mode&#34;&gt;&lt;code&gt;O_NONBLOCK&lt;/code&gt; (non-blocking mode)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;read-only&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the call immediately succeeds even if the FIFO is not yet open on the writing end&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;write-only&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the call immediately fails with &lt;code&gt;ENXIO&lt;/code&gt; (no such device or address), unless, of course, the file is already opened for reading on the other end&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;reading-and-writing&#34;&gt;Reading and writing&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;attempting to read from a FIFO which doesn&amp;rsquo;t have any data in it OR which is not open on the writing end will result in the &lt;code&gt;read()&lt;/code&gt; call returning &lt;strong&gt;&lt;code&gt;0&lt;/code&gt;&lt;/strong&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;reading from a FIFO not open on the writing end can happen if the reading end was opened using non-blocking mode, or if the reading end was properly opened in blocking mode, but the writing end had since been closed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;attempting to write to a FIFO which is not open on the read end will result in the process being sent a &lt;strong&gt;&lt;code&gt;SIGPIPE&lt;/code&gt;&lt;/strong&gt; signal (the default action for which is TERM, i.e. to terminate the process)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;again, this can happen when a FIFO has been properly opened for writing, but the reading end had since been closed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Context Managers and the &#39;with&#39; keyword in Python3</title>

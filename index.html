@@ -3,7 +3,7 @@
 
 <html lang="en-us" data-theme="">
 <head>
-	<meta name="generator" content="Hugo 0.78.1" />
+	<meta name="generator" content="Hugo 0.78.2" />
     
         
 <meta charset="utf-8">
@@ -44,7 +44,7 @@
 <meta property="og:description" content="Personal blog" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://bool3max.github.io/" />
-<meta property="og:updated_time" content="2020-11-21T14:52:04+01:00" />
+<meta property="og:updated_time" content="2020-11-24T20:36:49+01:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="bool3max&#39;s blog"/>
@@ -88,6 +88,33 @@
     </div>
 
     
+    
+        <article class="post-list">
+    <header class="post-header">
+        <h1 class="post-title"><a href="/posts/semantics_of_linux_fifo_operations/">The basics of operations on FIFOs on Linux</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        This post summarizes behavior of different operations on FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.
+All of this information is available in the fifo(7) and pipe(7) manpages.
+Opening   opening a FIFO for reading will block until it is also open for writing on the other end (&ldquo;other end&rdquo; here meaning inside another process or another thread in the same process).
+    </div>
+    
+    
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-11-24</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+</article>
     
         <article class="post-list">
     <header class="post-header">
