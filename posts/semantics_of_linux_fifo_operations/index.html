@@ -121,21 +121,22 @@ Opening   opening a FIFO for reading will block until it is also open for writin
 <li>
 <p>write-only</p>
 <ul>
-<li>the call immediately fails with <code>ENXIO</code> (no such device or address), unless, of course, the file is already opened for reading on the other end</li>
+<li>the call immediately fails with the error <code>ENXIO</code> (no such device or address), unless, of course, the file is already opened for reading on the other end</li>
 </ul>
 </li>
 </ul>
 <h1 id="reading-and-writing">Reading and writing</h1>
 <ul>
 <li>
-<p>attempting to read from a FIFO which doesn&rsquo;t have any data in it OR which is not open on the writing end will result in the <code>read()</code> call returning <strong><code>0</code></strong>.</p>
-<ul>
-<li>reading from a FIFO not open on the writing end can happen if the reading end was opened using non-blocking mode, or if the reading end was properly opened in blocking mode, but the writing end had since been closed</li>
-</ul>
+<p>attempting to read from a FIFO that has no data inside of it, but that has an open writer end will result in the <code>read()</code> call blocking until data is available, <strong>UNLESS</strong> the reader end was opened in non-blocking mode (<code>O_NONBLOCK</code>), in which case the <code>read()</code> call will return EOF (<strong><code>0</code></strong>)</p>
+</li>
+<li>
+<p>attempting to read from a FIFO that has no open writer ends will result in the <code>read()</code> call immediately returning EOF (<strong><code>0</code></strong>)</p>
 </li>
 <li>
 <p>attempting to write to a FIFO which is not open on the read end will result in the process being sent a <strong><code>SIGPIPE</code></strong> signal (the default action for which is TERM, i.e. to terminate the process)</p>
 <ul>
+<li>if the calling process is ignoring this signal, <code>write()</code> will instead immediately fail with the error <code>EPIPE</code></li>
 <li>again, this can happen when a FIFO has been properly opened for writing, but the reading end had since been closed</li>
 </ul>
 </li>
