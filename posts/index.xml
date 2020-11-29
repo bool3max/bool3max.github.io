@@ -6,10 +6,61 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 24 Nov 2020 20:36:49 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 28 Nov 2020 13:41:36 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Parallelism and Concurrency: A Journey</title>
+      <link>https://bool3max.github.io/posts/parallelism_and_concurrency/</link>
+      <pubDate>Sat, 28 Nov 2020 13:41:36 +0100</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/parallelism_and_concurrency/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;This post documents my journey in understanding and gaining in-depth knowledge regarding concurrency and parallelism in computing, both in theory and in practice using different languages and implementations. It&amp;rsquo;s also a place for me to articulate my thoughts centered around the mentioned subjects.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;definitions&#34;&gt;Definitions&lt;/h1&gt;
+&lt;p&gt;Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&amp;rsquo;t exactly set in stone, and the definitions are somewhat convoluted.&lt;/p&gt;
+&lt;p&gt;The StackOverlfow question (&lt;a href=&#34;https://stackoverflow.com/questions/1050222/what-is-the-difference-between-concurrency-and-parallelism&#34;&gt;What is the difference between concurrency and parallelism?&lt;/a&gt;) in particular has quite a number of somewhat conflicting answers, which is understandable, since if someone asked me what the difference between the two terms are - I wouldn&amp;rsquo;t be able to answer. To me, both of them share the meaning of &amp;ldquo;doing multiple things at the same time&amp;rdquo;. In fact, the dictionary definitions share very similar meanings as well.&lt;/p&gt;
+&lt;p&gt;To cut the whole story short, I will choose two widely accepted definitions and abide by them from now on:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Concurrency&lt;/strong&gt; is the ability of a system that allows multiple tasks to run in overlapping time periods. There is never more than one task executing at a single point in time, instead the system &amp;ldquo;juggles&amp;rdquo; between tasks as needed. This gives us the &lt;em&gt;illusion&lt;/em&gt; of parallelism - an example of which is multitasking on a single-core CPU.
+&lt;ul&gt;
+&lt;li&gt;Also: Concurrency: A condition that exists when, during a given period of time, multiple threads (&amp;ldquo;multiple tasks&amp;rdquo; in the general sense) are making progress. Doesn&amp;rsquo;t mean that they were ever both executing at the same single point in time.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Parallelism&lt;/strong&gt; is the ability of a system that allows multiple tasks to run &lt;strong&gt;simultaneously&lt;/strong&gt;. They are &lt;em&gt;truly&lt;/em&gt; running &lt;em&gt;at the same time&lt;/em&gt;.
+&lt;ul&gt;
+&lt;li&gt;Also: Parallelism: A condition that arises when, given a particular point in time, multiple threads (&amp;ldquo;multiple tasks&amp;rdquo;) are executing simultaneously.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There are many metaphors that can be applied to more easily explain the aforementioned definitions, for example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Concurrency&lt;/strong&gt; is a single ATM serving a line of people over the course of an hour.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Parallelism&lt;/strong&gt; is two ATMs serving two lines of people at the same time.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Also see &lt;a href=&#34;https://stackoverflow.com/a/24684037/5447136&#34;&gt;this&lt;/a&gt; excellent answer with more real-world examples.&lt;/p&gt;
+&lt;h1 id=&#34;linux&#34;&gt;Linux&lt;/h1&gt;
+&lt;p&gt;Now that I&amp;rsquo;ve established what parallelism and concurrency are - how do they manifest themselves in real world environments, or rather operating systems?&lt;/p&gt;
+&lt;p&gt;First it&amp;rsquo;s important to realize that modern CPUs achieve parallelism via the use of multiple physical cores.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To avoid the confusion in the following parts of this document I&amp;rsquo;ll get this out of the way right now: &amp;ldquo;&lt;strong&gt;physical threads&lt;/strong&gt;&amp;rdquo; that you hear about in the context of &amp;ldquo;the new Intel CPU has 8 cores and 16 threads&amp;rdquo; are different to &amp;ldquo;&lt;strong&gt;logical threads&lt;/strong&gt;&amp;rdquo; (or software threads) that I&amp;rsquo;ll talk about shortly. This confusion has been a slight obstacle in my early research of the topic and I really wish that they didn&amp;rsquo;t share the name, despite both of them being related to concurrency/parallelism. Also, I&amp;rsquo;ll talk about most of the software concepts as they relate to linux, however a large portion of semantics are shared between modern OSs, especially Unix derivatives.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Each core executes instructions independent of the others and it also has its own registers and cache. That&amp;rsquo;s why some resources even refer to physical cores simply as CPUs.&lt;/p&gt;
+&lt;p&gt;Under Linux (and other modern OSs) there are a couple key concepts (features?) that heavily relate to concurrency and parallelism and that I&amp;rsquo;ll try to explain:&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;processes&#34;&gt;&lt;strong&gt;Processes&lt;/strong&gt;:&lt;/h3&gt;
+&lt;p&gt;Processes represent &amp;ldquo;running programs&amp;rdquo; (flows of execution, tasks) on the system. Each process has an ID (PID) and an associated PPID (parent process ID).&lt;/p&gt;
+&lt;p&gt;Processes cannot share memory between each other (be that the stack or the heap).&lt;/p&gt;
+&lt;p&gt;They are composed of one or more (one by default) &amp;ldquo;smaller&amp;rdquo; flows of execution called &lt;strong&gt;threads&lt;/strong&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;threads&#34;&gt;&lt;strong&gt;Threads&lt;/strong&gt;:&lt;/h3&gt;
+&lt;p&gt;Every spawned process contains one thread by default. All threads belonging to a process share the same heap memory, but each one has its own stack. They are lighter to start-up than processes since there is less initialization involved (namely the fact that they shared the same virutal address space so a new one doesn&amp;rsquo;t have to be created each time).&lt;/p&gt;
+&lt;p&gt;The most prevelant standard for threading is the &lt;strong&gt;pthreads&lt;/strong&gt; (&lt;strong&gt;POSIX Threads&lt;/strong&gt;) specification. In Linux it is implemented using the &lt;a href=&#34;https://en.wikipedia.org/wiki/Native_POSIX_Thread_Library&#34;&gt;NPTL (Native POSIX Thread Library)&lt;/a&gt; library, which was a standalone project for some time after its creation, but is a part of &lt;strong&gt;&lt;code&gt;glibc&lt;/code&gt;&lt;/strong&gt; now.&lt;/p&gt;
+&lt;h3 id=&#34;implemenations&#34;&gt;Implemenations&lt;/h3&gt;
+</description>
+    </item>
     
     <item>
       <title>The basics of operations on FIFOs on Linux</title>

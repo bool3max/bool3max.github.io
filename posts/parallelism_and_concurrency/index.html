@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Parallelism and Concurrency: A Journey - bool3max&#39;s blog</title>
+<meta name="description" content="Personal blog">
+
+<link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
+
+
+
+    
+
+
+
+
+
+    
+    
+    
+
+    
+        <link rel="stylesheet" href="https://bool3max.github.io/css/style.bf67952500c522fa4be2b487513979e2a6f82a03826f34db9e4592670b2a1c3b.css" integrity="sha256-v2eVJQDFIvpL4rSHUTl54qb4KgOCbzTbnkWSZwsqHDs=">
+    
+
+
+
+
+
+
+
+<meta property="og:title" content="Parallelism and Concurrency: A Journey" />
+<meta property="og:description" content="This post documents my journey in understanding and gaining in-depth knowledge regarding concurrency and parallelism in computing, both in theory and in practice using different languages and implementations. It&rsquo;s also a place for me to articulate my thoughts centered around the mentioned subjects.
+ Definitions Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&rsquo;t exactly set in stone, and the definitions are somewhat convoluted." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/parallelism_and_concurrency/" />
+<meta property="article:published_time" content="2020-11-28T13:41:36+01:00" />
+<meta property="article:modified_time" content="2020-11-28T13:41:36+01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Parallelism and Concurrency: A Journey"/>
+<meta name="twitter:description" content="This post documents my journey in understanding and gaining in-depth knowledge regarding concurrency and parallelism in computing, both in theory and in practice using different languages and implementations. It&rsquo;s also a place for me to articulate my thoughts centered around the mentioned subjects.
+ Definitions Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&rsquo;t exactly set in stone, and the definitions are somewhat convoluted."/>
+
+
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header"> 
+            
+                <h1 class="site-title">
+    <a href="/">bool3max&#39;s blog</a>
+</h1>
+
+    <nav>
+        
+        
+        <a class="" href="https://github.com/bool3max/" title="GitHub">GitHub</a>
+        
+        <a class="" href="https://bool3max.github.io/posts/" title="Archive">Archive</a>
+        
+    </nav>
+
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    
+    
+    <article class="post">
+        <header class="post-header">
+            <h1 class="post-title draft">Parallelism and Concurrency: A Journey</h1>
+        </header>
+        <div class="content">
+            <blockquote>
+<p>This post documents my journey in understanding and gaining in-depth knowledge regarding concurrency and parallelism in computing, both in theory and in practice using different languages and implementations. It&rsquo;s also a place for me to articulate my thoughts centered around the mentioned subjects.</p>
+</blockquote>
+<h1 id="definitions">Definitions</h1>
+<p>Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&rsquo;t exactly set in stone, and the definitions are somewhat convoluted.</p>
+<p>The StackOverlfow question (<a href="https://stackoverflow.com/questions/1050222/what-is-the-difference-between-concurrency-and-parallelism">What is the difference between concurrency and parallelism?</a>) in particular has quite a number of somewhat conflicting answers, which is understandable, since if someone asked me what the difference between the two terms are - I wouldn&rsquo;t be able to answer. To me, both of them share the meaning of &ldquo;doing multiple things at the same time&rdquo;. In fact, the dictionary definitions share very similar meanings as well.</p>
+<p>To cut the whole story short, I will choose two widely accepted definitions and abide by them from now on:</p>
+<ul>
+<li><strong>Concurrency</strong> is the ability of a system that allows multiple tasks to run in overlapping time periods. There is never more than one task executing at a single point in time, instead the system &ldquo;juggles&rdquo; between tasks as needed. This gives us the <em>illusion</em> of parallelism - an example of which is multitasking on a single-core CPU.
+<ul>
+<li>Also: Concurrency: A condition that exists when, during a given period of time, multiple threads (&ldquo;multiple tasks&rdquo; in the general sense) are making progress. Doesn&rsquo;t mean that they were ever both executing at the same single point in time.</li>
+</ul>
+</li>
+<li><strong>Parallelism</strong> is the ability of a system that allows multiple tasks to run <strong>simultaneously</strong>. They are <em>truly</em> running <em>at the same time</em>.
+<ul>
+<li>Also: Parallelism: A condition that arises when, given a particular point in time, multiple threads (&ldquo;multiple tasks&rdquo;) are executing simultaneously.</li>
+</ul>
+</li>
+</ul>
+<p>There are many metaphors that can be applied to more easily explain the aforementioned definitions, for example:</p>
+<ul>
+<li><strong>Concurrency</strong> is a single ATM serving a line of people over the course of an hour.</li>
+<li><strong>Parallelism</strong> is two ATMs serving two lines of people at the same time.</li>
+</ul>
+<p>Also see <a href="https://stackoverflow.com/a/24684037/5447136">this</a> excellent answer with more real-world examples.</p>
+<h1 id="linux">Linux</h1>
+<p>Now that I&rsquo;ve established what parallelism and concurrency are - how do they manifest themselves in real world environments, or rather operating systems?</p>
+<p>First it&rsquo;s important to realize that modern CPUs achieve parallelism via the use of multiple physical cores.</p>
+<blockquote>
+<p>To avoid the confusion in the following parts of this document I&rsquo;ll get this out of the way right now: &ldquo;<strong>physical threads</strong>&rdquo; that you hear about in the context of &ldquo;the new Intel CPU has 8 cores and 16 threads&rdquo; are different to &ldquo;<strong>logical threads</strong>&rdquo; (or software threads) that I&rsquo;ll talk about shortly. This confusion has been a slight obstacle in my early research of the topic and I really wish that they didn&rsquo;t share the name, despite both of them being related to concurrency/parallelism. Also, I&rsquo;ll talk about most of the software concepts as they relate to linux, however a large portion of semantics are shared between modern OSs, especially Unix derivatives.</p>
+</blockquote>
+<p>Each core executes instructions independent of the others and it also has its own registers and cache. That&rsquo;s why some resources even refer to physical cores simply as CPUs.</p>
+<p>Under Linux (and other modern OSs) there are a couple key concepts (features?) that heavily relate to concurrency and parallelism and that I&rsquo;ll try to explain:</p>
+<hr>
+<h3 id="processes"><strong>Processes</strong>:</h3>
+<p>Processes represent &ldquo;running programs&rdquo; (flows of execution, tasks) on the system. Each process has an ID (PID) and an associated PPID (parent process ID).</p>
+<p>Processes cannot share memory between each other (be that the stack or the heap).</p>
+<p>They are composed of one or more (one by default) &ldquo;smaller&rdquo; flows of execution called <strong>threads</strong>.</p>
+<h3 id="threads"><strong>Threads</strong>:</h3>
+<p>Every spawned process contains one thread by default. All threads belonging to a process share the same heap memory, but each one has its own stack. They are lighter to start-up than processes since there is less initialization involved (namely the fact that they shared the same virutal address space so a new one doesn&rsquo;t have to be created each time).</p>
+<p>The most prevelant standard for threading is the <strong>pthreads</strong> (<strong>POSIX Threads</strong>) specification. In Linux it is implemented using the <a href="https://en.wikipedia.org/wiki/Native_POSIX_Thread_Library">NPTL (Native POSIX Thread Library)</a> library, which was a standalone project for some time after its creation, but is a part of <strong><code>glibc</code></strong> now.</p>
+<h3 id="implemenations">Implemenations</h3>
+
+        </div>
+        
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-11-28</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+
+
+        </main>
+        
+            <footer class="common-footer">
+    
+    
+
+    <div class="common-footer-bottom">
+        
+        <div class="copyright">
+            <p>© Bogdan Mitrović, 2020<br>
+            Powered by <a target="_blank" rel="noopener noreferrer" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" rel="noopener noreferrer" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+            </p>  
+        </div> 
+
+        
+
+    
+
+
+
+    <button class="theme-switcher">
+        Dark theme
+    </button>
+
+    <script>
+    const STORAGE_KEY = 'user-color-scheme'
+    const defaultTheme = "dark"
+
+    let currentTheme
+    let switchButton
+    let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+    const autoChangeScheme = e => {
+        currentTheme = e.matches ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', currentTheme)
+        changeButtonText()
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        switchButton = document.querySelector('.theme-switcher')
+        currentTheme = detectCurrentScheme()
+        if (currentTheme == 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark')
+        }
+        if (currentTheme == 'auto') {
+            autoChangeScheme(autoDefinedScheme);
+            autoDefinedScheme.addListener(autoChangeScheme);
+        }
+        changeButtonText()
+        switchButton.addEventListener('click', switchTheme, false)
+    })
+
+    function detectCurrentScheme() {
+        if (localStorage.getItem(STORAGE_KEY)) {
+            return localStorage.getItem(STORAGE_KEY)
+        } 
+        if (defaultTheme) {
+            return defaultTheme
+        } 
+        if (!window.matchMedia) {
+            return 'light'
+        } 
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark'
+        }
+        return 'light'
+    }
+
+    function changeButtonText()
+    {   
+        switchButton.textContent = currentTheme == 'dark' ?  "Light theme" : "Dark theme"
+    }
+
+    function switchTheme(e) {
+        if (currentTheme == 'dark') {
+            localStorage.setItem(STORAGE_KEY, 'light')
+            document.documentElement.setAttribute('data-theme', 'light')
+            currentTheme = 'light'
+        } else {
+            localStorage.setItem(STORAGE_KEY, 'dark')
+            document.documentElement.setAttribute('data-theme', 'dark')
+            currentTheme = 'dark'
+        }
+        changeButtonText()
+    }
+    </script>
+   
+    </div>
+</footer>
+
+        
+    </div>
+</body>
+</html>
