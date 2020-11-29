@@ -123,7 +123,7 @@
 <p>To avoid the confusion in the following parts of this document I&rsquo;ll get this out of the way right now: &ldquo;<strong>physical threads</strong>&rdquo; that you hear about in the context of &ldquo;the new Intel CPU has 8 cores and 16 threads&rdquo; are different to &ldquo;<strong>logical threads</strong>&rdquo; (or software threads) that I&rsquo;ll talk about shortly. This confusion has been a slight obstacle in my early research of the topic and I really wish that they didn&rsquo;t share the name, despite both of them being related to concurrency/parallelism. Also, I&rsquo;ll talk about most of the software concepts as they relate to linux, however a large portion of semantics are shared between modern OSs, especially Unix derivatives.</p>
 </blockquote>
 <p>Each core executes instructions independent of the others and it also has its own registers and cache. That&rsquo;s why some resources even refer to physical cores simply as CPUs.</p>
-<p>Under Linux (and other modern OSs) there are a couple key concepts (features?) that heavily relate to concurrency and parallelism and that I&rsquo;ll try to explain:</p>
+<p>Under Linux (and other modern OSs) concurrency and parallelism manifest themselves in a few different ways that I&rsquo;ll briefly explain now:</p>
 <hr>
 <h3 id="processes"><strong>Processes</strong>:</h3>
 <p>Processes represent &ldquo;running programs&rdquo; (flows of execution, tasks) on the system. Each process has an ID (PID) and an associated PPID (parent process ID).</p>
@@ -131,8 +131,22 @@
 <p>They are composed of one or more (one by default) &ldquo;smaller&rdquo; flows of execution called <strong>threads</strong>.</p>
 <h3 id="threads"><strong>Threads</strong>:</h3>
 <p>Every spawned process contains one thread by default. All threads belonging to a process share the same heap memory, but each one has its own stack. They are lighter to start-up than processes since there is less initialization involved (namely the fact that they shared the same virutal address space so a new one doesn&rsquo;t have to be created each time).</p>
-<p>The most prevelant standard for threading is the <strong>pthreads</strong> (<strong>POSIX Threads</strong>) specification. In Linux it is implemented using the <a href="https://en.wikipedia.org/wiki/Native_POSIX_Thread_Library">NPTL (Native POSIX Thread Library)</a> library, which was a standalone project for some time after its creation, but is a part of <strong><code>glibc</code></strong> now.</p>
-<h3 id="implemenations">Implemenations</h3>
+<p>The most prevelant standard for threading is the <strong>pthreads</strong> (<strong>POSIX Threads</strong>) specification. In Linux it is implemented using the <a href="https://en.wikipedia.org/wiki/Native_POSIX_Thread_Library">NPTL (Native POSIX Thread Library)</a> library, which was a standalone project for some time after its creation, but is a part of <strong><code>glibc</code></strong> now. It&rsquo;s described in detail by <a href="https://linux.die.net/man/7/pthreads"><code>pthreads(7)</code></a>.</p>
+<hr>
+<p>It is immediately apparent that processes and threads differ only in what &ldquo;data&rdquo; they share between each other. That is because the Linux kernel doesn&rsquo;t differentiate between threads and processes at all (which makes sense considering that <code>pthreads</code> is a userspace library)! Under the hood, the kernel knows only of &ldquo;<strong>tasks</strong>&rdquo; and exposes their interface via the <a href="https://linux.die.net/man/2/clone"><code>clone(2)</code></a> system call. The arguments that <code>clone(2)</code> takes determine (among other things) what will be shared between them (virtual address space, fd table, etc&hellip;). So, both threads and processes are created using <code>clone(2)</code>, just with different parameters.</p>
+<blockquote>
+<p>The runnable tasks that <code>clone(2)</code> spawns are referred to simply as &ldquo;processes&rdquo; by the linux kernel, however I called them &ldquo;tasks&rdquo; for the sake of understanding and clarity. The gist of it, and the most important thing to understand is that there is no difference between threads and processes to the kernel and that they are both created by <code>clone(2)</code> using different arguments. See the <a href="https://unix.stackexchange.com/questions/31595/are-linux-kernel-threads-really-kernel-processes">Are Linux kernel threads really kernel processes?</a> and <a href="https://unix.stackexchange.com/questions/364660/are-threads-implemented-as-processes-on-linux">Are threads implemented as processes on Linux?</a> questions on the Unix StackExchange.</p>
+</blockquote>
+<p>Also, reading <a href="https://linux.die.net/man/2/fork/"><code>fork(2)</code></a> (the system call for spawning <em>processes</em>), we see:</p>
+<blockquote>
+<p><strong>C library/kernel differences</strong>: Since version 2.3.3, rather than invoking the kernel&rsquo;s fork() system call, the glibc fork() wrapper  that  is provided  as  part of the NPTL threading implementation invokes clone(2) with flags that provide the same effect as the traditional system call. <strong>(A call to fork() is equivalent to a call to clone(2) specifying  flags as  just  SIGCHLD.)</strong>  The glibc wrapper invokes any fork handlers that have been established using pthread_atfork(3).</p>
+</blockquote>
+<p>Couple of interesting points here:</p>
+<ul>
+<li>when you call <code>fork(2)</code> you&rsquo;re actually calling the <code>glibc</code> wrapper function (which is not weird, since when you call syscalls from glibc you&rsquo;re never executing them directly)</li>
+<li>this <code>fork(2)</code> wrapper is actually implemented by NPTL (which is a part of <code>glibc</code>), however the traditional syscall is of course part of the kernel (and it is also implemented using <code>clone(2)</code>!!)</li>
+<li>the bolded part explains that <code>fork(2)</code> is in fact implemented using <code>clone(2)</code>, further solidifying the previous couple of paragraphs</li>
+</ul>
 
         </div>
         
