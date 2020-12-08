@@ -3,7 +3,7 @@
 
 <html lang="en-us" data-theme="">
 <head>
-	<meta name="generator" content="Hugo 0.78.2" />
+	<meta name="generator" content="Hugo 0.79.0" />
     
         
 <meta charset="utf-8">
@@ -31,7 +31,7 @@
     
 
     
-        <link rel="stylesheet" href="https://bool3max.github.io/css/style.bf67952500c522fa4be2b487513979e2a6f82a03826f34db9e4592670b2a1c3b.css" integrity="sha256-v2eVJQDFIvpL4rSHUTl54qb4KgOCbzTbnkWSZwsqHDs=">
+        <link rel="stylesheet" href="https://bool3max.github.io/css/style.c4de52a18529073577f6f0d063462e0080e046e20d809d2b9540d5f6c11ad4c5.css" integrity="sha256-xN5SoYUpBzV39vDQY0YuAIDgRuINgJ0rlUDV9sEa1MU=">
     
 
 
@@ -44,7 +44,7 @@
 <meta property="og:description" content="Personal blog" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://bool3max.github.io/" />
-<meta property="og:updated_time" content="2020-11-28T13:41:36+01:00" />
+<meta property="og:updated_time" content="2020-12-03T21:29:03+01:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="bool3max&#39;s blog"/>
@@ -91,12 +91,40 @@
     
         <article class="post-list">
     <header class="post-header">
-        <h1 class="post-title draft"><a href="/posts/parallelism_and_concurrency/">Parallelism and Concurrency: A Journey</a></h1>
+        <h1 class="post-title draft"><a href="/posts/utf8/">UTF-8</a></h1>
     </header>
 
     <div class="content post-summary">
-        This post documents my journey in understanding and gaining in-depth knowledge regarding concurrency and parallelism in computing, both in theory and in practice using different languages and implementations. It&rsquo;s also a place for me to articulate my thoughts centered around the mentioned subjects.
+        As of writing, Unicode contains 1,112,064 possible codepoints.
+ Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in 1,112,064 actually available codepoints.
+ It&rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &ldquo;double dot above&rdquo; mark that, when redered, is supposed to appear above another character.
+    </div>
+    
+    
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-12-03</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+</article>
+    
+        <article class="post-list">
+    <header class="post-header">
+        <h1 class="post-title draft"><a href="/posts/parallelism_and_concurrency/">Parallelism and Concurrency: The basics</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.
  Definitions Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&rsquo;t exactly set in stone, and the definitions are somewhat convoluted.
+The StackOverlfow question (What is the difference between concurrency and parallelism?) in particular has quite a number of somewhat conflicting answers, which is understandable, since if someone asked me what the difference between the two terms are - I wouldn&rsquo;t be able to answer.
     </div>
     
     
@@ -321,32 +349,6 @@ The result of that is p3elf, during the development of which I familiarized myse
 <div class="post-info">
     
         <div class="post-date">2020-08-09</div>
-    
-    <div class="post-taxonomies">
-        
-            
-    </div>
-</div>
-
-</article>
-    
-        <article class="post-list">
-    <header class="post-header">
-        <h1 class="post-title"><a href="/posts/c_tc_and_decl/">Type Conversion and Declarations in C</a></h1>
-    </header>
-
-    <div class="content post-summary">
-        This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
- Type Conversion   Implicit conversion - any type conversion done by the compiler, which does not involve casting (e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument) &ndash; RULES:
-    </div>
-    
-    
-    
-
-
-<div class="post-info">
-    
-        <div class="post-date">2018-11-14</div>
     
     <div class="post-taxonomies">
         

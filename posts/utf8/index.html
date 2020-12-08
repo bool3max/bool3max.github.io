@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>UTF-8 - bool3max&#39;s blog</title>
+<meta name="description" content="Personal blog">
+
+<link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
+
+
+
+    
+
+
+
+
+
+    
+    
+    
+
+    
+        <link rel="stylesheet" href="https://bool3max.github.io/css/style.c4de52a18529073577f6f0d063462e0080e046e20d809d2b9540d5f6c11ad4c5.css" integrity="sha256-xN5SoYUpBzV39vDQY0YuAIDgRuINgJ0rlUDV9sEa1MU=">
+    
+
+
+
+
+
+
+
+<meta property="og:title" content="UTF-8" />
+<meta property="og:description" content="As of writing, Unicode contains 1,112,064 possible codepoints.
+ Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in 1,112,064 actually available codepoints.
+ It&rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &ldquo;double dot above&rdquo; mark that, when redered, is supposed to appear above another character." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/utf8/" />
+<meta property="article:published_time" content="2020-12-03T21:29:03+01:00" />
+<meta property="article:modified_time" content="2020-12-03T21:29:03+01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="UTF-8"/>
+<meta name="twitter:description" content="As of writing, Unicode contains 1,112,064 possible codepoints.
+ Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in 1,112,064 actually available codepoints.
+ It&rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &ldquo;double dot above&rdquo; mark that, when redered, is supposed to appear above another character."/>
+
+
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header"> 
+            
+                <h1 class="site-title">
+    <a href="/">bool3max&#39;s blog</a>
+</h1>
+
+    <nav>
+        
+        
+        <a class="" href="https://github.com/bool3max/" title="GitHub">GitHub</a>
+        
+        <a class="" href="https://bool3max.github.io/posts/" title="Archive">Archive</a>
+        
+    </nav>
+
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    
+    
+    <article class="post">
+        <header class="post-header">
+            <h1 class="post-title draft">UTF-8</h1>
+        </header>
+        <div class="content">
+            <p>As of writing, <a href="https://en.wikipedia.org/wiki/Unicode">Unicode</a> contains <strong>1,112,064</strong> possible codepoints.</p>
+<blockquote>
+<p>Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in <strong>1,112,064</strong> actually available codepoints.</p>
+</blockquote>
+<p>It&rsquo;s important to note that not all (in fact most) <strong>codepoints</strong> are not <strong>characters</strong>. A common example is the <a href="https://unicode-table.com/en/0308/">Combining Diaeresis (e.g. ï)</a> or the &ldquo;double dot above&rdquo; mark that, when redered, is supposed to appear above another character. In fact I can&rsquo;t even paste it in <code>vim</code> on its own, it simply appears above the previously typed character.</p>
+<hr>
+<h1 id="utf-8">UTF-8</h1>
+<p>UTF-8 is a <em>variable</em> Unicode encoding in a sense that not all codepoints occupy the same amount of bytes in their encoded form. This is different from, for example, <strong>UTF-32</strong> where every single codepoint always occupies exactly 4 bytes. This makes it very easy to parse but it also makes it very memory inefficient. Back to UTF-8, the maximum number of bytes an encoded codepoint can occupy is 4, even though only <strong>21</strong> bits are required to represent all possible codepoints, and we&rsquo;ll see why shortly.</p>
+<h2 id="rules">Rules</h2>
+<table>
+<thead>
+<tr>
+<th>Number of bytes</th>
+<th>First code point</th>
+<th>Last code point</th>
+<th>Byte 1</th>
+<th>Byte 2</th>
+<th>Byte 3</th>
+<th>Byte 4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>U+0000</td>
+<td>U+007F</td>
+<td>0xxxxxxx</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>2</td>
+<td>U+0080</td>
+<td>U+07FF</td>
+<td>110xxxxx</td>
+<td>10xxxxxx</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>3</td>
+<td>U+0800</td>
+<td>U+FFFF</td>
+<td>1110xxxx</td>
+<td>10xxxxxx</td>
+<td>10xxxxxx</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>4</td>
+<td>U+10000</td>
+<td>U+10FFFF</td>
+<td>11110xxx</td>
+<td>10xxxxxx</td>
+<td>10xxxxxx</td>
+<td>10xxxxxx</td>
+</tr>
+</tbody>
+</table>
+<p>These rules made little sense to me at the beginning. However, as I read more and more of the <a href="https://en.wikipedia.org/wiki/UTF-8">Wikipedia article on UTF-8</a> things became clearer. For example, all codepoints between U+0000 and U+007F ooccupy exactly one byte and that byte cannot be larger than 127 (0x7F) in order to maintain complete interchangeability with US-ASCII. If we encounter a single byte &lt;= 0x7F, we know that it&rsquo;s a single byte codepoint and an ASCII character. (though <code>(byte &amp; 0x80) == 0</code> is a more portable check if we&rsquo;re also dealing with signed types)</p>
+<p>The restrictions for the 3 following codepoint ranges exist for similar reasons (mainly UTF-16 compatibility I think, but I&rsquo;m not too sure on these), for example, for all codepoints between 0x800 and 0xFFFF, 3 bytes are required even though all numbers in that range can fit into 2 bytes, since 5 bits in the 2byte form are reserved.</p>
+<h2 id="example">Example</h2>
+<p>Let&rsquo;s look at how the euro sign (€) is encoded in UTF-8.</p>
+<ul>
+<li>
+<p>The Unicode codepoint of the euro sign is <strong>U+20AC</strong>. If we look at the table above, we see that it falls between codepoint <strong>U+0800</strong> and codepoint <strong>U+FFFF</strong>, meaning that it <strong>takes 3 bytes to encode in memory</strong>.</p>
+</li>
+<li>
+<p><strong>0x20AC</strong> in binary are the two bytes: <code>0b00100000</code> and <code>0b1010110</code>.</p>
+</li>
+<li>
+<p>Byte by byte we &ldquo;replace&rdquo; all the available bytes in from the sequence in the table by the bytes from the codepoint. If you look at the table, you can see that for codepoints that take 3 bytes to encode, we have exactly 16 bits (2 bytes) available.</p>
+</li>
+<li>
+<p>When we replace them, we get: <code>0b11100010</code>, <code>0b10000010</code> and <code>0b10101100</code>, or in hex: <code>0xE2</code>, <code>0x82</code>, <code>0xAC</code>.</p>
+</li>
+<li>
+<p>From our shell we can see that this is exactly how the € is encoded:</p>
+</li>
+</ul>
+<pre><code>echo -n &quot;€&quot; | xxd -g 1 -c 10 -u
+
+00000000: E2 82 AC                       ...
+</code></pre><h1 id="writing-an-utf-8-decoder">Writing an UTF-8 decoder</h1>
+<p>This is something I&rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Also one thing I recently noticed is that C&rsquo;s stdlib <code>&lt;string.h&gt;</code> functions don&rsquo;t play well with UTF-8 at all. For example, <code>strlen(&quot;€&quot;)</code> returns <code>3</code> instead of <code>1</code>, meaning that it just counts the bytes. A stdlib-way (that I know of) to find out the length of an UTF-8 string is to repeatedly call <code>mblen()</code> with the locale set to an UTF-8 one, though there may be other options as I haven&rsquo;t dwelled too deep into the multi-byte and wide-char sections of the standard.</p>
+
+        </div>
+        
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-12-03</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+
+
+        </main>
+        
+            <footer class="common-footer">
+    
+    
+
+    <div class="common-footer-bottom">
+        
+        <div class="copyright">
+            <p>© Bogdan Mitrović, 2020<br>
+            Powered by <a target="_blank" rel="noopener noreferrer" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" rel="noopener noreferrer" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+            </p>  
+        </div> 
+
+        
+
+    
+
+
+
+    <button class="theme-switcher">
+        Dark theme
+    </button>
+
+    <script>
+    const STORAGE_KEY = 'user-color-scheme'
+    const defaultTheme = "dark"
+
+    let currentTheme
+    let switchButton
+    let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+    const autoChangeScheme = e => {
+        currentTheme = e.matches ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', currentTheme)
+        changeButtonText()
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        switchButton = document.querySelector('.theme-switcher')
+        currentTheme = detectCurrentScheme()
+        if (currentTheme == 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark')
+        }
+        if (currentTheme == 'auto') {
+            autoChangeScheme(autoDefinedScheme);
+            autoDefinedScheme.addListener(autoChangeScheme);
+        }
+        changeButtonText()
+        switchButton.addEventListener('click', switchTheme, false)
+    })
+
+    function detectCurrentScheme() {
+        if (localStorage.getItem(STORAGE_KEY)) {
+            return localStorage.getItem(STORAGE_KEY)
+        } 
+        if (defaultTheme) {
+            return defaultTheme
+        } 
+        if (!window.matchMedia) {
+            return 'light'
+        } 
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark'
+        }
+        return 'light'
+    }
+
+    function changeButtonText()
+    {   
+        switchButton.textContent = currentTheme == 'dark' ?  "Light theme" : "Dark theme"
+    }
+
+    function switchTheme(e) {
+        if (currentTheme == 'dark') {
+            localStorage.setItem(STORAGE_KEY, 'light')
+            document.documentElement.setAttribute('data-theme', 'light')
+            currentTheme = 'light'
+        } else {
+            localStorage.setItem(STORAGE_KEY, 'dark')
+            document.documentElement.setAttribute('data-theme', 'dark')
+            currentTheme = 'dark'
+        }
+        changeButtonText()
+    }
+    </script>
+   
+    </div>
+</footer>
+
+        
+    </div>
+</body>
+</html>

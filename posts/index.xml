@@ -6,19 +6,114 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 28 Nov 2020 13:41:36 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 03 Dec 2020 21:29:03 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Parallelism and Concurrency: A Journey</title>
+      <title>UTF-8</title>
+      <link>https://bool3max.github.io/posts/utf8/</link>
+      <pubDate>Thu, 03 Dec 2020 21:29:03 +0100</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/utf8/</guid>
+      <description>&lt;p&gt;As of writing, &lt;a href=&#34;https://en.wikipedia.org/wiki/Unicode&#34;&gt;Unicode&lt;/a&gt; contains &lt;strong&gt;1,112,064&lt;/strong&gt; possible codepoints.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in &lt;strong&gt;1,112,064&lt;/strong&gt; actually available codepoints.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It&amp;rsquo;s important to note that not all (in fact most) &lt;strong&gt;codepoints&lt;/strong&gt; are not &lt;strong&gt;characters&lt;/strong&gt;. A common example is the &lt;a href=&#34;https://unicode-table.com/en/0308/&#34;&gt;Combining Diaeresis (e.g. ï)&lt;/a&gt; or the &amp;ldquo;double dot above&amp;rdquo; mark that, when redered, is supposed to appear above another character. In fact I can&amp;rsquo;t even paste it in &lt;code&gt;vim&lt;/code&gt; on its own, it simply appears above the previously typed character.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;utf-8&#34;&gt;UTF-8&lt;/h1&gt;
+&lt;p&gt;UTF-8 is a &lt;em&gt;variable&lt;/em&gt; Unicode encoding in a sense that not all codepoints occupy the same amount of bytes in their encoded form. This is different from, for example, &lt;strong&gt;UTF-32&lt;/strong&gt; where every single codepoint always occupies exactly 4 bytes. This makes it very easy to parse but it also makes it very memory inefficient. Back to UTF-8, the maximum number of bytes an encoded codepoint can occupy is 4, even though only &lt;strong&gt;21&lt;/strong&gt; bits are required to represent all possible codepoints, and we&amp;rsquo;ll see why shortly.&lt;/p&gt;
+&lt;h2 id=&#34;rules&#34;&gt;Rules&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Number of bytes&lt;/th&gt;
+&lt;th&gt;First code point&lt;/th&gt;
+&lt;th&gt;Last code point&lt;/th&gt;
+&lt;th&gt;Byte 1&lt;/th&gt;
+&lt;th&gt;Byte 2&lt;/th&gt;
+&lt;th&gt;Byte 3&lt;/th&gt;
+&lt;th&gt;Byte 4&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;U+0000&lt;/td&gt;
+&lt;td&gt;U+007F&lt;/td&gt;
+&lt;td&gt;0xxxxxxx&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;U+0080&lt;/td&gt;
+&lt;td&gt;U+07FF&lt;/td&gt;
+&lt;td&gt;110xxxxx&lt;/td&gt;
+&lt;td&gt;10xxxxxx&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;U+0800&lt;/td&gt;
+&lt;td&gt;U+FFFF&lt;/td&gt;
+&lt;td&gt;1110xxxx&lt;/td&gt;
+&lt;td&gt;10xxxxxx&lt;/td&gt;
+&lt;td&gt;10xxxxxx&lt;/td&gt;
+&lt;td&gt;N/A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;U+10000&lt;/td&gt;
+&lt;td&gt;U+10FFFF&lt;/td&gt;
+&lt;td&gt;11110xxx&lt;/td&gt;
+&lt;td&gt;10xxxxxx&lt;/td&gt;
+&lt;td&gt;10xxxxxx&lt;/td&gt;
+&lt;td&gt;10xxxxxx&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;These rules made little sense to me at the beginning. However, as I read more and more of the &lt;a href=&#34;https://en.wikipedia.org/wiki/UTF-8&#34;&gt;Wikipedia article on UTF-8&lt;/a&gt; things became clearer. For example, all codepoints between U+0000 and U+007F ooccupy exactly one byte and that byte cannot be larger than 127 (0x7F) in order to maintain complete interchangeability with US-ASCII. If we encounter a single byte &amp;lt;= 0x7F, we know that it&amp;rsquo;s a single byte codepoint and an ASCII character. (though &lt;code&gt;(byte &amp;amp; 0x80) == 0&lt;/code&gt; is a more portable check if we&amp;rsquo;re also dealing with signed types)&lt;/p&gt;
+&lt;p&gt;The restrictions for the 3 following codepoint ranges exist for similar reasons (mainly UTF-16 compatibility I think, but I&amp;rsquo;m not too sure on these), for example, for all codepoints between 0x800 and 0xFFFF, 3 bytes are required even though all numbers in that range can fit into 2 bytes, since 5 bits in the 2byte form are reserved.&lt;/p&gt;
+&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
+&lt;p&gt;Let&amp;rsquo;s look at how the euro sign (€) is encoded in UTF-8.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The Unicode codepoint of the euro sign is &lt;strong&gt;U+20AC&lt;/strong&gt;. If we look at the table above, we see that it falls between codepoint &lt;strong&gt;U+0800&lt;/strong&gt; and codepoint &lt;strong&gt;U+FFFF&lt;/strong&gt;, meaning that it &lt;strong&gt;takes 3 bytes to encode in memory&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;0x20AC&lt;/strong&gt; in binary are the two bytes: &lt;code&gt;0b00100000&lt;/code&gt; and &lt;code&gt;0b1010110&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Byte by byte we &amp;ldquo;replace&amp;rdquo; all the available bytes in from the sequence in the table by the bytes from the codepoint. If you look at the table, you can see that for codepoints that take 3 bytes to encode, we have exactly 16 bits (2 bytes) available.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;When we replace them, we get: &lt;code&gt;0b11100010&lt;/code&gt;, &lt;code&gt;0b10000010&lt;/code&gt; and &lt;code&gt;0b10101100&lt;/code&gt;, or in hex: &lt;code&gt;0xE2&lt;/code&gt;, &lt;code&gt;0x82&lt;/code&gt;, &lt;code&gt;0xAC&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;From our shell we can see that this is exactly how the € is encoded:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;echo -n &amp;quot;€&amp;quot; | xxd -g 1 -c 10 -u
+
+00000000: E2 82 AC                       ...
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;writing-an-utf-8-decoder&#34;&gt;Writing an UTF-8 decoder&lt;/h1&gt;
+&lt;p&gt;This is something I&amp;rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Also one thing I recently noticed is that C&amp;rsquo;s stdlib &lt;code&gt;&amp;lt;string.h&amp;gt;&lt;/code&gt; functions don&amp;rsquo;t play well with UTF-8 at all. For example, &lt;code&gt;strlen(&amp;quot;€&amp;quot;)&lt;/code&gt; returns &lt;code&gt;3&lt;/code&gt; instead of &lt;code&gt;1&lt;/code&gt;, meaning that it just counts the bytes. A stdlib-way (that I know of) to find out the length of an UTF-8 string is to repeatedly call &lt;code&gt;mblen()&lt;/code&gt; with the locale set to an UTF-8 one, though there may be other options as I haven&amp;rsquo;t dwelled too deep into the multi-byte and wide-char sections of the standard.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Parallelism and Concurrency: The basics</title>
       <link>https://bool3max.github.io/posts/parallelism_and_concurrency/</link>
       <pubDate>Sat, 28 Nov 2020 13:41:36 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/parallelism_and_concurrency/</guid>
       <description>&lt;blockquote&gt;
-&lt;p&gt;This post documents my journey in understanding and gaining in-depth knowledge regarding concurrency and parallelism in computing, both in theory and in practice using different languages and implementations. It&amp;rsquo;s also a place for me to articulate my thoughts centered around the mentioned subjects.&lt;/p&gt;
+&lt;p&gt;This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h1 id=&#34;definitions&#34;&gt;Definitions&lt;/h1&gt;
 &lt;p&gt;Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&amp;rsquo;t exactly set in stone, and the definitions are somewhat convoluted.&lt;/p&gt;
@@ -61,7 +156,7 @@
 &lt;hr&gt;
 &lt;p&gt;It is immediately apparent that processes and threads differ only in what &amp;ldquo;data&amp;rdquo; they share between each other. That is because the Linux kernel doesn&amp;rsquo;t differentiate between threads and processes at all (which makes sense considering that &lt;code&gt;pthreads&lt;/code&gt; is a userspace library)! Under the hood, the kernel knows only of &amp;ldquo;&lt;strong&gt;tasks&lt;/strong&gt;&amp;rdquo; and exposes their interface via the &lt;a href=&#34;https://linux.die.net/man/2/clone&#34;&gt;&lt;code&gt;clone(2)&lt;/code&gt;&lt;/a&gt; system call. The arguments that &lt;code&gt;clone(2)&lt;/code&gt; takes determine (among other things) what will be shared between them (virtual address space, fd table, etc&amp;hellip;). So, both threads and processes are created using &lt;code&gt;clone(2)&lt;/code&gt;, just with different parameters.&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;The runnable tasks that &lt;code&gt;clone(2)&lt;/code&gt; spawns are referred to simply as &amp;ldquo;processes&amp;rdquo; by the linux kernel, however I called them &amp;ldquo;tasks&amp;rdquo; for the sake of understanding and clarity. The gist of it, and the most important thing to understand is that there is no difference between threads and processes to the kernel and that they are both created by &lt;code&gt;clone(2)&lt;/code&gt; using different arguments. See the &lt;a href=&#34;https://unix.stackexchange.com/questions/31595/are-linux-kernel-threads-really-kernel-processes&#34;&gt;Are Linux kernel threads really kernel processes?&lt;/a&gt; and &lt;a href=&#34;https://unix.stackexchange.com/questions/364660/are-threads-implemented-as-processes-on-linux&#34;&gt;Are threads implemented as processes on Linux?&lt;/a&gt; questions on the Unix StackExchange.&lt;/p&gt;
+&lt;p&gt;The runnable tasks that &lt;code&gt;clone(2)&lt;/code&gt; spawns are referred to simply as &amp;ldquo;processes&amp;rdquo; in some places by the linux kernel, however I called them &amp;ldquo;tasks&amp;rdquo; for the sake of understanding and clarity. The gist of it, and the most important thing to understand is that there is no difference between threads and processes to the kernel and that they are both created by &lt;code&gt;clone(2)&lt;/code&gt; using different arguments. See the &lt;a href=&#34;https://unix.stackexchange.com/questions/31595/are-linux-kernel-threads-really-kernel-processes&#34;&gt;Are Linux kernel threads really kernel processes?&lt;/a&gt; and &lt;a href=&#34;https://unix.stackexchange.com/questions/364660/are-threads-implemented-as-processes-on-linux&#34;&gt;Are threads implemented as processes on Linux?&lt;/a&gt; questions on the Unix StackExchange.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Also, reading &lt;a href=&#34;https://linux.die.net/man/2/fork/&#34;&gt;&lt;code&gt;fork(2)&lt;/code&gt;&lt;/a&gt; (the system call for spawning &lt;em&gt;processes&lt;/em&gt;), we see:&lt;/p&gt;
 &lt;blockquote&gt;
@@ -69,10 +164,60 @@
 &lt;/blockquote&gt;
 &lt;p&gt;Couple of interesting points here:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;when you call &lt;code&gt;fork(2)&lt;/code&gt; you&amp;rsquo;re actually calling the &lt;code&gt;glibc&lt;/code&gt; wrapper function (which is not weird, since when you call syscalls from glibc you&amp;rsquo;re never executing them directly)&lt;/li&gt;
+&lt;li&gt;when you call &lt;code&gt;fork(2)&lt;/code&gt; you&amp;rsquo;re actually calling the &lt;code&gt;glibc&lt;/code&gt; wrapper function, not the syscall (which is not weird, since when you call syscalls from glibc you&amp;rsquo;re never executing them directly)&lt;/li&gt;
 &lt;li&gt;this &lt;code&gt;fork(2)&lt;/code&gt; wrapper is actually implemented by NPTL (which is a part of &lt;code&gt;glibc&lt;/code&gt;), however the traditional syscall is of course part of the kernel (and it is also implemented using &lt;code&gt;clone(2)&lt;/code&gt;!!)&lt;/li&gt;
 &lt;li&gt;the bolded part explains that &lt;code&gt;fork(2)&lt;/code&gt; is in fact implemented using &lt;code&gt;clone(2)&lt;/code&gt;, further solidifying the previous couple of paragraphs&lt;/li&gt;
 &lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;So far I&amp;rsquo;ve talked more &lt;em&gt;about&lt;/em&gt; what &amp;ldquo;tools&amp;rdquo; are used to achieve concurrency rather than how to actually use them. But before I do I want to explore them a bit further:&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s write a trivial binary that proves that the &lt;code&gt;fork(2)&lt;/code&gt; wrapper really calls the &lt;code&gt;clone(2)&lt;/code&gt; syscall under the hood:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;pthread.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdint.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdlib.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;unistd.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;sys/types.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;) {
+    pid_t return_pid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fork();
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(return_pid &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) {
+        perror(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error forking&amp;#34;&lt;/span&gt;);
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; EXIT_FAILURE;
+    }
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(return_pid &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) {
+        &lt;span style=&#34;color:#75715e&#34;&gt;// parent
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        fprintf(stdout, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello from parent, PID: %d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, getpid());
+
+    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+        &lt;span style=&#34;color:#75715e&#34;&gt;// child
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        fprintf(stdout, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello from child, PID: %d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, getpid());
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; EXIT_SUCCESS;
+    }
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; EXIT_SUCCESS; 
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;First, the entire reason that we&amp;rsquo;re able to write data to &lt;code&gt;stdout&lt;/code&gt; from the child process (whose code is in the last &amp;lsquo;else&amp;rsquo; block) is that the spawned child retains access to all the open file descriptors of the parent (and &lt;code&gt;stdout&lt;/code&gt; is file descriptor 0):&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The child inherits copies of the parent&amp;rsquo;s set of open file descriptors.  Each file descriptor in the child refers to the same open file description (see open(2)) as the corresponding file descriptor in the parent.  This means that the two file descriptors share open file status flags, file offset, and signal-driven I/O attributes (see the description of F_SETOWN and F_SETSIG in fcntl(2)).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Now let&amp;rsquo;s use &lt;code&gt;strace&lt;/code&gt; to see which syscalls the binary performs:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ strace --trace=%process ./example
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;--trace=%process&lt;/code&gt; filters the output to only show syscalls relating to process manipulation.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;execve(&amp;quot;./example&amp;quot;, [&amp;quot;./example&amp;quot;], 0x7ffdfb5127c8 /* 36 vars */) = 0
+clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f38384c0810) = 120121
+Hello from child, PID: 120121
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=120121, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+Hello from parent, PID: 120120
+exit_group(0)                           = ?
++++ exited with 0 +++
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We see that a call to &lt;code&gt;clone(2)&lt;/code&gt; is in fact performed, and its return value (the child&amp;rsquo;s PID) matches the one printed in our message. We also see that the parent is sent a &lt;code&gt;SIGCHLD&lt;/code&gt; singal once the child that it spawned has finished running, but that&amp;rsquo;s a topic I&amp;rsquo;ll maybe explore later.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Let&amp;rsquo;s get back on topic: how do tasks ran by the linux kernel correlate to parallelism or concurrency? On the surface it&amp;rsquo;s really simple: the kernel uses a &lt;a href=&#34;https://en.wikipedia.org/wiki/Scheduling_(computing)&#34;&gt;scheduler&lt;/a&gt; to determine which currently active processes run when. If it has access to multiple CPU cores, it is able to achieve true parallelism by balancing multiple tasks over multiple cores (allowing them to run &lt;em&gt;truly&lt;/em&gt; at the same time). If there are no multiple cores (or if there are multiple tasks running on a single core), only one task is able to run at a time, and thus the scheduler quickly &amp;ldquo;juggles&amp;rdquo; between tasks, giving the &lt;em&gt;illusion&lt;/em&gt; of parallelism.&lt;/p&gt;
+&lt;p&gt;The scheduler currently used by the linux kernel is the &lt;a href=&#34;https://en.wikipedia.org/wiki/Completely_Fair_Scheduler&#34;&gt;Completely Fair Scheduler (CFS)&lt;/a&gt;, since kernel 2.6.23.&lt;/p&gt;
+&lt;p&gt;I don&amp;rsquo;t have enough experience or knowledge to talk about how these actually work, but I plan to in the future.&lt;/p&gt;
 </description>
     </item>
     
