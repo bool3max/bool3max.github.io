@@ -6,10 +6,60 @@
     <description>bool3max&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Dec 2020 21:29:03 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 17 Dec 2020 20:52:23 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Common bitwise operations</title>
+      <link>https://bool3max.github.io/posts/common_bitwise_operations/</link>
+      <pubDate>Thu, 17 Dec 2020 20:52:23 +0100</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/common_bitwise_operations/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;A short reference listing some of the common bitwise operations that I document as I encounter them&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Create a mask with a single set bit&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;(1 &amp;lt;&amp;lt; k)&lt;/code&gt; can be used to create a mask where a single &lt;code&gt;k + 1&lt;/code&gt;-th bit is set.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Extracting bits&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Say we wanted to extract the highest 3 bits of a single byte (0b&lt;strong&gt;xxx&lt;/strong&gt;xxxxx). We create a bitmask with those bits set to 1s, and all other bits to 0s, and we AND the two values together:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mask = 0xEO (0b11100000)
+extracted = value &amp;amp; mask
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Explanation: since the highest 3 bits in the mask are set to one, respective bits in the value will remain ones, while zeroes will remain zeroes. Since all other bits are irrelevant, our mask has them at all 0s, so that the value&amp;rsquo;s bits don&amp;rsquo;t interfere.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Setting bits&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Say we wanted to &lt;strong&gt;set&lt;/strong&gt; the first and fifth bits of a byte. We create a mask where only those two bits are set (others are zeroes) and we OR it against our value:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mask = 0x11 (0b00010001)
+value |= mask
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Explanation: the respective zeroes in the original value become ones (obvious), while all other values remain the same (if they&amp;rsquo;re zeroes they remain zeroes since they&amp;rsquo;re matched against the zeroes in the mask - same for ones).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Clearing bits&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Say we wanted to &lt;strong&gt;unset&lt;/strong&gt;/&lt;strong&gt;clear&lt;/strong&gt; the first and fifth bits of a byte. We create a bit mask where those bits are zeroes, and the rest are ones, and we AND it over the original value:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mask = 0x11 (0b11101110)
+value &amp;amp;= mask
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we&amp;rsquo;re dealing with a &lt;em&gt;single bit&lt;/em&gt; here, we can use this idiom to quickly create the bitmask on the right-hand side of the assignment:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mask = ~(1 &amp;lt;&amp;lt; 4)
+value &amp;amp;= mask
+
+// or even shorter
+
+value &amp;amp;= ~(1 &amp;lt;&amp;lt; 4)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Flipping bits&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If we want to, for example, flip the first and third bits of a byte, we create a mask where those bits are ones and others are zeroes, and we XOR it againast the original value:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mask = 0x5 (0b00000101)
+value ^= mask
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Explanation: XOR produces 0 if both bits are the same, and 1 if they&amp;rsquo;re different. Zeroes become ones (0 ^ 1 = 1), and ones become zeroes (1 ^ 1 = 0), and all other bits retain their value (obvious).&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>UTF-8</title>

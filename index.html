@@ -44,7 +44,7 @@
 <meta property="og:description" content="Personal blog" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://bool3max.github.io/" />
-<meta property="og:updated_time" content="2020-12-03T21:29:03+01:00" />
+<meta property="og:updated_time" content="2020-12-17T20:52:23+01:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="bool3max&#39;s blog"/>
@@ -88,6 +88,33 @@
     </div>
 
     
+    
+        <article class="post-list">
+    <header class="post-header">
+        <h1 class="post-title draft"><a href="/posts/common_bitwise_operations/">Common bitwise operations</a></h1>
+    </header>
+
+    <div class="content post-summary">
+        A short reference listing some of the common bitwise operations that I document as I encounter them
+  Create a mask with a single set bit  (1 &lt;&lt; k) can be used to create a mask where a single k + 1-th bit is set.
+ Extracting bits  Say we wanted to extract the highest 3 bits of a single byte (0bxxxxxxxx). We create a bitmask with those bits set to 1s, and all other bits to 0s, and we AND the two values together:
+    </div>
+    
+    
+    
+
+
+<div class="post-info">
+    
+        <div class="post-date">2020-12-17</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+</article>
     
         <article class="post-list">
     <header class="post-header">
@@ -323,32 +350,6 @@ The core syntax of fish is very simple, and most all of the operations are done 
 <div class="post-info">
     
         <div class="post-date">2020-09-28</div>
-    
-    <div class="post-taxonomies">
-        
-            
-    </div>
-</div>
-
-</article>
-    
-        <article class="post-list">
-    <header class="post-header">
-        <h1 class="post-title favorite"><a href="/posts/elf/">Understanding the ELF file structure</a></h1>
-    </header>
-
-    <div class="content post-summary">
-        I recently took it upon myself to, at least at the surface level, understand how the ELF (&quot;Executable and Linkable Format&quot;) works. In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.
-The result of that is p3elf, during the development of which I familiarized myself with ELF, binary IO in python, as well as setuptools and publishing python packages on PyPI.
-    </div>
-    
-    
-    
-
-
-<div class="post-info">
-    
-        <div class="post-date">2020-08-09</div>
     
     <div class="post-taxonomies">
         
