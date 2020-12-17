@@ -864,7 +864,7 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;h2 id=&#34;type-conversion&#34;&gt;Type Conversion&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Implicit conversion&lt;/strong&gt; - any type conversion done by the compiler, which does not involve casting (e.g. assignment conversion, or usual arithmetic conversion &amp;ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument) &amp;ndash; &lt;strong&gt;RULES:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Implicit conversion&lt;/strong&gt; - conversion done automatically by the compiler (no casts) - e.g. &lt;strong&gt;assignment conversion&lt;/strong&gt;, or &lt;strong&gt;usual arithmetic conversion&lt;/strong&gt; &amp;ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument &amp;ndash; &lt;strong&gt;RULES:&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;integer ranks&lt;/strong&gt; (excluding extended and enumerated types):
 &lt;ul&gt;
@@ -877,7 +877,7 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;integer promotion&lt;/strong&gt;: convert any type whose rank is less than &lt;code&gt;int&lt;/code&gt; or &lt;code&gt;unsigned int&lt;/code&gt; to &lt;code&gt;int&lt;/code&gt; (provided it can fit) or else &lt;code&gt;unsigned int&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Usual arithmetic conversions&lt;/strong&gt;:
+&lt;li&gt;&lt;strong&gt;Usual arithmetic conversion&lt;/strong&gt;:
 &lt;ul&gt;
 &lt;li&gt;&lt;em&gt;either operand is floating type&lt;/em&gt;:
 &lt;ul&gt;

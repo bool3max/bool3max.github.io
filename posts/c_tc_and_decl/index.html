@@ -40,7 +40,7 @@
 
 <meta property="og:title" content="Type Conversion and Declarations in C" />
 <meta property="og:description" content="This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
- Type Conversion   Implicit conversion - any type conversion done by the compiler, which does not involve casting (e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument) &ndash; RULES:" />
+ Type Conversion   Implicit conversion - conversion done automatically by the compiler (no casts) - e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument &ndash; RULES:" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/c_tc_and_decl/" />
 <meta property="article:published_time" content="2018-11-14T18:05:02+02:00" />
@@ -49,7 +49,7 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Type Conversion and Declarations in C"/>
 <meta name="twitter:description" content="This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
- Type Conversion   Implicit conversion - any type conversion done by the compiler, which does not involve casting (e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument) &ndash; RULES:"/>
+ Type Conversion   Implicit conversion - conversion done automatically by the compiler (no casts) - e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument &ndash; RULES:"/>
 
 
 
@@ -96,7 +96,7 @@
 <h2 id="type-conversion">Type Conversion</h2>
 <ul>
 <li>
-<p><strong>Implicit conversion</strong> - any type conversion done by the compiler, which does not involve casting (e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument) &ndash; <strong>RULES:</strong></p>
+<p><strong>Implicit conversion</strong> - conversion done automatically by the compiler (no casts) - e.g. <strong>assignment conversion</strong>, or <strong>usual arithmetic conversion</strong> &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument &ndash; <strong>RULES:</strong></p>
 <ul>
 <li><strong>integer ranks</strong> (excluding extended and enumerated types):
 <ul>
@@ -109,7 +109,7 @@
 </ul>
 </li>
 <li><strong>integer promotion</strong>: convert any type whose rank is less than <code>int</code> or <code>unsigned int</code> to <code>int</code> (provided it can fit) or else <code>unsigned int</code></li>
-<li><strong>Usual arithmetic conversions</strong>:
+<li><strong>Usual arithmetic conversion</strong>:
 <ul>
 <li><em>either operand is floating type</em>:
 <ul>
