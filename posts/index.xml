@@ -75,7 +75,7 @@ value ^= mask
 &lt;hr&gt;
 &lt;h1 id=&#34;utf-8&#34;&gt;UTF-8&lt;/h1&gt;
 &lt;p&gt;UTF-8 is a &lt;em&gt;variable&lt;/em&gt; Unicode encoding in a sense that not all codepoints occupy the same amount of bytes in their encoded form. This is different from, for example, &lt;strong&gt;UTF-32&lt;/strong&gt; where every single codepoint always occupies exactly 4 bytes. This makes it very easy to parse but it also makes it very memory inefficient. Back to UTF-8, the maximum number of bytes an encoded codepoint can occupy is 4, even though only &lt;strong&gt;21&lt;/strong&gt; bits are required to represent all possible codepoints, and we&amp;rsquo;ll see why shortly.&lt;/p&gt;
-&lt;h2 id=&#34;rules&#34;&gt;Rules&lt;/h2&gt;
+&lt;h2 id=&#34;encoding-rules&#34;&gt;Encoding rules&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
