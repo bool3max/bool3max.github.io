@@ -71,7 +71,7 @@ value ^= mask
 &lt;blockquote&gt;
 &lt;p&gt;Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in &lt;strong&gt;1,112,064&lt;/strong&gt; actually available codepoints.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;It&amp;rsquo;s important to note that not all (in fact most) &lt;strong&gt;codepoints&lt;/strong&gt; are not &lt;strong&gt;characters&lt;/strong&gt;. A common example is the &lt;a href=&#34;https://unicode-table.com/en/0308/&#34;&gt;Combining Diaeresis (e.g. ï)&lt;/a&gt; or the &amp;ldquo;double dot above&amp;rdquo; mark that, when redered, is supposed to appear above another character. In fact I can&amp;rsquo;t even paste it in &lt;code&gt;vim&lt;/code&gt; on its own, it simply appears above the previously typed character.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s important to note that not all (in fact most) &lt;strong&gt;codepoints&lt;/strong&gt; are not &lt;strong&gt;characters&lt;/strong&gt;. A common example is the &lt;a href=&#34;https://unicode-table.com/en/0308/&#34;&gt;Combining Diaeresis (e.g. ï)&lt;/a&gt; or the &amp;ldquo;double dot above&amp;rdquo; mark that, when redered, is supposed to appear above another character. In fact I can&amp;rsquo;t even paste it in &lt;code&gt;neovim&lt;/code&gt; on its own, it simply appears above the previously typed character.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h1 id=&#34;utf-8&#34;&gt;UTF-8&lt;/h1&gt;
 &lt;p&gt;UTF-8 is a &lt;em&gt;variable&lt;/em&gt; Unicode encoding in a sense that not all codepoints occupy the same amount of bytes in their encoded form. This is different from, for example, &lt;strong&gt;UTF-32&lt;/strong&gt; where every single codepoint always occupies exactly 4 bytes. This makes it very easy to parse but it also makes it very memory inefficient. Back to UTF-8, the maximum number of bytes an encoded codepoint can occupy is 4, even though only &lt;strong&gt;21&lt;/strong&gt; bits are required to represent all possible codepoints, and we&amp;rsquo;ll see why shortly.&lt;/p&gt;
@@ -152,7 +152,18 @@ value ^= mask
 
 00000000: E2 82 AC                       ...
 &lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;writing-an-utf-8-decoder&#34;&gt;Writing an UTF-8 decoder&lt;/h1&gt;
-&lt;p&gt;This is something I&amp;rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Also one thing I recently noticed is that C&amp;rsquo;s stdlib &lt;code&gt;&amp;lt;string.h&amp;gt;&lt;/code&gt; functions don&amp;rsquo;t play well with UTF-8 at all. For example, &lt;code&gt;strlen(&amp;quot;€&amp;quot;)&lt;/code&gt; returns &lt;code&gt;3&lt;/code&gt; instead of &lt;code&gt;1&lt;/code&gt;, meaning that it just counts the bytes. A stdlib-way (that I know of) to find out the length of an UTF-8 string is to repeatedly call &lt;code&gt;mblen()&lt;/code&gt; with the locale set to an UTF-8 one, though there may be other options as I haven&amp;rsquo;t dwelled too deep into the multi-byte and wide-char sections of the standard.&lt;/p&gt;
+&lt;p&gt;This is something I&amp;rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Literally all text that you see nowadays on screen was at some point encoded as UTF-8, then decoded to get all invididual codepoints, and then rendered to the screen with a relevant font.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;String related functions in C&amp;rsquo;s stdlib pay no attention to any sort of encoding at all. They follow the &amp;lsquo;1 byte = 1 character&amp;rsquo; mantra. Support for different encodings exists via &lt;a href=&#34;https://en.cppreference.com/w/c/string/wide&#34;&gt;Wide strings&lt;/a&gt; &lt;a href=&#34;https://en.cppreference.com/w/c/string/multibyte&#34;&gt;Multi-byte strings&lt;/a&gt; but I&amp;rsquo;ve never had a reason to use those functions. They are also very intertwined with the C locale, which is also a very complicated topic as evident by the infamous &lt;a href=&#34;https://github.com/mpv-player/mpv/commit/1e70e82baa9193f6f027338b0fab0f5078971fbe&#34;&gt;mpv developer C locale rant&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Writing a &lt;em&gt;decoder&lt;/em&gt; turned out to be way easier than I thought. The gist of basically the entire operation is the following: peek at the first byte of the string -&amp;gt; find out how many bytes the codepoint that it&amp;rsquo;s a part of occupies -&amp;gt; construct a codepoint from those bytes -&amp;gt; seek that many bytes forward in the stream -&amp;gt; return. Repeat for the entire string.&lt;/p&gt;
+&lt;p&gt;The only part I struggled with for a bit was the bitwise manipulation regarding specific bytes as I had little experience with that prior to this project - that is now &lt;a href=&#34;https://github.com/bool3max/butf8&#34;&gt;on GitHub as &lt;strong&gt;butf8&lt;/strong&gt;&lt;/a&gt;. In the future I&amp;rsquo;m planning to add encoding as well as indexing support - both of which should be fairly trivial.&lt;/p&gt;
+&lt;h2 id=&#34;resources&#34;&gt;Resources&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://utf8everywhere.org&#34;&gt;utf8everywhere.org&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Unicode&#34;&gt;Wikipedia article on Unicode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/UTF-8&#34;&gt;Wikipedia article on UTF-8&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
@@ -914,7 +925,7 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;h2 id=&#34;type-conversion&#34;&gt;Type Conversion&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Implicit conversion&lt;/strong&gt; - conversion done automatically by the compiler (no casts) - e.g. &lt;strong&gt;assignment conversion&lt;/strong&gt;, or &lt;strong&gt;usual arithmetic conversion&lt;/strong&gt; &amp;ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument &amp;ndash; &lt;strong&gt;RULES:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Implicit conversion&lt;/strong&gt; - conversion done automatically by the compiler (no casts) - &lt;strong&gt;assignment conversion&lt;/strong&gt;, or &lt;strong&gt;usual arithmetic conversion&lt;/strong&gt; &amp;ndash; &lt;strong&gt;RULES:&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;integer ranks&lt;/strong&gt; (excluding extended and enumerated types):
 &lt;ul&gt;
@@ -926,8 +937,8 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;li&gt;&lt;code&gt;_Bool&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;integer promotion&lt;/strong&gt;: convert any type whose rank is less than &lt;code&gt;int&lt;/code&gt; or &lt;code&gt;unsigned int&lt;/code&gt; to &lt;code&gt;int&lt;/code&gt; (provided it can fit) or else &lt;code&gt;unsigned int&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Usual arithmetic conversion&lt;/strong&gt;:
+&lt;li&gt;&lt;strong&gt;integer promotion&lt;/strong&gt;: an operation that converts any type whose rank is less than &lt;code&gt;int&lt;/code&gt; or &lt;code&gt;unsigned int&lt;/code&gt; to &lt;code&gt;int&lt;/code&gt; (provided it can fit) or else &lt;code&gt;unsigned int&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Usual arithmetic conversion&lt;/strong&gt; &amp;ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument:
 &lt;ul&gt;
 &lt;li&gt;&lt;em&gt;either operand is floating type&lt;/em&gt;:
 &lt;ul&gt;
@@ -958,9 +969,10 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Explicit conversion&lt;/strong&gt; - type conversion done using casts&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Explicit conversion&lt;/strong&gt; - type conversion done manually using casts&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;It is important to understand that not all operators behave the same. For example, when using the &lt;strong&gt;binary shift operators&lt;/strong&gt; (&lt;code&gt;&amp;lt;&amp;lt;&lt;/code&gt; and &lt;code&gt;&amp;gt;&amp;gt;&lt;/code&gt;), &lt;strong&gt;integer promotion is always performed on both operands&lt;/strong&gt;, regardless of their types or if they match or not.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;declarations&#34;&gt;Declarations&lt;/h2&gt;
 &lt;p&gt;Before we begin, we have to understand that every object in C has &lt;strong&gt;3&lt;/strong&gt; properties. These are:&lt;/p&gt;

@@ -40,7 +40,8 @@
 
 <meta property="og:title" content="Type Conversion and Declarations in C" />
 <meta property="og:description" content="This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
- Type Conversion   Implicit conversion - conversion done automatically by the compiler (no casts) - e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument &ndash; RULES:" />
+ Type Conversion   Implicit conversion - conversion done automatically by the compiler (no casts) - assignment conversion, or usual arithmetic conversion &ndash; RULES:
+ integer ranks (excluding extended and enumerated types):  long long int, unsigned long long int long int, unsigned long int int, unsigned int short int, unsigned short int char, singed char, unsigned char _Bool   integer promotion: an operation that converts any type whose rank is less than int or unsigned int to int (provided it can fit) or else unsigned int Usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument:  either operand is floating type:  float -&gt; double -&gt; long double convert the other operand to the same floating type   neither operand is a floating type:  First, perform integer promotion on both operands If types of both operands are now the same, the process ends, if not, perform the following rules, and stop at the first one that applies  If both operands have signed types or if both operands have unsigned types, convert the operand whose type rank is lower to the type of the operand whose type rank is higher If the operand with the unsigned type has a rank HIGHER or EQUAL to the rank of the signed operand, convert the operand with the singed type to the type of the operand with the unsigned type If the operand with the signed type can represent all of the values of the type with the unsigned operand, convert the unsigned operand to the type of the signed operand If none of the above rules apply, convert BOTH operands to the unsigned &ldquo;version&rdquo; of the type of the signed operand       Assignment conversion:  The usual arithmetic conversion rules do not apply here." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/c_tc_and_decl/" />
 <meta property="article:published_time" content="2018-11-14T18:05:02+02:00" />
@@ -49,7 +50,8 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Type Conversion and Declarations in C"/>
 <meta name="twitter:description" content="This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
- Type Conversion   Implicit conversion - conversion done automatically by the compiler (no casts) - e.g. assignment conversion, or usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument &ndash; RULES:"/>
+ Type Conversion   Implicit conversion - conversion done automatically by the compiler (no casts) - assignment conversion, or usual arithmetic conversion &ndash; RULES:
+ integer ranks (excluding extended and enumerated types):  long long int, unsigned long long int long int, unsigned long int int, unsigned int short int, unsigned short int char, singed char, unsigned char _Bool   integer promotion: an operation that converts any type whose rank is less than int or unsigned int to int (provided it can fit) or else unsigned int Usual arithmetic conversion &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument:  either operand is floating type:  float -&gt; double -&gt; long double convert the other operand to the same floating type   neither operand is a floating type:  First, perform integer promotion on both operands If types of both operands are now the same, the process ends, if not, perform the following rules, and stop at the first one that applies  If both operands have signed types or if both operands have unsigned types, convert the operand whose type rank is lower to the type of the operand whose type rank is higher If the operand with the unsigned type has a rank HIGHER or EQUAL to the rank of the signed operand, convert the operand with the singed type to the type of the operand with the unsigned type If the operand with the signed type can represent all of the values of the type with the unsigned operand, convert the unsigned operand to the type of the signed operand If none of the above rules apply, convert BOTH operands to the unsigned &ldquo;version&rdquo; of the type of the signed operand       Assignment conversion:  The usual arithmetic conversion rules do not apply here."/>
 
 
 
@@ -96,7 +98,7 @@
 <h2 id="type-conversion">Type Conversion</h2>
 <ul>
 <li>
-<p><strong>Implicit conversion</strong> - conversion done automatically by the compiler (no casts) - e.g. <strong>assignment conversion</strong>, or <strong>usual arithmetic conversion</strong> &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument &ndash; <strong>RULES:</strong></p>
+<p><strong>Implicit conversion</strong> - conversion done automatically by the compiler (no casts) - <strong>assignment conversion</strong>, or <strong>usual arithmetic conversion</strong> &ndash; <strong>RULES:</strong></p>
 <ul>
 <li><strong>integer ranks</strong> (excluding extended and enumerated types):
 <ul>
@@ -108,8 +110,8 @@
 <li><code>_Bool</code></li>
 </ul>
 </li>
-<li><strong>integer promotion</strong>: convert any type whose rank is less than <code>int</code> or <code>unsigned int</code> to <code>int</code> (provided it can fit) or else <code>unsigned int</code></li>
-<li><strong>Usual arithmetic conversion</strong>:
+<li><strong>integer promotion</strong>: an operation that converts any type whose rank is less than <code>int</code> or <code>unsigned int</code> to <code>int</code> (provided it can fit) or else <code>unsigned int</code></li>
+<li><strong>Usual arithmetic conversion</strong> &ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument:
 <ul>
 <li><em>either operand is floating type</em>:
 <ul>
@@ -140,9 +142,10 @@
 </ul>
 </li>
 <li>
-<p><strong>Explicit conversion</strong> - type conversion done using casts</p>
+<p><strong>Explicit conversion</strong> - type conversion done manually using casts</p>
 </li>
 </ul>
+<p>It is important to understand that not all operators behave the same. For example, when using the <strong>binary shift operators</strong> (<code>&lt;&lt;</code> and <code>&gt;&gt;</code>), <strong>integer promotion is always performed on both operands</strong>, regardless of their types or if they match or not.</p>
 <hr>
 <h2 id="declarations">Declarations</h2>
 <p>Before we begin, we have to understand that every object in C has <strong>3</strong> properties. These are:</p>
