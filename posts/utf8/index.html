@@ -41,7 +41,7 @@
 <meta property="og:title" content="UTF-8" />
 <meta property="og:description" content="As of writing, Unicode contains 1,112,064 possible codepoints.
  Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in 1,112,064 actually available codepoints.
- It&rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &ldquo;double dot above&rdquo; mark that, when redered, is supposed to appear above another character." />
+ It&rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &ldquo;double dot above&rdquo; mark that, when rendered, simply appears above the adjecent previous character." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/utf8/" />
 <meta property="article:published_time" content="2020-12-03T21:29:03+01:00" />
@@ -51,7 +51,7 @@
 <meta name="twitter:title" content="UTF-8"/>
 <meta name="twitter:description" content="As of writing, Unicode contains 1,112,064 possible codepoints.
  Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in 1,112,064 actually available codepoints.
- It&rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &ldquo;double dot above&rdquo; mark that, when redered, is supposed to appear above another character."/>
+ It&rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &ldquo;double dot above&rdquo; mark that, when rendered, simply appears above the adjecent previous character."/>
 
 
 
@@ -97,7 +97,7 @@
 <blockquote>
 <p>Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in <strong>1,112,064</strong> actually available codepoints.</p>
 </blockquote>
-<p>It&rsquo;s important to note that not all (in fact most) <strong>codepoints</strong> are not <strong>characters</strong>. A common example is the <a href="https://unicode-table.com/en/0308/">Combining Diaeresis (e.g. ï)</a> or the &ldquo;double dot above&rdquo; mark that, when redered, is supposed to appear above another character. In fact I can&rsquo;t even paste it in <code>neovim</code> on its own, it simply appears above the previously typed character.</p>
+<p>It&rsquo;s important to note that not all (in fact most) <strong>codepoints</strong> are not <strong>characters</strong>. A common example is the <a href="https://unicode-table.com/en/0308/">Combining Diaeresis (e.g. ï)</a> or the &ldquo;double dot above&rdquo; mark that, when rendered, simply appears above the adjecent previous character. In fact I can&rsquo;t even paste it in <code>neovim</code> on its own, it simply appears above the previously typed character.</p>
 <hr>
 <h1 id="utf-8">UTF-8</h1>
 <p>UTF-8 is a <em>variable</em> Unicode encoding in a sense that not all codepoints occupy the same amount of bytes in their encoded form. This is different from, for example, <strong>UTF-32</strong> where every single codepoint always occupies exactly 4 bytes. This makes it very easy to parse but it also makes it very memory inefficient. Back to UTF-8, the maximum number of bytes an encoded codepoint can occupy is 4, even though only <strong>21</strong> bits are required to represent all possible codepoints, and we&rsquo;ll see why shortly.</p>
