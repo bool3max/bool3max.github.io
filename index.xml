@@ -136,10 +136,10 @@ value ^= mask
 &lt;p&gt;The Unicode codepoint of the euro sign is &lt;strong&gt;U+20AC&lt;/strong&gt;. If we look at the table above, we see that it falls between codepoint &lt;strong&gt;U+0800&lt;/strong&gt; and codepoint &lt;strong&gt;U+FFFF&lt;/strong&gt;, meaning that it &lt;strong&gt;takes 3 bytes to encode in memory&lt;/strong&gt;.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;strong&gt;0x20AC&lt;/strong&gt; in binary are the two bytes: &lt;code&gt;0b00100000&lt;/code&gt; and &lt;code&gt;0b1010110&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;0x20AC&lt;/strong&gt; in binary are the two bytes: &lt;code&gt;0b00100000&lt;/code&gt; and &lt;code&gt;0b10101100&lt;/code&gt;.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Byte by byte we &amp;ldquo;replace&amp;rdquo; all the available bytes in from the sequence in the table by the bytes from the codepoint. If you look at the table, you can see that for codepoints that take 3 bytes to encode, we have exactly 16 bits (2 bytes) available.&lt;/p&gt;
+&lt;p&gt;Byte by byte we &amp;ldquo;replace&amp;rdquo; all the available bytes from the sequence in the table by the bytes from the codepoint. If you look at the table, you can see that for codepoints that take 3 bytes to encode, we have exactly 16 bits (2 bytes) available.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;When we replace them, we get: &lt;code&gt;0b11100010&lt;/code&gt;, &lt;code&gt;0b10000010&lt;/code&gt; and &lt;code&gt;0b10101100&lt;/code&gt;, or in hex: &lt;code&gt;0xE2&lt;/code&gt;, &lt;code&gt;0x82&lt;/code&gt;, &lt;code&gt;0xAC&lt;/code&gt;.&lt;/p&gt;
@@ -149,7 +149,6 @@ value ^= mask
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;pre&gt;&lt;code&gt;echo -n &amp;quot;€&amp;quot; | xxd -g 1 -c 10 -u
-
 00000000: E2 82 AC                       ...
 &lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;writing-an-utf-8-decoder&#34;&gt;Writing an UTF-8 decoder&lt;/h1&gt;
 &lt;p&gt;This is something I&amp;rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Literally all text that you see nowadays on screen was at some point encoded as UTF-8, then decoded to get all invididual codepoints, and then rendered to the screen with a relevant font.&lt;/p&gt;

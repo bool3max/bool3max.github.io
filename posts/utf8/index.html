@@ -90,7 +90,7 @@
     
     <article class="post">
         <header class="post-header">
-            <h1 class="post-title draft">UTF-8</h1>
+            <h1 class="post-title">UTF-8</h1>
         </header>
         <div class="content">
             <p>As of writing, <a href="https://en.wikipedia.org/wiki/Unicode">Unicode</a> contains <strong>1,112,064</strong> possible codepoints.</p>
@@ -162,10 +162,10 @@
 <p>The Unicode codepoint of the euro sign is <strong>U+20AC</strong>. If we look at the table above, we see that it falls between codepoint <strong>U+0800</strong> and codepoint <strong>U+FFFF</strong>, meaning that it <strong>takes 3 bytes to encode in memory</strong>.</p>
 </li>
 <li>
-<p><strong>0x20AC</strong> in binary are the two bytes: <code>0b00100000</code> and <code>0b1010110</code>.</p>
+<p><strong>0x20AC</strong> in binary are the two bytes: <code>0b00100000</code> and <code>0b10101100</code>.</p>
 </li>
 <li>
-<p>Byte by byte we &ldquo;replace&rdquo; all the available bytes in from the sequence in the table by the bytes from the codepoint. If you look at the table, you can see that for codepoints that take 3 bytes to encode, we have exactly 16 bits (2 bytes) available.</p>
+<p>Byte by byte we &ldquo;replace&rdquo; all the available bytes from the sequence in the table by the bytes from the codepoint. If you look at the table, you can see that for codepoints that take 3 bytes to encode, we have exactly 16 bits (2 bytes) available.</p>
 </li>
 <li>
 <p>When we replace them, we get: <code>0b11100010</code>, <code>0b10000010</code> and <code>0b10101100</code>, or in hex: <code>0xE2</code>, <code>0x82</code>, <code>0xAC</code>.</p>
@@ -175,7 +175,6 @@
 </li>
 </ul>
 <pre><code>echo -n &quot;€&quot; | xxd -g 1 -c 10 -u
-
 00000000: E2 82 AC                       ...
 </code></pre><h1 id="writing-an-utf-8-decoder">Writing an UTF-8 decoder</h1>
 <p>This is something I&rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Literally all text that you see nowadays on screen was at some point encoded as UTF-8, then decoded to get all invididual codepoints, and then rendered to the screen with a relevant font.</p>
