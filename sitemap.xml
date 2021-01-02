@@ -4,17 +4,32 @@
   
   <url>
     <loc>https://bool3max.github.io/</loc>
-    <lastmod>2020-12-03T21:29:03+01:00</lastmod>
+    <lastmod>2021-01-01T23:33:59+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bool3max.github.io/posts/django_notes/</loc>
+    <lastmod>2021-01-01T23:33:59+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://bool3max.github.io/posts/</loc>
-    <lastmod>2020-12-03T21:29:03+01:00</lastmod>
+    <lastmod>2021-01-01T23:33:59+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bool3max.github.io/posts/common_bitwise_operations/</loc>
+    <lastmod>2020-12-17T20:52:23+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://bool3max.github.io/posts/utf8/</loc>
     <lastmod>2020-12-03T21:29:03+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bool3max.github.io/posts/parallelism_and_concurrency/</loc>
+    <lastmod>2020-11-28T13:41:36+01:00</lastmod>
   </url>
   
   <url>

@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer-when-downgrade">
 
-<title>Common bitwise operations - bool3max&#39;s blog</title>
+<title>Django notes - bool3max&#39;s blog</title>
 <meta name="description" content="Personal blog">
 
 <link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
@@ -38,20 +38,18 @@
 
 
 
-<meta property="og:title" content="Common bitwise operations" />
-<meta property="og:description" content="A short reference listing some of the common bitwise operations that I document as I encounter them
-  Create a mask with a single set bit  (1 &lt;&lt; k) can be used to create a mask where a single k &#43; 1-th bit is set.
- Extracting bits  Say we wanted to extract the highest 3 bits of a single byte (0bxxxxxxxx). We create a bitmask with those bits set to 1s, and all other bits to 0s, and we AND the two values together:" />
+<meta property="og:title" content="Django notes" />
+<meta property="og:description" content=" Personal notes dedicated to the Django framework.
+ " />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.github.io/posts/common_bitwise_operations/" />
-<meta property="article:published_time" content="2020-12-17T20:52:23+01:00" />
-<meta property="article:modified_time" content="2020-12-17T20:52:23+01:00" />
+<meta property="og:url" content="https://bool3max.github.io/posts/django_notes/" />
+<meta property="article:published_time" content="2021-01-01T23:33:59+01:00" />
+<meta property="article:modified_time" content="2021-01-01T23:33:59+01:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Common bitwise operations"/>
-<meta name="twitter:description" content="A short reference listing some of the common bitwise operations that I document as I encounter them
-  Create a mask with a single set bit  (1 &lt;&lt; k) can be used to create a mask where a single k &#43; 1-th bit is set.
- Extracting bits  Say we wanted to extract the highest 3 bits of a single byte (0bxxxxxxxx). We create a bitmask with those bits set to 1s, and all other bits to 0s, and we AND the two values together:"/>
+<meta name="twitter:title" content="Django notes"/>
+<meta name="twitter:description" content=" Personal notes dedicated to the Django framework.
+ "/>
 
 
 
@@ -90,50 +88,12 @@
     
     <article class="post">
         <header class="post-header">
-            <h1 class="post-title draft">Common bitwise operations</h1>
+            <h1 class="post-title draft">Django notes</h1>
         </header>
         <div class="content">
             <blockquote>
-<p>A short reference listing some of the common bitwise operations that I document as I encounter them</p>
+<p>Personal notes dedicated to the Django framework.</p>
 </blockquote>
-<ul>
-<li><strong>Create a mask with a single set bit</strong></li>
-</ul>
-<p><code>(1 &lt;&lt; k)</code> can be used to create a mask where a single <code>k + 1</code>-th bit is set.</p>
-<ul>
-<li><strong>Extracting bits</strong></li>
-</ul>
-<p>Say we wanted to extract the highest 3 bits of a single byte (0b<strong>xxx</strong>xxxxx). We create a bitmask with those bits set to 1s, and all other bits to 0s, and we AND the two values together:</p>
-<pre><code>mask = 0xEO (0b11100000)
-extracted = value &amp; mask
-</code></pre><p>Explanation: since the highest 3 bits in the mask are set to one, respective bits in the value will remain ones, while zeroes will remain zeroes. Since all other bits are irrelevant, our mask has them at all 0s, so that the value&rsquo;s bits don&rsquo;t interfere.</p>
-<ul>
-<li><strong>Setting bits</strong></li>
-</ul>
-<p>Say we wanted to <strong>set</strong> the first and fifth bits of a byte. We create a mask where only those two bits are set (others are zeroes) and we OR it against our value:</p>
-<pre><code>mask = 0x11 (0b00010001)
-value |= mask
-</code></pre><p>Explanation: the respective zeroes in the original value become ones (obvious), while all other values remain the same (if they&rsquo;re zeroes they remain zeroes since they&rsquo;re matched against the zeroes in the mask - same for ones).</p>
-<ul>
-<li><strong>Clearing bits</strong></li>
-</ul>
-<p>Say we wanted to <strong>unset</strong>/<strong>clear</strong> the first and fifth bits of a byte. We create a bit mask where those bits are zeroes, and the rest are ones, and we AND it over the original value:</p>
-<pre><code>mask = 0x11 (0b11101110)
-value &amp;= mask
-</code></pre><p>If we&rsquo;re dealing with a <em>single bit</em> here, we can use this idiom to quickly create the bitmask on the right-hand side of the assignment:</p>
-<pre><code>mask = ~(1 &lt;&lt; 4)
-value &amp;= mask
-
-// or even shorter
-
-value &amp;= ~(1 &lt;&lt; 4)
-</code></pre><ul>
-<li><strong>Flipping bits</strong></li>
-</ul>
-<p>If we want to, for example, flip the first and third bits of a byte, we create a mask where those bits are ones and others are zeroes, and we XOR it againast the original value:</p>
-<pre><code>mask = 0x5 (0b00000101)
-value ^= mask
-</code></pre><p>Explanation: XOR produces 0 if both bits are the same, and 1 if they&rsquo;re different. Zeroes become ones (0 ^ 1 = 1), and ones become zeroes (1 ^ 1 = 0), and all other bits retain their value (obvious).</p>
 
         </div>
         
@@ -141,7 +101,7 @@ value ^= mask
 
 <div class="post-info">
     
-        <div class="post-date">2020-12-17</div>
+        <div class="post-date">2021-01-01</div>
     
     <div class="post-taxonomies">
         
