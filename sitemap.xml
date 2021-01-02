@@ -4,27 +4,17 @@
   
   <url>
     <loc>https://bool3max.github.io/</loc>
-    <lastmod>2020-12-17T20:52:23+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://bool3max.github.io/posts/common_bitwise_operations/</loc>
-    <lastmod>2020-12-17T20:52:23+01:00</lastmod>
+    <lastmod>2020-12-03T21:29:03+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://bool3max.github.io/posts/</loc>
-    <lastmod>2020-12-17T20:52:23+01:00</lastmod>
+    <lastmod>2020-12-03T21:29:03+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://bool3max.github.io/posts/utf8/</loc>
     <lastmod>2020-12-03T21:29:03+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://bool3max.github.io/posts/parallelism_and_concurrency/</loc>
-    <lastmod>2020-11-28T13:41:36+01:00</lastmod>
   </url>
   
   <url>
@@ -65,6 +55,11 @@
   <url>
     <loc>https://bool3max.github.io/posts/elf/</loc>
     <lastmod>2020-08-09T18:54:26+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://bool3max.github.io/posts/uefi_disks/</loc>
+    <lastmod>2019-09-18T17:42:03+02:00</lastmod>
   </url>
   
   <url>

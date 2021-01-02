@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Brief explanation of booting/GPT - bool3max&#39;s blog</title>
+<meta name="description" content="Personal blog">
+
+<link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
+
+
+
+    
+
+
+
+
+
+    
+    
+    
+
+    
+        <link rel="stylesheet" href="https://bool3max.github.io/css/style.c4de52a18529073577f6f0d063462e0080e046e20d809d2b9540d5f6c11ad4c5.css" integrity="sha256-xN5SoYUpBzV39vDQY0YuAIDgRuINgJ0rlUDV9sEa1MU=">
+    
+
+
+
+
+
+
+
+<meta property="og:title" content="Brief explanation of booting/GPT" />
+<meta property="og:description" content="This document serves as a quick reference to how UEFI and GPT work in regards to booting a modern system.
+ I will not cover BIOS/MBR in this document. I will acknowledge their existence and will compare them to their modern counterparts, but I feel that it is a waste of time to dig deeper into their inner workings. I will also not cover or mention the compatibility possibilites/issues of using UEFI/MBR or BIOS/GPT." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/uefi_disks/" />
+<meta property="article:published_time" content="2019-09-18T17:42:03+02:00" />
+<meta property="article:modified_time" content="2019-09-18T17:42:03+02:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Brief explanation of booting/GPT"/>
+<meta name="twitter:description" content="This document serves as a quick reference to how UEFI and GPT work in regards to booting a modern system.
+ I will not cover BIOS/MBR in this document. I will acknowledge their existence and will compare them to their modern counterparts, but I feel that it is a waste of time to dig deeper into their inner workings. I will also not cover or mention the compatibility possibilites/issues of using UEFI/MBR or BIOS/GPT."/>
+
+
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header"> 
+            
+                <h1 class="site-title">
+    <a href="/">bool3max&#39;s blog</a>
+</h1>
+
+    <nav>
+        
+        
+        <a class="" href="https://github.com/bool3max/" title="GitHub">GitHub</a>
+        
+        <a class="" href="https://bool3max.github.io/posts/" title="Archive">Archive</a>
+        
+    </nav>
+
+
+            
+        </header>
+        <main id="main" tabindex="-1"> 
+            
+    
+    
+    <article class="post">
+        <header class="post-header">
+            <h1 class="post-title">Brief explanation of booting/GPT</h1>
+        </header>
+        <div class="content">
+            <p>This document serves as a quick reference to how UEFI and GPT work in regards to booting a modern system.</p>
+<blockquote>
+<p>I will not cover BIOS/MBR in this document. I will acknowledge their existence and will compare them to their modern counterparts, but I feel that it is a waste of time to dig deeper into their inner workings.  I will also not cover or mention the compatibility possibilites/issues of using UEFI/MBR or BIOS/GPT. Know that it is, in certain cases, possible, but that it is always a better idea to use either UEFI/GPT or BIOS/MBR.  The <a href="https://wiki.archlinux.org">ArchWiki</a> and its numerous articles listed below cover the compatibility issues in more detail.</p>
+</blockquote>
+<h2 id="uefi-and-a-brief-overview-of-its-booting-process">UEFI and a brief overview of its booting process</h2>
+<p><strong>UEFI</strong> stands for <em>Unified Extensible Firmware Interface</em>. It represents a specification of a software layer, or rather an <em>interface</em> between the motherboard&rsquo;s firmware and the user/OS.
+It is responsible for most of the booting process, including starting the bootloader.</p>
+<p>It&rsquo;s also the successor of the old <strong>BIOS</strong> (<em>Basic Input/Output System</em>). Compared to it, UEFI has <em>many</em> advantages (a modular design, ability to use large disks, CPU independent drivers, a flexible pre-OS environment - including networking, better standardization, network booting&hellip;)</p>
+<p>When started, UEFI utilizes its <em>boot manager</em> to decide which <em>UEFI Application</em> it should load. <em>UEFI Applications</em> are binary executables (most commonly <em>bootloaders</em>, <em>or kernel stubs</em>) in a specific binary format defined by the UEFI Spec, usually utilizing the <em>.EFI</em> extension.</p>
+<p>These binary UEFI Applications are usually stored on the <strong>EFI System Partition</strong> (<em>ESP</em>). It represents a <strong>VFAT</strong> filesystem partiton on a <strong>GPT</strong> formatted disk. As most UEFI implementations only include VFAT drivers, having the ESP contain a filesystem other than VFAT is not possible.</p>
+<blockquote>
+<p>Example: On a typical <em>x86_64</em> architecture the GRUB2 bootloader (which is an UEFI application) is stored in its own folder on the ESP: <em>esp</em>/<em>entry_name</em>/grubx64.efi &ndash; where <em>esp</em> is the mountpoint of the EFI System Partition and <em>entry_name</em> is the folder name you chose during the grub installation process that it stores itself on.</p>
+</blockquote>
+<p>The UEFI Boot Manager is the component that helps the UEFI choose which binary application (e.g. bootloader) it should load. It stores its information (that consists of the <em>boot entires</em> and a <em>boot order</em>) in NVRAM (non-volatile RAM).</p>
+<p>The <strong>boot entries</strong> describe where the UEFI can find a specific loadable EFI Application (e.g. the <em>grub bootloader</em>). They consist of a disk ID, a <strong>GPT PARTUUID</strong> of the ESP that the EFI Application resides on, along with a full path to it, and a text label that helps identify the entry to the user. There may be multiple boot entires present a time.</p>
+<blockquote>
+<p>e.g. on my current configuration, the boot entry that loads the GRUB2 bootloader looks like this:</p>
+</blockquote>
+<pre><code>`Boot0000* MyArchInstall    HD(1,GPT,71aca8cd-005e-444e-8c64-2153d3a35d1c,0x800,0x113000)/File(\EFI\StarchGrub\grubx64.efi)`
+</code></pre>
+<blockquote>
+<p><strong>MyArchInstall</strong> here represents the textual label that is displayed in the UEFI GUI upon booting, <code>\EFI\StarchGrub\grubx64.efi</code> represents the full path to the grub2 efi application. Between them is the GPT PARTUUID number that identifies the ESP on <strong>HD1</strong> (NOTE: <code>EFI</code> is an actual folder residing in the ESP, not a mountpoint of the ESP)</p>
+</blockquote>
+<p>The <strong>boot order</strong> represents an order in which the boot entries should be tested for loading (should multiple of them exist). Typically, the first one that is validated is loaded. Most UEFI implementations allow the user to choose which boot entry is loaded manually, and the <strong>boot order</strong> is only used if the user decides not to do so (which is <em>most often</em> the case).</p>
+<blockquote>
+<p>In the case that no boot entries exist, or in the case that the user explicitly decides to do so, most UEFI implementations allow using <em>bare disks</em> as boot entries. In the boot manager they are simply listed as their respective models. Should the user choose one of them instead of a regular boot entry, the UEFI will scan the selected disk for GPT partitions, try to locate an ESP on it (by utilizing the standardized <strong>PARTTTYPE UUID</strong> which identifies partitions based on their <em>use-case</em>), and load a <strong>default EFI application</strong> that usually resides in <em>esp</em><code>/EFI/BOOT/BOOTX64.EFI</code>, at least on an x86_64 system. In the case that an ESP <em>or</em> a default EFI application doesn&rsquo;t exist on the chosen disk, the booting will likely fail. The most common example for this process is removable bootable media (e.g. a USB containing a windows intallation).</p>
+</blockquote>
+<p>Both the <strong>boot entries</strong> and the <strong>boot order</strong>, along with the rest of UEFI&rsquo;s settings can be configured from its interface directly, or from many different operating systems. On linux for example, the <code>efibootmgr</code> CLI userspace utility is most commonly used to modify boot entries and the boot order.</p>
+<p>The latest UEFI Specifications can be found <a href="http://www.uefi.org/specifications">here</a>.</p>
+<p>Also check out <a href="https://www.happyassassin.net/2014/01/25/uefi-boot-how-does-that-actually-work-then/">this amazing post</a> on UEFI booting, which also covers some side topics.</p>
+<hr>
+<h2 id="partitioning-schemes-gpt-mbr">Partitioning schemes (GPT, MBR)</h2>
+<p><strong>GPT</strong> stands for <strong>GUID Partition Table</strong>. It is a specification and a standard defined in the UEFI Spec (and is therefore designed to be used and to work alongside it) that describes the layout of the partition tables used on block devices, such as hard drives. It is also the successor to the ancient <strong>MBR</strong> partitioning scheme which was commonly used in conjunction with the <strong>BIOS</strong>.</p>
+<p><strong>GUID</strong> stands for <em>globally unique identifer</em>. In the linux world, the term <strong>UUID</strong> (<em>universally unique identifier</em>) is more commonly used, but they both refer to a <em>unique</em> 128bit number used to identify a certain object. They are not specific to the topic of partitioning tables, and are very often used in the computing world. Going forward, I will use the term <strong>UUID</strong>.</p>
+<p>The <strong>GUID Partition Table</strong> is named so because of its widespread use of UUIDs.</p>
+<p>In the GPT:</p>
+<ul>
+<li>
+<p>Each partition is given a <em>unique</em> UUID when the partition is created. Most linux userspace utilities (e.g. <code>lsblk</code>, <code>blkid</code>) refer to this as the <strong>PARTUUID</strong>. This is important for <a href="https://wiki.archlinux.org/index.php/Persistent_block_device_naming">persistent block device naming</a>.</p>
+</li>
+<li>
+<p>Each partition is also given a <strong>Partition type GUID</strong> (UUID) which describes its use case. These are standardized and universal. There can exist multiple partitions on a single disk with the same <strong>Partition type GUID</strong>. Most linux userspace utilities refer to this as the <strong>PARTTYPE</strong>. <a href="https://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_type_GUIDs">Their list can be found here</a>.</p>
+</li>
+<li>
+<p>Each partition can also be given a textual, Unicode UTF16 encoded <strong>label</strong>. It is optional. Most linux userspace tools refer to this as the <strong>PARTLABEL</strong>. Using it for persistent block device naming is not preffered as duplicates can exist.</p>
+</li>
+<li>
+<p>Each <em>filesystem</em> on a GPT partition also has a unique UUID. <strong>These exist for legacy and compatibility reasons.</strong> They are not part of the <em>partition</em>, or the <em>partition table (GPT)</em>, but of the <em>filesystem that resides on the partition</em>. Thus, they are generated by whichever utility generates a <em>filesystem</em> (e.g. <code>mkfs</code> on linux), and not by that which generates partitions. Despite that, I decided to list them here to avoid confusion. Most linux userspace tools refer to these as simply <strong>UUID</strong> (which can be confusing). Their length may not be 128bits, and it may differ between filesystems (e.g. on <code>vfat</code> it is significantly shorter than on <code>ext4</code>). Using actual GPT partition <strong>PARTUUID</strong>s is almost always preffered.</p>
+</li>
+<li>
+<p>Each <em>filesystem</em> on a GPT partition can also be given a textual label. The story is similar to that of the previous point. Kept for legacy and compatibility reasons, not part of the <em>partition</em> or the <em>partition table</em>, but that of the filesystem. Most linux userpsace tools refer to it as simply <strong>LABEL</strong> (which can, again, be confusing). As with the actual GPT Partition <strong>PARTLABEL</strong>, its use is also discouraged as duplicates of it can also exist, but if you are to, for some reason, use a label, prefferably go with the <strong>PARTLABEL</strong>.</p>
+</li>
+</ul>
+<h3 id="linux-userspace-partitioning-tools">Linux userspace partitioning tools</h3>
+<p>Some of the most common tools in the linux userspace that posses the ability of creating GPT schemes on block devices are:</p>
+<ul>
+<li><strong>fdisk</strong></li>
+<li><strong>gdisk</strong></li>
+<li><strong>parted</strong></li>
+</ul>
+<p>I will not cover these tools here. For guidance, consult their respective <em>manpages</em> or the ArchWiki.</p>
+
+        </div>
+        
+
+
+<div class="post-info">
+    
+        <div class="post-date">2019-09-18</div>
+    
+    <div class="post-taxonomies">
+        
+            
+    </div>
+</div>
+
+    </article>
+
+    
+
+    
+
+
+        </main>
+        
+            <footer class="common-footer">
+    
+    
+
+    <div class="common-footer-bottom">
+        
+        <div class="copyright">
+            <p>© Bogdan Mitrović, 2021<br>
+            Powered by <a target="_blank" rel="noopener noreferrer" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" rel="noopener noreferrer" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+            </p>  
+        </div> 
+
+        
+
+    
+
+
+
+    <button class="theme-switcher">
+        Dark theme
+    </button>
+
+    <script>
+    const STORAGE_KEY = 'user-color-scheme'
+    const defaultTheme = "dark"
+
+    let currentTheme
+    let switchButton
+    let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+    const autoChangeScheme = e => {
+        currentTheme = e.matches ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', currentTheme)
+        changeButtonText()
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        switchButton = document.querySelector('.theme-switcher')
+        currentTheme = detectCurrentScheme()
+        if (currentTheme == 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark')
+        }
+        if (currentTheme == 'auto') {
+            autoChangeScheme(autoDefinedScheme);
+            autoDefinedScheme.addListener(autoChangeScheme);
+        }
+        changeButtonText()
+        switchButton.addEventListener('click', switchTheme, false)
+    })
+
+    function detectCurrentScheme() {
+        if (localStorage.getItem(STORAGE_KEY)) {
+            return localStorage.getItem(STORAGE_KEY)
+        } 
+        if (defaultTheme) {
+            return defaultTheme
+        } 
+        if (!window.matchMedia) {
+            return 'light'
+        } 
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark'
+        }
+        return 'light'
+    }
+
+    function changeButtonText()
+    {   
+        switchButton.textContent = currentTheme == 'dark' ?  "Light theme" : "Dark theme"
+    }
+
+    function switchTheme(e) {
+        if (currentTheme == 'dark') {
+            localStorage.setItem(STORAGE_KEY, 'light')
+            document.documentElement.setAttribute('data-theme', 'light')
+            currentTheme = 'light'
+        } else {
+            localStorage.setItem(STORAGE_KEY, 'dark')
+            document.documentElement.setAttribute('data-theme', 'dark')
+            currentTheme = 'dark'
+        }
+        changeButtonText()
+    }
+    </script>
+   
+    </div>
+</footer>
+
+        
+    </div>
+</body>
+</html>

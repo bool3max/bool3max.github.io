@@ -6,60 +6,10 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Dec 2020 20:52:23 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 03 Dec 2020 21:29:03 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Common bitwise operations</title>
-      <link>https://bool3max.github.io/posts/common_bitwise_operations/</link>
-      <pubDate>Thu, 17 Dec 2020 20:52:23 +0100</pubDate>
-      
-      <guid>https://bool3max.github.io/posts/common_bitwise_operations/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;A short reference listing some of the common bitwise operations that I document as I encounter them&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Create a mask with a single set bit&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;code&gt;(1 &amp;lt;&amp;lt; k)&lt;/code&gt; can be used to create a mask where a single &lt;code&gt;k + 1&lt;/code&gt;-th bit is set.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Extracting bits&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Say we wanted to extract the highest 3 bits of a single byte (0b&lt;strong&gt;xxx&lt;/strong&gt;xxxxx). We create a bitmask with those bits set to 1s, and all other bits to 0s, and we AND the two values together:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mask = 0xEO (0b11100000)
-extracted = value &amp;amp; mask
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Explanation: since the highest 3 bits in the mask are set to one, respective bits in the value will remain ones, while zeroes will remain zeroes. Since all other bits are irrelevant, our mask has them at all 0s, so that the value&amp;rsquo;s bits don&amp;rsquo;t interfere.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Setting bits&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Say we wanted to &lt;strong&gt;set&lt;/strong&gt; the first and fifth bits of a byte. We create a mask where only those two bits are set (others are zeroes) and we OR it against our value:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mask = 0x11 (0b00010001)
-value |= mask
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Explanation: the respective zeroes in the original value become ones (obvious), while all other values remain the same (if they&amp;rsquo;re zeroes they remain zeroes since they&amp;rsquo;re matched against the zeroes in the mask - same for ones).&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Clearing bits&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Say we wanted to &lt;strong&gt;unset&lt;/strong&gt;/&lt;strong&gt;clear&lt;/strong&gt; the first and fifth bits of a byte. We create a bit mask where those bits are zeroes, and the rest are ones, and we AND it over the original value:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mask = 0x11 (0b11101110)
-value &amp;amp;= mask
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we&amp;rsquo;re dealing with a &lt;em&gt;single bit&lt;/em&gt; here, we can use this idiom to quickly create the bitmask on the right-hand side of the assignment:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mask = ~(1 &amp;lt;&amp;lt; 4)
-value &amp;amp;= mask
-
-// or even shorter
-
-value &amp;amp;= ~(1 &amp;lt;&amp;lt; 4)
-&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Flipping bits&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;If we want to, for example, flip the first and third bits of a byte, we create a mask where those bits are ones and others are zeroes, and we XOR it againast the original value:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mask = 0x5 (0b00000101)
-value ^= mask
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Explanation: XOR produces 0 if both bits are the same, and 1 if they&amp;rsquo;re different. Zeroes become ones (0 ^ 1 = 1), and ones become zeroes (1 ^ 1 = 0), and all other bits retain their value (obvious).&lt;/p&gt;
-</description>
-    </item>
     
     <item>
       <title>UTF-8</title>
@@ -163,121 +113,6 @@ value ^= mask
 &lt;li&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Unicode&#34;&gt;Wikipedia article on Unicode&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/UTF-8&#34;&gt;Wikipedia article on UTF-8&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Parallelism and Concurrency: The basics</title>
-      <link>https://bool3max.github.io/posts/parallelism_and_concurrency/</link>
-      <pubDate>Sat, 28 Nov 2020 13:41:36 +0100</pubDate>
-      
-      <guid>https://bool3max.github.io/posts/parallelism_and_concurrency/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;definitions&#34;&gt;Definitions&lt;/h1&gt;
-&lt;p&gt;Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&amp;rsquo;t exactly set in stone, and the definitions are somewhat convoluted.&lt;/p&gt;
-&lt;p&gt;The StackOverlfow question (&lt;a href=&#34;https://stackoverflow.com/questions/1050222/what-is-the-difference-between-concurrency-and-parallelism&#34;&gt;What is the difference between concurrency and parallelism?&lt;/a&gt;) in particular has quite a number of somewhat conflicting answers, which is understandable, since if someone asked me what the difference between the two terms are - I wouldn&amp;rsquo;t be able to answer. To me, both of them share the meaning of &amp;ldquo;doing multiple things at the same time&amp;rdquo;. In fact, the dictionary definitions share very similar meanings as well.&lt;/p&gt;
-&lt;p&gt;To cut the whole story short, I will choose two widely accepted definitions and abide by them from now on:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Concurrency&lt;/strong&gt; is the ability of a system that allows multiple tasks to run in overlapping time periods. There is never more than one task executing at a single point in time, instead the system &amp;ldquo;juggles&amp;rdquo; between tasks as needed. This gives us the &lt;em&gt;illusion&lt;/em&gt; of parallelism - an example of which is multitasking on a single-core CPU.
-&lt;ul&gt;
-&lt;li&gt;Also: Concurrency: A condition that exists when, during a given period of time, multiple threads (&amp;ldquo;multiple tasks&amp;rdquo; in the general sense) are making progress. Doesn&amp;rsquo;t mean that they were ever both executing at the same single point in time.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Parallelism&lt;/strong&gt; is the ability of a system that allows multiple tasks to run &lt;strong&gt;simultaneously&lt;/strong&gt;. They are &lt;em&gt;truly&lt;/em&gt; running &lt;em&gt;at the same time&lt;/em&gt;.
-&lt;ul&gt;
-&lt;li&gt;Also: Parallelism: A condition that arises when, given a particular point in time, multiple threads (&amp;ldquo;multiple tasks&amp;rdquo;) are executing simultaneously.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;There are many metaphors that can be applied to more easily explain the aforementioned definitions, for example:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Concurrency&lt;/strong&gt; is a single ATM serving a line of people over the course of an hour.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Parallelism&lt;/strong&gt; is two ATMs serving two lines of people at the same time.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Also see &lt;a href=&#34;https://stackoverflow.com/a/24684037/5447136&#34;&gt;this&lt;/a&gt; excellent answer with more real-world examples.&lt;/p&gt;
-&lt;h1 id=&#34;linux&#34;&gt;Linux&lt;/h1&gt;
-&lt;p&gt;Now that I&amp;rsquo;ve established what parallelism and concurrency are - how do they manifest themselves in real world environments, or rather operating systems?&lt;/p&gt;
-&lt;p&gt;First it&amp;rsquo;s important to realize that modern CPUs achieve parallelism via the use of multiple physical cores.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;To avoid the confusion in the following parts of this document I&amp;rsquo;ll get this out of the way right now: &amp;ldquo;&lt;strong&gt;physical threads&lt;/strong&gt;&amp;rdquo; that you hear about in the context of &amp;ldquo;the new Intel CPU has 8 cores and 16 threads&amp;rdquo; are different to &amp;ldquo;&lt;strong&gt;logical threads&lt;/strong&gt;&amp;rdquo; (or software threads) that I&amp;rsquo;ll talk about shortly. This confusion has been a slight obstacle in my early research of the topic and I really wish that they didn&amp;rsquo;t share the name, despite both of them being related to concurrency/parallelism. Also, I&amp;rsquo;ll talk about most of the software concepts as they relate to linux, however a large portion of semantics are shared between modern OSs, especially Unix derivatives.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Each core executes instructions independent of the others and it also has its own registers and cache. That&amp;rsquo;s why some resources even refer to physical cores simply as CPUs.&lt;/p&gt;
-&lt;p&gt;Under Linux (and other modern OSs) concurrency and parallelism manifest themselves in a few different ways that I&amp;rsquo;ll briefly explain now:&lt;/p&gt;
-&lt;hr&gt;
-&lt;h3 id=&#34;processes&#34;&gt;&lt;strong&gt;Processes&lt;/strong&gt;:&lt;/h3&gt;
-&lt;p&gt;Processes represent &amp;ldquo;running programs&amp;rdquo; (flows of execution, tasks) on the system. Each process has an ID (PID) and an associated PPID (parent process ID).&lt;/p&gt;
-&lt;p&gt;Processes cannot share memory between each other (be that the stack or the heap).&lt;/p&gt;
-&lt;p&gt;They are composed of one or more (one by default) &amp;ldquo;smaller&amp;rdquo; flows of execution called &lt;strong&gt;threads&lt;/strong&gt;.&lt;/p&gt;
-&lt;h3 id=&#34;threads&#34;&gt;&lt;strong&gt;Threads&lt;/strong&gt;:&lt;/h3&gt;
-&lt;p&gt;Every spawned process contains one thread by default. All threads belonging to a process share the same heap memory, but each one has its own stack. They are lighter to start-up than processes since there is less initialization involved (namely the fact that they shared the same virutal address space so a new one doesn&amp;rsquo;t have to be created each time).&lt;/p&gt;
-&lt;p&gt;The most prevelant standard for threading is the &lt;strong&gt;pthreads&lt;/strong&gt; (&lt;strong&gt;POSIX Threads&lt;/strong&gt;) specification. In Linux it is implemented using the &lt;a href=&#34;https://en.wikipedia.org/wiki/Native_POSIX_Thread_Library&#34;&gt;NPTL (Native POSIX Thread Library)&lt;/a&gt; library, which was a standalone project for some time after its creation, but is a part of &lt;strong&gt;&lt;code&gt;glibc&lt;/code&gt;&lt;/strong&gt; now. It&amp;rsquo;s described in detail by &lt;a href=&#34;https://linux.die.net/man/7/pthreads&#34;&gt;&lt;code&gt;pthreads(7)&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;It is immediately apparent that processes and threads differ only in what &amp;ldquo;data&amp;rdquo; they share between each other. That is because the Linux kernel doesn&amp;rsquo;t differentiate between threads and processes at all (which makes sense considering that &lt;code&gt;pthreads&lt;/code&gt; is a userspace library)! Under the hood, the kernel knows only of &amp;ldquo;&lt;strong&gt;tasks&lt;/strong&gt;&amp;rdquo; and exposes their interface via the &lt;a href=&#34;https://linux.die.net/man/2/clone&#34;&gt;&lt;code&gt;clone(2)&lt;/code&gt;&lt;/a&gt; system call. The arguments that &lt;code&gt;clone(2)&lt;/code&gt; takes determine (among other things) what will be shared between them (virtual address space, fd table, etc&amp;hellip;). So, both threads and processes are created using &lt;code&gt;clone(2)&lt;/code&gt;, just with different parameters.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;The runnable tasks that &lt;code&gt;clone(2)&lt;/code&gt; spawns are referred to simply as &amp;ldquo;processes&amp;rdquo; in some places by the linux kernel, however I called them &amp;ldquo;tasks&amp;rdquo; for the sake of understanding and clarity. The gist of it, and the most important thing to understand is that there is no difference between threads and processes to the kernel and that they are both created by &lt;code&gt;clone(2)&lt;/code&gt; using different arguments. See the &lt;a href=&#34;https://unix.stackexchange.com/questions/31595/are-linux-kernel-threads-really-kernel-processes&#34;&gt;Are Linux kernel threads really kernel processes?&lt;/a&gt; and &lt;a href=&#34;https://unix.stackexchange.com/questions/364660/are-threads-implemented-as-processes-on-linux&#34;&gt;Are threads implemented as processes on Linux?&lt;/a&gt; questions on the Unix StackExchange.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Also, reading &lt;a href=&#34;https://linux.die.net/man/2/fork/&#34;&gt;&lt;code&gt;fork(2)&lt;/code&gt;&lt;/a&gt; (the system call for spawning &lt;em&gt;processes&lt;/em&gt;), we see:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;C library/kernel differences&lt;/strong&gt;: Since version 2.3.3, rather than invoking the kernel&amp;rsquo;s fork() system call, the glibc fork() wrapper  that  is provided  as  part of the NPTL threading implementation invokes clone(2) with flags that provide the same effect as the traditional system call. &lt;strong&gt;(A call to fork() is equivalent to a call to clone(2) specifying  flags as  just  SIGCHLD.)&lt;/strong&gt;  The glibc wrapper invokes any fork handlers that have been established using pthread_atfork(3).&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Couple of interesting points here:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;when you call &lt;code&gt;fork(2)&lt;/code&gt; you&amp;rsquo;re actually calling the &lt;code&gt;glibc&lt;/code&gt; wrapper function, not the syscall (which is not weird, since when you call syscalls from glibc you&amp;rsquo;re never executing them directly)&lt;/li&gt;
-&lt;li&gt;this &lt;code&gt;fork(2)&lt;/code&gt; wrapper is actually implemented by NPTL (which is a part of &lt;code&gt;glibc&lt;/code&gt;), however the traditional syscall is of course part of the kernel (and it is also implemented using &lt;code&gt;clone(2)&lt;/code&gt;!!)&lt;/li&gt;
-&lt;li&gt;the bolded part explains that &lt;code&gt;fork(2)&lt;/code&gt; is in fact implemented using &lt;code&gt;clone(2)&lt;/code&gt;, further solidifying the previous couple of paragraphs&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;p&gt;So far I&amp;rsquo;ve talked more &lt;em&gt;about&lt;/em&gt; what &amp;ldquo;tools&amp;rdquo; are used to achieve concurrency rather than how to actually use them. But before I do I want to explore them a bit further:&lt;/p&gt;
-&lt;p&gt;Let&amp;rsquo;s write a trivial binary that proves that the &lt;code&gt;fork(2)&lt;/code&gt; wrapper really calls the &lt;code&gt;clone(2)&lt;/code&gt; syscall under the hood:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;pthread.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdint.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdlib.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;unistd.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;sys/types.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
-&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;) {
-    pid_t return_pid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fork();
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(return_pid &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) {
-        perror(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error forking&amp;#34;&lt;/span&gt;);
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; EXIT_FAILURE;
-    }
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(return_pid &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) {
-        &lt;span style=&#34;color:#75715e&#34;&gt;// parent
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        fprintf(stdout, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello from parent, PID: %d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, getpid());
-
-    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
-        &lt;span style=&#34;color:#75715e&#34;&gt;// child
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        fprintf(stdout, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello from child, PID: %d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, getpid());
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; EXIT_SUCCESS;
-    }
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; EXIT_SUCCESS; 
-}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;First, the entire reason that we&amp;rsquo;re able to write data to &lt;code&gt;stdout&lt;/code&gt; from the child process (whose code is in the last &amp;lsquo;else&amp;rsquo; block) is that the spawned child retains access to all the open file descriptors of the parent (and &lt;code&gt;stdout&lt;/code&gt; is file descriptor 0):&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;The child inherits copies of the parent&amp;rsquo;s set of open file descriptors.  Each file descriptor in the child refers to the same open file description (see open(2)) as the corresponding file descriptor in the parent.  This means that the two file descriptors share open file status flags, file offset, and signal-driven I/O attributes (see the description of F_SETOWN and F_SETSIG in fcntl(2)).&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Now let&amp;rsquo;s use &lt;code&gt;strace&lt;/code&gt; to see which syscalls the binary performs:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ strace --trace=%process ./example
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;--trace=%process&lt;/code&gt; filters the output to only show syscalls relating to process manipulation.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;execve(&amp;quot;./example&amp;quot;, [&amp;quot;./example&amp;quot;], 0x7ffdfb5127c8 /* 36 vars */) = 0
-clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f38384c0810) = 120121
-Hello from child, PID: 120121
---- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=120121, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
-Hello from parent, PID: 120120
-exit_group(0)                           = ?
-+++ exited with 0 +++
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We see that a call to &lt;code&gt;clone(2)&lt;/code&gt; is in fact performed, and its return value (the child&amp;rsquo;s PID) matches the one printed in our message. We also see that the parent is sent a &lt;code&gt;SIGCHLD&lt;/code&gt; singal once the child that it spawned has finished running, but that&amp;rsquo;s a topic I&amp;rsquo;ll maybe explore later.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;Let&amp;rsquo;s get back on topic: how do tasks ran by the linux kernel correlate to parallelism or concurrency? On the surface it&amp;rsquo;s really simple: the kernel uses a &lt;a href=&#34;https://en.wikipedia.org/wiki/Scheduling_(computing)&#34;&gt;scheduler&lt;/a&gt; to determine which currently active processes run when. If it has access to multiple CPU cores, it is able to achieve true parallelism by balancing multiple tasks over multiple cores (allowing them to run &lt;em&gt;truly&lt;/em&gt; at the same time). If there are no multiple cores (or if there are multiple tasks running on a single core), only one task is able to run at a time, and thus the scheduler quickly &amp;ldquo;juggles&amp;rdquo; between tasks, giving the &lt;em&gt;illusion&lt;/em&gt; of parallelism.&lt;/p&gt;
-&lt;p&gt;The scheduler currently used by the linux kernel is the &lt;a href=&#34;https://en.wikipedia.org/wiki/Completely_Fair_Scheduler&#34;&gt;Completely Fair Scheduler (CFS)&lt;/a&gt;, since kernel 2.6.23.&lt;/p&gt;
-&lt;p&gt;I don&amp;rsquo;t have enough experience or knowledge to talk about how these actually work, but I plan to in the future.&lt;/p&gt;
 </description>
     </item>
     
@@ -910,6 +745,76 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 &lt;li&gt;&lt;a href=&#34;https://github.com/eliben/pyelftools&#34;&gt;&lt;code&gt;pyelftools&lt;/code&gt; on GitHub&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Brief explanation of booting/GPT</title>
+      <link>https://bool3max.github.io/posts/uefi_disks/</link>
+      <pubDate>Wed, 18 Sep 2019 17:42:03 +0200</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/uefi_disks/</guid>
+      <description>&lt;p&gt;This document serves as a quick reference to how UEFI and GPT work in regards to booting a modern system.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I will not cover BIOS/MBR in this document. I will acknowledge their existence and will compare them to their modern counterparts, but I feel that it is a waste of time to dig deeper into their inner workings.  I will also not cover or mention the compatibility possibilites/issues of using UEFI/MBR or BIOS/GPT. Know that it is, in certain cases, possible, but that it is always a better idea to use either UEFI/GPT or BIOS/MBR.  The &lt;a href=&#34;https://wiki.archlinux.org&#34;&gt;ArchWiki&lt;/a&gt; and its numerous articles listed below cover the compatibility issues in more detail.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;uefi-and-a-brief-overview-of-its-booting-process&#34;&gt;UEFI and a brief overview of its booting process&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;UEFI&lt;/strong&gt; stands for &lt;em&gt;Unified Extensible Firmware Interface&lt;/em&gt;. It represents a specification of a software layer, or rather an &lt;em&gt;interface&lt;/em&gt; between the motherboard&amp;rsquo;s firmware and the user/OS.
+It is responsible for most of the booting process, including starting the bootloader.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s also the successor of the old &lt;strong&gt;BIOS&lt;/strong&gt; (&lt;em&gt;Basic Input/Output System&lt;/em&gt;). Compared to it, UEFI has &lt;em&gt;many&lt;/em&gt; advantages (a modular design, ability to use large disks, CPU independent drivers, a flexible pre-OS environment - including networking, better standardization, network booting&amp;hellip;)&lt;/p&gt;
+&lt;p&gt;When started, UEFI utilizes its &lt;em&gt;boot manager&lt;/em&gt; to decide which &lt;em&gt;UEFI Application&lt;/em&gt; it should load. &lt;em&gt;UEFI Applications&lt;/em&gt; are binary executables (most commonly &lt;em&gt;bootloaders&lt;/em&gt;, &lt;em&gt;or kernel stubs&lt;/em&gt;) in a specific binary format defined by the UEFI Spec, usually utilizing the &lt;em&gt;.EFI&lt;/em&gt; extension.&lt;/p&gt;
+&lt;p&gt;These binary UEFI Applications are usually stored on the &lt;strong&gt;EFI System Partition&lt;/strong&gt; (&lt;em&gt;ESP&lt;/em&gt;). It represents a &lt;strong&gt;VFAT&lt;/strong&gt; filesystem partiton on a &lt;strong&gt;GPT&lt;/strong&gt; formatted disk. As most UEFI implementations only include VFAT drivers, having the ESP contain a filesystem other than VFAT is not possible.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Example: On a typical &lt;em&gt;x86_64&lt;/em&gt; architecture the GRUB2 bootloader (which is an UEFI application) is stored in its own folder on the ESP: &lt;em&gt;esp&lt;/em&gt;/&lt;em&gt;entry_name&lt;/em&gt;/grubx64.efi &amp;ndash; where &lt;em&gt;esp&lt;/em&gt; is the mountpoint of the EFI System Partition and &lt;em&gt;entry_name&lt;/em&gt; is the folder name you chose during the grub installation process that it stores itself on.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The UEFI Boot Manager is the component that helps the UEFI choose which binary application (e.g. bootloader) it should load. It stores its information (that consists of the &lt;em&gt;boot entires&lt;/em&gt; and a &lt;em&gt;boot order&lt;/em&gt;) in NVRAM (non-volatile RAM).&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;boot entries&lt;/strong&gt; describe where the UEFI can find a specific loadable EFI Application (e.g. the &lt;em&gt;grub bootloader&lt;/em&gt;). They consist of a disk ID, a &lt;strong&gt;GPT PARTUUID&lt;/strong&gt; of the ESP that the EFI Application resides on, along with a full path to it, and a text label that helps identify the entry to the user. There may be multiple boot entires present a time.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;e.g. on my current configuration, the boot entry that loads the GRUB2 bootloader looks like this:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;`Boot0000* MyArchInstall    HD(1,GPT,71aca8cd-005e-444e-8c64-2153d3a35d1c,0x800,0x113000)/File(\EFI\StarchGrub\grubx64.efi)`
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;MyArchInstall&lt;/strong&gt; here represents the textual label that is displayed in the UEFI GUI upon booting, &lt;code&gt;\EFI\StarchGrub\grubx64.efi&lt;/code&gt; represents the full path to the grub2 efi application. Between them is the GPT PARTUUID number that identifies the ESP on &lt;strong&gt;HD1&lt;/strong&gt; (NOTE: &lt;code&gt;EFI&lt;/code&gt; is an actual folder residing in the ESP, not a mountpoint of the ESP)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The &lt;strong&gt;boot order&lt;/strong&gt; represents an order in which the boot entries should be tested for loading (should multiple of them exist). Typically, the first one that is validated is loaded. Most UEFI implementations allow the user to choose which boot entry is loaded manually, and the &lt;strong&gt;boot order&lt;/strong&gt; is only used if the user decides not to do so (which is &lt;em&gt;most often&lt;/em&gt; the case).&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;In the case that no boot entries exist, or in the case that the user explicitly decides to do so, most UEFI implementations allow using &lt;em&gt;bare disks&lt;/em&gt; as boot entries. In the boot manager they are simply listed as their respective models. Should the user choose one of them instead of a regular boot entry, the UEFI will scan the selected disk for GPT partitions, try to locate an ESP on it (by utilizing the standardized &lt;strong&gt;PARTTTYPE UUID&lt;/strong&gt; which identifies partitions based on their &lt;em&gt;use-case&lt;/em&gt;), and load a &lt;strong&gt;default EFI application&lt;/strong&gt; that usually resides in &lt;em&gt;esp&lt;/em&gt;&lt;code&gt;/EFI/BOOT/BOOTX64.EFI&lt;/code&gt;, at least on an x86_64 system. In the case that an ESP &lt;em&gt;or&lt;/em&gt; a default EFI application doesn&amp;rsquo;t exist on the chosen disk, the booting will likely fail. The most common example for this process is removable bootable media (e.g. a USB containing a windows intallation).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Both the &lt;strong&gt;boot entries&lt;/strong&gt; and the &lt;strong&gt;boot order&lt;/strong&gt;, along with the rest of UEFI&amp;rsquo;s settings can be configured from its interface directly, or from many different operating systems. On linux for example, the &lt;code&gt;efibootmgr&lt;/code&gt; CLI userspace utility is most commonly used to modify boot entries and the boot order.&lt;/p&gt;
+&lt;p&gt;The latest UEFI Specifications can be found &lt;a href=&#34;http://www.uefi.org/specifications&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Also check out &lt;a href=&#34;https://www.happyassassin.net/2014/01/25/uefi-boot-how-does-that-actually-work-then/&#34;&gt;this amazing post&lt;/a&gt; on UEFI booting, which also covers some side topics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;partitioning-schemes-gpt-mbr&#34;&gt;Partitioning schemes (GPT, MBR)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;GPT&lt;/strong&gt; stands for &lt;strong&gt;GUID Partition Table&lt;/strong&gt;. It is a specification and a standard defined in the UEFI Spec (and is therefore designed to be used and to work alongside it) that describes the layout of the partition tables used on block devices, such as hard drives. It is also the successor to the ancient &lt;strong&gt;MBR&lt;/strong&gt; partitioning scheme which was commonly used in conjunction with the &lt;strong&gt;BIOS&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;GUID&lt;/strong&gt; stands for &lt;em&gt;globally unique identifer&lt;/em&gt;. In the linux world, the term &lt;strong&gt;UUID&lt;/strong&gt; (&lt;em&gt;universally unique identifier&lt;/em&gt;) is more commonly used, but they both refer to a &lt;em&gt;unique&lt;/em&gt; 128bit number used to identify a certain object. They are not specific to the topic of partitioning tables, and are very often used in the computing world. Going forward, I will use the term &lt;strong&gt;UUID&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;GUID Partition Table&lt;/strong&gt; is named so because of its widespread use of UUIDs.&lt;/p&gt;
+&lt;p&gt;In the GPT:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Each partition is given a &lt;em&gt;unique&lt;/em&gt; UUID when the partition is created. Most linux userspace utilities (e.g. &lt;code&gt;lsblk&lt;/code&gt;, &lt;code&gt;blkid&lt;/code&gt;) refer to this as the &lt;strong&gt;PARTUUID&lt;/strong&gt;. This is important for &lt;a href=&#34;https://wiki.archlinux.org/index.php/Persistent_block_device_naming&#34;&gt;persistent block device naming&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Each partition is also given a &lt;strong&gt;Partition type GUID&lt;/strong&gt; (UUID) which describes its use case. These are standardized and universal. There can exist multiple partitions on a single disk with the same &lt;strong&gt;Partition type GUID&lt;/strong&gt;. Most linux userspace utilities refer to this as the &lt;strong&gt;PARTTYPE&lt;/strong&gt;. &lt;a href=&#34;https://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_type_GUIDs&#34;&gt;Their list can be found here&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Each partition can also be given a textual, Unicode UTF16 encoded &lt;strong&gt;label&lt;/strong&gt;. It is optional. Most linux userspace tools refer to this as the &lt;strong&gt;PARTLABEL&lt;/strong&gt;. Using it for persistent block device naming is not preffered as duplicates can exist.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Each &lt;em&gt;filesystem&lt;/em&gt; on a GPT partition also has a unique UUID. &lt;strong&gt;These exist for legacy and compatibility reasons.&lt;/strong&gt; They are not part of the &lt;em&gt;partition&lt;/em&gt;, or the &lt;em&gt;partition table (GPT)&lt;/em&gt;, but of the &lt;em&gt;filesystem that resides on the partition&lt;/em&gt;. Thus, they are generated by whichever utility generates a &lt;em&gt;filesystem&lt;/em&gt; (e.g. &lt;code&gt;mkfs&lt;/code&gt; on linux), and not by that which generates partitions. Despite that, I decided to list them here to avoid confusion. Most linux userspace tools refer to these as simply &lt;strong&gt;UUID&lt;/strong&gt; (which can be confusing). Their length may not be 128bits, and it may differ between filesystems (e.g. on &lt;code&gt;vfat&lt;/code&gt; it is significantly shorter than on &lt;code&gt;ext4&lt;/code&gt;). Using actual GPT partition &lt;strong&gt;PARTUUID&lt;/strong&gt;s is almost always preffered.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Each &lt;em&gt;filesystem&lt;/em&gt; on a GPT partition can also be given a textual label. The story is similar to that of the previous point. Kept for legacy and compatibility reasons, not part of the &lt;em&gt;partition&lt;/em&gt; or the &lt;em&gt;partition table&lt;/em&gt;, but that of the filesystem. Most linux userpsace tools refer to it as simply &lt;strong&gt;LABEL&lt;/strong&gt; (which can, again, be confusing). As with the actual GPT Partition &lt;strong&gt;PARTLABEL&lt;/strong&gt;, its use is also discouraged as duplicates of it can also exist, but if you are to, for some reason, use a label, prefferably go with the &lt;strong&gt;PARTLABEL&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;linux-userspace-partitioning-tools&#34;&gt;Linux userspace partitioning tools&lt;/h3&gt;
+&lt;p&gt;Some of the most common tools in the linux userspace that posses the ability of creating GPT schemes on block devices are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;fdisk&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;gdisk&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;parted&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I will not cover these tools here. For guidance, consult their respective &lt;em&gt;manpages&lt;/em&gt; or the ArchWiki.&lt;/p&gt;
 </description>
     </item>
     
