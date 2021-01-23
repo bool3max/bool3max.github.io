@@ -6,22 +6,10 @@
     <description>bool3max&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Jan 2021 23:33:59 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 17 Dec 2020 20:52:23 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Django notes</title>
-      <link>https://bool3max.github.io/posts/django_notes/</link>
-      <pubDate>Fri, 01 Jan 2021 23:33:59 +0100</pubDate>
-      
-      <guid>https://bool3max.github.io/posts/django_notes/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;Personal notes dedicated to the Django framework.&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-    </item>
     
     <item>
       <title>Common bitwise operations</title>
