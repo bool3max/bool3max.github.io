@@ -6,10 +6,31 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Dec 2020 20:52:23 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 25 Jan 2021 14:01:59 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Guide to screensharing on Sway from Firefox/Chromium</title>
+      <link>https://bool3max.github.io/posts/sway_screenshare_guide/</link>
+      <pubDate>Mon, 25 Jan 2021 14:01:59 +0100</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/sway_screenshare_guide/</guid>
+      <description>&lt;p&gt;I spent some time trying to get things to work and in the end I decided to compile the instructions in a compact and coherent guide.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install Chromium  &lt;code&gt;81.0.4044.122&lt;/code&gt; or later, or Firefox &lt;code&gt;84.0-1&lt;/code&gt; or later.&lt;/li&gt;
+&lt;li&gt;Install &lt;code&gt;pipewire&lt;/code&gt;, and &lt;strong&gt;if&lt;/strong&gt; you&amp;rsquo;re using Chromium, &lt;code&gt;libpipewire02&lt;/code&gt; as well. If you&amp;rsquo;re using Arch, both packages are available in the official repositories.&lt;/li&gt;
+&lt;li&gt;Install &lt;code&gt;xdg-desktop-portal-wlr&lt;/code&gt;. It is available in the official Arch repositories.&lt;/li&gt;
+&lt;li&gt;If you&amp;rsquo;re running Firefox, make sure that &lt;code&gt;MOZ_ENABLE_WAYLAND=1&lt;/code&gt; is set before you start it to make sure it&amp;rsquo;s running natively. If you&amp;rsquo;re using Chromium, start it with the following flags, for the same reason: &lt;code&gt;chromium --enable-features=UseOzonePlatform --enable-gpu --ozone-platform=wayland&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;If you&amp;rsquo;re running Chrome, enable &lt;code&gt;enable-webrtc-pipewire-capturer&lt;/code&gt; in &lt;code&gt;chrome://flags&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Make sure that the environment variables &lt;code&gt;XDG_SESSION_TYPE=wayland&lt;/code&gt; and &lt;code&gt;XDG_CURRENT_DESKTOP=sway&lt;/code&gt; are set and exported - it doesn&amp;rsquo;t work without them.&lt;/li&gt;
+&lt;li&gt;From the shell, run: &lt;code&gt;$ /usr/lib/xdg-desktop-portal -r &amp;amp; /usr/lib/xdg-desktop-portal-wlr&lt;/code&gt;. This will run the former as a background job, so don&amp;rsquo;t close your shell.&lt;/li&gt;
+&lt;li&gt;Run your browser.&lt;/li&gt;
+&lt;li&gt;Profit, screen sharing should now work (I tested it in both FF and Chromium and it works on discordapp.com). You can also test if it works &lt;a href=&#34;http://mozilla.github.io/webrtc-landing/gum_test.html&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     
     <item>
       <title>Common bitwise operations</title>
