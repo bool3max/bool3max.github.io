@@ -6,10 +6,91 @@
     <description>bool3max&#39;s blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 Jan 2021 14:01:59 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 26 Jan 2021 16:10:17 +0100</lastBuildDate>
     
     <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Userspace programs for process management on Linux</title>
+      <link>https://bool3max.github.io/posts/linux_userspace_programs_for_process_management/</link>
+      <pubDate>Tue, 26 Jan 2021 16:10:17 +0100</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/linux_userspace_programs_for_process_management/</guid>
+      <description>&lt;h1 id=&#34;kill&#34;&gt;&lt;strong&gt;&lt;code&gt;kill&lt;/code&gt;&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;Despite its name (that it&amp;rsquo;s gotten from its most popular usecase), &lt;code&gt;kill&lt;/code&gt; is very versatile tool used to send specified signals to individual
+processes, or process groups.&lt;/p&gt;
+&lt;p&gt;It is part of the &lt;code&gt;util-linux&lt;/code&gt; collection of programs and is widely available.&lt;/p&gt;
+&lt;p&gt;Here area a couple of usage examples. If no signal name/number is specified, &lt;strong&gt;&lt;code&gt;SIGTERM (15)&lt;/code&gt;&lt;/strong&gt; is assumed:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;kill firefox&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Send a &lt;code&gt;SIGTERM&lt;/code&gt; (15) signal to every process invoked as &lt;code&gt;&#39;firefox&#39;&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;kill 15222 152101 -8&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Send signal number &lt;code&gt;8&lt;/code&gt; to PIDs &lt;code&gt;15222&lt;/code&gt; and &lt;code&gt;152101&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;kill 152101 firefox -SIGKILL&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Send a &lt;code&gt;SIGKILL&lt;/code&gt; (9) signal to PID 152101 and every process invoked as &lt;code&gt;firefox&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;kill -s 19 1022 kitty&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Send signal number &lt;code&gt;19&lt;/code&gt; to PID 1022 and every process invoked as &lt;code&gt;kitty&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;kill -SIGKILL -933&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Send a &lt;code&gt;SIGKILL (9)&lt;/code&gt; signal to all processes in the process group &lt;code&gt;933&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;kill -p firefox&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Don&amp;rsquo;t send any signals, but print PIDs of named processes listed, and exit.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;pidof&#34;&gt;&lt;strong&gt;&lt;code&gt;pidof&lt;/code&gt;&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;pidof&lt;/code&gt; is a tool used to list PIDs of processes by name. It doesn&amp;rsquo;t conduct any manipulation. It&amp;rsquo;s very useful when dealing with other
+, more primitive tools that conduct process manipulation but don&amp;rsquo;t have the ability to find PIDs based on their names.&lt;/p&gt;
+&lt;p&gt;Here are some usage examples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pidof firefox&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;List PIDs of all processes with the name &lt;code&gt;&#39;firefox&#39;&lt;/code&gt;. PIDs are by default separated by space.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;pidof firefox kitty -S x&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;List PIDs of all processes with the names &lt;code&gt;&#39;firefox&#39;&lt;/code&gt; or &lt;code&gt;&#39;kitty&#39;&lt;/code&gt;, and separate PIDs with the character &lt;code&gt;&#39;x&#39;&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;killall&#34;&gt;&lt;strong&gt;&lt;code&gt;killall&lt;/code&gt;&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;killall&lt;/code&gt; is &lt;code&gt;kill&lt;/code&gt; on steroids. In addition to support the same operations as &lt;code&gt;kill&lt;/code&gt;, it sports a bunch of other features, such as case
+insensitive search, matching process names using regexes, killing all processes belonging to a group of a specified process, filtering processes
+based on spawn-time and owning user&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Here are some usage examples that demonstrate functionality not available in &lt;code&gt;kill&lt;/code&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;killall firefox -Ii --user bogdan --younger-than 4.2m&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Case-insensitively match every process&#39; name agaisnt &lt;code&gt;firefox&lt;/code&gt; that belongs to the user &lt;code&gt;bogdan&lt;/code&gt;, was spawned less than 4.2 minutes ago,
+and send a &lt;code&gt;SIGTERM (15)&lt;/code&gt; to it. Interactively ask the user to confirm each match.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;killall -I -9 -r &#39;kitty[1-9]+\.19&#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Case-insenstively match every process against the specified regex, and send it a &lt;code&gt;SIGKILL (9)&lt;/code&gt; signal, prompting the user before every
+match.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;pgrep-pkill&#34;&gt;&lt;strong&gt;&lt;code&gt;pgrep, pkill&lt;/code&gt;&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;These two are pretty similar &lt;code&gt;killall&lt;/code&gt;, though they have even more functionality. &lt;strong&gt;&lt;code&gt;pgrep&lt;/code&gt;&lt;/strong&gt; matches process names against regexes and prints them out, while &lt;strong&gt;&lt;code&gt;pkill&lt;/code&gt;&lt;/strong&gt; does the
+same in addition to sending signals.&lt;/p&gt;
+&lt;p&gt;They sport options such as &lt;strong&gt;&lt;code&gt;-c&lt;/code&gt;&lt;/strong&gt; (suppresses normal output and prints a count of process matches to stdout, eliminating the need for hacky shell piping such -
+this can be interpreted as a good or a bad thing). Another example is the ability to test for multiple owning users (e.g. &lt;code&gt;-u bogdan,root&lt;/code&gt;) will match processes owned by
+either the &lt;code&gt;bogdan&lt;/code&gt;, or &lt;code&gt;root&lt;/code&gt; users.&lt;/p&gt;
+&lt;p&gt;These two are the ones that I use most often, probably after &lt;code&gt;kill&lt;/code&gt;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;In addition to the tools described here, other, more sophisticated alternatives have their way of manipulating process as well. Tools such as
+&lt;code&gt;top&lt;/code&gt; or &lt;code&gt;htop&lt;/code&gt; for example allow you to browse and manipulate processes in real time.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Guide to screensharing on Sway from Firefox/Chromium</title>
