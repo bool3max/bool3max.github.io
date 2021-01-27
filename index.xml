@@ -87,7 +87,7 @@ this can be interpreted as a good or a bad thing). Another example is the abilit
 either the &lt;code&gt;bogdan&lt;/code&gt;, or &lt;code&gt;root&lt;/code&gt; users.&lt;/p&gt;
 &lt;p&gt;These two are the ones that I use most often, probably after &lt;code&gt;kill&lt;/code&gt;.&lt;/p&gt;
 &lt;hr&gt;
-&lt;p&gt;In addition to the tools described here, other, more sophisticated alternatives have their way of manipulating process as well. Tools such as
+&lt;p&gt;In addition to the tools described here, other, more sophisticated alternatives have their ways of manipulating processes as well. Tools such as
 &lt;code&gt;top&lt;/code&gt; or &lt;code&gt;htop&lt;/code&gt; for example allow you to browse and manipulate processes in real time.&lt;/p&gt;
 </description>
     </item>
