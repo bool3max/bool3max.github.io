@@ -81,7 +81,7 @@ The StackOverlfow question (What is the difference between concurrency and paral
       <guid>https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/</guid>
       <description>This post summarizes behavior of different operations on FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.
 All of this information is available in the fifo(7) and pipe(7) manpages.
-Opening   opening a FIFO for reading will block until it is also open for writing on the other end (&amp;ldquo;other end&amp;rdquo; here meaning inside another process or another thread in the same process).</description>
+Opening  opening a FIFO for reading will block until it is also open for writing on the other end (&amp;ldquo;other end&amp;rdquo; here meaning inside another process or another thread in the same process).</description>
     </item>
     
     <item>
