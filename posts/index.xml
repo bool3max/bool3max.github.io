@@ -3,13 +3,20 @@
   <channel>
     <title>Posts on bool3max&#39;s blog</title>
     <link>https://bool3max.github.io/posts/</link>
-    <description>bool3max&#39;s blog (Posts)</description>
+    <description>Recent content in Posts on bool3max&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 26 Jan 2021 16:10:17 +0100</lastBuildDate>
-    
-    <atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    
+    <copyright>© Bogdan Mitrović</copyright>
+    <lastBuildDate>Wed, 17 Feb 2021 13:44:42 +0100</lastBuildDate><atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>&#39;man&#39;, pagers, and &#39;less&#39;</title>
+      <link>https://bool3max.github.io/posts/man_and_pagers_plus_colors/</link>
+      <pubDate>Wed, 17 Feb 2021 13:44:42 +0100</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/man_and_pagers_plus_colors/</guid>
+      <description>When you normally execute, say man 3 printf, man simply does the job of looking up and fetching the particular manpage. The actual act of displaying it, is done by a pager.
+The default pager that man uses, less, is in essence a simple TUI program that allows for easy navigation of a particular text buffer (scrolling, searching, etc&amp;hellip; all using vi-like keybindings). It can output stylized text (bolds, underlines, etc&amp;hellip;) which it does by default for manpages.</description>
+    </item>
     
     <item>
       <title>Userspace programs for process management on Linux</title>
@@ -17,79 +24,10 @@
       <pubDate>Tue, 26 Jan 2021 16:10:17 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/linux_userspace_programs_for_process_management/</guid>
-      <description>&lt;h1 id=&#34;kill&#34;&gt;&lt;strong&gt;&lt;code&gt;kill&lt;/code&gt;&lt;/strong&gt;&lt;/h1&gt;
-&lt;p&gt;Despite its name (that it&amp;rsquo;s gotten from its most popular usecase), &lt;code&gt;kill&lt;/code&gt; is very versatile tool used to send specified signals to individual
-processes, or process groups.&lt;/p&gt;
-&lt;p&gt;It is part of the &lt;code&gt;util-linux&lt;/code&gt; collection of programs and is widely available.&lt;/p&gt;
-&lt;p&gt;Here area a couple of usage examples. If no signal name/number is specified, &lt;strong&gt;&lt;code&gt;SIGTERM (15)&lt;/code&gt;&lt;/strong&gt; is assumed:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;kill firefox&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Send a &lt;code&gt;SIGTERM&lt;/code&gt; (15) signal to every process invoked as &lt;code&gt;&#39;firefox&#39;&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;kill 15222 152101 -8&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Send signal number &lt;code&gt;8&lt;/code&gt; to PIDs &lt;code&gt;15222&lt;/code&gt; and &lt;code&gt;152101&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;kill 152101 firefox -SIGKILL&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Send a &lt;code&gt;SIGKILL&lt;/code&gt; (9) signal to PID 152101 and every process invoked as &lt;code&gt;firefox&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;kill -s 19 1022 kitty&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Send signal number &lt;code&gt;19&lt;/code&gt; to PID 1022 and every process invoked as &lt;code&gt;kitty&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;kill -SIGKILL -933&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Send a &lt;code&gt;SIGKILL (9)&lt;/code&gt; signal to all processes in the process group &lt;code&gt;933&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;kill -p firefox&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Don&amp;rsquo;t send any signals, but print PIDs of named processes listed, and exit.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;pidof&#34;&gt;&lt;strong&gt;&lt;code&gt;pidof&lt;/code&gt;&lt;/strong&gt;&lt;/h1&gt;
-&lt;p&gt;&lt;code&gt;pidof&lt;/code&gt; is a tool used to list PIDs of processes by name. It doesn&amp;rsquo;t conduct any manipulation. It&amp;rsquo;s very useful when dealing with other
-, more primitive tools that conduct process manipulation but don&amp;rsquo;t have the ability to find PIDs based on their names.&lt;/p&gt;
-&lt;p&gt;Here are some usage examples:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;pidof firefox&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;List PIDs of all processes with the name &lt;code&gt;&#39;firefox&#39;&lt;/code&gt;. PIDs are by default separated by space.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;pidof firefox kitty -S x&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;List PIDs of all processes with the names &lt;code&gt;&#39;firefox&#39;&lt;/code&gt; or &lt;code&gt;&#39;kitty&#39;&lt;/code&gt;, and separate PIDs with the character &lt;code&gt;&#39;x&#39;&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;killall&#34;&gt;&lt;strong&gt;&lt;code&gt;killall&lt;/code&gt;&lt;/strong&gt;&lt;/h1&gt;
-&lt;p&gt;&lt;code&gt;killall&lt;/code&gt; is &lt;code&gt;kill&lt;/code&gt; on steroids. In addition to support the same operations as &lt;code&gt;kill&lt;/code&gt;, it sports a bunch of other features, such as case
-insensitive search, matching process names using regexes, killing all processes belonging to a group of a specified process, filtering processes
-based on spawn-time and owning user&amp;hellip;&lt;/p&gt;
-&lt;p&gt;Here are some usage examples that demonstrate functionality not available in &lt;code&gt;kill&lt;/code&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;killall firefox -Ii --user bogdan --younger-than 4.2m&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Case-insensitively match every process&#39; name agaisnt &lt;code&gt;firefox&lt;/code&gt; that belongs to the user &lt;code&gt;bogdan&lt;/code&gt;, was spawned less than 4.2 minutes ago,
-and send a &lt;code&gt;SIGTERM (15)&lt;/code&gt; to it. Interactively ask the user to confirm each match.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;killall -I -9 -r &#39;kitty[1-9]+\.19&#39;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Case-insenstively match every process against the specified regex, and send it a &lt;code&gt;SIGKILL (9)&lt;/code&gt; signal, prompting the user before every
-match.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;pgrep-pkill&#34;&gt;&lt;strong&gt;&lt;code&gt;pgrep, pkill&lt;/code&gt;&lt;/strong&gt;&lt;/h1&gt;
-&lt;p&gt;These two are pretty similar &lt;code&gt;killall&lt;/code&gt;, though they have even more functionality. &lt;strong&gt;&lt;code&gt;pgrep&lt;/code&gt;&lt;/strong&gt; matches process names against regexes and prints them out, while &lt;strong&gt;&lt;code&gt;pkill&lt;/code&gt;&lt;/strong&gt; does the
-same in addition to sending signals.&lt;/p&gt;
-&lt;p&gt;They sport options such as &lt;strong&gt;&lt;code&gt;-c&lt;/code&gt;&lt;/strong&gt; (suppresses normal output and prints a count of process matches to stdout, eliminating the need for hacky shell piping such -
-this can be interpreted as a good or a bad thing). Another example is the ability to test for multiple owning users (e.g. &lt;code&gt;-u bogdan,root&lt;/code&gt;) will match processes owned by
-either the &lt;code&gt;bogdan&lt;/code&gt;, or &lt;code&gt;root&lt;/code&gt; users.&lt;/p&gt;
-&lt;p&gt;These two are the ones that I use most often, probably after &lt;code&gt;kill&lt;/code&gt;.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;In addition to the tools described here, other, more sophisticated alternatives have their ways of manipulating processes as well. Tools such as
-&lt;code&gt;top&lt;/code&gt; or &lt;code&gt;htop&lt;/code&gt; for example allow you to browse and manipulate processes in real time.&lt;/p&gt;
-</description>
+      <description>kill Despite its name (that it&amp;rsquo;s gotten from its most popular usecase), kill is very versatile tool used to send specified signals to individual processes, or process groups.
+It is part of the util-linux collection of programs and is widely available.
+Here area a couple of usage examples. If no signal name/number is specified, SIGTERM (15) is assumed:
+ kill firefox:  Send a SIGTERM (15) signal to every process invoked as &#39;firefox&#39;.</description>
     </item>
     
     <item>
@@ -98,19 +36,8 @@ either the &lt;code&gt;bogdan&lt;/code&gt;, or &lt;code&gt;root&lt;/code&gt; use
       <pubDate>Mon, 25 Jan 2021 14:01:59 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/sway_screenshare_guide/</guid>
-      <description>&lt;p&gt;I spent some time trying to get things to work and in the end I decided to compile the instructions in a compact and coherent guide.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Install Chromium  &lt;code&gt;81.0.4044.122&lt;/code&gt; or later, or Firefox &lt;code&gt;84.0-1&lt;/code&gt; or later.&lt;/li&gt;
-&lt;li&gt;Install &lt;code&gt;pipewire&lt;/code&gt;, and &lt;strong&gt;if&lt;/strong&gt; you&amp;rsquo;re using Chromium, &lt;code&gt;libpipewire02&lt;/code&gt; as well. If you&amp;rsquo;re using Arch, both packages are available in the official repositories.&lt;/li&gt;
-&lt;li&gt;Install &lt;code&gt;xdg-desktop-portal-wlr&lt;/code&gt;. It is available in the official Arch repositories.&lt;/li&gt;
-&lt;li&gt;If you&amp;rsquo;re running Firefox, make sure that &lt;code&gt;MOZ_ENABLE_WAYLAND=1&lt;/code&gt; is set before you start it to make sure it&amp;rsquo;s running natively. If you&amp;rsquo;re using Chromium, start it with the following flags, for the same reason: &lt;code&gt;chromium --enable-features=UseOzonePlatform --enable-gpu --ozone-platform=wayland&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;If you&amp;rsquo;re running Chrome, enable &lt;code&gt;enable-webrtc-pipewire-capturer&lt;/code&gt; in &lt;code&gt;chrome://flags&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Make sure that the environment variables &lt;code&gt;XDG_SESSION_TYPE=wayland&lt;/code&gt; and &lt;code&gt;XDG_CURRENT_DESKTOP=sway&lt;/code&gt; are set and exported - it doesn&amp;rsquo;t work without them.&lt;/li&gt;
-&lt;li&gt;From the shell, run: &lt;code&gt;$ /usr/lib/xdg-desktop-portal -r &amp;amp; /usr/lib/xdg-desktop-portal-wlr&lt;/code&gt;. This will run the former as a background job, so don&amp;rsquo;t close your shell.&lt;/li&gt;
-&lt;li&gt;Run your browser.&lt;/li&gt;
-&lt;li&gt;Profit, screen sharing should now work (I tested it in both FF and Chromium and it works on discordapp.com). You can also test if it works &lt;a href=&#34;http://mozilla.github.io/webrtc-landing/gum_test.html&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-</description>
+      <description>I spent some time trying to get things to work and in the end I decided to compile the instructions in a compact and coherent guide.
+ Install Chromium 81.0.4044.122 or later, or Firefox 84.0-1 or later. Install pipewire, and if you&amp;rsquo;re using Chromium, libpipewire02 as well. If you&amp;rsquo;re using Arch, both packages are available in the official repositories. Install xdg-desktop-portal-wlr. It is available in the official Arch repositories. If you&amp;rsquo;re running Firefox, make sure that MOZ_ENABLE_WAYLAND=1 is set before you start it to make sure it&amp;rsquo;s running natively.</description>
     </item>
     
     <item>
@@ -119,48 +46,9 @@ either the &lt;code&gt;bogdan&lt;/code&gt;, or &lt;code&gt;root&lt;/code&gt; use
       <pubDate>Thu, 17 Dec 2020 20:52:23 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/common_bitwise_operations/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;A short reference listing some of the common bitwise operations that I document as I encounter them&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Create a mask with a single set bit&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;code&gt;(1 &amp;lt;&amp;lt; k)&lt;/code&gt; can be used to create a mask where a single &lt;code&gt;k + 1&lt;/code&gt;-th bit is set.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Extracting bits&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Say we wanted to extract the highest 3 bits of a single byte (0b&lt;strong&gt;xxx&lt;/strong&gt;xxxxx). We create a bitmask with those bits set to 1s, and all other bits to 0s, and we AND the two values together:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mask = 0xEO (0b11100000)
-extracted = value &amp;amp; mask
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Explanation: since the highest 3 bits in the mask are set to one, respective bits in the value will remain ones, while zeroes will remain zeroes. Since all other bits are irrelevant, our mask has them at all 0s, so that the value&amp;rsquo;s bits don&amp;rsquo;t interfere.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Setting bits&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Say we wanted to &lt;strong&gt;set&lt;/strong&gt; the first and fifth bits of a byte. We create a mask where only those two bits are set (others are zeroes) and we OR it against our value:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mask = 0x11 (0b00010001)
-value |= mask
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Explanation: the respective zeroes in the original value become ones (obvious), while all other values remain the same (if they&amp;rsquo;re zeroes they remain zeroes since they&amp;rsquo;re matched against the zeroes in the mask - same for ones).&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Clearing bits&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Say we wanted to &lt;strong&gt;unset&lt;/strong&gt;/&lt;strong&gt;clear&lt;/strong&gt; the first and fifth bits of a byte. We create a bit mask where those bits are zeroes, and the rest are ones, and we AND it over the original value:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mask = 0x11 (0b11101110)
-value &amp;amp;= mask
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we&amp;rsquo;re dealing with a &lt;em&gt;single bit&lt;/em&gt; here, we can use this idiom to quickly create the bitmask on the right-hand side of the assignment:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mask = ~(1 &amp;lt;&amp;lt; 4)
-value &amp;amp;= mask
-
-// or even shorter
-
-value &amp;amp;= ~(1 &amp;lt;&amp;lt; 4)
-&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Flipping bits&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;If we want to, for example, flip the first and third bits of a byte, we create a mask where those bits are ones and others are zeroes, and we XOR it againast the original value:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;mask = 0x5 (0b00000101)
-value ^= mask
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Explanation: XOR produces 0 if both bits are the same, and 1 if they&amp;rsquo;re different. Zeroes become ones (0 ^ 1 = 1), and ones become zeroes (1 ^ 1 = 0), and all other bits retain their value (obvious).&lt;/p&gt;
-</description>
+      <description>A short reference listing some of the common bitwise operations that I document as I encounter them
+  Create a mask with a single set bit  (1 &amp;lt;&amp;lt; k) can be used to create a mask where a single k + 1-th bit is set.
+ Extracting bits  Say we wanted to extract the highest 3 bits of a single byte (0bxxxxxxxx). We create a bitmask with those bits set to 1s, and all other bits to 0s, and we AND the two values together:</description>
     </item>
     
     <item>
@@ -169,103 +57,9 @@ value ^= mask
       <pubDate>Thu, 03 Dec 2020 21:29:03 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/utf8/</guid>
-      <description>&lt;p&gt;As of writing, &lt;a href=&#34;https://en.wikipedia.org/wiki/Unicode&#34;&gt;Unicode&lt;/a&gt; contains &lt;strong&gt;1,112,064&lt;/strong&gt; possible codepoints.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in &lt;strong&gt;1,112,064&lt;/strong&gt; actually available codepoints.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;It&amp;rsquo;s important to note that not all (in fact most) &lt;strong&gt;codepoints&lt;/strong&gt; are not &lt;strong&gt;characters&lt;/strong&gt;. A common example is the &lt;a href=&#34;https://unicode-table.com/en/0308/&#34;&gt;Combining Diaeresis (e.g. ï)&lt;/a&gt; or the &amp;ldquo;double dot above&amp;rdquo; mark that, when rendered, simply appears above the adjecent previous character. In fact I can&amp;rsquo;t even paste it in &lt;code&gt;neovim&lt;/code&gt; on its own, it simply appears above the previously typed character.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h1 id=&#34;utf-8&#34;&gt;UTF-8&lt;/h1&gt;
-&lt;p&gt;UTF-8 is a &lt;em&gt;variable&lt;/em&gt; Unicode encoding in a sense that not all codepoints occupy the same amount of bytes in their encoded form. This is different from, for example, &lt;strong&gt;UTF-32&lt;/strong&gt; where every single codepoint always occupies exactly 4 bytes. This makes it very easy to parse but it also makes it very memory inefficient. Back to UTF-8, the maximum number of bytes an encoded codepoint can occupy is 4, even though only &lt;strong&gt;21&lt;/strong&gt; bits are required to represent all possible codepoints, and we&amp;rsquo;ll see why shortly.&lt;/p&gt;
-&lt;h2 id=&#34;encoding-rules&#34;&gt;Encoding rules&lt;/h2&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Number of bytes&lt;/th&gt;
-&lt;th&gt;First code point&lt;/th&gt;
-&lt;th&gt;Last code point&lt;/th&gt;
-&lt;th&gt;Byte 1&lt;/th&gt;
-&lt;th&gt;Byte 2&lt;/th&gt;
-&lt;th&gt;Byte 3&lt;/th&gt;
-&lt;th&gt;Byte 4&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;U+0000&lt;/td&gt;
-&lt;td&gt;U+007F&lt;/td&gt;
-&lt;td&gt;0xxxxxxx&lt;/td&gt;
-&lt;td&gt;N/A&lt;/td&gt;
-&lt;td&gt;N/A&lt;/td&gt;
-&lt;td&gt;N/A&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;U+0080&lt;/td&gt;
-&lt;td&gt;U+07FF&lt;/td&gt;
-&lt;td&gt;110xxxxx&lt;/td&gt;
-&lt;td&gt;10xxxxxx&lt;/td&gt;
-&lt;td&gt;N/A&lt;/td&gt;
-&lt;td&gt;N/A&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;U+0800&lt;/td&gt;
-&lt;td&gt;U+FFFF&lt;/td&gt;
-&lt;td&gt;1110xxxx&lt;/td&gt;
-&lt;td&gt;10xxxxxx&lt;/td&gt;
-&lt;td&gt;10xxxxxx&lt;/td&gt;
-&lt;td&gt;N/A&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;4&lt;/td&gt;
-&lt;td&gt;U+10000&lt;/td&gt;
-&lt;td&gt;U+10FFFF&lt;/td&gt;
-&lt;td&gt;11110xxx&lt;/td&gt;
-&lt;td&gt;10xxxxxx&lt;/td&gt;
-&lt;td&gt;10xxxxxx&lt;/td&gt;
-&lt;td&gt;10xxxxxx&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;These rules made little sense to me at the beginning. However, as I read more and more of the &lt;a href=&#34;https://en.wikipedia.org/wiki/UTF-8&#34;&gt;Wikipedia article on UTF-8&lt;/a&gt; things became clearer. For example, all codepoints between U+0000 and U+007F ooccupy exactly one byte and that byte cannot be larger than 127 (0x7F) in order to maintain complete interchangeability with US-ASCII. If we encounter a single byte &amp;lt;= 0x7F, we know that it&amp;rsquo;s a single byte codepoint and an ASCII character. (though &lt;code&gt;(byte &amp;amp; 0x80) == 0&lt;/code&gt; is a more portable check if we&amp;rsquo;re also dealing with signed types)&lt;/p&gt;
-&lt;p&gt;The restrictions for the 3 following codepoint ranges exist for similar reasons (mainly UTF-16 compatibility I think, but I&amp;rsquo;m not too sure on these), for example, for all codepoints between 0x800 and 0xFFFF, 3 bytes are required even though all numbers in that range can fit into 2 bytes, since 5 bits in the 2byte form are reserved.&lt;/p&gt;
-&lt;h2 id=&#34;example&#34;&gt;Example&lt;/h2&gt;
-&lt;p&gt;Let&amp;rsquo;s look at how the euro sign (€) is encoded in UTF-8.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;The Unicode codepoint of the euro sign is &lt;strong&gt;U+20AC&lt;/strong&gt;. If we look at the table above, we see that it falls between codepoint &lt;strong&gt;U+0800&lt;/strong&gt; and codepoint &lt;strong&gt;U+FFFF&lt;/strong&gt;, meaning that it &lt;strong&gt;takes 3 bytes to encode in memory&lt;/strong&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;0x20AC&lt;/strong&gt; in binary are the two bytes: &lt;code&gt;0b00100000&lt;/code&gt; and &lt;code&gt;0b10101100&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Byte by byte we &amp;ldquo;replace&amp;rdquo; all the available bytes from the sequence in the table by the bytes from the codepoint. If you look at the table, you can see that for codepoints that take 3 bytes to encode, we have exactly 16 bits (2 bytes) available.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;When we replace them, we get: &lt;code&gt;0b11100010&lt;/code&gt;, &lt;code&gt;0b10000010&lt;/code&gt; and &lt;code&gt;0b10101100&lt;/code&gt;, or in hex: &lt;code&gt;0xE2&lt;/code&gt;, &lt;code&gt;0x82&lt;/code&gt;, &lt;code&gt;0xAC&lt;/code&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;From our shell we can see that this is exactly how the € is encoded:&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code&gt;echo -n &amp;quot;€&amp;quot; | xxd -g 1 -c 10 -u
-00000000: E2 82 AC                       ...
-&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;writing-an-utf-8-decoder&#34;&gt;Writing an UTF-8 decoder&lt;/h1&gt;
-&lt;p&gt;This is something I&amp;rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Literally all text that you see nowadays on screen was at some point encoded as UTF-8, then decoded to get all invididual codepoints, and then rendered to the screen with a relevant font.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;String related functions in C&amp;rsquo;s stdlib pay no attention to any sort of encoding at all. They follow the &amp;lsquo;1 byte = 1 character&amp;rsquo; mantra. Support for different encodings exists via &lt;a href=&#34;https://en.cppreference.com/w/c/string/wide&#34;&gt;Wide strings&lt;/a&gt; and &lt;a href=&#34;https://en.cppreference.com/w/c/string/multibyte&#34;&gt;Multi-byte strings&lt;/a&gt; but I&amp;rsquo;ve never had a reason to use those functions. They are also very intertwined with the C locale, which is also a very complicated topic as evident by the infamous &lt;a href=&#34;https://github.com/mpv-player/mpv/commit/1e70e82baa9193f6f027338b0fab0f5078971fbe&#34;&gt;mpv developer C locale rant&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Writing a &lt;em&gt;decoder&lt;/em&gt; turned out to be way easier than I thought. The gist of basically the entire operation is the following: peek at the first byte of the string -&amp;gt; find out how many bytes the codepoint that it&amp;rsquo;s a part of occupies -&amp;gt; construct a codepoint from those bytes -&amp;gt; seek that many bytes forward in the stream -&amp;gt; return. Repeat for the entire string.&lt;/p&gt;
-&lt;p&gt;The only part I struggled with for a bit was the bitwise manipulation regarding specific bytes as I had little experience with that prior to this project - that is now &lt;a href=&#34;https://github.com/bool3max/butf8&#34;&gt;on GitHub as &lt;strong&gt;butf8&lt;/strong&gt;&lt;/a&gt;. In the future I&amp;rsquo;m planning to add encoding as well as indexing support and error checking - all of which should be fairly trivial.&lt;/p&gt;
-&lt;h2 id=&#34;resources&#34;&gt;Resources&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://utf8everywhere.org&#34;&gt;utf8everywhere.org&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Unicode&#34;&gt;Wikipedia article on Unicode&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/UTF-8&#34;&gt;Wikipedia article on UTF-8&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>As of writing, Unicode contains 1,112,064 possible codepoints.
+ Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in 1,112,064 actually available codepoints.
+ It&amp;rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &amp;ldquo;double dot above&amp;rdquo; mark that, when rendered, simply appears above the adjecent previous character.</description>
     </item>
     
     <item>
@@ -274,113 +68,9 @@ value ^= mask
       <pubDate>Sat, 28 Nov 2020 13:41:36 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/parallelism_and_concurrency/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;definitions&#34;&gt;Definitions&lt;/h1&gt;
-&lt;p&gt;Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&amp;rsquo;t exactly set in stone, and the definitions are somewhat convoluted.&lt;/p&gt;
-&lt;p&gt;The StackOverlfow question (&lt;a href=&#34;https://stackoverflow.com/questions/1050222/what-is-the-difference-between-concurrency-and-parallelism&#34;&gt;What is the difference between concurrency and parallelism?&lt;/a&gt;) in particular has quite a number of somewhat conflicting answers, which is understandable, since if someone asked me what the difference between the two terms are - I wouldn&amp;rsquo;t be able to answer. To me, both of them share the meaning of &amp;ldquo;doing multiple things at the same time&amp;rdquo;. In fact, the dictionary definitions share very similar meanings as well.&lt;/p&gt;
-&lt;p&gt;To cut the whole story short, I will choose two widely accepted definitions and abide by them from now on:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Concurrency&lt;/strong&gt; is the ability of a system that allows multiple tasks to run in overlapping time periods. There is never more than one task executing at a single point in time, instead the system &amp;ldquo;juggles&amp;rdquo; between tasks as needed. This gives us the &lt;em&gt;illusion&lt;/em&gt; of parallelism - an example of which is multitasking on a single-core CPU.
-&lt;ul&gt;
-&lt;li&gt;Also: Concurrency: A condition that exists when, during a given period of time, multiple threads (&amp;ldquo;multiple tasks&amp;rdquo; in the general sense) are making progress. Doesn&amp;rsquo;t mean that they were ever both executing at the same single point in time.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Parallelism&lt;/strong&gt; is the ability of a system that allows multiple tasks to run &lt;strong&gt;simultaneously&lt;/strong&gt;. They are &lt;em&gt;truly&lt;/em&gt; running &lt;em&gt;at the same time&lt;/em&gt;.
-&lt;ul&gt;
-&lt;li&gt;Also: Parallelism: A condition that arises when, given a particular point in time, multiple threads (&amp;ldquo;multiple tasks&amp;rdquo;) are executing simultaneously.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;There are many metaphors that can be applied to more easily explain the aforementioned definitions, for example:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Concurrency&lt;/strong&gt; is a single ATM serving a line of people over the course of an hour.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Parallelism&lt;/strong&gt; is two ATMs serving two lines of people at the same time.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Also see &lt;a href=&#34;https://stackoverflow.com/a/24684037/5447136&#34;&gt;this&lt;/a&gt; excellent answer with more real-world examples.&lt;/p&gt;
-&lt;h1 id=&#34;linux&#34;&gt;Linux&lt;/h1&gt;
-&lt;p&gt;Now that I&amp;rsquo;ve established what parallelism and concurrency are - how do they manifest themselves in real world environments, or rather operating systems?&lt;/p&gt;
-&lt;p&gt;First it&amp;rsquo;s important to realize that modern CPUs achieve parallelism via the use of multiple physical cores.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;To avoid the confusion in the following parts of this document I&amp;rsquo;ll get this out of the way right now: &amp;ldquo;&lt;strong&gt;physical threads&lt;/strong&gt;&amp;rdquo; that you hear about in the context of &amp;ldquo;the new Intel CPU has 8 cores and 16 threads&amp;rdquo; are different to &amp;ldquo;&lt;strong&gt;logical threads&lt;/strong&gt;&amp;rdquo; (or software threads) that I&amp;rsquo;ll talk about shortly. This confusion has been a slight obstacle in my early research of the topic and I really wish that they didn&amp;rsquo;t share the name, despite both of them being related to concurrency/parallelism. Also, I&amp;rsquo;ll talk about most of the software concepts as they relate to linux, however a large portion of semantics are shared between modern OSs, especially Unix derivatives.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Each core executes instructions independent of the others and it also has its own registers and cache. That&amp;rsquo;s why some resources even refer to physical cores simply as CPUs.&lt;/p&gt;
-&lt;p&gt;Under Linux (and other modern OSs) concurrency and parallelism manifest themselves in a few different ways that I&amp;rsquo;ll briefly explain now:&lt;/p&gt;
-&lt;hr&gt;
-&lt;h3 id=&#34;processes&#34;&gt;&lt;strong&gt;Processes&lt;/strong&gt;:&lt;/h3&gt;
-&lt;p&gt;Processes represent &amp;ldquo;running programs&amp;rdquo; (flows of execution, tasks) on the system. Each process has an ID (PID) and an associated PPID (parent process ID).&lt;/p&gt;
-&lt;p&gt;Processes cannot share memory between each other (be that the stack or the heap).&lt;/p&gt;
-&lt;p&gt;They are composed of one or more (one by default) &amp;ldquo;smaller&amp;rdquo; flows of execution called &lt;strong&gt;threads&lt;/strong&gt;.&lt;/p&gt;
-&lt;h3 id=&#34;threads&#34;&gt;&lt;strong&gt;Threads&lt;/strong&gt;:&lt;/h3&gt;
-&lt;p&gt;Every spawned process contains one thread by default. All threads belonging to a process share the same heap memory, but each one has its own stack. They are lighter to start-up than processes since there is less initialization involved (namely the fact that they shared the same virutal address space so a new one doesn&amp;rsquo;t have to be created each time).&lt;/p&gt;
-&lt;p&gt;The most prevelant standard for threading is the &lt;strong&gt;pthreads&lt;/strong&gt; (&lt;strong&gt;POSIX Threads&lt;/strong&gt;) specification. In Linux it is implemented using the &lt;a href=&#34;https://en.wikipedia.org/wiki/Native_POSIX_Thread_Library&#34;&gt;NPTL (Native POSIX Thread Library)&lt;/a&gt; library, which was a standalone project for some time after its creation, but is a part of &lt;strong&gt;&lt;code&gt;glibc&lt;/code&gt;&lt;/strong&gt; now. It&amp;rsquo;s described in detail by &lt;a href=&#34;https://linux.die.net/man/7/pthreads&#34;&gt;&lt;code&gt;pthreads(7)&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;It is immediately apparent that processes and threads differ only in what &amp;ldquo;data&amp;rdquo; they share between each other. That is because the Linux kernel doesn&amp;rsquo;t differentiate between threads and processes at all (which makes sense considering that &lt;code&gt;pthreads&lt;/code&gt; is a userspace library)! Under the hood, the kernel knows only of &amp;ldquo;&lt;strong&gt;tasks&lt;/strong&gt;&amp;rdquo; and exposes their interface via the &lt;a href=&#34;https://linux.die.net/man/2/clone&#34;&gt;&lt;code&gt;clone(2)&lt;/code&gt;&lt;/a&gt; system call. The arguments that &lt;code&gt;clone(2)&lt;/code&gt; takes determine (among other things) what will be shared between them (virtual address space, fd table, etc&amp;hellip;). So, both threads and processes are created using &lt;code&gt;clone(2)&lt;/code&gt;, just with different parameters.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;The runnable tasks that &lt;code&gt;clone(2)&lt;/code&gt; spawns are referred to simply as &amp;ldquo;processes&amp;rdquo; in some places by the linux kernel, however I called them &amp;ldquo;tasks&amp;rdquo; for the sake of understanding and clarity. The gist of it, and the most important thing to understand is that there is no difference between threads and processes to the kernel and that they are both created by &lt;code&gt;clone(2)&lt;/code&gt; using different arguments. See the &lt;a href=&#34;https://unix.stackexchange.com/questions/31595/are-linux-kernel-threads-really-kernel-processes&#34;&gt;Are Linux kernel threads really kernel processes?&lt;/a&gt; and &lt;a href=&#34;https://unix.stackexchange.com/questions/364660/are-threads-implemented-as-processes-on-linux&#34;&gt;Are threads implemented as processes on Linux?&lt;/a&gt; questions on the Unix StackExchange.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Also, reading &lt;a href=&#34;https://linux.die.net/man/2/fork/&#34;&gt;&lt;code&gt;fork(2)&lt;/code&gt;&lt;/a&gt; (the system call for spawning &lt;em&gt;processes&lt;/em&gt;), we see:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;C library/kernel differences&lt;/strong&gt;: Since version 2.3.3, rather than invoking the kernel&amp;rsquo;s fork() system call, the glibc fork() wrapper  that  is provided  as  part of the NPTL threading implementation invokes clone(2) with flags that provide the same effect as the traditional system call. &lt;strong&gt;(A call to fork() is equivalent to a call to clone(2) specifying  flags as  just  SIGCHLD.)&lt;/strong&gt;  The glibc wrapper invokes any fork handlers that have been established using pthread_atfork(3).&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Couple of interesting points here:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;when you call &lt;code&gt;fork(2)&lt;/code&gt; you&amp;rsquo;re actually calling the &lt;code&gt;glibc&lt;/code&gt; wrapper function, not the syscall (which is not weird, since when you call syscalls from glibc you&amp;rsquo;re never executing them directly)&lt;/li&gt;
-&lt;li&gt;this &lt;code&gt;fork(2)&lt;/code&gt; wrapper is actually implemented by NPTL (which is a part of &lt;code&gt;glibc&lt;/code&gt;), however the traditional syscall is of course part of the kernel (and it is also implemented using &lt;code&gt;clone(2)&lt;/code&gt;!!)&lt;/li&gt;
-&lt;li&gt;the bolded part explains that &lt;code&gt;fork(2)&lt;/code&gt; is in fact implemented using &lt;code&gt;clone(2)&lt;/code&gt;, further solidifying the previous couple of paragraphs&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;p&gt;So far I&amp;rsquo;ve talked more &lt;em&gt;about&lt;/em&gt; what &amp;ldquo;tools&amp;rdquo; are used to achieve concurrency rather than how to actually use them. But before I do I want to explore them a bit further:&lt;/p&gt;
-&lt;p&gt;Let&amp;rsquo;s write a trivial binary that proves that the &lt;code&gt;fork(2)&lt;/code&gt; wrapper really calls the &lt;code&gt;clone(2)&lt;/code&gt; syscall under the hood:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;pthread.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdint.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdlib.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;unistd.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;sys/types.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
-&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;) {
-    pid_t return_pid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; fork();
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(return_pid &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) {
-        perror(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Error forking&amp;#34;&lt;/span&gt;);
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; EXIT_FAILURE;
-    }
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(return_pid &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;) {
-        &lt;span style=&#34;color:#75715e&#34;&gt;// parent
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        fprintf(stdout, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello from parent, PID: %d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, getpid());
-
-    } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
-        &lt;span style=&#34;color:#75715e&#34;&gt;// child
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        fprintf(stdout, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello from child, PID: %d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, getpid());
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; EXIT_SUCCESS;
-    }
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; EXIT_SUCCESS; 
-}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;First, the entire reason that we&amp;rsquo;re able to write data to &lt;code&gt;stdout&lt;/code&gt; from the child process (whose code is in the last &amp;lsquo;else&amp;rsquo; block) is that the spawned child retains access to all the open file descriptors of the parent (and &lt;code&gt;stdout&lt;/code&gt; is file descriptor 0):&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;The child inherits copies of the parent&amp;rsquo;s set of open file descriptors.  Each file descriptor in the child refers to the same open file description (see open(2)) as the corresponding file descriptor in the parent.  This means that the two file descriptors share open file status flags, file offset, and signal-driven I/O attributes (see the description of F_SETOWN and F_SETSIG in fcntl(2)).&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Now let&amp;rsquo;s use &lt;code&gt;strace&lt;/code&gt; to see which syscalls the binary performs:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ strace --trace=%process ./example
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;--trace=%process&lt;/code&gt; filters the output to only show syscalls relating to process manipulation.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;execve(&amp;quot;./example&amp;quot;, [&amp;quot;./example&amp;quot;], 0x7ffdfb5127c8 /* 36 vars */) = 0
-clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f38384c0810) = 120121
-Hello from child, PID: 120121
---- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=120121, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
-Hello from parent, PID: 120120
-exit_group(0)                           = ?
-+++ exited with 0 +++
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We see that a call to &lt;code&gt;clone(2)&lt;/code&gt; is in fact performed, and its return value (the child&amp;rsquo;s PID) matches the one printed in our message. We also see that the parent is sent a &lt;code&gt;SIGCHLD&lt;/code&gt; singal once the child that it spawned has finished running, but that&amp;rsquo;s a topic I&amp;rsquo;ll maybe explore later.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;Let&amp;rsquo;s get back on topic: how do tasks ran by the linux kernel correlate to parallelism or concurrency? On the surface it&amp;rsquo;s really simple: the kernel uses a &lt;a href=&#34;https://en.wikipedia.org/wiki/Scheduling_(computing)&#34;&gt;scheduler&lt;/a&gt; to determine which currently active processes run when. If it has access to multiple CPU cores, it is able to achieve true parallelism by balancing multiple tasks over multiple cores (allowing them to run &lt;em&gt;truly&lt;/em&gt; at the same time). If there are no multiple cores (or if there are multiple tasks running on a single core), only one task is able to run at a time, and thus the scheduler quickly &amp;ldquo;juggles&amp;rdquo; between tasks, giving the &lt;em&gt;illusion&lt;/em&gt; of parallelism.&lt;/p&gt;
-&lt;p&gt;The scheduler currently used by the linux kernel is the &lt;a href=&#34;https://en.wikipedia.org/wiki/Completely_Fair_Scheduler&#34;&gt;Completely Fair Scheduler (CFS)&lt;/a&gt;, since kernel 2.6.23.&lt;/p&gt;
-&lt;p&gt;I don&amp;rsquo;t have enough experience or knowledge to talk about how these actually work, but I plan to in the future.&lt;/p&gt;
-</description>
+      <description>This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.
+ Definitions Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&amp;rsquo;t exactly set in stone, and the definitions are somewhat convoluted.
+The StackOverlfow question (What is the difference between concurrency and parallelism?) in particular has quite a number of somewhat conflicting answers, which is understandable, since if someone asked me what the difference between the two terms are - I wouldn&amp;rsquo;t be able to answer.</description>
     </item>
     
     <item>
@@ -389,55 +79,9 @@ exit_group(0)                           = ?
       <pubDate>Tue, 24 Nov 2020 20:36:49 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/</guid>
-      <description>&lt;p&gt;This post summarizes behavior of different operations on FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.&lt;/p&gt;
-&lt;p&gt;All of this information is available in the &lt;a href=&#34;https://linux.die.net/man/7/fifo&#34;&gt;&lt;code&gt;fifo(7)&lt;/code&gt;&lt;/a&gt; and &lt;a href=&#34;https://linux.die.net/man/7/pipe&#34;&gt;&lt;code&gt;pipe(7)&lt;/code&gt;&lt;/a&gt; manpages.&lt;/p&gt;
-&lt;h1 id=&#34;opening&#34;&gt;Opening&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;opening a FIFO for reading will block until it is also open for writing on the other end (&amp;ldquo;other end&amp;rdquo; here meaning inside another process or another thread in the same process).&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;opening a FIFO for writing will block until it is also open for reading on the other end (same rules apply).&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;opening a FIFO for reading &lt;em&gt;and&lt;/em&gt; writing (&lt;code&gt;O_RDWR&lt;/code&gt;) will &lt;em&gt;always&lt;/em&gt; succeed, though this behavior is undefined by POSIX so I think I&amp;rsquo;ll skip using it.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;this is the only way to open a FIFO on the writing end which has not yet been opened on the reading end&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;o_nonblock-non-blocking-mode&#34;&gt;&lt;code&gt;O_NONBLOCK&lt;/code&gt; (non-blocking mode)&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;read-only&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;the call immediately succeeds even if the FIFO is not yet open on the writing end&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;write-only&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;the call immediately fails with the error &lt;code&gt;ENXIO&lt;/code&gt; (no such device or address), unless, of course, the file is already opened for reading on the other end&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;reading-and-writing&#34;&gt;Reading and writing&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;attempting to read from a FIFO that has no data inside of it, but that has an open writer end will result in the &lt;code&gt;read()&lt;/code&gt; call blocking until data is available, &lt;strong&gt;UNLESS&lt;/strong&gt; the reader end was opened in non-blocking mode (&lt;code&gt;O_NONBLOCK&lt;/code&gt;), in which case the &lt;code&gt;read()&lt;/code&gt; call will return EOF (&lt;strong&gt;&lt;code&gt;0&lt;/code&gt;&lt;/strong&gt;)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;attempting to read from a FIFO that has no open writer ends will result in the &lt;code&gt;read()&lt;/code&gt; call immediately returning EOF (&lt;strong&gt;&lt;code&gt;0&lt;/code&gt;&lt;/strong&gt;)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;attempting to write to a FIFO which is not open on the read end will result in the process being sent a &lt;strong&gt;&lt;code&gt;SIGPIPE&lt;/code&gt;&lt;/strong&gt; signal (the default action for which is TERM, i.e. to terminate the process)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;if the calling process is ignoring this signal, &lt;code&gt;write()&lt;/code&gt; will instead immediately fail with the error &lt;code&gt;EPIPE&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;again, this can happen when a FIFO has been properly opened for writing, but the reading end had since been closed&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>This post summarizes behavior of different operations on FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.
+All of this information is available in the fifo(7) and pipe(7) manpages.
+Opening   opening a FIFO for reading will block until it is also open for writing on the other end (&amp;ldquo;other end&amp;rdquo; here meaning inside another process or another thread in the same process).</description>
     </item>
     
     <item>
@@ -446,34 +90,9 @@ exit_group(0)                           = ?
       <pubDate>Sat, 21 Nov 2020 14:52:04 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/context_managers_and_with_python3/</guid>
-      <description>&lt;p&gt;Context Managers in &lt;code&gt;python3&lt;/code&gt; are a simple but powerful feature.&lt;/p&gt;
-&lt;p&gt;The most common example is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation do the work for you:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;file&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;rb&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; file:
-    &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Instead of having to manually call &lt;code&gt;file.close()&lt;/code&gt; later on, once the &amp;ldquo;&lt;code&gt;with&lt;/code&gt;&amp;rdquo; block ends the associated cleanup (in this case flushing the file to disk and closing the file descriptors) is automatically performed.&lt;/p&gt;
-&lt;p&gt;This is all accomplished using 2 underlying methods defined in the context manager (in the above case the object returned by the &lt;code&gt;open()&lt;/code&gt; call):&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;__enter__&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;this method is called right before the block of code underneath the &lt;code&gt;with&lt;/code&gt; statement is entered&lt;/li&gt;
-&lt;li&gt;its return value is the one passed to us in form of the variable declared after the &lt;strong&gt;&lt;code&gt;as&lt;/code&gt;&lt;/strong&gt; keyword&lt;/li&gt;
-&lt;li&gt;once it finishes executing the block of code underneath the &lt;code&gt;with&lt;/code&gt; statement is executed&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;__exit__&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;this method is called after the &lt;strong&gt;&lt;code&gt;with&lt;/code&gt;&lt;/strong&gt; block of code finishes executed&lt;/li&gt;
-&lt;li&gt;it gets passed 3 additional arguments that contain information about the first exception that occurred inside of the &lt;strong&gt;&lt;code&gt;with&lt;/code&gt;&lt;/strong&gt; code block (if no exception occurred they are all &lt;strong&gt;&lt;code&gt;None&lt;/code&gt;&lt;/strong&gt;):
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;exception_type&lt;/code&gt;&lt;/strong&gt;: the class of the exception&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;exception_value&lt;/code&gt;&lt;/strong&gt;: its associated value&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;exception_traceback&lt;/code&gt;&lt;/strong&gt;: traceback information in form of the traceback class (&lt;code&gt;types.TracebackType&lt;/code&gt; in the &lt;code&gt;types&lt;/code&gt; module)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>Context Managers in python3 are a simple but powerful feature.
+The most common example is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation do the work for you:
+with open(&amp;#34;file&amp;#34;, &amp;#34;rb&amp;#34;) as file: ... Instead of having to manually call file.close() later on, once the &amp;ldquo;with&amp;rdquo; block ends the associated cleanup (in this case flushing the file to disk and closing the file descriptors) is automatically performed.</description>
     </item>
     
     <item>
@@ -482,98 +101,10 @@ exit_group(0)                           = ?
       <pubDate>Sat, 14 Nov 2020 18:42:28 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/python_decorators_explained/</guid>
-      <description>&lt;p&gt;Decorators are a way to modify behavior of functions using other functions.&lt;/p&gt;
-&lt;p&gt;Take a look at the following routine:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;increment&lt;/span&gt;(func):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;add_one&lt;/span&gt;(x, y):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(x, y) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; add_one
-
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@increment&lt;/span&gt;
-&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; sum(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)
-&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Under the hood, &lt;code&gt;sum&lt;/code&gt; becomes &lt;code&gt;increment(sum)&lt;/code&gt;, i.e. &lt;strong&gt;&lt;code&gt;sum = increment(sum)&lt;/code&gt;&lt;/strong&gt;. The function is modified, i.e. &lt;em&gt;&lt;strong&gt;decorated&lt;/strong&gt;&lt;/em&gt; by a new function returned by the decorator applied to it, which is why return values of decorators always have to be &lt;em&gt;&lt;strong&gt;callable&lt;/strong&gt;&lt;/em&gt; (i.e. - functions - though any object that implements the &lt;strong&gt;&lt;code&gt;__call__&lt;/code&gt;&lt;/strong&gt; method is considered callabe).&lt;/p&gt;
-&lt;p&gt;That&amp;rsquo;s pretty much all there is to decorators.&lt;/p&gt;
-&lt;p&gt;This can be a little confusing, so to recap what is happening here:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The reference to our original &lt;strong&gt;&lt;code&gt;sum&lt;/code&gt;&lt;/strong&gt; function is passed into its decorator, &lt;strong&gt;&lt;code&gt;increment&lt;/code&gt;&lt;/strong&gt;, and it is called&lt;/li&gt;
-&lt;li&gt;From within it we construct a new inner function (&lt;strong&gt;&lt;code&gt;add_one&lt;/code&gt;&lt;/strong&gt;), which is returned, and our original function is overwritten by it
-&lt;ul&gt;
-&lt;li&gt;from within this function we call our original &lt;strong&gt;&lt;code&gt;sum&lt;/code&gt;&lt;/strong&gt; function - passing in any arguments (we have a reference to it!), adding one to its return value and returning it&lt;/li&gt;
-&lt;li&gt;this function has to take in the same number of arguments as the original function, because we intend to call our original function from within this new one&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;another-example&#34;&gt;Another example&lt;/h2&gt;
-&lt;p&gt;Knowing all this, we can, as an example, create a decorator that simply completely overwrites the result of any function it decorates.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;overwrite&lt;/span&gt;(f):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OVERWRITTEN&amp;#34;&lt;/span&gt;
-
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@overwrite&lt;/span&gt;
-&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;some_complex_routine&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;args):
-    &lt;span style=&#34;color:#75715e&#34;&gt;# lots of complex logic here...&lt;/span&gt;
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;some complex result&amp;#34;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; some_complex_routine()
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OVERWRITTEN&amp;#34;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Here I use the &lt;a href=&#34;https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions&#34;&gt;lambda notation&lt;/a&gt; to create and return a simple function using a one-liner.&lt;/p&gt;
-&lt;p&gt;It is the equivalent of writing this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;overwrite&lt;/span&gt;(f):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;inner&lt;/span&gt;():
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OVERWRITTEN&amp;#34;&lt;/span&gt;
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; inner
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;chaining-multiple-decorators&#34;&gt;Chaining multiple decorators&lt;/h2&gt;
-&lt;p&gt;Decorating a single function using multiple decorators is possible, and the decorators are applied &amp;ldquo;from the bottom up&amp;rdquo; - i.e. the decorator &amp;ldquo;closest to&amp;rdquo; the function declaration is the one that gets applied first:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;plusone&lt;/span&gt;(func):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;addone&lt;/span&gt;(x, y):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(x, y) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; addone
-
-&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divtwo&lt;/span&gt;(func):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; a, b: func(a, b) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
-
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@plusone&lt;/span&gt;
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@divtwo&lt;/span&gt;
-&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; sum(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)
-&lt;span style=&#34;color:#ae81ff&#34;&gt;5.5&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;By observing the result we can see that first &lt;strong&gt;&lt;code&gt;5 + 4&lt;/code&gt;&lt;/strong&gt; was divided by two, and then one was added to result.&lt;/p&gt;
-&lt;h2 id=&#34;decorators-with-parameters&#34;&gt;Decorators with parameters&lt;/h2&gt;
-&lt;p&gt;Unfortunately it isn&amp;rsquo;t as simple as making the decorator function accept additional arguments, and I was quite bummed to find that out.&lt;/p&gt;
-&lt;p&gt;Instead, a decorator with a parameter should actually be a function that takes an argument and returns a function which in turn returns another function. In other words, we have to call a function with a parameter that will then return a decorator function (built upon that paramater). &lt;strong&gt;You can think of it just like the decorators we&amp;rsquo;ve written above, but now they are returned from yet another function&lt;/strong&gt;. Confusing (and I still don&amp;rsquo;t understand why, however there is probably a good exaplanation for it), so let&amp;rsquo;s rewrite the &lt;strong&gt;&lt;code&gt;divtwo&lt;/code&gt;&lt;/strong&gt; decorator so that it accepts the number to divide by as an argument:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divby&lt;/span&gt;(n):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;decorator&lt;/span&gt;(func): 
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;inner&lt;/span&gt;(a, b):
-            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(a, b) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; n
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; inner
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; decorator
-
-&lt;span style=&#34;color:#a6e22e&#34;&gt;@divby&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)
-&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;sum&lt;/span&gt;(x, y):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; (x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; y)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; sum(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;)
-&lt;span style=&#34;color:#ae81ff&#34;&gt;3.0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now the decorator has an argument which we can control on a per-function basis.&lt;/p&gt;
-&lt;p&gt;Since our decorator routine consists of simple one-liner statements we can rewrite it entirely using lambdas, however I personally think that, while more concise, it is less readable:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divby&lt;/span&gt;(n):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; func: &lt;span style=&#34;color:#66d9ef&#34;&gt;lambda&lt;/span&gt; a, b: func(a, b) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; n
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;decorating-functions-regardless-of-their-arguments&#34;&gt;Decorating functions regardless of their arguments&lt;/h2&gt;
-&lt;p&gt;The decorators I&amp;rsquo;ve written so far all assume that the decorated function accepts 2 arguments, and as such only works on those. We can fix this by using the familiar &lt;strong&gt;&lt;code&gt;*args, **kwargs&lt;/code&gt;&lt;/strong&gt; notation:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;divby&lt;/span&gt;(n):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;decorator&lt;/span&gt;(func): 
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;inner&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;args, &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;kwargs):
-            &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; func(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;args, &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;kwargs) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; n
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; inner
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; decorator
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now this decorator can be applied to any function, regardless of the arguments it takes (or does not take!).&lt;/p&gt;
-</description>
+      <description>Decorators are a way to modify behavior of functions using other functions.
+Take a look at the following routine:
+def sum(x, y): return x + y Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:
+def increment(func): def add_one(x, y): return func(x, y) + 1 return add_one @increment def sum(x, y): return x + y &amp;gt; sum(5, 4) 10 Under the hood, sum becomes increment(sum), i.</description>
     </item>
     
     <item>
@@ -582,114 +113,8 @@ exit_group(0)                           = ?
       <pubDate>Thu, 05 Nov 2020 00:32:02 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/python_generators/</guid>
-      <description>&lt;p&gt;Recently I needed a way to infinitely loop over a list in Python. Traditionally, this is extremely easy to do with simple indexing if the size of the list is known in advance. For example, an approach could look something like this:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;l &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;]
-i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-
-&lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; True:
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(l[i])
-    i &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; len(l):
-        i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Eventually I settled on a an inbuilt approach using the &lt;code&gt;itertools&lt;/code&gt; module from the standard library. Consequently the code became a lot cleaner:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; itertools
-l &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;]
-
-&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; itertools&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cycle(l):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(n)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But for the fun of it, I decided to try to re-implement &lt;code&gt;itertools.cycle&lt;/code&gt; myself, and in order to do that, I first have to understand how generators work in &lt;code&gt;python3&lt;/code&gt;. I already do, but I will explain it here, after which I will demonstrate the &lt;code&gt;itertools.cycle&lt;/code&gt; re-implementation.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Both iterators and generators have their own short sections in the offical &lt;a href=&#34;https://docs.python.org/3/tutorial/classes.html#iterators&#34;&gt;python3 tutorial&lt;/a&gt;. This post is my own explanation of them.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;iterators&#34;&gt;Iterators&lt;/h1&gt;
-&lt;p&gt;Iterators are objects that define a &lt;strong&gt;&lt;code&gt;__next__&lt;/code&gt;&lt;/strong&gt; method that is called every time the next value of the iterable is desired. They can be &lt;em&gt;iterared&lt;/em&gt; over, yielding their members one by one.&lt;/p&gt;
-&lt;p&gt;An object is said to be iterable if it defines an &lt;strong&gt;&lt;code&gt;__iter__&lt;/code&gt;&lt;/strong&gt; method that returns an above mentioned &lt;em&gt;&lt;strong&gt;iterator&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;It can be a little confusing. Think of it like this: strings are &lt;em&gt;iterable&lt;/em&gt; (able to be iterated over) because their base class (&lt;strong&gt;&lt;code&gt;str&lt;/code&gt;&lt;/strong&gt;) defines an &lt;strong&gt;&lt;code&gt;__iter__&lt;/code&gt;&lt;/strong&gt; method that returns an &lt;strong&gt;iterator&lt;/strong&gt; object which has a &lt;strong&gt;&lt;code&gt;__next__&lt;/code&gt;&lt;/strong&gt; method.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;For example, in the following code:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;: 
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(n)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;, behind the scenes, &lt;strong&gt;&lt;code&gt;for&lt;/code&gt;&lt;/strong&gt; calls &lt;code&gt;iter()&lt;/code&gt; on &lt;code&gt;&amp;quot;abc&amp;quot;&lt;/code&gt;, which in turn calls &lt;strong&gt;&lt;code&gt;&amp;quot;abc&amp;quot;.__iter__()&lt;/code&gt;&lt;/strong&gt;. Since &lt;strong&gt;&lt;code&gt;&amp;quot;123&amp;quot;&lt;/code&gt;&lt;/strong&gt; is of type &lt;strong&gt;&lt;code&gt;str&lt;/code&gt;&lt;/strong&gt;, a class that defines the &lt;code&gt;__iter__&lt;/code&gt; method, that one is called, and an iterator object is returned.&lt;/p&gt;
-&lt;p&gt;Then, &lt;strong&gt;&lt;code&gt;for&lt;/code&gt;&lt;/strong&gt; simply calls the &lt;strong&gt;&lt;code&gt;__next__&lt;/code&gt;&lt;/strong&gt; method on that interator object, passing its return value to you in the form of a variable, until &lt;strong&gt;&lt;code&gt;__next__&lt;/code&gt;&lt;/strong&gt; raises a &lt;strong&gt;&lt;code&gt;StopIteration&lt;/code&gt;&lt;/strong&gt; exception, at which point the loop stops.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;It actually calls &lt;code&gt;next()&lt;/code&gt; on the iterator object, which in turn calls its &lt;code&gt;__next__&lt;/code&gt; method. The &lt;code&gt;next()&lt;/code&gt; builtin is handy because it provides another parameter that can be used to specify a value to be returned if the iterator object is already exahusted.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id=&#34;example&#34;&gt;Example&lt;/h3&gt;
-&lt;p&gt;We can see this in action:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; iterator &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; string&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__iter__()
-
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(iterator&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__next__())
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;a&amp;#39;&lt;/span&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(iterator&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__next__())
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;b&amp;#39;&lt;/span&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(iterator&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__next__())
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;c&amp;#39;&lt;/span&gt;
-
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(iterator&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__next__())
-Traceback (most recent call last):
-  File &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;lt;stdin&amp;gt;&amp;#34;&lt;/span&gt;, line &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;module&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
-&lt;span style=&#34;color:#a6e22e&#34;&gt;StopIteration&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;As we can see, when we exhaust the iterator, a &lt;code&gt;StopIteration&lt;/code&gt; exception is raised.&lt;/p&gt;
-&lt;p&gt;Using the built-in &lt;strong&gt;&lt;code&gt;next()&lt;/code&gt;&lt;/strong&gt; function we have a greater degree of control: we can designate a value to be returned in the case where &lt;code&gt;__next__&lt;/code&gt; would exhaust the object (and raise an exception):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; iterator &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; string&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__iter__()
-
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(next(iterator, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;a&amp;#39;&lt;/span&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(next(iterator, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;b&amp;#39;&lt;/span&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(next(iterator, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;c&amp;#39;&lt;/span&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(next(iterator, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
-&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
-&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(next(iterator, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
-&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
-&lt;p&gt;Instead of directly calling &lt;code&gt;object.__iter__()&lt;/code&gt;, you should probably use the built-in &lt;a href=&#34;https://docs.python.org/3/library/functions.html#iter&#34;&gt;&lt;strong&gt;&lt;code&gt;iter()&lt;/code&gt;&lt;/strong&gt;&lt;/a&gt; method, as it has a little added functionality depending on the use case, but ultimately does the same thing (iterate over an object, that is).&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&#34;re-implementing-itertoolscycle-using-iterators&#34;&gt;Re-implementing &lt;strong&gt;&lt;code&gt;itertools.cycle&lt;/code&gt;&lt;/strong&gt; using iterators&lt;/h2&gt;
-&lt;p&gt;Knowing all this, we can write a custom class that can infinitely iterate over another iterable:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;InfiniteIterable&lt;/span&gt;:
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self, original):
-        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;original_iterable &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; original
-        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;len &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; len(original)
-        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __iter__(self):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; self
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;__next__&lt;/span&gt;(self):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;i &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; (self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;len &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
-            self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-
-        ret &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;original_iterable[self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;i]
-        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;i &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; ret
-
-&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; InfiniteIterable(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(n)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Since we never raise a &lt;strong&gt;&lt;code&gt;StopIteration&lt;/code&gt;&lt;/strong&gt; exception from our &lt;code&gt;__next__&lt;/code&gt; method, the iterator never halts!&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Since our custom class is an iterable object in and of itself (i.e. it defines an &lt;code&gt;__next__&lt;/code&gt; method), &lt;code&gt;__iter__&lt;/code&gt; just returns &lt;code&gt;self&lt;/code&gt;! But if we didn&amp;rsquo;t want to implement iteration logic from within this class, we could make &lt;code&gt;__iter__&lt;/code&gt; return an instance of some other class.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;generators&#34;&gt;Generators&lt;/h1&gt;
-&lt;p&gt;Generators are just simpler, syntatic-sugary ways to quickly create iterators from within regular functions. That&amp;rsquo;s it. When you want to &amp;ldquo;return&amp;rdquo; the next value, you use the &lt;strong&gt;&lt;code&gt;yield&lt;/code&gt;&lt;/strong&gt; statement. When your function returns, the generator raises &lt;strong&gt;&lt;code&gt;StopIteration&lt;/code&gt;&lt;/strong&gt; itself, making the proccess of writing complex iterators really simple.&lt;/p&gt;
-&lt;h2 id=&#34;implementing-infiniteiterable-using-generators&#34;&gt;Implementing &lt;strong&gt;&lt;code&gt;InfiniteIterable&lt;/code&gt;&lt;/strong&gt; using generators&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;InfiniteIterable&lt;/span&gt;(original_iterable):
-    i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; True:
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;yield&lt;/span&gt; original_iterable[i]
-        i &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; (len(original_iterable) &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;):
-            i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
-
-&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; InfiniteIterable(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc&amp;#34;&lt;/span&gt;):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(n)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This accomplishes the exact same task as manually writing the iterable does, but in a more readable manner. It is essentially just syntatic sugar.&lt;/p&gt;
-&lt;h3 id=&#34;a-caveat&#34;&gt;A caveat&lt;/h3&gt;
-&lt;p&gt;In these two implementations, I accessed members using the subscript notation &lt;strong&gt;&lt;code&gt;[]&lt;/code&gt;&lt;/strong&gt; (so me calling the argument &amp;ldquo;&lt;code&gt;original_iterable&lt;/code&gt;&amp;rdquo; is a bit misleading), which is implemented using the &lt;strong&gt;&lt;code&gt;__getitem__&lt;/code&gt;&lt;/strong&gt; method under the hood. Therefore, if the original argument does not define this method, my implementation would not work. Most of the builtin types do, so it&amp;rsquo;s not a problem.&lt;/p&gt;
-</description>
+      <description>Recently I needed a way to infinitely loop over a list in Python. Traditionally, this is extremely easy to do with simple indexing if the size of the list is known in advance. For example, an approach could look something like this:
+l = [1, 2, 3] i = 0 while True: print(l[i]) i += 1 if i == len(l): i = 0 Eventually I settled on a an inbuilt approach using the itertools module from the standard library.</description>
     </item>
     
     <item>
@@ -698,18 +123,8 @@ Traceback (most recent call last):
       <pubDate>Fri, 16 Oct 2020 14:23:54 +0200</pubDate>
       
       <guid>https://bool3max.github.io/posts/languages_versus_implementations/</guid>
-      <description>&lt;p&gt;&lt;strong&gt;Python&lt;/strong&gt; is a programming language. It is nothing more but one large document of text and code examples (a &lt;em&gt;standard&lt;/em&gt;) that describes exactly how the language is to behave. You can&amp;rsquo;t run it, download it, or execute it. That&amp;rsquo;s it, it&amp;rsquo;s just text.&lt;/p&gt;
-&lt;p&gt;The latest edition of it is up on the official Python website as the &lt;a href=&#34;https://docs.python.org/3/reference/index.html&#34;&gt;&lt;strong&gt;The Python Language Reference&lt;/strong&gt;&lt;/a&gt;. As Python also consists of a standard library of functions, a document that describes how the modules and their respective functions are to behave is also readily available as
-&lt;a href=&#34;https://docs.python.org/3/library/index.html&#34;&gt;&lt;strong&gt;The Python Standard Library&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;strong&gt;CPython&lt;/strong&gt; on the other hand is the reference implementation of &lt;strong&gt;Python&lt;/strong&gt;. It is an actual piece of software (written in C) that you can download and execute for platforms that support it. It&amp;rsquo;s an interpreter that runs code written in Python as described by the &amp;lsquo;Python Language Rererence&amp;rsquo;, to which it conforms.&lt;/p&gt;
-&lt;p&gt;You can browse its source code &lt;a href=&#34;https://github.com/python/cpython&#34;&gt;here&lt;/a&gt; (&lt;a href=&#34;https://www.python.org/downloads/source/&#34;&gt;or download it as a tarball here&lt;/a&gt;), and download it for your respective platform &lt;a href=&#34;https://www.python.org/downloads/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Other implementations of the Python language exist, too. Examples include IronPython, Jython, PyPy, and others. They all conform to the standard to some degree, and they can all execute valid Python code, but they do it in different ways (&lt;em&gt;Jython&lt;/em&gt; is an implementation that compiles Python code to Java bytecode and executes it in a JVM).&lt;/p&gt;
-&lt;h1 id=&#34;another-example&#34;&gt;Another example&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;C&lt;/strong&gt; is a programming language. &lt;em&gt;Its&lt;/em&gt; standard is published by ISO and ANSI. Again, it is nothing but a large document full of text and code examples, that, again, describes all of the internals of the language as well as how it should behave, in great detail. Unfortunately it is copyrighted and ISO requries that you pay for it (&lt;a href=&#34;https://softwareengineering.stackexchange.com/questions/326249/why-isnt-the-c-standard-free&#34;&gt;&lt;em&gt;and here&amp;rsquo;s why&lt;/em&gt;&lt;/a&gt;), however drafts can be commonly found on the internet.&lt;/p&gt;
-&lt;p&gt;Here&amp;rsquo;s the &lt;a href=&#34;https://port70.net/~nsz/c/c11/n1570.html&#34;&gt;&lt;strong&gt;N1570 draft of the C11 standard&lt;/strong&gt;&lt;/a&gt; (it is absolutely &lt;em&gt;massive&lt;/em&gt;).&lt;/p&gt;
-&lt;p&gt;Implementations of the C standard are compilers. Obvious examples include &lt;strong&gt;gcc&lt;/strong&gt;, &lt;strong&gt;clang&lt;/strong&gt;, or &lt;strong&gt;MSVC&lt;/strong&gt;. (&lt;strong&gt;gcc&lt;/strong&gt; isn&amp;rsquo;t &lt;em&gt;actually&lt;/em&gt; a proper implementation of the C standard as it doesn&amp;rsquo;t supply a C standard library implementation (which is a part of the standard), however it is usually paired with &lt;strong&gt;glibc&lt;/strong&gt;, the &lt;a href=&#34;https://www.gnu.org/software/libc/&#34;&gt;GNU C Library&lt;/a&gt;). They take C code and compile it to machine code that can then be properly executed.&lt;/p&gt;
-</description>
+      <description>Python is a programming language. It is nothing more but one large document of text and code examples (a standard) that describes exactly how the language is to behave. You can&amp;rsquo;t run it, download it, or execute it. That&amp;rsquo;s it, it&amp;rsquo;s just text.
+The latest edition of it is up on the official Python website as the The Python Language Reference. As Python also consists of a standard library of functions, a document that describes how the modules and their respective functions are to behave is also readily available as The Python Standard Library.</description>
     </item>
     
     <item>
@@ -718,95 +133,9 @@ Traceback (most recent call last):
       <pubDate>Mon, 12 Oct 2020 16:22:05 +0200</pubDate>
       
       <guid>https://bool3max.github.io/posts/python3_oop_guide/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;This is not a tutorial, but rather a personal document that I write for myself in order to cement the knowledge and explain &amp;ldquo;tricky&amp;rdquo; concepts and gotchas when it comes to OOP and classes in &lt;code&gt;python3&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Useful resources:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://docs.python.org/3/tutorial/classes.html&#34;&gt;Official python &amp;lsquo;Classes&amp;rsquo; tutorial&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://docs.python.org/3/reference/datamodel.html&#34;&gt;Data model section of the official python &amp;lsquo;Language Reference&amp;rsquo;&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://realpython.com/python-super/#an-overview-of-pythons-super-function&#34;&gt;&amp;ldquo;Supercharge your classes with Python super() article on realpython.org&amp;rdquo;&lt;/a&gt; - &lt;em&gt;a really good read&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&#34;how-does-self-actually-work&#34;&gt;How does &lt;code&gt;self&lt;/code&gt; actually work?&lt;/h1&gt;
-&lt;p&gt;Consider the following class definition:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Dog&lt;/span&gt;:
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self, name):
-        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; name
-
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;speak&lt;/span&gt;(self, age):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;My name is {self.name} and I am {age} years old.&amp;#34;&lt;/span&gt;
-
-jake &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Dog(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Jake&amp;#34;&lt;/span&gt;)
-&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(jake&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;speak(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
-
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;My name is Jake and I am 3 years old.&amp;#34;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When we call &lt;code&gt;jake.speak&lt;/code&gt;, the &lt;code&gt;self&lt;/code&gt; arguement is &amp;ldquo;automatically&amp;rdquo; passed into the method because the method belongs to an already instantiated instance of a class.&lt;/p&gt;
-&lt;p&gt;We can achieve the same effect by instantiating &lt;code&gt;jake&lt;/code&gt;, then calling &lt;code&gt;Dog.speak&lt;/code&gt; directly while passing the value of the &lt;code&gt;self&lt;/code&gt; argument manually, like so:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;jake &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Dog(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;jake&amp;#34;&lt;/span&gt;)
-&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(Dog&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;speak(jake, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;))
-
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;My name is Jake and I am 3 years old.&amp;#34;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The same is true for the &lt;code&gt;__init__&lt;/code&gt; method, which is a method like any other, except that it is called automatically when instantiating new instances of the class.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; types
-
-jake &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; types&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;SimpleNamespace()
-Dog&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__init__(jake, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Jake&amp;#34;&lt;/span&gt;)
-
-&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(jake&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;name)
-
-&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Jake&amp;#34;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Of course this is undesirable, as now we cannot access other methods defined in the class (e.g. &lt;code&gt;speak&lt;/code&gt;).&lt;/p&gt;
-&lt;h1 id=&#34;super-and-method-resolution-order-mro&#34;&gt;&lt;code&gt;super()&lt;/code&gt; and Method Resolution Order (MRO)&lt;/h1&gt;
-&lt;p&gt;Method Resolution Order (&lt;em&gt;MRO&lt;/em&gt;) is the order in which method lookup is performed by the interpreter for an instance of a given class.&lt;/p&gt;
-&lt;p&gt;Defined classes have an &lt;code&gt;__mro__&lt;/code&gt; attribute that results in a tuple describing the MRO.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Instances don&amp;rsquo;t have this method defined, but this can very easily be circumvented using the special &lt;em&gt;&lt;code&gt;instance&lt;/code&gt;&lt;/em&gt;.&lt;code&gt;__class__&lt;/code&gt; attribute, which returns the reference of the class that the instance belongs to:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(instance&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__class__&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__mro__)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/blockquote&gt;
-&lt;p&gt;Examine the following code:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;A&lt;/span&gt;:
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mymethod&lt;/span&gt;(self):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mymethod of class A&amp;#34;&lt;/span&gt;
-
-&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;B&lt;/span&gt;(A):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mymethod&lt;/span&gt;(self):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mymethod of class B&amp;#34;&lt;/span&gt;
-
-&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;(B):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mymethod&lt;/span&gt;(self):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mymethod of class C&amp;#34;&lt;/span&gt;
-    
-instance &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; C()
-&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C.__mro__ = {C.__mro__}&amp;#34;&lt;/span&gt;)
-&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(instance&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mymethod())
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This then logs:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;C&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__mro__ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;__main__&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;C&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;__main__&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;B&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;__main__&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;A&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;object&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;)&lt;/span&gt;
-mymethod of &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This means that any method lookups done on &lt;em&gt;instances&lt;/em&gt; of class C will first be done on methods defined class C, then class B, then class A, and then in the &amp;ldquo;base&amp;rdquo; &lt;em&gt;object&lt;/em&gt; class, &lt;strong&gt;stopping at the first class in which the desired method is found&lt;/strong&gt;, because every class in the &amp;ldquo;chain&amp;rdquo; inherits the next one (C inherits B, which inherits A which by default inherits &lt;code&gt;object&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;In our case, the &lt;em&gt;&lt;strong&gt;mymethod&lt;/strong&gt;&lt;/em&gt; method was in fact defined in the first class listed in the &lt;code&gt;__mro__&lt;/code&gt; tuple, so naturally, it is &lt;code&gt;C.mymethod&lt;/code&gt; that gets called in the end.&lt;/p&gt;
-&lt;p&gt;If we remove the &lt;code&gt;mymethod&lt;/code&gt; method from the &lt;code&gt;C&lt;/code&gt; class, &lt;strong&gt;the MRO will stay the same&lt;/strong&gt;, however since &lt;code&gt;mymethod&lt;/code&gt; doesn&amp;rsquo;t exist inside of the &lt;code&gt;C&lt;/code&gt; class anymore, it will instead &amp;ldquo;come&amp;rdquo; from the next one in the MRO chain that it &lt;em&gt;is&lt;/em&gt; defined in, in this case the &lt;code&gt;B&lt;/code&gt; class.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;(B):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;pass&lt;/span&gt;
-
-instance &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; C()
-&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(f&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C.__mro__ = {C.__mro__}&amp;#34;&lt;/span&gt;)
-&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(instance&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mymethod())
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;this logs:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;C&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__mro__ &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;__main__&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;C&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;__main__&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;B&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;__main__&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;A&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;, &amp;lt;class &amp;#39;&lt;/span&gt;object&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;gt;)&lt;/span&gt;
-mymethod of &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;B&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;super-explained&#34;&gt;&lt;code&gt;super()&lt;/code&gt; explained&lt;/h2&gt;
-&lt;p&gt;The &lt;a href=&#34;https://docs.python.org/3/library/functions.html#super&#34;&gt;official super() builtin documentation&lt;/a&gt; explains its use and functionality pretty well, but to explain it using an example: let&amp;rsquo;s say that we wanted the &lt;code&gt;mymethod&lt;/code&gt; method in the C class to return the same string returned by the &lt;code&gt;mymethod&lt;/code&gt; method of the A class, with an additional &lt;code&gt;!&lt;/code&gt; appended
-at the end.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Obviously that is a simplified example, in the real world &lt;code&gt;A.mymethod&lt;/code&gt; could execute some long, complicated logic that we wish to re-implement (alongside some &lt;em&gt;other&lt;/em&gt; logic) inside of &lt;code&gt;C.mymethod&lt;/code&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Inside of the &lt;code&gt;C&lt;/code&gt; class we can accomplish this by calling &lt;code&gt;super()&lt;/code&gt; which creates a &lt;em&gt;proxy object&lt;/em&gt; that delegeates all method calls to the appropriate class:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;C&lt;/span&gt;(B):
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mymethod&lt;/span&gt;(self):
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; super(B, self)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mymethod() &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;!!!&amp;#34;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The output will therefore be: &lt;code&gt;mymethod of class A!!!&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;super()&lt;/code&gt; is more useful when you provide no arguments to it however, as it automatically goes up the hierarchy and provides you with the first class that defines the appropriate method (or attribute, as &lt;code&gt;super()&lt;/code&gt; works for attribute lookups as well).&lt;/p&gt;
-</description>
+      <description>This is not a tutorial, but rather a personal document that I write for myself in order to cement the knowledge and explain &amp;ldquo;tricky&amp;rdquo; concepts and gotchas when it comes to OOP and classes in python3
+ Useful resources:
+ Official python &amp;lsquo;Classes&amp;rsquo; tutorial Data model section of the official python &amp;lsquo;Language Reference&amp;rsquo; &amp;ldquo;Supercharge your classes with Python super() article on realpython.org&amp;rdquo; - a really good read  How does self actually work?</description>
     </item>
     
     <item>
@@ -815,83 +144,10 @@ at the end.&lt;/p&gt;
       <pubDate>Mon, 28 Sep 2020 15:45:48 +0200</pubDate>
       
       <guid>https://bool3max.github.io/posts/fish_scripting_over_bash/</guid>
-      <description>&lt;p&gt;Scripting with &lt;a href=&#34;https://github.com/fish-shell/fish-shell&#34;&gt;&lt;code&gt;fish&lt;/code&gt;&lt;/a&gt; is simple. It is readable. You don&amp;rsquo;t need to have deep experience with it in order to understand the syntax.&lt;/p&gt;
-&lt;p&gt;Compared to &lt;code&gt;bash&lt;/code&gt;, it feels &lt;em&gt;intuitive&lt;/em&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;everything-is-a-builtin&#34;&gt;Everything is a builtin&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;builtins&lt;/code&gt; are commands that you call from the shell, but unlike regular commands that execute external binaries and spawn new processes, they are built right into the shell (e.g. &lt;code&gt;echo&lt;/code&gt;, &lt;code&gt;math&lt;/code&gt;, &lt;code&gt;set&lt;/code&gt;, &lt;code&gt;count&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;The core syntax of &lt;code&gt;fish&lt;/code&gt; is very simple, and most all of the operations are done via calling builtins.&lt;/p&gt;
-&lt;p&gt;Want to set a variable? Use the &lt;code&gt;set&lt;/code&gt; builtin. Want to declare a function? Use the &lt;code&gt;function&lt;/code&gt; builtin. Want perform some sort of calculation? Use the &lt;code&gt;math&lt;/code&gt; builtin. Want to find out what some other builtin does? Use the &lt;code&gt;help&lt;/code&gt; builtin.&lt;/p&gt;
-&lt;p&gt;In fact, prior to &lt;code&gt;fish 3.0&lt;/code&gt;, even conditional command execution was done using &lt;code&gt;and&lt;/code&gt; and &lt;code&gt;or&lt;/code&gt; builtins (&lt;em&gt;unconditional&lt;/em&gt; command chaining is still done using the seimicolon &lt;code&gt;;&lt;/code&gt;):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ git commit; and git push
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;(it still is, though support for &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt; and &lt;code&gt;||&lt;/code&gt; syntax was added).&lt;/p&gt;
-&lt;h3 id=&#34;string-replacement&#34;&gt;String replacement&lt;/h3&gt;
-&lt;p&gt;In &lt;code&gt;bash&lt;/code&gt;, string replacement is done using the &lt;code&gt;${$text//pattern/replacement}&lt;/code&gt; syntax. For example, if you wanted to replace every instance of &lt;code&gt;&#39;foo&#39;&lt;/code&gt; with &lt;code&gt;&#39;bar&#39;&lt;/code&gt; in a certain text, you could do it like so:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;replaced_text&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;$text//foo/bar&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In &lt;code&gt;fish&lt;/code&gt;, however, this is done using the &lt;code&gt;string&lt;/code&gt; builtin:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;set replaced_text &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;string replace -a foo bar $text&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If it wasn&amp;rsquo;t for the variable name, newcomers would have absolutely no idea what the fuck was going on in the &lt;code&gt;bash&lt;/code&gt; version, whereas the &lt;code&gt;fish&lt;/code&gt; versions almost completely &amp;ldquo;spells out&amp;rdquo;
-the entire operation.&lt;/p&gt;
-&lt;h3 id=&#34;array-item-count&#34;&gt;Array item count&lt;/h3&gt;
-&lt;p&gt;In &lt;code&gt;fish&lt;/code&gt;, getting the number of items in an array is done using the &lt;code&gt;count&lt;/code&gt; builtin:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;set N &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;count $array&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In &lt;code&gt;bash&lt;/code&gt;, the syntax is, to no surprise, more obscure:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;N&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${#&lt;/span&gt;args[@]&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;math&#34;&gt;Math&lt;/h3&gt;
-&lt;p&gt;In &lt;code&gt;fish&lt;/code&gt;, mathematical operations are peformed using the &lt;code&gt;math&lt;/code&gt; builtin, and unlike in bash, they support decimal numbers as well as functions:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ echo &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;3 + sqrt(4) = &amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;math &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; + &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;sqrt(4)&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
-
-&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt; + sqrt&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;4&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Since &lt;code&gt;bash&lt;/code&gt; doesn&amp;rsquo;t support decimal operations nor mathematical functions, you&amp;rsquo;d have to call external processes to do the work for you.&lt;/p&gt;
-&lt;p&gt;For someone who isn&amp;rsquo;t familiar with shell scripting, the &lt;code&gt;fish&lt;/code&gt; versions of these example operations are going to make much more sense at first (and probably second) glance.&lt;/p&gt;
-&lt;p&gt;This philosophy makes scripts insanely &lt;em&gt;readable&lt;/em&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;argument-substitution-is-more-intuitive&#34;&gt;Argument substitution is more intuitive&lt;/h2&gt;
-&lt;p&gt;This was one of my first serious gripes back when I was first learning &lt;code&gt;bash&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Let&amp;rsquo;s assume that &lt;code&gt;barg&lt;/code&gt; is a readily available program that simply prints its commandline arguments (as well as the number of them), to standard out, one per line:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ barg &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
-
-User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
-
-&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
-&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Parameter substition in &lt;code&gt;fish&lt;/code&gt; &lt;em&gt;makes sense&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Expanding a single variable results in a &lt;em&gt;&lt;strong&gt;single argument&lt;/strong&gt;&lt;/em&gt; on the commandline. For example:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ set arg &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello there, you!&amp;#34;&lt;/span&gt;
-$ barg $arg
-
-User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-
-Hello there, you!
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It is only if you pass in an array of &lt;em&gt;multiple values&lt;/em&gt;, that the resulting commandline ends up with multiple values, for example:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ set args &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello there, you!&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;--some-long-option&amp;#34;&lt;/span&gt;
-$ barg $args
-
-User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
-
-Hello there, you!
---some-long-option
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Again, it is intuitive and it makes sense.&lt;/p&gt;
-&lt;p&gt;Now let&amp;rsquo;s take a look at the same examples, but in &lt;code&gt;bash&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ arg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello there, you!&amp;#34;&lt;/span&gt;
-$ barg $arg
-
-User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
-
-Hello
-there,
-you!
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The source operand was split on spaces, and a single variable substitution resulted in &lt;em&gt;3&lt;/em&gt; different commandline arguments.&lt;/p&gt;
-&lt;p&gt;To avoid this, you have to encapsulate substituion in double quotes (&lt;code&gt;&amp;quot; &amp;quot;&lt;/code&gt;):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ arg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello there, you!&amp;#34;&lt;/span&gt;
-$ barg &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$args&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
-
-User arguments passed: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
-
-Hello there, you!
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To me this makes no sense, however from a historical point of view I can see why it is: in &lt;code&gt;fish&lt;/code&gt;, declaring arrays of multiple values each of which expands to a signle value is easy, unlike in &lt;code&gt;bash&lt;/code&gt;, where, if you&amp;rsquo;d written something like &lt;code&gt;arguments=&amp;quot;-a -D --long-opt&amp;quot;&lt;/code&gt;, you would probably in fact &lt;em&gt;want&lt;/em&gt; it to expand to 3 different arguments.&lt;/p&gt;
-&lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
-&lt;p&gt;These are just some of the examples. The true strength of &lt;code&gt;fish&lt;/code&gt; lies in its power as an interactive shell - robust automatic completion, autosuggestions, configurability, colors, etc&amp;hellip;&lt;/p&gt;
-</description>
+      <description>Scripting with fish is simple. It is readable. You don&amp;rsquo;t need to have deep experience with it in order to understand the syntax.
+Compared to bash, it feels intuitive.
+Everything is a builtin builtins are commands that you call from the shell, but unlike regular commands that execute external binaries and spawn new processes, they are built right into the shell (e.g. echo, math, set, count).
+The core syntax of fish is very simple, and most all of the operations are done via calling builtins.</description>
     </item>
     
     <item>
@@ -900,119 +156,8 @@ Hello there, you!
       <pubDate>Sun, 09 Aug 2020 18:54:26 +0200</pubDate>
       
       <guid>https://bool3max.github.io/posts/elf/</guid>
-      <description>&lt;p&gt;I recently took it upon myself to, at least at the surface level, understand how the ELF (&amp;quot;&lt;em&gt;Executable and Linkable Format&lt;/em&gt;&amp;quot;) works.
-In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.&lt;/p&gt;
-&lt;p&gt;The result of that is &lt;a href=&#34;https://github.com/bool3max/p3elf&#34;&gt;&lt;strong&gt;p3elf&lt;/strong&gt;&lt;/a&gt;, during the development of which I familiarized myself with ELF, binary IO in python, as well as &lt;code&gt;setuptools&lt;/code&gt; and publishing python packages on &lt;a href=&#34;https://pypi.org/project/p3elf&#34;&gt;PyPI&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;This post will mainly serve as a short future reference of the structure of ELF files and will most likely be updated in the future.&lt;/p&gt;
-&lt;h1 id=&#34;structure&#34;&gt;Structure&lt;/h1&gt;
-&lt;p&gt;The &lt;a href=&#34;https://en.wikipedia.org/wiki/Executable_and_Linkable_Format&#34;&gt;Executable and Linkable Format&lt;/a&gt; Wikipedia article is an excellent reference for the structure and fields of ELF files, though I found it to be a little ambiguous in certain places. Some concepts are not completely obvious unless you have prior experience with ELF.&lt;/p&gt;
-&lt;h2 id=&#34;file-header&#34;&gt;File header&lt;/h2&gt;
-&lt;p&gt;Every ELF file begins with a &lt;strong&gt;file header&lt;/strong&gt;. It contains general metadata about the binary, and its size is known in advance - it is &lt;code&gt;64&lt;/code&gt; bytes long on 64bit binaries, and &lt;code&gt;56&lt;/code&gt; bytes long on 32bit ones.&lt;/p&gt;
-&lt;p&gt;Notable fields here include:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;EI_CLASS&lt;/code&gt;&lt;/strong&gt;: denotes the &lt;em&gt;byteclass&lt;/em&gt; of the binary (&lt;code&gt;0x1&lt;/code&gt;: 32bit, &lt;code&gt;0x2&lt;/code&gt;: 64bit)
-&lt;ul&gt;
-&lt;li&gt;this field is particularly important because the lengths and offsets of many other fields in the file depend on it&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;EI_DATA&lt;/code&gt;&lt;/strong&gt;: denotes the &lt;em&gt;endianness&lt;/em&gt; of the binary
-&lt;ul&gt;
-&lt;li&gt;important for the same reasons as EI_CLASS&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;EI_OSABI&lt;/code&gt;&lt;/strong&gt;: denotes the &lt;em&gt;ABI&lt;/em&gt;, but is often set to &lt;code&gt;0x0&lt;/code&gt; (&lt;em&gt;System V&lt;/em&gt;) regardless of the actual platform&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;E_TYPE&lt;/code&gt;&lt;/strong&gt;: type of object file (executable, relocatable, etc.)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;E_MACHINE&lt;/code&gt;&lt;/strong&gt;: denotes the target ISA, e.g. &lt;code&gt;0x3E&lt;/code&gt; for &lt;code&gt;&#39;amd64&#39;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;E_PHOFF&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code&gt;E_SHOFF&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code&gt;E_PHOFF&lt;/code&gt;&lt;/strong&gt;,  &lt;strong&gt;&lt;code&gt;E_SHNUM&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code&gt;E_PHNUM&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code&gt;E_SHENTSIZE&lt;/code&gt;&lt;/strong&gt;, &lt;strong&gt;&lt;code&gt;E_PHENTSIZE&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;offsets, counts, and sizes of &lt;strong&gt;section headers&lt;/strong&gt; and &lt;strong&gt;program headers&lt;/strong&gt; - more on these later&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;segments--program-headers&#34;&gt;Segments &amp;amp; Program headers&lt;/h2&gt;
-&lt;p&gt;Every ELF file is divided into &lt;em&gt;segments&lt;/em&gt;, which are further divided into one or more &lt;em&gt;sections&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Every program header corresponds to one segment and provides info and metadata about it. Because of that, we know the number of segments in advance - it&amp;rsquo;s the &lt;strong&gt;&lt;code&gt;E_PHNUM&lt;/code&gt;&lt;/strong&gt; field in the file header.&lt;/p&gt;
-&lt;p&gt;The first segment is the &amp;ldquo;program header table&amp;rdquo; - i.e. the segment that contains all of the program headers (which in turn describe other segments).&lt;/p&gt;
-&lt;p&gt;The first program header (&lt;code&gt;PT_TYPE&lt;/code&gt; 0x00000006, i.e. &lt;code&gt;PT_PHDR&lt;/code&gt;) (the one that describes the entire program header table segment) is found at offset &lt;strong&gt;&lt;code&gt;E_PHOFF&lt;/code&gt;&lt;/strong&gt; and is &lt;strong&gt;&lt;code&gt;E_PHENTSIZE&lt;/code&gt;&lt;/strong&gt; bytes long. Because every program header is the same size, and because they all follow the first one (of which we know the offset), we can traverse through them pretty easily.&lt;/p&gt;
-&lt;p&gt;Notable fields in every program header include:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;P_TYPE&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;the type of segment that this header describes&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;P_OFFSET&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;the offset from the beginning of the file to the &lt;em&gt;segment&lt;/em&gt; that this header describes&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;P_FILESZ&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;the size of the segment that this header describes&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;P_FLAGS&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;segment-specific flags that provide additional information about the segment that this header describes&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;sections--section-headers&#34;&gt;Sections &amp;amp; Section headers&lt;/h2&gt;
-&lt;p&gt;Every one of the aforementioned segments consists of one or more &lt;em&gt;sections&lt;/em&gt;, each of which is associated with a &lt;em&gt;section header&lt;/em&gt; that describes it.&lt;/p&gt;
-&lt;p&gt;The first section header is found at offset &lt;strong&gt;&lt;code&gt;E_SHOFF&lt;/code&gt;&lt;/strong&gt;, and is &lt;strong&gt;&lt;code&gt;E_SHENTSIZE&lt;/code&gt;&lt;/strong&gt; bytes long. It is always &amp;ldquo;empty&amp;rdquo; - its &lt;code&gt;SH_TYPE&lt;/code&gt; is 0x0 (i.e. &lt;code&gt;SHT_NULL&lt;/code&gt;) and it doesn&amp;rsquo;t point to any section.&lt;/p&gt;
-&lt;p&gt;There are &lt;strong&gt;&lt;code&gt;E_SHNUM&lt;/code&gt;&lt;/strong&gt; section headers, from which we can conduct that there are also &lt;strong&gt;&lt;code&gt;E_SHNUM&lt;/code&gt;&lt;/strong&gt; sections.&lt;/p&gt;
-&lt;p&gt;Notable fields in every section header include:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;SH_NAME&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;an offset to a null-terminated string in the &lt;strong&gt;&lt;code&gt;.shstrtab&lt;/code&gt;&lt;/strong&gt; section denoting the section&amp;rsquo;s name&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;.shstrtab&lt;/code&gt;&lt;/strong&gt; is a special section (that has its own section header, like any other) that contains null terminating strings describing the names of all other sections&lt;/li&gt;
-&lt;li&gt;programs can use the &lt;code&gt;EI_SHSTRNDX&lt;/code&gt; (the integer index of the &lt;code&gt;.shstrndx&lt;/code&gt; section, where 0 &amp;lt; &lt;code&gt;EI_SHSTRNDX&lt;/code&gt; &amp;lt; (&lt;code&gt;EI_SHNUM&lt;/code&gt; - 1) ) field in the file header to easily seek to this section&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;SH_TYPE&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;the type of the section that this headers describes&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;SH_FLAGS&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;addtional attributes about the section&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;SH_OFFSET&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;the offset from the beginning of the file to the section that this header describes&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;SH_SIZE&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;the size of this section&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;SH_ENTSIZE&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;size of each entry in this section, for sections that have dynamic entries, otherwise &lt;code&gt;0&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;for example, this field is set to &lt;code&gt;0&lt;/code&gt; in the header that describes the &lt;code&gt;.shstrab&lt;/code&gt; section as it contains null-terminating strings of varying lengths&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;SH_LINK&lt;/code&gt;&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;section index of an associated section (its use depends on the type of section that this header describes)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Famous examples of &lt;em&gt;sections&lt;/em&gt; include &lt;strong&gt;.text&lt;/strong&gt; (actual executable instructions), &lt;strong&gt;.data&lt;/strong&gt;, &lt;strong&gt;.rodata&lt;/strong&gt; (read-only data), &lt;strong&gt;.symtab&lt;/strong&gt; (the symbol table) and others. There may also exist platform-specific sections, for example a really cool one produced by binutils&#39; &lt;code&gt;ld&lt;/code&gt; linker, &lt;code&gt;.note.gnu.build-id&lt;/code&gt;, which is a sha1/md5 hash of the output file. Or &lt;code&gt;.comment&lt;/code&gt;, which includes the version of the GCC stack that was used to build the ELF.&lt;/p&gt;
-&lt;h2 id=&#34;tools-and-references&#34;&gt;Tools and references&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;the best tools to use for interacting with ELF files are &lt;code&gt;readelf&lt;/code&gt;, &lt;code&gt;objdump&lt;/code&gt;, and &lt;code&gt;size&lt;/code&gt;. They are all part of GNU&amp;rsquo;s &lt;a href=&#34;https://www.gnu.org/software/binutils/&#34;&gt;&lt;code&gt;binutils&lt;/code&gt;&lt;/a&gt; so you most likely already have them installed.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.sco.com/developers/gabi/latest/contents.html&#34;&gt;SysV ABI Specification DRAFT&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://stackoverflow.com/questions/tagged/elf&#34;&gt;ELF tag on StackOverflow&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Executable_and_Linkable_Format&#34;&gt;Executable and Linkable Format - Wikipedia&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/eliben/pyelftools&#34;&gt;&lt;code&gt;pyelftools&lt;/code&gt; on GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-</description>
+      <description>I recently took it upon myself to, at least at the surface level, understand how the ELF (&amp;quot;Executable and Linkable Format&amp;quot;) works. In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.
+The result of that is p3elf, during the development of which I familiarized myself with ELF, binary IO in python, as well as setuptools and publishing python packages on PyPI.</description>
     </item>
     
     <item>
@@ -1021,68 +166,8 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
       <pubDate>Wed, 18 Sep 2019 17:42:03 +0200</pubDate>
       
       <guid>https://bool3max.github.io/posts/uefi_disks/</guid>
-      <description>&lt;p&gt;This document serves as a quick reference to how UEFI and GPT work in regards to booting a modern system.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I will not cover BIOS/MBR in this document. I will acknowledge their existence and will compare them to their modern counterparts, but I feel that it is a waste of time to dig deeper into their inner workings.  I will also not cover or mention the compatibility possibilites/issues of using UEFI/MBR or BIOS/GPT. Know that it is, in certain cases, possible, but that it is always a better idea to use either UEFI/GPT or BIOS/MBR.  The &lt;a href=&#34;https://wiki.archlinux.org&#34;&gt;ArchWiki&lt;/a&gt; and its numerous articles listed below cover the compatibility issues in more detail.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&#34;uefi-and-a-brief-overview-of-its-booting-process&#34;&gt;UEFI and a brief overview of its booting process&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;UEFI&lt;/strong&gt; stands for &lt;em&gt;Unified Extensible Firmware Interface&lt;/em&gt;. It represents a specification of a software layer, or rather an &lt;em&gt;interface&lt;/em&gt; between the motherboard&amp;rsquo;s firmware and the user/OS.
-It is responsible for most of the booting process, including starting the bootloader.&lt;/p&gt;
-&lt;p&gt;It&amp;rsquo;s also the successor of the old &lt;strong&gt;BIOS&lt;/strong&gt; (&lt;em&gt;Basic Input/Output System&lt;/em&gt;). Compared to it, UEFI has &lt;em&gt;many&lt;/em&gt; advantages (a modular design, ability to use large disks, CPU independent drivers, a flexible pre-OS environment - including networking, better standardization, network booting&amp;hellip;)&lt;/p&gt;
-&lt;p&gt;When started, UEFI utilizes its &lt;em&gt;boot manager&lt;/em&gt; to decide which &lt;em&gt;UEFI Application&lt;/em&gt; it should load. &lt;em&gt;UEFI Applications&lt;/em&gt; are binary executables (most commonly &lt;em&gt;bootloaders&lt;/em&gt;, &lt;em&gt;or kernel stubs&lt;/em&gt;) in a specific binary format defined by the UEFI Spec, usually utilizing the &lt;em&gt;.EFI&lt;/em&gt; extension.&lt;/p&gt;
-&lt;p&gt;These binary UEFI Applications are usually stored on the &lt;strong&gt;EFI System Partition&lt;/strong&gt; (&lt;em&gt;ESP&lt;/em&gt;). It represents a &lt;strong&gt;VFAT&lt;/strong&gt; filesystem partiton on a &lt;strong&gt;GPT&lt;/strong&gt; formatted disk. As most UEFI implementations only include VFAT drivers, having the ESP contain a filesystem other than VFAT is not possible.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Example: On a typical &lt;em&gt;x86_64&lt;/em&gt; architecture the GRUB2 bootloader (which is an UEFI application) is stored in its own folder on the ESP: &lt;em&gt;esp&lt;/em&gt;/&lt;em&gt;entry_name&lt;/em&gt;/grubx64.efi &amp;ndash; where &lt;em&gt;esp&lt;/em&gt; is the mountpoint of the EFI System Partition and &lt;em&gt;entry_name&lt;/em&gt; is the folder name you chose during the grub installation process that it stores itself on.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;The UEFI Boot Manager is the component that helps the UEFI choose which binary application (e.g. bootloader) it should load. It stores its information (that consists of the &lt;em&gt;boot entires&lt;/em&gt; and a &lt;em&gt;boot order&lt;/em&gt;) in NVRAM (non-volatile RAM).&lt;/p&gt;
-&lt;p&gt;The &lt;strong&gt;boot entries&lt;/strong&gt; describe where the UEFI can find a specific loadable EFI Application (e.g. the &lt;em&gt;grub bootloader&lt;/em&gt;). They consist of a disk ID, a &lt;strong&gt;GPT PARTUUID&lt;/strong&gt; of the ESP that the EFI Application resides on, along with a full path to it, and a text label that helps identify the entry to the user. There may be multiple boot entires present a time.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;e.g. on my current configuration, the boot entry that loads the GRUB2 bootloader looks like this:&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;pre&gt;&lt;code&gt;`Boot0000* MyArchInstall    HD(1,GPT,71aca8cd-005e-444e-8c64-2153d3a35d1c,0x800,0x113000)/File(\EFI\StarchGrub\grubx64.efi)`
-&lt;/code&gt;&lt;/pre&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;MyArchInstall&lt;/strong&gt; here represents the textual label that is displayed in the UEFI GUI upon booting, &lt;code&gt;\EFI\StarchGrub\grubx64.efi&lt;/code&gt; represents the full path to the grub2 efi application. Between them is the GPT PARTUUID number that identifies the ESP on &lt;strong&gt;HD1&lt;/strong&gt; (NOTE: &lt;code&gt;EFI&lt;/code&gt; is an actual folder residing in the ESP, not a mountpoint of the ESP)&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;The &lt;strong&gt;boot order&lt;/strong&gt; represents an order in which the boot entries should be tested for loading (should multiple of them exist). Typically, the first one that is validated is loaded. Most UEFI implementations allow the user to choose which boot entry is loaded manually, and the &lt;strong&gt;boot order&lt;/strong&gt; is only used if the user decides not to do so (which is &lt;em&gt;most often&lt;/em&gt; the case).&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;In the case that no boot entries exist, or in the case that the user explicitly decides to do so, most UEFI implementations allow using &lt;em&gt;bare disks&lt;/em&gt; as boot entries. In the boot manager they are simply listed as their respective models. Should the user choose one of them instead of a regular boot entry, the UEFI will scan the selected disk for GPT partitions, try to locate an ESP on it (by utilizing the standardized &lt;strong&gt;PARTTTYPE UUID&lt;/strong&gt; which identifies partitions based on their &lt;em&gt;use-case&lt;/em&gt;), and load a &lt;strong&gt;default EFI application&lt;/strong&gt; that usually resides in &lt;em&gt;esp&lt;/em&gt;&lt;code&gt;/EFI/BOOT/BOOTX64.EFI&lt;/code&gt;, at least on an x86_64 system. In the case that an ESP &lt;em&gt;or&lt;/em&gt; a default EFI application doesn&amp;rsquo;t exist on the chosen disk, the booting will likely fail. The most common example for this process is removable bootable media (e.g. a USB containing a windows intallation).&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Both the &lt;strong&gt;boot entries&lt;/strong&gt; and the &lt;strong&gt;boot order&lt;/strong&gt;, along with the rest of UEFI&amp;rsquo;s settings can be configured from its interface directly, or from many different operating systems. On linux for example, the &lt;code&gt;efibootmgr&lt;/code&gt; CLI userspace utility is most commonly used to modify boot entries and the boot order.&lt;/p&gt;
-&lt;p&gt;The latest UEFI Specifications can be found &lt;a href=&#34;http://www.uefi.org/specifications&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Also check out &lt;a href=&#34;https://www.happyassassin.net/2014/01/25/uefi-boot-how-does-that-actually-work-then/&#34;&gt;this amazing post&lt;/a&gt; on UEFI booting, which also covers some side topics.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;partitioning-schemes-gpt-mbr&#34;&gt;Partitioning schemes (GPT, MBR)&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;GPT&lt;/strong&gt; stands for &lt;strong&gt;GUID Partition Table&lt;/strong&gt;. It is a specification and a standard defined in the UEFI Spec (and is therefore designed to be used and to work alongside it) that describes the layout of the partition tables used on block devices, such as hard drives. It is also the successor to the ancient &lt;strong&gt;MBR&lt;/strong&gt; partitioning scheme which was commonly used in conjunction with the &lt;strong&gt;BIOS&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;GUID&lt;/strong&gt; stands for &lt;em&gt;globally unique identifer&lt;/em&gt;. In the linux world, the term &lt;strong&gt;UUID&lt;/strong&gt; (&lt;em&gt;universally unique identifier&lt;/em&gt;) is more commonly used, but they both refer to a &lt;em&gt;unique&lt;/em&gt; 128bit number used to identify a certain object. They are not specific to the topic of partitioning tables, and are very often used in the computing world. Going forward, I will use the term &lt;strong&gt;UUID&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;The &lt;strong&gt;GUID Partition Table&lt;/strong&gt; is named so because of its widespread use of UUIDs.&lt;/p&gt;
-&lt;p&gt;In the GPT:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Each partition is given a &lt;em&gt;unique&lt;/em&gt; UUID when the partition is created. Most linux userspace utilities (e.g. &lt;code&gt;lsblk&lt;/code&gt;, &lt;code&gt;blkid&lt;/code&gt;) refer to this as the &lt;strong&gt;PARTUUID&lt;/strong&gt;. This is important for &lt;a href=&#34;https://wiki.archlinux.org/index.php/Persistent_block_device_naming&#34;&gt;persistent block device naming&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Each partition is also given a &lt;strong&gt;Partition type GUID&lt;/strong&gt; (UUID) which describes its use case. These are standardized and universal. There can exist multiple partitions on a single disk with the same &lt;strong&gt;Partition type GUID&lt;/strong&gt;. Most linux userspace utilities refer to this as the &lt;strong&gt;PARTTYPE&lt;/strong&gt;. &lt;a href=&#34;https://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_type_GUIDs&#34;&gt;Their list can be found here&lt;/a&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Each partition can also be given a textual, Unicode UTF16 encoded &lt;strong&gt;label&lt;/strong&gt;. It is optional. Most linux userspace tools refer to this as the &lt;strong&gt;PARTLABEL&lt;/strong&gt;. Using it for persistent block device naming is not preffered as duplicates can exist.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Each &lt;em&gt;filesystem&lt;/em&gt; on a GPT partition also has a unique UUID. &lt;strong&gt;These exist for legacy and compatibility reasons.&lt;/strong&gt; They are not part of the &lt;em&gt;partition&lt;/em&gt;, or the &lt;em&gt;partition table (GPT)&lt;/em&gt;, but of the &lt;em&gt;filesystem that resides on the partition&lt;/em&gt;. Thus, they are generated by whichever utility generates a &lt;em&gt;filesystem&lt;/em&gt; (e.g. &lt;code&gt;mkfs&lt;/code&gt; on linux), and not by that which generates partitions. Despite that, I decided to list them here to avoid confusion. Most linux userspace tools refer to these as simply &lt;strong&gt;UUID&lt;/strong&gt; (which can be confusing). Their length may not be 128bits, and it may differ between filesystems (e.g. on &lt;code&gt;vfat&lt;/code&gt; it is significantly shorter than on &lt;code&gt;ext4&lt;/code&gt;). Using actual GPT partition &lt;strong&gt;PARTUUID&lt;/strong&gt;s is almost always preffered.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Each &lt;em&gt;filesystem&lt;/em&gt; on a GPT partition can also be given a textual label. The story is similar to that of the previous point. Kept for legacy and compatibility reasons, not part of the &lt;em&gt;partition&lt;/em&gt; or the &lt;em&gt;partition table&lt;/em&gt;, but that of the filesystem. Most linux userpsace tools refer to it as simply &lt;strong&gt;LABEL&lt;/strong&gt; (which can, again, be confusing). As with the actual GPT Partition &lt;strong&gt;PARTLABEL&lt;/strong&gt;, its use is also discouraged as duplicates of it can also exist, but if you are to, for some reason, use a label, prefferably go with the &lt;strong&gt;PARTLABEL&lt;/strong&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;linux-userspace-partitioning-tools&#34;&gt;Linux userspace partitioning tools&lt;/h3&gt;
-&lt;p&gt;Some of the most common tools in the linux userspace that posses the ability of creating GPT schemes on block devices are:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;fdisk&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;gdisk&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;parted&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I will not cover these tools here. For guidance, consult their respective &lt;em&gt;manpages&lt;/em&gt; or the ArchWiki.&lt;/p&gt;
-</description>
+      <description>This document serves as a quick reference to how UEFI and GPT work in regards to booting a modern system.
+ I will not cover BIOS/MBR in this document. I will acknowledge their existence and will compare them to their modern counterparts, but I feel that it is a waste of time to dig deeper into their inner workings. I will also not cover or mention the compatibility possibilites/issues of using UEFI/MBR or BIOS/GPT.</description>
     </item>
     
     <item>
@@ -1091,138 +176,9 @@ It is responsible for most of the booting process, including starting the bootlo
       <pubDate>Wed, 14 Nov 2018 18:05:02 +0200</pubDate>
       
       <guid>https://bool3max.github.io/posts/c_tc_and_decl/</guid>
-      <description>&lt;p&gt;This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;type-conversion&#34;&gt;Type Conversion&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Implicit conversion&lt;/strong&gt; - conversion done automatically by the compiler (no casts) - &lt;strong&gt;assignment conversion&lt;/strong&gt;, or &lt;strong&gt;usual arithmetic conversion&lt;/strong&gt; &amp;ndash; &lt;strong&gt;RULES:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;integer ranks&lt;/strong&gt; (excluding extended and enumerated types):
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;long long int, unsigned long long int&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;long int, unsigned long int&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;int, unsigned int&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;short int, unsigned short int&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;char, singed char, unsigned char&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;_Bool&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;integer promotion&lt;/strong&gt;: an operation that converts any type whose rank is less than &lt;code&gt;int&lt;/code&gt; or &lt;code&gt;unsigned int&lt;/code&gt; to &lt;code&gt;int&lt;/code&gt; (provided it can fit) or else &lt;code&gt;unsigned int&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Usual arithmetic conversion&lt;/strong&gt; &amp;ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument:
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;either operand is floating type&lt;/em&gt;:
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;float -&amp;gt; double -&amp;gt; long double&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;convert the other operand to the same floating type&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;neither operand is a floating type&lt;/em&gt;:
-&lt;ul&gt;
-&lt;li&gt;First, perform integer promotion on both operands&lt;/li&gt;
-&lt;li&gt;If types of both operands are now the same, &lt;strong&gt;the process ends, if not&lt;/strong&gt;, perform the following rules, and stop at the first one that applies
-&lt;ol&gt;
-&lt;li&gt;If both operands have &lt;code&gt;signed&lt;/code&gt; types or if both operands have &lt;code&gt;unsigned&lt;/code&gt; types, convert the operand whose type rank is lower to the type of the operand whose type rank is higher&lt;/li&gt;
-&lt;li&gt;If the operand with the unsigned type has a rank HIGHER or EQUAL to the rank of the signed operand, convert the operand with the singed type to the type of the operand with the unsigned type&lt;/li&gt;
-&lt;li&gt;If the operand with the signed type can represent all of the values of the type with the unsigned operand, convert the unsigned operand to the type of the signed operand&lt;/li&gt;
-&lt;li&gt;If none of the above rules apply, convert BOTH operands to the &lt;code&gt;unsigned&lt;/code&gt; &amp;ldquo;version&amp;rdquo; of the type of the signed operand&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Assignment conversion&lt;/strong&gt;:
-&lt;ul&gt;
-&lt;li&gt;The usual arithmetic conversion rules do not apply here. In assignment conversion, the value of the expression on the right is simply converted to the type of the object on the left. An overflow can happen if the value of the expression on the right is too large to be represented using the type of the object on the left. (&lt;em&gt;side&lt;/em&gt; here represents the left/rights sides of the &lt;code&gt;=&lt;/code&gt; operator)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Explicit conversion&lt;/strong&gt; - type conversion done manually using casts&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;It is important to understand that not all operators behave the same. For example, when using the &lt;strong&gt;binary shift operators&lt;/strong&gt; (&lt;code&gt;&amp;lt;&amp;lt;&lt;/code&gt; and &lt;code&gt;&amp;gt;&amp;gt;&lt;/code&gt;), &lt;strong&gt;integer promotion is always performed on both operands&lt;/strong&gt;, regardless of their types or if they match or not.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;declarations&#34;&gt;Declarations&lt;/h2&gt;
-&lt;p&gt;Before we begin, we have to understand that every object in C has &lt;strong&gt;3&lt;/strong&gt; properties. These are:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Storage duration&lt;/strong&gt;:&lt;/p&gt;
-&lt;p&gt;It determines when the memory for the object is allocted, and when it is realeased/freed.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Storage for objects with &lt;strong&gt;automatic storage duration&lt;/strong&gt; is allocated when the block containing the object is entered, and it is deallocated when the block containing the object is terminated.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;An object with &lt;strong&gt;static storage duration&lt;/strong&gt; stays at the same storage duration as long as the program is running, allowing it to keep its value indefinitely. All objects declared with static storage duration and without an explicit initializer are &lt;strong&gt;zeroed-out&lt;/strong&gt; (be that inside a block using &lt;code&gt;static&lt;/code&gt;, or at file scope without a storage class)&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Scope&lt;/strong&gt;:&lt;/p&gt;
-&lt;p&gt;The scope of the object determines the portion of the program from which the object can be referenced.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Block scope&lt;/strong&gt;: The object is &amp;ldquo;visible&amp;rdquo; from its point of declaration up until the end of the enclosing block.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;File scope&lt;/strong&gt;: The object is &amp;ldquo;visible&amp;rdquo; from its point of declaration up until the end of the enclosing file.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Linkeage&lt;/strong&gt;:&lt;/p&gt;
-&lt;p&gt;The linkeage of an object determines to which extent it can be shared among the different &amp;ldquo;files&amp;rdquo; (compilation units) in a program.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;External linkage&lt;/strong&gt;: An object with &lt;em&gt;external linkage&lt;/em&gt; may be shared with multiple files in a program (perhaps all?)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Internal linkage&lt;/strong&gt;: An object with &lt;em&gt;internal linkage&lt;/em&gt; is limited to the file in which it is declared and can not be shared with multiple files in a program.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;No linkage&lt;/strong&gt;: An object with no linkage cannot be shared at all, and is only visible inside of the function in which it is declared.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;default-properties&#34;&gt;&lt;strong&gt;Default properties&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;The default properties of objects depend on the location in which they were declared.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;objects declared &lt;em&gt;&lt;strong&gt;inside a block&lt;/strong&gt;&lt;/em&gt; (including a function body):
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;&lt;strong&gt;automatic storage duration&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;&lt;strong&gt;block scope&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;&lt;strong&gt;no linkage&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;objects declared &lt;em&gt;&lt;strong&gt;outside any block&lt;/strong&gt;&lt;/em&gt; (the root of the file):
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;&lt;strong&gt;static storage duration&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;&lt;strong&gt;file scope&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;&lt;strong&gt;external linkage&lt;/strong&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;syntax&#34;&gt;&lt;strong&gt;Syntax&lt;/strong&gt;&lt;/h3&gt;
-&lt;p&gt;In &lt;strong&gt;C&lt;/strong&gt;, declarations have the following general syntax:&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;declaration-specifiers declarators_and_initializers ;&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Declaration specifiers&lt;/strong&gt; describe the properties of the objects/functions being declared, while &lt;strong&gt;declarators&lt;/strong&gt; give them names and provide some additional properties.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;Declaration specifiers&lt;/strong&gt;&lt;/em&gt; (4 categories):&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Storage classes&lt;/strong&gt;: There are (4) of them: &lt;code&gt;auto, static, extern, register&lt;/code&gt;. At most one can be present in a declaration, and if so, it should come first.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Type qualifiers&lt;/strong&gt;: There are (3) of them: &lt;code&gt;const, volatile, restrict&lt;/code&gt;. A declaration may contain zero or more type qualifiers.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Type specifiers&lt;/strong&gt;: &lt;code&gt;void, char, short, int, long, float, double, signed, unsigned&lt;/code&gt;. They may be combined, and the order in which they appear doesn&amp;rsquo;t matter. They also include specifications of &lt;code&gt;structs, unions, and enums&lt;/code&gt;, and names created using &lt;code&gt;typedef&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Function specifier&lt;/strong&gt; (C99 only): &lt;code&gt;inline&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I won&amp;rsquo;t cover each category of declaration-specifiers separately as it would be too much. Each category and keyword is described thoroughly in &lt;em&gt;Chapter 18&lt;/em&gt; (K.N. King. C).&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;Declarators&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;They provide the declarations with identifying names, along with additional type information (&lt;code&gt;*, [], etc...&lt;/code&gt; for for pointers and array types).&lt;/li&gt;
-&lt;li&gt;They may be accompanied by initializers.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;union, struct, and enum&lt;/code&gt; declarations can omit the declarators, in which case they declare just the tag and/or enum constant (as an either complete or incomplete type)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
+ Type Conversion   Implicit conversion - conversion done automatically by the compiler (no casts) - assignment conversion, or usual arithmetic conversion &amp;ndash; RULES:
+ integer ranks (excluding extended and enumerated types):  long long int, unsigned long long int long int, unsigned long int int, unsigned int short int, unsigned short int char, singed char, unsigned char _Bool   integer promotion: an operation that converts any type whose rank is less than int or unsigned int to int (provided it can fit) or else unsigned int Usual arithmetic conversion &amp;ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument:  either operand is floating type:  float -&amp;gt; double -&amp;gt; long double convert the other operand to the same floating type   neither operand is a floating type:  First, perform integer promotion on both operands If types of both operands are now the same, the process ends, if not, perform the following rules, and stop at the first one that applies  If both operands have signed types or if both operands have unsigned types, convert the operand whose type rank is lower to the type of the operand whose type rank is higher If the operand with the unsigned type has a rank HIGHER or EQUAL to the rank of the signed operand, convert the operand with the singed type to the type of the operand with the unsigned type If the operand with the signed type can represent all of the values of the type with the unsigned operand, convert the unsigned operand to the type of the signed operand If none of the above rules apply, convert BOTH operands to the unsigned &amp;ldquo;version&amp;rdquo; of the type of the signed operand       Assignment conversion:  The usual arithmetic conversion rules do not apply here.</description>
     </item>
     
     <item>
@@ -1231,65 +187,7 @@ It is responsible for most of the booting process, including starting the bootlo
       <pubDate>Thu, 13 Sep 2018 02:51:42 +0200</pubDate>
       
       <guid>https://bool3max.github.io/posts/int_problem/</guid>
-      <description>&lt;blockquote&gt;
-&lt;p&gt;This is a pretty old document that I wrote for myself back when I was first learning C, but the explanation is pretty good so I published it here for future reference. I hope to soon push a reference document that explains some tricky concepts and things from the C standard that are not so easy to remember off the top of the head (such as type conversion, declarations, storage durations, scopes, etc&amp;hellip;)&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;blockquote&gt;
-&lt;p&gt;For future reference, always refer to the latest C standard as it has answers to many questions of the same nature such as this one. The C11 draft can be found &lt;a href=&#34;https://port70.net/~nsz/c/c11/n1570.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Recently, I posted &lt;a href=&#34;https://stackoverflow.com/questions/51160300/why-do-c-compilers-not-warn-when-assigning-integer-value-too-high-for-signed-typ?noredirect=1#comment89304841_51160300&#34;&gt;this question to StackOverflow&lt;/a&gt; about the following program:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;) {
-    &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; n &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0xFFFFFFFF&lt;/span&gt;;
-    printf(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, n); &lt;span style=&#34;color:#75715e&#34;&gt;//was originaly %u
-&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In this explanation, I will disregard the fact that I used the wrong conversion specifier in my &lt;code&gt;printf&lt;/code&gt; call (used &lt;code&gt;%u&lt;/code&gt; instead of &lt;code&gt;%d&lt;/code&gt;), thus I will replace it with the correct one, and will come back to the topic of &lt;code&gt;%u&lt;/code&gt; later on in the explanation.&lt;/p&gt;
-&lt;p&gt;So, what exactly is happening here? Initially, I was confused as to why this program&amp;rsquo;s output was &lt;code&gt;-1&lt;/code&gt; (at least on a linux/gcc 64bit platform).&lt;/p&gt;
-&lt;p&gt;Let&amp;rsquo;s break the &amp;ldquo;problem&amp;rdquo; down into pieces and analyze each statement and operand separately:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;The hexadecimal constant &lt;code&gt;0xFFFFFFFF&lt;/code&gt;, is in decimal form equal to &lt;code&gt;2 ^ 32 - 1&lt;/code&gt;, or &lt;code&gt;4294967295&lt;/code&gt;, and in binary form, equal to &lt;code&gt;11111111111111111111111111111111&lt;/code&gt;. By the compiler, &lt;strong&gt;it is treated as an &lt;em&gt;unsigned integer&lt;/em&gt;&lt;/strong&gt;, and not as a series of bits. Yes, it can be represented as a series of 32 bits &lt;em&gt;(all 1&amp;rsquo;s)&lt;/em&gt;, but to the compiler that is apparently irrelevant. In C99, hexadecimal and octal constants are tested in the following order:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;int&lt;/li&gt;
-&lt;li&gt;unsigned int&lt;/li&gt;
-&lt;li&gt;long int&lt;/li&gt;
-&lt;li&gt;unsigned long int&lt;/li&gt;
-&lt;li&gt;long long int&lt;/li&gt;
-&lt;li&gt;unsigned long long int&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The first type that is large enough to accomodate the size of the constant is the one that the compiler will use to identify it.
-In this case, &lt;code&gt;0xFFFFFFFF&lt;/code&gt; is too large to fit in the first contender (&lt;code&gt;int&lt;/code&gt;, or rather &lt;code&gt;signed int&lt;/code&gt;), but is just the right size to be treated as an &lt;code&gt;unsigned int&lt;/code&gt;, and thus the compiler treats it as that.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Next, let&amp;rsquo;s look at the left operand of the &lt;code&gt;=&lt;/code&gt; operator, &lt;code&gt;int&lt;/code&gt;. When used by itself, it is the equivalent of &lt;code&gt;singed int&lt;/code&gt;, and thus I will refer to it as that from now on. The largest positive number that a &lt;code&gt;signed int&lt;/code&gt; can store is equal to &lt;code&gt;2 ^ 31 - 1&lt;/code&gt;, or &lt;code&gt;2147483647&lt;/code&gt; in decimal form, due to the need of being able to represent negative integers, and thus having one less bit to work with.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;The types of the operands on both sides of the &lt;code&gt;=&lt;/code&gt; operator &lt;strong&gt;don&amp;rsquo;t match&lt;/strong&gt;. One is a &lt;code&gt;signed int&lt;/code&gt;, the other an &lt;code&gt;unsigned int&lt;/code&gt;. Thus, C has to &lt;em&gt;implicitly&lt;/em&gt; convert the right operant &lt;em&gt;to the type of the left operand&lt;/em&gt;. (in assignment, &lt;strong&gt;the right operand always has to abide by the type of the left one&lt;/strong&gt;). The result of this conversion isn&amp;rsquo;t specified in the C standard, and is therefore implemenation defined.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Per my current understanding, the binary representation of &lt;code&gt;0xFFFFFFFF&lt;/code&gt;, or rather &lt;code&gt;0b11111111111111111111111111111111&lt;/code&gt; is simply copied into the address of our &lt;code&gt;signed int n&lt;/code&gt; varible. Since the variable is a &lt;code&gt;signed integer&lt;/code&gt;, it utilizes &lt;strong&gt;2&amp;rsquo;s complement&lt;/strong&gt;. In 2&amp;rsquo;s complement, a binary representation of &lt;strong&gt;all 1s&lt;/strong&gt; is always equal to &lt;em&gt;&lt;strong&gt;-1&lt;/strong&gt;&lt;/em&gt; in decimal form, and therefore &lt;em&gt;&lt;strong&gt;that is the output of our printf() call&lt;/strong&gt;&lt;/em&gt;.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Why are all 1s always equal to -1 (decimal) in 2&amp;rsquo;s complement? Let&amp;rsquo;s look at the following example using an 8bit number (although the same rules apply for any other number of bits, &lt;em&gt;including 32&lt;/em&gt;):&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;in a regular unsigned system, 1 (decimal) is equal to &lt;code&gt;0b00000001&lt;/code&gt; in binary. Very obvious.&lt;/li&gt;
-&lt;li&gt;Let&amp;rsquo;s get the negative value of this number (-1) using the 2s complement operation:
-&lt;ul&gt;
-&lt;li&gt;first we invert the bits: &lt;code&gt;0b00000001&lt;/code&gt; -&amp;gt; &lt;code&gt;0b11111110&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;then we add 1        : &lt;code&gt;0b11111110&lt;/code&gt; -&amp;gt; &lt;code&gt;0b11111111&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Upon completion of the 2s complement operation, we ended up with a binary representation of the negative version of our original number (-1)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;As you can see, we&amp;rsquo;ve ended up with the number -1 (decimal), that is in binary equal to all 1s (all bits). The same is true when the operation is applied to a number consisting of any number of bits.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;the-u-problem&#34;&gt;The &lt;code&gt;%u&lt;/code&gt; problem&lt;/h2&gt;
-&lt;p&gt;As I said, in my original question I (for some unknown reason?) substituted the &lt;code&gt;%d&lt;/code&gt; conversion specifier with the &lt;code&gt;%u&lt;/code&gt; conversion specifier, resulting in the following statement:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;printf(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%u&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, n);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This statement prints out &lt;code&gt;4294967295&lt;/code&gt;. Why? Let&amp;rsquo;s find out:&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;%u&lt;/code&gt; conversion expects an unsigned integer as the argument. We&amp;rsquo;ve, however, supplied it a &lt;em&gt;singed&lt;/em&gt; integer. However, this time there is no conversion, as the conversion from &lt;code&gt;int&lt;/code&gt; to &lt;code&gt;unsigned int&lt;/code&gt; is impossible, nonexistent, and therefore the behaviour is undefined.&lt;/p&gt;
-&lt;p&gt;In the case of GCC, &lt;code&gt;%u&lt;/code&gt; (or rather, &lt;code&gt;printf&lt;/code&gt;) &lt;em&gt;assumes&lt;/em&gt; that the value passed to it is of the correct type (&lt;code&gt;uint&lt;/code&gt; in this case), and prints its value accordingly. &lt;code&gt;0xFFFFFFFF&lt;/code&gt; in an unsigned system has the decimal value &lt;em&gt;4294967295&lt;/em&gt;, which is then simply printed.&lt;/p&gt;
-</description>
+      <description>This is a pretty old document that I wrote for myself back when I was first learning C, but the explanation is pretty good so I published it here for future reference. I hope to soon push a reference document that explains some tricky concepts and things from the C standard that are not so easy to remember off the top of the head (such as type conversion, declarations, storage durations, scopes, etc&amp;hellip;)</description>
     </item>
     
   </channel>

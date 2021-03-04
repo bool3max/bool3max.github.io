@@ -1,164 +1,104 @@
 <!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Userspace programs for process management on Linux - bool3max&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-<html lang="en-us" data-theme="">
-<head>
-    
-        
-<meta charset="utf-8">
-<meta name="HandheldFriendly" content="True">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="referrer" content="no-referrer-when-downgrade">
-
-<title>Userspace programs for process management on Linux - bool3max&#39;s blog</title>
-<meta name="description" content="Personal blog">
-
-<link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
-
-
-
-    
-
-
-
-
-
-    
-    
-    
-
-    
-        <link rel="stylesheet" href="https://bool3max.github.io/css/style.c4de52a18529073577f6f0d063462e0080e046e20d809d2b9540d5f6c11ad4c5.css" integrity="sha256-xN5SoYUpBzV39vDQY0YuAIDgRuINgJ0rlUDV9sEa1MU=">
-    
-
-
-
-
-
-
-
-<meta property="og:title" content="Userspace programs for process management on Linux" />
-<meta property="og:description" content="kill Despite its name (that it&rsquo;s gotten from its most popular usecase), kill is very versatile tool used to send specified signals to individual processes, or process groups.
-It is part of the util-linux collection of programs and is widely available.
-Here area a couple of usage examples. If no signal name/number is specified, SIGTERM (15) is assumed:
-  kill firefox
-Send a SIGTERM (15) signal to every process invoked as &#39;firefox&#39;." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Userspace programs for process management on Linux" />
+<meta property="og:description" content="Comparing different tools and solutions." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.github.io/posts/linux_userspace_programs_for_process_management/" />
-<meta property="article:published_time" content="2021-01-26T16:10:17+01:00" />
-<meta property="article:modified_time" content="2021-01-26T16:10:17+01:00" />
+<meta property="og:url" content="https://bool3max.github.io/posts/linux_userspace_programs_for_process_management/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-01-26T16:10:17&#43;01:00" />
+<meta property="article:modified_time" content="2021-01-26T16:10:17&#43;01:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Userspace programs for process management on Linux"/>
-<meta name="twitter:description" content="kill Despite its name (that it&rsquo;s gotten from its most popular usecase), kill is very versatile tool used to send specified signals to individual processes, or process groups.
-It is part of the util-linux collection of programs and is widely available.
-Here area a couple of usage examples. If no signal name/number is specified, SIGTERM (15) is assumed:
-  kill firefox
-Send a SIGTERM (15) signal to every process invoked as &#39;firefox&#39;."/>
+<meta name="twitter:description" content="Comparing different tools and solutions."/>
 
-
-
-
-
-
-
-
-
-    
+	<link href="https://bool3max.github.io/css/fonts.css" rel="stylesheet">
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://bool3max.github.io/css/main.css" />
+	
 </head>
 <body>
-    <a class="skip-main" href="#main">Skip to main content</a>
-    <div class="container">
-        <header class="common-header"> 
-            
-                <h1 class="site-title">
-    <a href="/">bool3max&#39;s blog</a>
-</h1>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://bool3max.github.io/">bool3max&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="https://github.com/bool3max/">GitHub</a>
+		
+		<a href="/posts/">All posts</a>
+		
+	</nav>
+</header>
 
-    <nav>
-        
-        
-        <a class="" href="https://github.com/bool3max/" title="GitHub">GitHub</a>
-        
-        <a class="" href="https://bool3max.github.io/posts/" title="Archive">Archive</a>
-        
-    </nav>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Userspace programs for process management on Linux</h1>
+			<div class="meta">Posted on Jan 26, 2021</div>
+		</div>
+		
 
-
-            
-        </header>
-        <main id="main" tabindex="-1"> 
-            
-    
-    
-    <article class="post">
-        <header class="post-header">
-            <h1 class="post-title">Userspace programs for process management on Linux</h1>
-        </header>
-        <div class="content">
-            <h1 id="kill"><strong><code>kill</code></strong></h1>
+		<section class="body">
+			<h1 id="kill"><strong><code>kill</code></strong></h1>
 <p>Despite its name (that it&rsquo;s gotten from its most popular usecase), <code>kill</code> is very versatile tool used to send specified signals to individual
 processes, or process groups.</p>
 <p>It is part of the <code>util-linux</code> collection of programs and is widely available.</p>
 <p>Here area a couple of usage examples. If no signal name/number is specified, <strong><code>SIGTERM (15)</code></strong> is assumed:</p>
 <ul>
-<li>
-<p><code>kill firefox</code></p>
-<p>Send a <code>SIGTERM</code> (15) signal to every process invoked as <code>'firefox'</code>.</p>
-</li>
-<li>
-<p><code>kill 15222 152101 -8</code></p>
-<p>Send signal number <code>8</code> to PIDs <code>15222</code> and <code>152101</code>.</p>
-</li>
-<li>
-<p><code>kill 152101 firefox -SIGKILL</code></p>
-<p>Send a <code>SIGKILL</code> (9) signal to PID 152101 and every process invoked as <code>firefox</code>.</p>
-</li>
-<li>
-<p><code>kill -s 19 1022 kitty</code></p>
-<p>Send signal number <code>19</code> to PID 1022 and every process invoked as <code>kitty</code>.</p>
-</li>
-<li>
-<p><code>kill -SIGKILL -933</code></p>
-<p>Send a <code>SIGKILL (9)</code> signal to all processes in the process group <code>933</code>.</p>
-</li>
-<li>
-<p><code>kill -p firefox</code></p>
-<p>Don&rsquo;t send any signals, but print PIDs of named processes listed, and exit.</p>
-</li>
+<li><code>kill firefox</code>:</li>
 </ul>
+<p>Send a <code>SIGTERM</code> (15) signal to every process invoked as <code>'firefox'</code>.</p>
+<ul>
+<li><code>kill 15222 152101 -8</code>:</li>
+</ul>
+<p>Send signal number <code>8</code> to PIDs <code>15222</code> and <code>152101</code>.</p>
+<ul>
+<li><code>kill 152101 firefox -SIGKILL</code></li>
+</ul>
+<p>Send a <code>SIGKILL</code> (9) signal to PID 152101 and every process invoked as <code>firefox</code>.</p>
+<ul>
+<li><code>kill -s 19 1022 kitty</code></li>
+</ul>
+<p>Send signal number <code>19</code> to PID 1022 and every process invoked as <code>kitty</code>.</p>
+<ul>
+<li><code>kill -SIGKILL -933</code></li>
+</ul>
+<p>Send a <code>SIGKILL (9)</code> signal to all processes in the process group <code>933</code>.</p>
+<ul>
+<li><code>kill -p firefox</code></li>
+</ul>
+<p>Don&rsquo;t send any signals, but print PIDs of named processes listed, and exit.</p>
 <h1 id="pidof"><strong><code>pidof</code></strong></h1>
 <p><code>pidof</code> is a tool used to list PIDs of processes by name. It doesn&rsquo;t conduct any manipulation. It&rsquo;s very useful when dealing with other
 , more primitive tools that conduct process manipulation but don&rsquo;t have the ability to find PIDs based on their names.</p>
 <p>Here are some usage examples:</p>
 <ul>
-<li>
-<p><code>pidof firefox</code></p>
-<p>List PIDs of all processes with the name <code>'firefox'</code>. PIDs are by default separated by space.</p>
-</li>
-<li>
-<p><code>pidof firefox kitty -S x</code></p>
-<p>List PIDs of all processes with the names <code>'firefox'</code> or <code>'kitty'</code>, and separate PIDs with the character <code>'x'</code>.</p>
-</li>
+<li><code>pidof firefox</code></li>
 </ul>
+<p>List PIDs of all processes with the name <code>'firefox'</code>. PIDs are by default separated by space.</p>
+<ul>
+<li><code>pidof firefox kitty -S x</code></li>
+</ul>
+<p>List PIDs of all processes with the names <code>'firefox'</code> or <code>'kitty'</code>, and separate PIDs with the character <code>'x'</code>.</p>
 <h1 id="killall"><strong><code>killall</code></strong></h1>
 <p><code>killall</code> is <code>kill</code> on steroids. In addition to support the same operations as <code>kill</code>, it sports a bunch of other features, such as case
 insensitive search, matching process names using regexes, killing all processes belonging to a group of a specified process, filtering processes
 based on spawn-time and owning user&hellip;</p>
 <p>Here are some usage examples that demonstrate functionality not available in <code>kill</code>:</p>
 <ul>
-<li>
-<p><code>killall firefox -Ii --user bogdan --younger-than 4.2m</code></p>
+<li><code>killall firefox -Ii --user bogdan --younger-than 4.2m</code></li>
+</ul>
 <p>Case-insensitively match every process' name agaisnt <code>firefox</code> that belongs to the user <code>bogdan</code>, was spawned less than 4.2 minutes ago,
 and send a <code>SIGTERM (15)</code> to it. Interactively ask the user to confirm each match.</p>
-</li>
-<li>
-<p><code>killall -I -9 -r 'kitty[1-9]+\.19'</code></p>
+<ul>
+<li><code>killall -I -9 -r 'kitty[1-9]+\.19'</code></li>
+</ul>
 <p>Case-insenstively match every process against the specified regex, and send it a <code>SIGKILL (9)</code> signal, prompting the user before every
 match.</p>
-</li>
-</ul>
 <h1 id="pgrep-pkill"><strong><code>pgrep, pkill</code></strong></h1>
 <p>These two are pretty similar <code>killall</code>, though they have even more functionality. <strong><code>pgrep</code></strong> matches process names against regexes and prints them out, while <strong><code>pkill</code></strong> does the
 same in addition to sending signals.</p>
@@ -170,117 +110,21 @@ either the <code>bogdan</code>, or <code>root</code> users.</p>
 <p>In addition to the tools described here, other, more sophisticated alternatives have their ways of manipulating processes as well. Tools such as
 <code>top</code> or <code>htop</code> for example allow you to browse and manipulate processes in real time.</p>
 
-        </div>
-        
+		</section>
 
-
-<div class="post-info">
-    
-        <div class="post-date">2021-01-26</div>
-    
-    <div class="post-taxonomies">
-        
-            
-    </div>
-</div>
-
-    </article>
-
-    
-
-    
-
-
-        </main>
-        
-            <footer class="common-footer">
-    
-    
-
-    <div class="common-footer-bottom">
-        
-        <div class="copyright">
-            <p>© Bogdan Mitrović, 2021<br>
-            </p>  
-        </div> 
-
-        
-
-    
-
-
-
-    <button class="theme-switcher">
-        Dark theme
-    </button>
-
-    <script>
-    const STORAGE_KEY = 'user-color-scheme'
-    const defaultTheme = "dark"
-
-    let currentTheme
-    let switchButton
-    let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
-
-    const autoChangeScheme = e => {
-        currentTheme = e.matches ? 'dark' : 'light'
-        document.documentElement.setAttribute('data-theme', currentTheme)
-        changeButtonText()
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        switchButton = document.querySelector('.theme-switcher')
-        currentTheme = detectCurrentScheme()
-        if (currentTheme == 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark')
-        }
-        if (currentTheme == 'auto') {
-            autoChangeScheme(autoDefinedScheme);
-            autoDefinedScheme.addListener(autoChangeScheme);
-        }
-        changeButtonText()
-        switchButton.addEventListener('click', switchTheme, false)
-    })
-
-    function detectCurrentScheme() {
-        if (localStorage.getItem(STORAGE_KEY)) {
-            return localStorage.getItem(STORAGE_KEY)
-        } 
-        if (defaultTheme) {
-            return defaultTheme
-        } 
-        if (!window.matchMedia) {
-            return 'light'
-        } 
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark'
-        }
-        return 'light'
-    }
-
-    function changeButtonText()
-    {   
-        switchButton.textContent = currentTheme == 'dark' ?  "Light theme" : "Dark theme"
-    }
-
-    function switchTheme(e) {
-        if (currentTheme == 'dark') {
-            localStorage.setItem(STORAGE_KEY, 'light')
-            document.documentElement.setAttribute('data-theme', 'light')
-            currentTheme = 'light'
-        } else {
-            localStorage.setItem(STORAGE_KEY, 'dark')
-            document.documentElement.setAttribute('data-theme', 'dark')
-            currentTheme = 'dark'
-        }
-        changeButtonText()
-    }
-    </script>
-   
-    </div>
+		<div class="post-tags">
+			
+			
+			
+		</div>
+	</article>
+</main>
+<footer>
+<hr>⚡️
+	2021  © Bogdan Mitrović 
 </footer>
 
-        
-    </div>
-</body>
+
+</div>
+    </body>
 </html>

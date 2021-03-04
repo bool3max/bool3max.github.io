@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>&#39;man&#39;, pagers, and &#39;less&#39; - bool3max&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="&#39;man&#39;, pagers, and &#39;less&#39;" />
+<meta property="og:description" content="How does &#39;man&#39; display the manuals?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/man_and_pagers_plus_colors/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-02-17T13:44:42&#43;01:00" />
+<meta property="article:modified_time" content="2021-02-17T13:44:42&#43;01:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="&#39;man&#39;, pagers, and &#39;less&#39;"/>
+<meta name="twitter:description" content="How does &#39;man&#39; display the manuals?"/>
+
+	<link href="https://bool3max.github.io/css/fonts.css" rel="stylesheet">
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://bool3max.github.io/css/main.css" />
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://bool3max.github.io/">bool3max&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="https://github.com/bool3max/">GitHub</a>
+		
+		<a href="/posts/">All posts</a>
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">&#39;man&#39;, pagers, and &#39;less&#39;</h1>
+			<div class="meta">Posted on Feb 17, 2021 <span class="draft-label">DRAFT</span> </div>
+		</div>
+		
+
+		<section class="body">
+			<p>When you normally execute, say <code>man 3 printf</code>, <code>man</code> simply does the job of looking up and fetching the particular manpage. The actual
+act of <em>displaying</em> it, is done by a <strong>pager</strong>.</p>
+<p>The default pager that <code>man</code> uses, <strong><code>less</code></strong>, is in essence a simple TUI program that allows for easy navigation of a particular text
+buffer (scrolling, searching, etc&hellip; all using vi-like keybindings). It can output stylized text (bolds, underlines, etc&hellip;) which it does
+by default for manpages.</p>
+<p>If <code>less</code> is not found on the system, <code>man</code> falls back to pure <code>cat</code>.</p>
+<p>A specific pager can be chosen by setting the <code>--pager</code> option, or by using the <code>MANPAGER</code>/<code>PAGER</code> environment variables (the former of
+which has priority).</p>
+<h2 id="colorized-manpages">Colorized manpages</h2>
+<p>Colorization in manpages is possible when using <code>less</code> by setting <code>LESS_TERMCAP_*</code> environment variables (<a href="https://unix.stackexchange.com/questions/108699/documentation-on-less-termcap-variables">see here</a>
+for info and a bit of history).</p>
+<p>Those strings represent ANSI escape sequences that <code>less</code> outputs in certain situations. For example, <code>LESS_TERMCAP_md</code> is the sequence
+that <code>less</code> will output whenever it&rsquo;s instructed to bold a specific part of the text.</p>
+<p>The strings have quite cryptic names as they&rsquo;re artifacts of an old library (<code>termcap</code>) that less used to access the terminal back in the day,
+but that were kept for compatibility reasons. These variables also aren&rsquo;t mentioned anywhere in less' documentation.</p>
+<p>Below is a fish function that I use to achieve colorization in manpages. It exports a set of these <code>LESS_TERMCAP_*</code> variables to my preference,
+and then simply runs <code>man</code>, which in turn runs <code>less</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#66d9ef">function</span> man --description <span style="color:#e6db74">&#34;manpages using the less pager but with 8bit colors&#34;</span>
+    set -x LESS_TERMCAP_md <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;31m&#39;</span><span style="color:#f92672">)</span>
+    set -x LESS_TERMCAP_me <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
+    set -x LESS_TERMCAP_se <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
+    set -x LESS_TERMCAP_so <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;44;33m&#39;</span><span style="color:#f92672">)</span>
+    set -x LESS_TERMCAP_ue <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span> 
+    set -x LESS_TERMCAP_us <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;32m&#39;</span><span style="color:#f92672">)</span>
+
+    command man $argv
+end
+</code></pre></div><h2 id="a-more-modern-approach">A more modern approach</h2>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			
+		</div>
+	</article>
+</main>
+<footer>
+<hr>⚡️
+	2021  © Bogdan Mitrović 
+</footer>
+
+
+</div>
+    </body>
+</html>

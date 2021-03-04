@@ -1,97 +1,49 @@
 <!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Understanding the ELF file structure - bool3max&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-<html lang="en-us" data-theme="">
-<head>
-    
-        
-<meta charset="utf-8">
-<meta name="HandheldFriendly" content="True">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="referrer" content="no-referrer-when-downgrade">
-
-<title>Understanding the ELF file structure - bool3max&#39;s blog</title>
-<meta name="description" content="Personal blog">
-
-<link rel="icon" type="image/x-icon" href="https://bool3max.github.io/favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="https://bool3max.github.io/favicon.png">
-
-
-
-    
-
-
-
-
-
-    
-    
-    
-
-    
-        <link rel="stylesheet" href="https://bool3max.github.io/css/style.c4de52a18529073577f6f0d063462e0080e046e20d809d2b9540d5f6c11ad4c5.css" integrity="sha256-xN5SoYUpBzV39vDQY0YuAIDgRuINgJ0rlUDV9sEa1MU=">
-    
-
-
-
-
-
-
-
-<meta property="og:title" content="Understanding the ELF file structure" />
-<meta property="og:description" content="I recently took it upon myself to, at least at the surface level, understand how the ELF (&quot;Executable and Linkable Format&quot;) works. In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.
-The result of that is p3elf, during the development of which I familiarized myself with ELF, binary IO in python, as well as setuptools and publishing python packages on PyPI." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Understanding the ELF file structure" />
+<meta property="og:description" content="Describing the structure of the ELF file format." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.github.io/posts/elf/" />
-<meta property="article:published_time" content="2020-08-09T18:54:26+02:00" />
-<meta property="article:modified_time" content="2020-08-09T18:54:26+02:00" />
+<meta property="og:url" content="https://bool3max.github.io/posts/elf/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-08-09T18:54:26&#43;02:00" />
+<meta property="article:modified_time" content="2020-08-09T18:54:26&#43;02:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Understanding the ELF file structure"/>
-<meta name="twitter:description" content="I recently took it upon myself to, at least at the surface level, understand how the ELF (&quot;Executable and Linkable Format&quot;) works. In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.
-The result of that is p3elf, during the development of which I familiarized myself with ELF, binary IO in python, as well as setuptools and publishing python packages on PyPI."/>
+<meta name="twitter:description" content="Describing the structure of the ELF file format."/>
 
-
-
-
-
-
-
-
-
-    
+	<link href="https://bool3max.github.io/css/fonts.css" rel="stylesheet">
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://bool3max.github.io/css/main.css" />
+	
 </head>
 <body>
-    <a class="skip-main" href="#main">Skip to main content</a>
-    <div class="container">
-        <header class="common-header"> 
-            
-                <h1 class="site-title">
-    <a href="/">bool3max&#39;s blog</a>
-</h1>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://bool3max.github.io/">bool3max&#39;s blog</a>
+	</div>
+	<nav>
+		
+		<a href="https://github.com/bool3max/">GitHub</a>
+		
+		<a href="/posts/">All posts</a>
+		
+	</nav>
+</header>
 
-    <nav>
-        
-        
-        <a class="" href="https://github.com/bool3max/" title="GitHub">GitHub</a>
-        
-        <a class="" href="https://bool3max.github.io/posts/" title="Archive">Archive</a>
-        
-    </nav>
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Understanding the ELF file structure</h1>
+			<div class="meta">Posted on Aug 9, 2020</div>
+		</div>
+		
 
-
-            
-        </header>
-        <main id="main" tabindex="-1"> 
-            
-    
-    
-    <article class="post">
-        <header class="post-header">
-            <h1 class="post-title favorite">Understanding the ELF file structure</h1>
-        </header>
-        <div class="content">
-            <p>I recently took it upon myself to, at least at the surface level, understand how the ELF (&quot;<em>Executable and Linkable Format</em>&quot;) works.
+		<section class="body">
+			<p>I recently took it upon myself to, at least at the surface level, understand how the ELF (&quot;<em>Executable and Linkable Format</em>&quot;) works.
 In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.</p>
 <p>The result of that is <a href="https://github.com/bool3max/p3elf"><strong>p3elf</strong></a>, during the development of which I familiarized myself with ELF, binary IO in python, as well as <code>setuptools</code> and publishing python packages on <a href="https://pypi.org/project/p3elf">PyPI</a>.</p>
 <p>This post will mainly serve as a short future reference of the structure of ELF files and will most likely be updated in the future.</p>
@@ -204,117 +156,21 @@ In order to do that, I set out to create a tiny python3 module for parsing (meta
 </ul>
 <hr>
 
-        </div>
-        
+		</section>
 
-
-<div class="post-info">
-    
-        <div class="post-date">2020-08-09</div>
-    
-    <div class="post-taxonomies">
-        
-            
-    </div>
-</div>
-
-    </article>
-
-    
-
-    
-
-
-        </main>
-        
-            <footer class="common-footer">
-    
-    
-
-    <div class="common-footer-bottom">
-        
-        <div class="copyright">
-            <p>© Bogdan Mitrović, 2021<br>
-            </p>  
-        </div> 
-
-        
-
-    
-
-
-
-    <button class="theme-switcher">
-        Dark theme
-    </button>
-
-    <script>
-    const STORAGE_KEY = 'user-color-scheme'
-    const defaultTheme = "dark"
-
-    let currentTheme
-    let switchButton
-    let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
-
-    const autoChangeScheme = e => {
-        currentTheme = e.matches ? 'dark' : 'light'
-        document.documentElement.setAttribute('data-theme', currentTheme)
-        changeButtonText()
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        switchButton = document.querySelector('.theme-switcher')
-        currentTheme = detectCurrentScheme()
-        if (currentTheme == 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark')
-        }
-        if (currentTheme == 'auto') {
-            autoChangeScheme(autoDefinedScheme);
-            autoDefinedScheme.addListener(autoChangeScheme);
-        }
-        changeButtonText()
-        switchButton.addEventListener('click', switchTheme, false)
-    })
-
-    function detectCurrentScheme() {
-        if (localStorage.getItem(STORAGE_KEY)) {
-            return localStorage.getItem(STORAGE_KEY)
-        } 
-        if (defaultTheme) {
-            return defaultTheme
-        } 
-        if (!window.matchMedia) {
-            return 'light'
-        } 
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            return 'dark'
-        }
-        return 'light'
-    }
-
-    function changeButtonText()
-    {   
-        switchButton.textContent = currentTheme == 'dark' ?  "Light theme" : "Dark theme"
-    }
-
-    function switchTheme(e) {
-        if (currentTheme == 'dark') {
-            localStorage.setItem(STORAGE_KEY, 'light')
-            document.documentElement.setAttribute('data-theme', 'light')
-            currentTheme = 'light'
-        } else {
-            localStorage.setItem(STORAGE_KEY, 'dark')
-            document.documentElement.setAttribute('data-theme', 'dark')
-            currentTheme = 'dark'
-        }
-        changeButtonText()
-    }
-    </script>
-   
-    </div>
+		<div class="post-tags">
+			
+			
+			
+		</div>
+	</article>
+</main>
+<footer>
+<hr>⚡️
+	2021  © Bogdan Mitrović 
 </footer>
 
-        
-    </div>
-</body>
+
+</div>
+    </body>
 </html>
