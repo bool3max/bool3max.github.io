@@ -60,15 +60,15 @@ that <code>less</code> will output whenever it&rsquo;s instructed to bold a spec
 but that were kept for compatibility reasons. These variables also aren&rsquo;t mentioned anywhere in less' documentation.</p>
 <p>Below is a fish function that I use to achieve colorization in manpages. It exports a set of these <code>LESS_TERMCAP_*</code> variables to my preference,
 and then simply runs <code>man</code>, which in turn runs <code>less</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#66d9ef">function</span> man --description <span style="color:#e6db74">&#34;manpages using the less pager but with 8bit colors&#34;</span>
-    set -x LESS_TERMCAP_md <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;31m&#39;</span><span style="color:#f92672">)</span>
-    set -x LESS_TERMCAP_me <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
-    set -x LESS_TERMCAP_se <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
-    set -x LESS_TERMCAP_so <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;44;33m&#39;</span><span style="color:#f92672">)</span>
-    set -x LESS_TERMCAP_ue <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span> 
-    set -x LESS_TERMCAP_us <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;32m&#39;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="font-weight:bold;text-decoration:underline">function</span> man --description <span style="color:#666;font-style:italic">&#34;manpages using the less pager but with 8bit colors&#34;</span>
+    <span style="font-weight:bold;font-style:italic">set</span> -x LESS_TERMCAP_md (<span style="font-weight:bold;font-style:italic">echo</span> -e <span style="color:#666;font-style:italic">&#39;\e[01;31m&#39;</span>)
+    <span style="font-weight:bold;font-style:italic">set</span> -x LESS_TERMCAP_me (<span style="font-weight:bold;font-style:italic">echo</span> -e <span style="color:#666;font-style:italic">&#39;\e[0m&#39;</span>)
+    <span style="font-weight:bold;font-style:italic">set</span> -x LESS_TERMCAP_se (<span style="font-weight:bold;font-style:italic">echo</span> -e <span style="color:#666;font-style:italic">&#39;\e[0m&#39;</span>)
+    <span style="font-weight:bold;font-style:italic">set</span> -x LESS_TERMCAP_so (<span style="font-weight:bold;font-style:italic">echo</span> -e <span style="color:#666;font-style:italic">&#39;\e[01;44;33m&#39;</span>)
+    <span style="font-weight:bold;font-style:italic">set</span> -x LESS_TERMCAP_ue (<span style="font-weight:bold;font-style:italic">echo</span> -e <span style="color:#666;font-style:italic">&#39;\e[0m&#39;</span>) 
+    <span style="font-weight:bold;font-style:italic">set</span> -x LESS_TERMCAP_us (<span style="font-weight:bold;font-style:italic">echo</span> -e <span style="color:#666;font-style:italic">&#39;\e[01;32m&#39;</span>)
 
-    command man $argv
+    <span style="font-weight:bold;font-style:italic">command</span> man <span style="color:#666;font-weight:bold;font-style:italic">$argv</span>
 end
 </code></pre></div><h2 id="a-more-modern-approach">A more modern approach</h2>
 

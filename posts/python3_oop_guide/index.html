@@ -54,71 +54,71 @@
 </ul>
 <h1 id="how-does-self-actually-work">How does <code>self</code> actually work?</h1>
 <p>Consider the following class definition:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Dog</span>:
-    <span style="color:#66d9ef">def</span> __init__(self, name):
-        self<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> name
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">class</span> <span style="color:#666;font-weight:bold;font-style:italic">Dog</span>:
+    <span style="font-weight:bold;text-decoration:underline">def</span> __init__(<span style="font-weight:bold;font-style:italic">self</span>, name):
+        <span style="font-weight:bold;font-style:italic">self</span>.name = name
 
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">speak</span>(self, age):
-        <span style="color:#66d9ef">return</span> f<span style="color:#e6db74">&#34;My name is {self.name} and I am {age} years old.&#34;</span>
+    <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">speak</span>(<span style="font-weight:bold;font-style:italic">self</span>, age):
+        <span style="font-weight:bold;text-decoration:underline">return</span> f<span style="color:#666;font-style:italic">&#34;My name is {self.name} and I am {age} years old.&#34;</span>
 
-jake <span style="color:#f92672">=</span> Dog(<span style="color:#e6db74">&#34;Jake&#34;</span>)
-<span style="color:#66d9ef">print</span>(jake<span style="color:#f92672">.</span>speak(<span style="color:#ae81ff">3</span>))
+jake = Dog(<span style="color:#666;font-style:italic">&#34;Jake&#34;</span>)
+<span style="font-weight:bold;text-decoration:underline">print</span>(jake.speak(3))
 
-<span style="color:#e6db74">&#34;My name is Jake and I am 3 years old.&#34;</span>
+<span style="color:#666;font-style:italic">&#34;My name is Jake and I am 3 years old.&#34;</span>
 </code></pre></div><p>When we call <code>jake.speak</code>, the <code>self</code> arguement is &ldquo;automatically&rdquo; passed into the method because the method belongs to an already instantiated instance of a class.</p>
 <p>We can achieve the same effect by instantiating <code>jake</code>, then calling <code>Dog.speak</code> directly while passing the value of the <code>self</code> argument manually, like so:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">jake <span style="color:#f92672">=</span> Dog(<span style="color:#e6db74">&#34;jake&#34;</span>)
-<span style="color:#66d9ef">print</span>(Dog<span style="color:#f92672">.</span>speak(jake, <span style="color:#ae81ff">3</span>))
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">jake = Dog(<span style="color:#666;font-style:italic">&#34;jake&#34;</span>)
+<span style="font-weight:bold;text-decoration:underline">print</span>(Dog.speak(jake, 3))
 
-<span style="color:#e6db74">&#34;My name is Jake and I am 3 years old.&#34;</span>
+<span style="color:#666;font-style:italic">&#34;My name is Jake and I am 3 years old.&#34;</span>
 </code></pre></div><p>The same is true for the <code>__init__</code> method, which is a method like any other, except that it is called automatically when instantiating new instances of the class.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> types
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">import</span> <span style="color:#666;font-weight:bold;font-style:italic">types</span>
 
-jake <span style="color:#f92672">=</span> types<span style="color:#f92672">.</span>SimpleNamespace()
-Dog<span style="color:#f92672">.</span>__init__(jake, <span style="color:#e6db74">&#34;Jake&#34;</span>)
+jake = types.SimpleNamespace()
+Dog.__init__(jake, <span style="color:#666;font-style:italic">&#34;Jake&#34;</span>)
 
-<span style="color:#66d9ef">print</span>(jake<span style="color:#f92672">.</span>name)
+<span style="font-weight:bold;text-decoration:underline">print</span>(jake.name)
 
-<span style="color:#e6db74">&#34;Jake&#34;</span>
+<span style="color:#666;font-style:italic">&#34;Jake&#34;</span>
 </code></pre></div><p>Of course this is undesirable, as now we cannot access other methods defined in the class (e.g. <code>speak</code>).</p>
 <h1 id="super-and-method-resolution-order-mro"><code>super()</code> and Method Resolution Order (MRO)</h1>
 <p>Method Resolution Order (<em>MRO</em>) is the order in which method lookup is performed by the interpreter for an instance of a given class.</p>
 <p>Defined classes have an <code>__mro__</code> attribute that results in a tuple describing the MRO.</p>
 <blockquote>
 <p>Instances don&rsquo;t have this method defined, but this can very easily be circumvented using the special <em><code>instance</code></em>.<code>__class__</code> attribute, which returns the reference of the class that the instance belongs to:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(instance<span style="color:#f92672">.</span>__class__<span style="color:#f92672">.</span>__mro__)
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">print</span>(instance.__class__.__mro__)
 </code></pre></div></blockquote>
 <p>Examine the following code:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>:
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mymethod</span>(self):
-        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;mymethod of class A&#34;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">class</span> <span style="color:#666;font-weight:bold;font-style:italic">A</span>:
+    <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">mymethod</span>(<span style="font-weight:bold;font-style:italic">self</span>):
+        <span style="font-weight:bold;text-decoration:underline">return</span> <span style="color:#666;font-style:italic">&#34;mymethod of class A&#34;</span>
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">B</span>(A):
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mymethod</span>(self):
-        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;mymethod of class B&#34;</span>
+<span style="font-weight:bold;text-decoration:underline">class</span> <span style="color:#666;font-weight:bold;font-style:italic">B</span>(A):
+    <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">mymethod</span>(<span style="font-weight:bold;font-style:italic">self</span>):
+        <span style="font-weight:bold;text-decoration:underline">return</span> <span style="color:#666;font-style:italic">&#34;mymethod of class B&#34;</span>
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>(B):
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mymethod</span>(self):
-        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;mymethod of class C&#34;</span>
+<span style="font-weight:bold;text-decoration:underline">class</span> <span style="color:#666;font-weight:bold;font-style:italic">C</span>(B):
+    <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">mymethod</span>(<span style="font-weight:bold;font-style:italic">self</span>):
+        <span style="font-weight:bold;text-decoration:underline">return</span> <span style="color:#666;font-style:italic">&#34;mymethod of class C&#34;</span>
     
-instance <span style="color:#f92672">=</span> C()
-<span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;C.__mro__ = {C.__mro__}&#34;</span>)
-<span style="color:#66d9ef">print</span>(instance<span style="color:#f92672">.</span>mymethod())
+instance = C()
+<span style="font-weight:bold;text-decoration:underline">print</span>(f<span style="color:#666;font-style:italic">&#34;C.__mro__ = {C.__mro__}&#34;</span>)
+<span style="font-weight:bold;text-decoration:underline">print</span>(instance.mymethod())
 </code></pre></div><p>This then logs:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">C<span style="color:#f92672">.</span>__mro__ <span style="color:#f92672">=</span> (<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">__main__</span><span style="color:#f92672">.</span>C<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#f92672">.</span><span style="color:#e6db74">B</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#f92672">.</span>A<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>object<span style="color:#e6db74">&#39;&gt;)</span>
-mymethod of <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">C.__mro__ = (&lt;<span style="font-weight:bold;text-decoration:underline">class</span> <span style="">&#39;</span><span style="color:#666;font-weight:bold;font-style:italic">__main__</span>.C<span style="color:#666;font-style:italic">&#39;&gt;, &lt;class &#39;</span>__main__.<span style="color:#666;font-style:italic">B</span><span style="color:#666;font-style:italic">&#39;&gt;, &lt;class &#39;</span>__main__.A<span style="color:#666;font-style:italic">&#39;&gt;, &lt;class &#39;</span><span style="font-weight:bold;font-style:italic">object</span><span style="color:#666;font-style:italic">&#39;&gt;)</span>
+mymethod of <span style="font-weight:bold;text-decoration:underline">class</span> <span style="color:#666;font-weight:bold;font-style:italic">C</span>
 </code></pre></div><p>This means that any method lookups done on <em>instances</em> of class C will first be done on methods defined class C, then class B, then class A, and then in the &ldquo;base&rdquo; <em>object</em> class, <strong>stopping at the first class in which the desired method is found</strong>, because every class in the &ldquo;chain&rdquo; inherits the next one (C inherits B, which inherits A which by default inherits <code>object</code>).</p>
 <p>In our case, the <em><strong>mymethod</strong></em> method was in fact defined in the first class listed in the <code>__mro__</code> tuple, so naturally, it is <code>C.mymethod</code> that gets called in the end.</p>
 <p>If we remove the <code>mymethod</code> method from the <code>C</code> class, <strong>the MRO will stay the same</strong>, however since <code>mymethod</code> doesn&rsquo;t exist inside of the <code>C</code> class anymore, it will instead &ldquo;come&rdquo; from the next one in the MRO chain that it <em>is</em> defined in, in this case the <code>B</code> class.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>(B):
-    <span style="color:#66d9ef">pass</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">class</span> <span style="color:#666;font-weight:bold;font-style:italic">C</span>(B):
+    <span style="font-weight:bold;text-decoration:underline">pass</span>
 
-instance <span style="color:#f92672">=</span> C()
-<span style="color:#66d9ef">print</span>(f<span style="color:#e6db74">&#34;C.__mro__ = {C.__mro__}&#34;</span>)
-<span style="color:#66d9ef">print</span>(instance<span style="color:#f92672">.</span>mymethod())
+instance = C()
+<span style="font-weight:bold;text-decoration:underline">print</span>(f<span style="color:#666;font-style:italic">&#34;C.__mro__ = {C.__mro__}&#34;</span>)
+<span style="font-weight:bold;text-decoration:underline">print</span>(instance.mymethod())
 </code></pre></div><p>this logs:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">C<span style="color:#f92672">.</span>__mro__ <span style="color:#f92672">=</span> (<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">__main__</span><span style="color:#f92672">.</span>C<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#f92672">.</span><span style="color:#e6db74">B</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#f92672">.</span>A<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>object<span style="color:#e6db74">&#39;&gt;)</span>
-mymethod of <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">B</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">C.__mro__ = (&lt;<span style="font-weight:bold;text-decoration:underline">class</span> <span style="">&#39;</span><span style="color:#666;font-weight:bold;font-style:italic">__main__</span>.C<span style="color:#666;font-style:italic">&#39;&gt;, &lt;class &#39;</span>__main__.<span style="color:#666;font-style:italic">B</span><span style="color:#666;font-style:italic">&#39;&gt;, &lt;class &#39;</span>__main__.A<span style="color:#666;font-style:italic">&#39;&gt;, &lt;class &#39;</span><span style="font-weight:bold;font-style:italic">object</span><span style="color:#666;font-style:italic">&#39;&gt;)</span>
+mymethod of <span style="font-weight:bold;text-decoration:underline">class</span> <span style="color:#666;font-weight:bold;font-style:italic">B</span>
 </code></pre></div><h2 id="super-explained"><code>super()</code> explained</h2>
 <p>The <a href="https://docs.python.org/3/library/functions.html#super">official super() builtin documentation</a> explains its use and functionality pretty well, but to explain it using an example: let&rsquo;s say that we wanted the <code>mymethod</code> method in the C class to return the same string returned by the <code>mymethod</code> method of the A class, with an additional <code>!</code> appended
 at the end.</p>
@@ -126,9 +126,9 @@ at the end.</p>
 <p>Obviously that is a simplified example, in the real world <code>A.mymethod</code> could execute some long, complicated logic that we wish to re-implement (alongside some <em>other</em> logic) inside of <code>C.mymethod</code>.</p>
 </blockquote>
 <p>Inside of the <code>C</code> class we can accomplish this by calling <code>super()</code> which creates a <em>proxy object</em> that delegeates all method calls to the appropriate class:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>(B):
-    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mymethod</span>(self):
-        <span style="color:#66d9ef">return</span> super(B, self)<span style="color:#f92672">.</span>mymethod() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;!!!&#34;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">class</span> <span style="color:#666;font-weight:bold;font-style:italic">C</span>(B):
+    <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">mymethod</span>(<span style="font-weight:bold;font-style:italic">self</span>):
+        <span style="font-weight:bold;text-decoration:underline">return</span> <span style="font-weight:bold;font-style:italic">super</span>(B, <span style="font-weight:bold;font-style:italic">self</span>).mymethod() + <span style="color:#666;font-style:italic">&#34;!!!&#34;</span>
 </code></pre></div><p>The output will therefore be: <code>mymethod of class A!!!</code>.</p>
 <p><code>super()</code> is more useful when you provide no arguments to it however, as it automatically goes up the hierarchy and provides you with the first class that defines the appropriate method (or attribute, as <code>super()</code> works for attribute lookups as well).</p>
 

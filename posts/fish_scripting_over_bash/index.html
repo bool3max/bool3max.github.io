@@ -50,70 +50,70 @@
 <p>The core syntax of <code>fish</code> is very simple, and most all of the operations are done via calling builtins.</p>
 <p>Want to set a variable? Use the <code>set</code> builtin. Want to declare a function? Use the <code>function</code> builtin. Want perform some sort of calculation? Use the <code>math</code> builtin. Want to find out what some other builtin does? Use the <code>help</code> builtin.</p>
 <p>In fact, prior to <code>fish 3.0</code>, even conditional command execution was done using <code>and</code> and <code>or</code> builtins (<em>unconditional</em> command chaining is still done using the seimicolon <code>;</code>):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ git commit; and git push
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ git commit; and git push
 </code></pre></div><p>(it still is, though support for <code>&amp;&amp;</code> and <code>||</code> syntax was added).</p>
 <h3 id="string-replacement">String replacement</h3>
 <p>In <code>bash</code>, string replacement is done using the <code>${$text//pattern/replacement}</code> syntax. For example, if you wanted to replace every instance of <code>'foo'</code> with <code>'bar'</code> in a certain text, you could do it like so:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">replaced_text<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>$text//foo/bar<span style="color:#e6db74">}</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#666;font-weight:bold;font-style:italic">replaced_text</span>=<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">$text</span>//foo/bar<span style="color:#666;font-style:italic">}</span>
 </code></pre></div><p>In <code>fish</code>, however, this is done using the <code>string</code> builtin:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">set replaced_text <span style="color:#f92672">(</span>string replace -a foo bar $text<span style="color:#f92672">)</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="font-weight:bold;font-style:italic">set</span> replaced_text (string replace -a foo bar <span style="color:#666;font-weight:bold;font-style:italic">$text</span>)
 </code></pre></div><p>If it wasn&rsquo;t for the variable name, newcomers would have absolutely no idea what the fuck was going on in the <code>bash</code> version, whereas the <code>fish</code> versions almost completely &ldquo;spells out&rdquo;
 the entire operation.</p>
 <h3 id="array-item-count">Array item count</h3>
 <p>In <code>fish</code>, getting the number of items in an array is done using the <code>count</code> builtin:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">set N <span style="color:#f92672">(</span>count $array<span style="color:#f92672">)</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="font-weight:bold;font-style:italic">set</span> N (count <span style="color:#666;font-weight:bold;font-style:italic">$array</span>)
 </code></pre></div><p>In <code>bash</code>, the syntax is, to no surprise, more obscure:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">N<span style="color:#f92672">=</span><span style="color:#e6db74">${#</span>args[@]<span style="color:#e6db74">}</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#666;font-weight:bold;font-style:italic">N</span>=<span style="color:#666;font-style:italic">${#</span><span style="color:#666;font-weight:bold;font-style:italic">args</span>[@]<span style="color:#666;font-style:italic">}</span>
 </code></pre></div><h3 id="math">Math</h3>
 <p>In <code>fish</code>, mathematical operations are peformed using the <code>math</code> builtin, and unlike in bash, they support decimal numbers as well as functions:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ echo <span style="color:#e6db74">&#39;3 + sqrt(4) = &#39;</span> <span style="color:#f92672">(</span>math <span style="color:#ae81ff">3</span> + <span style="color:#e6db74">&#39;sqrt(4)&#39;</span><span style="color:#f92672">)</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ <span style="font-weight:bold;font-style:italic">echo</span> <span style="color:#666;font-style:italic">&#39;3 + sqrt(4) = &#39;</span> (math 3 + <span style="color:#666;font-style:italic">&#39;sqrt(4)&#39;</span>)
 
-<span style="color:#ae81ff">3</span> + sqrt<span style="color:#f92672">(</span>4<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+3 + sqrt(4) = 5
 </code></pre></div><p>Since <code>bash</code> doesn&rsquo;t support decimal operations nor mathematical functions, you&rsquo;d have to call external processes to do the work for you.</p>
 <p>For someone who isn&rsquo;t familiar with shell scripting, the <code>fish</code> versions of these example operations are going to make much more sense at first (and probably second) glance.</p>
 <p>This philosophy makes scripts insanely <em>readable</em>.</p>
 <h2 id="argument-substitution-is-more-intuitive">Argument substitution is more intuitive</h2>
 <p>This was one of my first serious gripes back when I was first learning <code>bash</code>.</p>
 <p>Let&rsquo;s assume that <code>barg</code> is a readily available program that simply prints its commandline arguments (as well as the number of them), to standard out, one per line:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ barg <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ barg 1 2 3
 
-User arguments passed: <span style="color:#ae81ff">3</span>
+User arguments passed: 3
 
-<span style="color:#ae81ff">1</span>
-<span style="color:#ae81ff">2</span>
-<span style="color:#ae81ff">3</span>
+1
+2
+3
 </code></pre></div><p>Parameter substition in <code>fish</code> <em>makes sense</em>.</p>
 <p>Expanding a single variable results in a <em><strong>single argument</strong></em> on the commandline. For example:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ set arg <span style="color:#e6db74">&#34;Hello there, you!&#34;</span>
-$ barg $arg
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ <span style="font-weight:bold;font-style:italic">set</span> arg <span style="color:#666;font-style:italic">&#34;Hello there, you!&#34;</span>
+$ barg <span style="color:#666;font-weight:bold;font-style:italic">$arg</span>
 
-User arguments passed: <span style="color:#ae81ff">1</span>
+User arguments passed: 1
 
 Hello there, you!
 </code></pre></div><p>It is only if you pass in an array of <em>multiple values</em>, that the resulting commandline ends up with multiple values, for example:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ set args <span style="color:#e6db74">&#34;Hello there, you!&#34;</span> <span style="color:#e6db74">&#34;--some-long-option&#34;</span>
-$ barg $args
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ <span style="font-weight:bold;font-style:italic">set</span> args <span style="color:#666;font-style:italic">&#34;Hello there, you!&#34;</span> <span style="color:#666;font-style:italic">&#34;--some-long-option&#34;</span>
+$ barg <span style="color:#666;font-weight:bold;font-style:italic">$args</span>
 
-User arguments passed: <span style="color:#ae81ff">2</span>
+User arguments passed: 2
 
 Hello there, you!
 --some-long-option
 </code></pre></div><p>Again, it is intuitive and it makes sense.</p>
 <p>Now let&rsquo;s take a look at the same examples, but in <code>bash</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ arg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Hello there, you!&#34;</span>
-$ barg $arg
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ <span style="color:#666;font-weight:bold;font-style:italic">arg</span>=<span style="color:#666;font-style:italic">&#34;Hello there, you!&#34;</span>
+$ barg <span style="color:#666;font-weight:bold;font-style:italic">$arg</span>
 
-User arguments passed: <span style="color:#ae81ff">3</span>
+User arguments passed: 3
 
 Hello
 there,
 you!
 </code></pre></div><p>The source operand was split on spaces, and a single variable substitution resulted in <em>3</em> different commandline arguments.</p>
 <p>To avoid this, you have to encapsulate substituion in double quotes (<code>&quot; &quot;</code>):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ arg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Hello there, you!&#34;</span>
-$ barg <span style="color:#e6db74">&#34;</span>$args<span style="color:#e6db74">&#34;</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ <span style="color:#666;font-weight:bold;font-style:italic">arg</span>=<span style="color:#666;font-style:italic">&#34;Hello there, you!&#34;</span>
+$ barg <span style="color:#666;font-style:italic">&#34;</span><span style="color:#666;font-weight:bold;font-style:italic">$args</span><span style="color:#666;font-style:italic">&#34;</span>
 
-User arguments passed: <span style="color:#ae81ff">1</span>
+User arguments passed: 1
 
 Hello there, you!
 </code></pre></div><p>To me this makes no sense, however from a historical point of view I can see why it is: in <code>fish</code>, declaring arrays of multiple values each of which expands to a signle value is easy, unlike in <code>bash</code>, where, if you&rsquo;d written something like <code>arguments=&quot;-a -D --long-opt&quot;</code>, you would probably in fact <em>want</em> it to expand to 3 different arguments.</p>

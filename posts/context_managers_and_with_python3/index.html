@@ -45,8 +45,8 @@
 		<section class="body">
 			<p>Context Managers in <code>python3</code> are a simple but powerful feature.</p>
 <p>The most common example is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation do the work for you:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;file&#34;</span>, <span style="color:#e6db74">&#34;rb&#34;</span>) <span style="color:#66d9ef">as</span> file:
-    <span style="color:#f92672">...</span>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">with</span> <span style="font-weight:bold;font-style:italic">open</span>(<span style="color:#666;font-style:italic">&#34;file&#34;</span>, <span style="color:#666;font-style:italic">&#34;rb&#34;</span>) <span style="font-weight:bold;text-decoration:underline">as</span> <span style="font-weight:bold;font-style:italic">file</span>:
+    ...
 </code></pre></div><p>Instead of having to manually call <code>file.close()</code> later on, once the &ldquo;<code>with</code>&rdquo; block ends the associated cleanup (in this case flushing the file to disk and closing the file descriptors) is automatically performed.</p>
 <p>This is all accomplished using 2 underlying methods defined in the context manager (in the above case the object returned by the <code>open()</code> call):</p>
 <ul>

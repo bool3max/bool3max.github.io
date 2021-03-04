@@ -65,6 +65,10 @@ ul li::before {
   font-weight: bold;
 }
 
+ul, li {
+    font-family: 'Fira Sans', sans-serif;
+}
+
 /* Images */
 img {
   border: 3px solid #ececec;
