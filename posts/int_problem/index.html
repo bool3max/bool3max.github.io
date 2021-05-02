@@ -1,49 +1,181 @@
 <!DOCTYPE html>
-<html><head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>The 0xFFFFFFFF problem - bool3max&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+  <head>
+    
+      <title>
+        The 0xFFFFFFFF problem ::
+        bool3max&#39;s blog
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="This is a pretty old document that I wrote for myself back when I was first learning C, but the explanation is pretty good so I published it here for future reference. I hope to soon push a reference document that explains some tricky concepts and things from the C standard that are not so easy to remember off the top of the head (such as type conversion, declarations, storage durations, scopes, etc&amp;hellip;)"
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://bool3max.github.io/posts/int_problem/" />
 
-	<meta property="og:image" content=""/>
-	<meta property="og:title" content="The 0xFFFFFFFF problem" />
-<meta property="og:description" content="An in-depth answer to a question from back when I was new to C." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.github.io/posts/int_problem/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2018-09-13T02:51:42&#43;02:00" />
-<meta property="article:modified_time" content="2018-09-13T02:51:42&#43;02:00" />
+
+
+
+
+<link rel="stylesheet" href="https://bool3max.github.io/assets/style.css" />
+
+<link rel="stylesheet" href="https://bool3max.github.io/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="https://bool3max.github.io/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="https://bool3max.github.io/img/favicon.png" />
+
+
+<link href="https://bool3max.github.io/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="The 0xFFFFFFFF problem"/>
 <meta name="twitter:description" content="An in-depth answer to a question from back when I was new to C."/>
 
-	<link href="https://bool3max.github.io/css/fonts.css" rel="stylesheet">
-	
-	<link rel="stylesheet" type="text/css" media="screen" href="https://bool3max.github.io/css/main.css" />
-	
-</head>
-<body>
-        <div class="content"><header>
-	<div class="main">
-		<a href="https://bool3max.github.io/">bool3max&#39;s blog</a>
-	</div>
-	<nav>
-		
-		<a href="https://github.com/bool3max/">GitHub</a>
-		
-		<a href="/posts/">All posts</a>
-		
-	</nav>
+
+
+<meta property="og:title" content="The 0xFFFFFFFF problem" />
+<meta property="og:description" content="An in-depth answer to a question from back when I was new to C." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/int_problem/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2018-09-13T02:51:42&#43;02:00" />
+<meta property="article:modified_time" content="2018-09-13T02:51:42&#43;02:00" /><meta property="og:site_name" content="bool3max&#39;s blog" />
+
+
+
+
+
+
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >bool3max&#39;s blog</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      
+        
+          <li><a href="/posts/">All posts</a></li>
+        
+      
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+      
+    
+      
+        <li><a href="/posts/">All posts</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
 </header>
 
-<main>
-	<article>
-		<div class="title">
-			<h1 class="title">The 0xFFFFFFFF problem</h1>
-			<div class="meta">Posted on Sep 13, 2018</div>
-		</div>
-		
 
-		<section class="body">
-			<blockquote>
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">The 0xFFFFFFFF problem</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2018-09-13
+        </span>
+
+        
+          
+        
+      
+
+      
+
+
+      
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      <blockquote>
 <p>This is a pretty old document that I wrote for myself back when I was first learning C, but the explanation is pretty good so I published it here for future reference. I hope to soon push a reference document that explains some tricky concepts and things from the C standard that are not so easy to remember off the top of the head (such as type conversion, declarations, storage durations, scopes, etc&hellip;)</p>
 </blockquote>
 <blockquote>
@@ -102,21 +234,32 @@ In this case, <code>0xFFFFFFFF</code> is too large to fit in the first contender
 <p>The <code>%u</code> conversion expects an unsigned integer as the argument. We&rsquo;ve, however, supplied it a <em>singed</em> integer. However, this time there is no conversion, as the conversion from <code>int</code> to <code>unsigned int</code> is impossible, nonexistent, and therefore the behaviour is undefined.</p>
 <p>In the case of GCC, <code>%u</code> (or rather, <code>printf</code>) <em>assumes</em> that the value passed to it is of the correct type (<code>uint</code> in this case), and prints its value accordingly. <code>0xFFFFFFFF</code> in an unsigned system has the decimal value <em>4294967295</em>, which is then simply printed.</p>
 
-		</section>
+    </div>
+    
 
-		<div class="post-tags">
-			
-			
-			
-		</div>
-	</article>
-</main>
-<footer>
-<hr>⚡️
-	2021  © Bogdan Mitrović 
+    
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">© Bogdan Mitrović</div>
+      
+  </div>
 </footer>
 
+<script src="https://bool3max.github.io/assets/main.js"></script>
+<script src="https://bool3max.github.io/assets/prism.js"></script>
 
-</div>
-    </body>
+
+      
+    </div>
+
+    
+  </body>
 </html>

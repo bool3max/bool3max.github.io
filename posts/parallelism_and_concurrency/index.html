@@ -1,49 +1,183 @@
 <!DOCTYPE html>
-<html><head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Parallelism and Concurrency: The basics - bool3max&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+  <head>
+    
+      <title>
+        Parallelism and Concurrency: The basics ::
+        bool3max&#39;s blog
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.
+ Definitions Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&amp;rsquo;t exactly set in stone, and the definitions are somewhat convoluted.
+The StackOverlfow question (What is the difference between concurrency and parallelism?) in particular has quite a number of somewhat conflicting answers, which is understandable, since if someone asked me what the difference between the two terms are - I wouldn&amp;rsquo;t be able to answer."
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://bool3max.github.io/posts/parallelism_and_concurrency/" />
 
-	<meta property="og:image" content=""/>
-	<meta property="og:title" content="Parallelism and Concurrency: The basics" />
-<meta property="og:description" content="This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.github.io/posts/parallelism_and_concurrency/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-11-28T13:41:36&#43;01:00" />
-<meta property="article:modified_time" content="2020-11-28T13:41:36&#43;01:00" />
+
+
+
+
+<link rel="stylesheet" href="https://bool3max.github.io/assets/style.css" />
+
+<link rel="stylesheet" href="https://bool3max.github.io/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="https://bool3max.github.io/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="https://bool3max.github.io/img/favicon.png" />
+
+
+<link href="https://bool3max.github.io/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Parallelism and Concurrency: The basics"/>
 <meta name="twitter:description" content="This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems."/>
 
-	<link href="https://bool3max.github.io/css/fonts.css" rel="stylesheet">
-	
-	<link rel="stylesheet" type="text/css" media="screen" href="https://bool3max.github.io/css/main.css" />
-	
-</head>
-<body>
-        <div class="content"><header>
-	<div class="main">
-		<a href="https://bool3max.github.io/">bool3max&#39;s blog</a>
-	</div>
-	<nav>
-		
-		<a href="https://github.com/bool3max/">GitHub</a>
-		
-		<a href="/posts/">All posts</a>
-		
-	</nav>
+
+
+<meta property="og:title" content="Parallelism and Concurrency: The basics" />
+<meta property="og:description" content="This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/parallelism_and_concurrency/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-11-28T13:41:36&#43;01:00" />
+<meta property="article:modified_time" content="2020-11-28T13:41:36&#43;01:00" /><meta property="og:site_name" content="bool3max&#39;s blog" />
+
+
+
+
+
+
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >bool3max&#39;s blog</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      
+        
+          <li><a href="/posts/">All posts</a></li>
+        
+      
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+      
+    
+      
+        <li><a href="/posts/">All posts</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
 </header>
 
-<main>
-	<article>
-		<div class="title">
-			<h1 class="title">Parallelism and Concurrency: The basics</h1>
-			<div class="meta">Posted on Nov 28, 2020</div>
-		</div>
-		
 
-		<section class="body">
-			<blockquote>
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">Parallelism and Concurrency: The basics</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2020-11-28
+        </span>
+
+        
+          
+        
+      
+
+      
+
+
+      
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      <blockquote>
 <p>This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.</p>
 </blockquote>
 <h1 id="definitions">Definitions</h1>
@@ -150,21 +284,32 @@ exit_group(0)                           = ?
 <p>The scheduler currently used by the linux kernel is the <a href="https://en.wikipedia.org/wiki/Completely_Fair_Scheduler">Completely Fair Scheduler (CFS)</a>, since kernel 2.6.23.</p>
 <p>I don&rsquo;t have enough experience or knowledge to talk about how these actually work, but I plan to in the future.</p>
 
-		</section>
+    </div>
+    
 
-		<div class="post-tags">
-			
-			
-			
-		</div>
-	</article>
-</main>
-<footer>
-<hr>⚡️
-	2021  © Bogdan Mitrović 
+    
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">© Bogdan Mitrović</div>
+      
+  </div>
 </footer>
 
+<script src="https://bool3max.github.io/assets/main.js"></script>
+<script src="https://bool3max.github.io/assets/prism.js"></script>
 
-</div>
-    </body>
+
+      
+    </div>
+
+    
+  </body>
 </html>

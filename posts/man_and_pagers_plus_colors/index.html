@@ -1,49 +1,182 @@
 <!DOCTYPE html>
-<html><head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>&#39;man&#39;, pagers, and &#39;less&#39; - bool3max&#39;s blog</title><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+  <head>
+    
+      <title>
+        How does &#39;man&#39; actually display the pages? ::
+        bool3max&#39;s blog
+      </title>
+    
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="When you normally execute, say man 3 printf, man simply does the job of looking up and fetching the particular manpage. The actual act of displaying it, is done by a pager.
+The default pager that man uses, less, is in essence a simple TUI program that allows for easy navigation of a particular text buffer (scrolling, searching, etc&amp;hellip; all using vi-like keybindings). It can output stylized text (bolds, underlines, etc&amp;hellip;) which it does by default for manpages."
+/>
+<meta
+  name="keywords"
+  content=""
+/>
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://bool3max.github.io/posts/man_and_pagers_plus_colors/" />
 
-	<meta property="og:image" content=""/>
-	<meta property="og:title" content="&#39;man&#39;, pagers, and &#39;less&#39;" />
+
+
+
+
+<link rel="stylesheet" href="https://bool3max.github.io/assets/style.css" />
+
+<link rel="stylesheet" href="https://bool3max.github.io/style.css" />
+
+
+<link
+  rel="apple-touch-icon-precomposed"
+  sizes="144x144"
+  href="https://bool3max.github.io/img/apple-touch-icon-144-precomposed.png"
+/>
+<link rel="shortcut icon" href="https://bool3max.github.io/img/favicon.png" />
+
+
+<link href="https://bool3max.github.io/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+<link href="https://bool3max.github.io/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How does &#39;man&#39; actually display the pages?"/>
+<meta name="twitter:description" content="How does &#39;man&#39; display the manuals?"/>
+
+
+
+<meta property="og:title" content="How does &#39;man&#39; actually display the pages?" />
 <meta property="og:description" content="How does &#39;man&#39; display the manuals?" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/man_and_pagers_plus_colors/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-02-17T13:44:42&#43;01:00" />
-<meta property="article:modified_time" content="2021-02-17T13:44:42&#43;01:00" />
+<meta property="article:modified_time" content="2021-02-17T13:44:42&#43;01:00" /><meta property="og:site_name" content="bool3max&#39;s blog" />
 
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="&#39;man&#39;, pagers, and &#39;less&#39;"/>
-<meta name="twitter:description" content="How does &#39;man&#39; display the manuals?"/>
 
-	<link href="https://bool3max.github.io/css/fonts.css" rel="stylesheet">
-	
-	<link rel="stylesheet" type="text/css" media="screen" href="https://bool3max.github.io/css/main.css" />
-	
-</head>
-<body>
-        <div class="content"><header>
-	<div class="main">
-		<a href="https://bool3max.github.io/">bool3max&#39;s blog</a>
-	</div>
-	<nav>
-		
-		<a href="https://github.com/bool3max/">GitHub</a>
-		
-		<a href="/posts/">All posts</a>
-		
-	</nav>
+
+
+
+
+
+  </head>
+  <body class="dark-theme">
+    <div class="container">
+      <header class="header">
+  <span class="header__inner">
+    <a
+  href="/"
+  class="logo"
+  style="text-decoration: none;"
+>
+  
+    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
+  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
+</svg>
+</span>
+    <span class="logo__text"
+      >bool3max&#39;s blog</span
+    >
+    <span class="logo__cursor"></span>
+  
+</a>
+
+    <span class="header__right">
+      
+        <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      
+        
+          <li><a href="/posts/">All posts</a></li>
+        
+      
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+      
+    
+      
+        <li><a href="/posts/">All posts</a></li>
+      
+    
+  </ul>
+</nav>
+
+        <span class="menu-trigger">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+          </svg>
+        </span>
+      
+      <span class="theme-toggle">
+        <svg
+  class="theme-toggler"
+  width="24"
+  height="24"
+  viewBox="0 0 48 48"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
+  />
+</svg>
+
+      </span>
+    </span>
+  </span>
 </header>
 
-<main>
-	<article>
-		<div class="title">
-			<h1 class="title">&#39;man&#39;, pagers, and &#39;less&#39;</h1>
-			<div class="meta">Posted on Feb 17, 2021</div>
-		</div>
-		
 
-		<section class="body">
-			<p>When you normally execute, say <code>man 3 printf</code>, <code>man</code> simply does the job of looking up and fetching the particular manpage. The actual
+      <div class="content">
+        
+  
+  
+
+  <div class="post">
+    <h1 class="post-title">How does &lsquo;man&rsquo; actually display the pages?</h1>
+    <div class="post-meta">
+      
+        <span class="post-date">
+          2021-02-17
+        </span>
+
+        
+          
+        
+      
+
+      
+
+
+      
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      <p>When you normally execute, say <code>man 3 printf</code>, <code>man</code> simply does the job of looking up and fetching the particular manpage. The actual
 act of <em>displaying</em> it, is done by a <strong>pager</strong>.</p>
 <p>The default pager that <code>man</code> uses, <strong><code>less</code></strong>, is in essence a simple TUI program that allows for easy navigation of a particular text
 buffer (scrolling, searching, etc&hellip; all using vi-like keybindings). It can output stylized text (bolds, underlines, etc&hellip;) which it does
@@ -71,21 +204,32 @@ and then simply runs <code>man</code>, which in turn runs <code>less</code>:</p>
     <span style="font-weight:bold;font-style:italic">command</span> man <span style="color:#666;font-weight:bold;font-style:italic">$argv</span>
 end
 </code></pre></div>
-		</section>
+    </div>
+    
 
-		<div class="post-tags">
-			
-			
-			
-		</div>
-	</article>
-</main>
-<footer>
-<hr>⚡️
-	2021  © Bogdan Mitrović 
+    
+      
+    
+  </div>
+
+      </div>
+
+      
+        <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">© Bogdan Mitrović</div>
+      
+  </div>
 </footer>
 
+<script src="https://bool3max.github.io/assets/main.js"></script>
+<script src="https://bool3max.github.io/assets/prism.js"></script>
 
-</div>
-    </body>
+
+      
+    </div>
+
+    
+  </body>
 </html>
