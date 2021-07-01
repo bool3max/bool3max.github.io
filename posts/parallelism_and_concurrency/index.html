@@ -1,182 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    
-      <title>
-        Parallelism and Concurrency: The basics ::
-        bool3max&#39;s blog
-      </title>
-    
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta
-  name="description"
-  content="This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.
- Definitions Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&amp;rsquo;t exactly set in stone, and the definitions are somewhat convoluted.
-The StackOverlfow question (What is the difference between concurrency and parallelism?) in particular has quite a number of somewhat conflicting answers, which is understandable, since if someone asked me what the difference between the two terms are - I wouldn&amp;rsquo;t be able to answer."
-/>
-<meta
-  name="keywords"
-  content=""
-/>
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://bool3max.github.io/posts/parallelism_and_concurrency/" />
-
-
-
-
-
-<link rel="stylesheet" href="https://bool3max.github.io/assets/style.css" />
-
-<link rel="stylesheet" href="https://bool3max.github.io/style.css" />
-
-
-<link
-  rel="apple-touch-icon-precomposed"
-  sizes="144x144"
-  href="https://bool3max.github.io/img/apple-touch-icon-144-precomposed.png"
-/>
-<link rel="shortcut icon" href="https://bool3max.github.io/img/favicon.png" />
-
-
-<link href="https://bool3max.github.io/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Parallelism and Concurrency: The basics"/>
-<meta name="twitter:description" content="This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems."/>
-
-
-
-<meta property="og:title" content="Parallelism and Concurrency: The basics" />
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Parallelism and Concurrency: The basics | bool3max&#39;s blog</title>
+  <meta name="description" content="This blog contains my personal writings and ramblings that may or may not be useful to others.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="Parallelism and Concurrency: The basics" />
 <meta property="og:description" content="This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/parallelism_and_concurrency/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-11-28T13:41:36&#43;01:00" />
-<meta property="article:modified_time" content="2020-11-28T13:41:36&#43;01:00" /><meta property="og:site_name" content="bool3max&#39;s blog" />
+<meta property="article:modified_time" content="2020-11-28T13:41:36&#43;01:00" />
 
 
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Parallelism and Concurrency: The basics"/>
+<meta name="twitter:description" content="This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems."/>
 
-
-
-
-
-  </head>
-  <body class="dark-theme">
-    <div class="container">
-      <header class="header">
-  <span class="header__inner">
-    <a
-  href="/"
-  class="logo"
-  style="text-decoration: none;"
->
   
-    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
-</svg>
-</span>
-    <span class="logo__text"
-      >bool3max&#39;s blog</span
-    >
-    <span class="logo__cursor"></span>
   
-</a>
+    
+  
+  
+  <link rel="stylesheet" href="https://bool3max.github.io/css/style-white.css">
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
 
-    <span class="header__right">
-      
-        <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
-    
-      
-        
-          <li><a href="https://github.com/bool3max/">GitHub</a></li>
-        
-      
-        
-          <li><a href="/posts/">All posts</a></li>
-        
-      
-    
-  </ul>
+  
+<link rel="icon" type="image/png" href="https://bool3max.github.io/images/favicon.ico" />
 
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="https://github.com/bool3max/">GitHub</a></li>
-      
-    
-      
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
         <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="https://bool3max.github.io/posts/utf8/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
       
+      <ul>
+  
+  
     
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&text=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&is_video=false&description=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Parallelism%20and%20Concurrency%3a%20The%20basics&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&name=Parallelism%20and%20Concurrency%3a%20The%20basics&description=This%20post%20documents%20my%20understanding%20of%20the%20basics%20regarding%20concurrency%20and%20parallelism%20and%20their%20manifestation%20in%20operating%20systems." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&t=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#processes"><strong>Processes</strong>:</a></li>
+        <li><a href="#threads"><strong>Threads</strong>:</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
-
-        <span class="menu-trigger">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-          </svg>
-        </span>
-      
-      <span class="theme-toggle">
-        <svg
-  class="theme-toggler"
-  width="24"
-  height="24"
-  viewBox="0 0 48 48"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <path
-    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
-  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
-  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
-  />
-</svg>
-
-      </span>
-    </span>
-  </span>
-</header>
-
-
-      <div class="content">
-        
-  
-  
-
-  <div class="post">
-    <h1 class="post-title">Parallelism and Concurrency: The basics</h1>
-    <div class="post-meta">
-      
-        <span class="post-date">
-          2020-11-28
-        </span>
-
-        
-          
-        
-      
-
-      
-
-
-      
     </div>
+  </span>
+</div>
 
-    
 
-    
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        Parallelism and Concurrency: The basics
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2020-11-28 13:41:36 &#43;0100 CET" itemprop="datePublished">2020-11-28</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
 
-    <div class="post-content">
-      
+  
+    <div class="content" itemprop="articleBody">
       <blockquote>
 <p>This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.</p>
 </blockquote>
@@ -236,32 +247,32 @@ The StackOverlfow question (What is the difference between concurrency and paral
 <hr>
 <p>So far I&rsquo;ve talked more <em>about</em> what &ldquo;tools&rdquo; are used to achieve concurrency rather than how to actually use them. But before I do I want to explore them a bit further:</p>
 <p>Let&rsquo;s write a trivial binary that proves that the <code>fork(2)</code> wrapper really calls the <code>clone(2)</code> syscall under the hood:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-weight:bold">#include</span> <span style="color:#888;font-weight:bold">&lt;pthread.h&gt;</span><span style="color:#888;font-weight:bold">
-</span><span style="color:#888;font-weight:bold">#include</span> <span style="color:#888;font-weight:bold">&lt;stdint.h&gt;</span><span style="color:#888;font-weight:bold">
-</span><span style="color:#888;font-weight:bold">#include</span> <span style="color:#888;font-weight:bold">&lt;stdio.h&gt;</span><span style="color:#888;font-weight:bold">
-</span><span style="color:#888;font-weight:bold">#include</span> <span style="color:#888;font-weight:bold">&lt;stdlib.h&gt;</span><span style="color:#888;font-weight:bold">
-</span><span style="color:#888;font-weight:bold">#include</span> <span style="color:#888;font-weight:bold">&lt;unistd.h&gt;</span><span style="color:#888;font-weight:bold">
-</span><span style="color:#888;font-weight:bold">#include</span> <span style="color:#888;font-weight:bold">&lt;sys/types.h&gt;</span><span style="color:#888;font-weight:bold">
-</span><span style="color:#888;font-weight:bold"></span>
-<span style="font-weight:bold;text-decoration:underline">int</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>(<span style="font-weight:bold;text-decoration:underline">void</span>) {
-    pid_t return_pid = fork();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;pthread.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/types.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) {
+    pid_t return_pid <span style="color:#f92672">=</span> fork();
 
-    <span style="font-weight:bold;text-decoration:underline">if</span>(return_pid == -1) {
-        perror(<span style="color:#666;font-style:italic">&#34;Error forking&#34;</span>);
-        <span style="font-weight:bold;text-decoration:underline">return</span> EXIT_FAILURE;
+    <span style="color:#66d9ef">if</span>(return_pid <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+        perror(<span style="color:#e6db74">&#34;Error forking&#34;</span>);
+        <span style="color:#66d9ef">return</span> EXIT_FAILURE;
     }
 
-    <span style="font-weight:bold;text-decoration:underline">if</span>(return_pid != 0) {
-        <span style="color:#888;font-style:italic">// parent
-</span><span style="color:#888;font-style:italic"></span>        fprintf(stdout, <span style="color:#666;font-style:italic">&#34;Hello from parent, PID: %d</span><span style="color:#666;font-style:italic">\n</span><span style="color:#666;font-style:italic">&#34;</span>, getpid());
+    <span style="color:#66d9ef">if</span>(return_pid <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+        <span style="color:#75715e">// parent
+</span><span style="color:#75715e"></span>        fprintf(stdout, <span style="color:#e6db74">&#34;Hello from parent, PID: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, getpid());
 
-    } <span style="font-weight:bold;text-decoration:underline">else</span> {
-        <span style="color:#888;font-style:italic">// child
-</span><span style="color:#888;font-style:italic"></span>        fprintf(stdout, <span style="color:#666;font-style:italic">&#34;Hello from child, PID: %d</span><span style="color:#666;font-style:italic">\n</span><span style="color:#666;font-style:italic">&#34;</span>, getpid());
-        <span style="font-weight:bold;text-decoration:underline">return</span> EXIT_SUCCESS;
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#75715e">// child
+</span><span style="color:#75715e"></span>        fprintf(stdout, <span style="color:#e6db74">&#34;Hello from child, PID: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, getpid());
+        <span style="color:#66d9ef">return</span> EXIT_SUCCESS;
     }
 
-    <span style="font-weight:bold;text-decoration:underline">return</span> EXIT_SUCCESS; 
+    <span style="color:#66d9ef">return</span> EXIT_SUCCESS; 
 }
 
 </code></pre></div><p>First, the entire reason that we&rsquo;re able to write data to <code>stdout</code> from the child process (whose code is in the last &lsquo;else&rsquo; block) is that the spawned child retains access to all the open file descriptors of the parent (and <code>stdout</code> is file descriptor 0):</p>
@@ -285,31 +296,143 @@ exit_group(0)                           = ?
 <p>I don&rsquo;t have enough experience or knowledge to talk about how these actually work, but I plan to in the future.</p>
 
     </div>
-    
+  </article>
 
-    
+  
+  
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts/">All posts</a></li>
+         
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#processes"><strong>Processes</strong>:</a></li>
+        <li><a href="#threads"><strong>Threads</strong>:</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+
+    <div id="share-footer" style="display: none">
       
+      <ul>
+  
+  
     
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&text=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&is_video=false&description=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Parallelism%20and%20Concurrency%3a%20The%20basics&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&name=Parallelism%20and%20Concurrency%3a%20The%20basics&description=This%20post%20documents%20my%20understanding%20of%20the%20basics%20regarding%20concurrency%20and%20parallelism%20and%20their%20manifestation%20in%20operating%20systems." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&t=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
   </div>
+</div>
 
-      </div>
 
-      
-        <footer class="footer">
-  <div class="footer__inner">
-    
-      <div class="copyright copyright--user">© Bogdan Mitrović</div>
-      
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  Bogdan Mitrović 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </nav>
   </div>
 </footer>
 
-<script src="https://bool3max.github.io/assets/main.js"></script>
-<script src="https://bool3max.github.io/assets/prism.js"></script>
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
 
 
-      
-    </div>
 
-    
-  </body>
 </html>

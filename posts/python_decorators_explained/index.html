@@ -1,199 +1,207 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    
-      <title>
-        Briefly explaining Python3 Decorators ::
-        bool3max&#39;s blog
-      </title>
-    
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta
-  name="description"
-  content="Decorators are a way to modify behavior of functions using other functions.
-Take a look at the following routine:
-def sum(x, y): return x &#43; y Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:
-def increment(func): def add_one(x, y): return func(x, y) &#43; 1 return add_one @increment def sum(x, y): return x &#43; y &amp;gt; sum(5, 4) 10 Under the hood, sum becomes increment(sum), i."
-/>
-<meta
-  name="keywords"
-  content=""
-/>
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://bool3max.github.io/posts/python_decorators_explained/" />
-
-
-
-
-
-<link rel="stylesheet" href="https://bool3max.github.io/assets/style.css" />
-
-<link rel="stylesheet" href="https://bool3max.github.io/style.css" />
-
-
-<link
-  rel="apple-touch-icon-precomposed"
-  sizes="144x144"
-  href="https://bool3max.github.io/img/apple-touch-icon-144-precomposed.png"
-/>
-<link rel="shortcut icon" href="https://bool3max.github.io/img/favicon.png" />
-
-
-<link href="https://bool3max.github.io/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Briefly explaining Python3 Decorators"/>
-<meta name="twitter:description" content="Decorators with examples."/>
-
-
-
-<meta property="og:title" content="Briefly explaining Python3 Decorators" />
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Briefly explaining Python3 Decorators | bool3max&#39;s blog</title>
+  <meta name="description" content="This blog contains my personal writings and ramblings that may or may not be useful to others.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="Briefly explaining Python3 Decorators" />
 <meta property="og:description" content="Decorators with examples." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/python_decorators_explained/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-11-14T18:42:28&#43;01:00" />
-<meta property="article:modified_time" content="2020-11-14T18:42:28&#43;01:00" /><meta property="og:site_name" content="bool3max&#39;s blog" />
+<meta property="article:modified_time" content="2020-11-14T18:42:28&#43;01:00" />
 
 
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Briefly explaining Python3 Decorators"/>
+<meta name="twitter:description" content="Decorators with examples."/>
 
-
-
-
-
-  </head>
-  <body class="dark-theme">
-    <div class="container">
-      <header class="header">
-  <span class="header__inner">
-    <a
-  href="/"
-  class="logo"
-  style="text-decoration: none;"
->
   
-    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
-</svg>
-</span>
-    <span class="logo__text"
-      >bool3max&#39;s blog</span
-    >
-    <span class="logo__cursor"></span>
   
-</a>
+    
+  
+  
+  <link rel="stylesheet" href="https://bool3max.github.io/css/style-white.css">
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
 
-    <span class="header__right">
-      
-        <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
-    
-      
-        
-          <li><a href="https://github.com/bool3max/">GitHub</a></li>
-        
-      
-        
-          <li><a href="/posts/">All posts</a></li>
-        
-      
-    
-  </ul>
+  
+<link rel="icon" type="image/png" href="https://bool3max.github.io/images/favicon.ico" />
 
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="https://github.com/bool3max/">GitHub</a></li>
-      
-    
-      
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
         <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://bool3max.github.io/posts/python_generators/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="https://bool3max.github.io/posts/context_managers_and_with_python3/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
       
+      <ul>
+  
+  
     
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&text=Briefly%20explaining%20Python3%20Decorators" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&title=Briefly%20explaining%20Python3%20Decorators" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&is_video=false&description=Briefly%20explaining%20Python3%20Decorators" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Briefly%20explaining%20Python3%20Decorators&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&title=Briefly%20explaining%20Python3%20Decorators" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&title=Briefly%20explaining%20Python3%20Decorators" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&name=Briefly%20explaining%20Python3%20Decorators&description=Decorators%20with%20examples." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&t=Briefly%20explaining%20Python3%20Decorators" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#another-example">Another example</a></li>
+    <li><a href="#chaining-multiple-decorators">Chaining multiple decorators</a></li>
+    <li><a href="#decorators-with-parameters">Decorators with parameters</a></li>
+    <li><a href="#decorating-functions-regardless-of-their-arguments">Decorating functions regardless of their arguments</a></li>
   </ul>
 </nav>
-
-        <span class="menu-trigger">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-          </svg>
-        </span>
-      
-      <span class="theme-toggle">
-        <svg
-  class="theme-toggler"
-  width="24"
-  height="24"
-  viewBox="0 0 48 48"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <path
-    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
-  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
-  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
-  />
-</svg>
-
-      </span>
-    </span>
-  </span>
-</header>
-
-
-      <div class="content">
-        
-  
-  
-
-  <div class="post">
-    <h1 class="post-title">Briefly explaining Python3 Decorators</h1>
-    <div class="post-meta">
-      
-        <span class="post-date">
-          2020-11-14
-        </span>
-
-        
-          
-        
-      
-
-      
-
-
-      
     </div>
+  </span>
+</div>
 
-    
 
-    
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        Briefly explaining Python3 Decorators
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2020-11-14 18:42:28 &#43;0100 CET" itemprop="datePublished">2020-11-14</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
 
-    <div class="post-content">
-      
+  
+    <div class="content" itemprop="articleBody">
       <p>Decorators are a way to modify behavior of functions using other functions.</p>
 <p>Take a look at the following routine:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">sum</span>(x, y):
-    <span style="font-weight:bold;text-decoration:underline">return</span> x + y
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sum</span>(x, y):
+    <span style="color:#66d9ef">return</span> x <span style="color:#f92672">+</span> y
 </code></pre></div><p>Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">increment</span>(func):
-    <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">add_one</span>(x, y):
-        <span style="font-weight:bold;text-decoration:underline">return</span> func(x, y) + 1
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">increment</span>(func):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_one</span>(x, y):
+        <span style="color:#66d9ef">return</span> func(x, y) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
 
-    <span style="font-weight:bold;text-decoration:underline">return</span> add_one
+    <span style="color:#66d9ef">return</span> add_one
 
-@increment
-<span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">sum</span>(x, y):
-    <span style="font-weight:bold;text-decoration:underline">return</span> x + y
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">&gt; <span style="font-weight:bold;font-style:italic">sum</span>(5, 4)
-10
+<span style="color:#a6e22e">@increment</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sum</span>(x, y):
+    <span style="color:#66d9ef">return</span> x <span style="color:#f92672">+</span> y
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;</span> sum(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">4</span>)
+<span style="color:#ae81ff">10</span>
 </code></pre></div><p>Under the hood, <code>sum</code> becomes <code>increment(sum)</code>, i.e. <strong><code>sum = increment(sum)</code></strong>. The function is modified, i.e. <em><strong>decorated</strong></em> by a new function returned by the decorator applied to it, which is why return values of decorators always have to be <em><strong>callable</strong></em> (i.e. - functions - though any object that implements the <strong><code>__call__</code></strong> method is considered callabe).</p>
 <p>That&rsquo;s pretty much all there is to decorators.</p>
 <p>This can be a little confusing, so to recap what is happening here:</p>
@@ -208,94 +216,204 @@ def increment(func): def add_one(x, y): return func(x, y) &#43; 1 return add_one
 </ol>
 <h2 id="another-example">Another example</h2>
 <p>Knowing all this, we can, as an example, create a decorator that simply completely overwrites the result of any function it decorates.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">overwrite</span>(f):
-    <span style="font-weight:bold;text-decoration:underline">return</span> <span style="font-weight:bold;text-decoration:underline">lambda</span>: <span style="color:#666;font-style:italic">&#34;OVERWRITTEN&#34;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">overwrite</span>(f):
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">lambda</span>: <span style="color:#e6db74">&#34;OVERWRITTEN&#34;</span>
 
-@overwrite
-<span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">some_complex_routine</span>(*args):
-    <span style="color:#888;font-style:italic"># lots of complex logic here...</span>
-    <span style="font-weight:bold;text-decoration:underline">return</span> <span style="color:#666;font-style:italic">&#34;some complex result&#34;</span>
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">&gt; some_complex_routine()
-<span style="color:#666;font-style:italic">&#34;OVERWRITTEN&#34;</span>
+<span style="color:#a6e22e">@overwrite</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">some_complex_routine</span>(<span style="color:#f92672">*</span>args):
+    <span style="color:#75715e"># lots of complex logic here...</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;some complex result&#34;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;</span> some_complex_routine()
+<span style="color:#e6db74">&#34;OVERWRITTEN&#34;</span>
 </code></pre></div><p>Here I use the <a href="https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions">lambda notation</a> to create and return a simple function using a one-liner.</p>
 <p>It is the equivalent of writing this:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">overwrite</span>(f):
-    <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">inner</span>():
-        <span style="font-weight:bold;text-decoration:underline">return</span> <span style="color:#666;font-style:italic">&#34;OVERWRITTEN&#34;</span>
-    <span style="font-weight:bold;text-decoration:underline">return</span> inner
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">overwrite</span>(f):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">inner</span>():
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;OVERWRITTEN&#34;</span>
+    <span style="color:#66d9ef">return</span> inner
 </code></pre></div><h2 id="chaining-multiple-decorators">Chaining multiple decorators</h2>
 <p>Decorating a single function using multiple decorators is possible, and the decorators are applied &ldquo;from the bottom up&rdquo; - i.e. the decorator &ldquo;closest to&rdquo; the function declaration is the one that gets applied first:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">plusone</span>(func):
-    <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">addone</span>(x, y):
-        <span style="font-weight:bold;text-decoration:underline">return</span> func(x, y) + 1
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plusone</span>(func):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">addone</span>(x, y):
+        <span style="color:#66d9ef">return</span> func(x, y) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
 
-    <span style="font-weight:bold;text-decoration:underline">return</span> addone
+    <span style="color:#66d9ef">return</span> addone
 
-<span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">divtwo</span>(func):
-    <span style="font-weight:bold;text-decoration:underline">return</span> <span style="font-weight:bold;text-decoration:underline">lambda</span> a, b: func(a, b) / 2
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">divtwo</span>(func):
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">lambda</span> a, b: func(a, b) <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>
 
-@plusone
-@divtwo
-<span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">sum</span>(x, y):
-    <span style="font-weight:bold;text-decoration:underline">return</span> (x + y)
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">&gt; <span style="font-weight:bold;font-style:italic">sum</span>(5, 4)
-5.5
+<span style="color:#a6e22e">@plusone</span>
+<span style="color:#a6e22e">@divtwo</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sum</span>(x, y):
+    <span style="color:#66d9ef">return</span> (x <span style="color:#f92672">+</span> y)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;</span> sum(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">4</span>)
+<span style="color:#ae81ff">5.5</span>
 </code></pre></div><p>By observing the result we can see that first <strong><code>5 + 4</code></strong> was divided by two, and then one was added to result.</p>
 <h2 id="decorators-with-parameters">Decorators with parameters</h2>
 <p>Unfortunately it isn&rsquo;t as simple as making the decorator function accept additional arguments, and I was quite bummed to find that out.</p>
 <p>Instead, a decorator with a parameter should actually be a function that takes an argument and returns a function which in turn returns another function. In other words, we have to call a function with a parameter that will then return a decorator function (built upon that paramater). <strong>You can think of it just like the decorators we&rsquo;ve written above, but now they are returned from yet another function</strong>. Confusing (and I still don&rsquo;t understand why, however there is probably a good exaplanation for it), so let&rsquo;s rewrite the <strong><code>divtwo</code></strong> decorator so that it accepts the number to divide by as an argument:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">divby</span>(n):
-    <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">decorator</span>(func): 
-        <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">inner</span>(a, b):
-            <span style="font-weight:bold;text-decoration:underline">return</span> func(a, b) / n
-        <span style="font-weight:bold;text-decoration:underline">return</span> inner
-    <span style="font-weight:bold;text-decoration:underline">return</span> decorator
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">divby</span>(n):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">decorator</span>(func): 
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">inner</span>(a, b):
+            <span style="color:#66d9ef">return</span> func(a, b) <span style="color:#f92672">/</span> n
+        <span style="color:#66d9ef">return</span> inner
+    <span style="color:#66d9ef">return</span> decorator
 
-@divby(3)
-<span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">sum</span>(x, y):
-    <span style="font-weight:bold;text-decoration:underline">return</span> (x + y)
-</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">&gt; <span style="font-weight:bold;font-style:italic">sum</span>(5, 4)
-3.0
+<span style="color:#a6e22e">@divby</span>(<span style="color:#ae81ff">3</span>)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sum</span>(x, y):
+    <span style="color:#66d9ef">return</span> (x <span style="color:#f92672">+</span> y)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;</span> sum(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">4</span>)
+<span style="color:#ae81ff">3.0</span>
 </code></pre></div><p>Now the decorator has an argument which we can control on a per-function basis.</p>
 <p>Since our decorator routine consists of simple one-liner statements we can rewrite it entirely using lambdas, however I personally think that, while more concise, it is less readable:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">divby</span>(n):
-    <span style="font-weight:bold;text-decoration:underline">return</span> <span style="font-weight:bold;text-decoration:underline">lambda</span> func: <span style="font-weight:bold;text-decoration:underline">lambda</span> a, b: func(a, b) / n
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">divby</span>(n):
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">lambda</span> func: <span style="color:#66d9ef">lambda</span> a, b: func(a, b) <span style="color:#f92672">/</span> n
 </code></pre></div><h2 id="decorating-functions-regardless-of-their-arguments">Decorating functions regardless of their arguments</h2>
 <p>The decorators I&rsquo;ve written so far all assume that the decorated function accepts 2 arguments, and as such only works on those. We can fix this by using the familiar <strong><code>*args, **kwargs</code></strong> notation:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">divby</span>(n):
-    <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">decorator</span>(func): 
-        <span style="font-weight:bold;text-decoration:underline">def</span> <span style="color:#666;font-weight:bold;font-style:italic">inner</span>(*args, **kwargs):
-            <span style="font-weight:bold;text-decoration:underline">return</span> func(*args, **kwargs) / n
-        <span style="font-weight:bold;text-decoration:underline">return</span> inner
-    <span style="font-weight:bold;text-decoration:underline">return</span> decorator
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">divby</span>(n):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">decorator</span>(func): 
+        <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">inner</span>(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+            <span style="color:#66d9ef">return</span> func(<span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs) <span style="color:#f92672">/</span> n
+        <span style="color:#66d9ef">return</span> inner
+    <span style="color:#66d9ef">return</span> decorator
 </code></pre></div><p>Now this decorator can be applied to any function, regardless of the arguments it takes (or does not take!).</p>
 
     </div>
-    
+  </article>
 
-    
+  
+  
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts/">All posts</a></li>
+         
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#another-example">Another example</a></li>
+    <li><a href="#chaining-multiple-decorators">Chaining multiple decorators</a></li>
+    <li><a href="#decorators-with-parameters">Decorators with parameters</a></li>
+    <li><a href="#decorating-functions-regardless-of-their-arguments">Decorating functions regardless of their arguments</a></li>
+  </ul>
+</nav>
+    </div>
+
+    <div id="share-footer" style="display: none">
       
+      <ul>
+  
+  
     
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&text=Briefly%20explaining%20Python3%20Decorators" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&title=Briefly%20explaining%20Python3%20Decorators" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&is_video=false&description=Briefly%20explaining%20Python3%20Decorators" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Briefly%20explaining%20Python3%20Decorators&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&title=Briefly%20explaining%20Python3%20Decorators" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&title=Briefly%20explaining%20Python3%20Decorators" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&name=Briefly%20explaining%20Python3%20Decorators&description=Decorators%20with%20examples." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_decorators_explained%2f&t=Briefly%20explaining%20Python3%20Decorators" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
   </div>
+</div>
 
-      </div>
 
-      
-        <footer class="footer">
-  <div class="footer__inner">
-    
-      <div class="copyright copyright--user">© Bogdan Mitrović</div>
-      
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  Bogdan Mitrović 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </nav>
   </div>
 </footer>
 
-<script src="https://bool3max.github.io/assets/main.js"></script>
-<script src="https://bool3max.github.io/assets/prism.js"></script>
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
 
 
-      
-    </div>
 
-    
-  </body>
 </html>
