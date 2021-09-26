@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> UTF-8 | bool3max&#39;s blog</title>
-  <meta name="description" content="This blog contains my personal writings and ramblings that may or may not be useful to others.">
+  <meta name="description" content="This blog is a collection of quick references and notes that I write to cement my knowledge on various topics. Its contents may or may not be useful to others.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
@@ -12,8 +12,8 @@
 <meta property="og:description" content="A shallow description of how UTF-8 works and my journey in writing a simple decoder/encoder." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/utf8/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-12-03T21:29:03&#43;01:00" />
-<meta property="article:modified_time" content="2020-12-03T21:29:03&#43;01:00" />
+<meta property="article:published_time" content="2020-12-03T21:29:03+01:00" />
+<meta property="article:modified_time" content="2020-12-03T21:29:03+01:00" />
 
 
   <meta name="twitter:card" content="summary"/>
@@ -269,7 +269,7 @@
 <p>From our shell we can see that this is exactly how the € is encoded:</p>
 </li>
 </ul>
-<pre><code>echo -n &quot;€&quot; | xxd -g 1 -c 10 -u
+<pre tabindex="0"><code>echo -n &quot;€&quot; | xxd -g 1 -c 10 -u
 00000000: E2 82 AC                       ...
 </code></pre><h1 id="writing-an-utf-8-decoder">Writing an UTF-8 decoder</h1>
 <p>This is something I&rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Literally all text that you see nowadays on screen was at some point encoded as UTF-8, then decoded to get all invididual codepoints, and then rendered to the screen with a relevant font.</p>

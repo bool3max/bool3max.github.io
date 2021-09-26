@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> Context Managers and the &#39;with&#39; keyword in Python3 | bool3max&#39;s blog</title>
-  <meta name="description" content="This blog contains my personal writings and ramblings that may or may not be useful to others.">
+  <meta name="description" content="This blog is a collection of quick references and notes that I write to cement my knowledge on various topics. Its contents may or may not be useful to others.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
@@ -12,8 +12,8 @@
 <meta property="og:description" content="Describing the intrinsics of a really powerful Python3 feature." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/context_managers_and_with_python3/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-11-21T14:52:04&#43;01:00" />
-<meta property="article:modified_time" content="2020-11-21T14:52:04&#43;01:00" />
+<meta property="article:published_time" content="2020-11-21T14:52:04+01:00" />
+<meta property="article:modified_time" content="2020-11-21T14:52:04+01:00" />
 
 
   <meta name="twitter:card" content="summary"/>
@@ -180,10 +180,10 @@
   
     <div class="content" itemprop="articleBody">
       <p>Context Managers in <code>python3</code> are a simple but powerful feature.</p>
-<p>The most common example is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation do the work for you:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;file&#34;</span>, <span style="color:#e6db74">&#34;rb&#34;</span>) <span style="color:#66d9ef">as</span> file:
+<p>The most common example of a context-manager in action is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation (in this case the <code>open</code> function) do the work for you:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;file&#34;</span>, <span style="color:#e6db74">&#34;rb&#34;</span>) <span style="color:#66d9ef">as</span> file:
     <span style="color:#f92672">...</span>
-</code></pre></div><p>Instead of having to manually call <code>file.close()</code> later on, once the &ldquo;<code>with</code>&rdquo; block ends the associated cleanup (in this case flushing the file to disk and closing the file descriptors) is automatically performed.</p>
+</code></pre></div><p>Instead of having to manually call <code>file.close()</code> later on, once the &ldquo;<code>with</code>&rdquo; block ends, the appropriate cleanup actions (in this case flushing the file to disk and closing the file descriptors) are automatically performed.</p>
 <p>This is all accomplished using 2 underlying methods defined in the context manager (in the above case the object returned by the <code>open()</code> call):</p>
 <ul>
 <li><strong><code>__enter__</code></strong>
@@ -206,6 +206,7 @@
 </ul>
 </li>
 </ul>
+<p>In order to implement context manager support in your functions, just make sure that they expose the above two methods, and they will be context-manager compliant.</p>
 
     </div>
   </article>

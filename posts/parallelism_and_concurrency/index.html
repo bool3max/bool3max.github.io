@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> Parallelism and Concurrency: The basics | bool3max&#39;s blog</title>
-  <meta name="description" content="This blog contains my personal writings and ramblings that may or may not be useful to others.">
+  <meta name="description" content="This blog is a collection of quick references and notes that I write to cement my knowledge on various topics. Its contents may or may not be useful to others.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
@@ -12,8 +12,8 @@
 <meta property="og:description" content="This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/parallelism_and_concurrency/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-11-28T13:41:36&#43;01:00" />
-<meta property="article:modified_time" content="2020-11-28T13:41:36&#43;01:00" />
+<meta property="article:published_time" content="2020-11-28T13:41:36+01:00" />
+<meta property="article:modified_time" content="2020-11-28T13:41:36+01:00" />
 
 
   <meta name="twitter:card" content="summary"/>
@@ -247,7 +247,7 @@
 <hr>
 <p>So far I&rsquo;ve talked more <em>about</em> what &ldquo;tools&rdquo; are used to achieve concurrency rather than how to actually use them. But before I do I want to explore them a bit further:</p>
 <p>Let&rsquo;s write a trivial binary that proves that the <code>fork(2)</code> wrapper really calls the <code>clone(2)</code> syscall under the hood:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;pthread.h&gt;</span><span style="color:#75715e">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;pthread.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
@@ -280,9 +280,9 @@
 <p>The child inherits copies of the parent&rsquo;s set of open file descriptors.  Each file descriptor in the child refers to the same open file description (see open(2)) as the corresponding file descriptor in the parent.  This means that the two file descriptors share open file status flags, file offset, and signal-driven I/O attributes (see the description of F_SETOWN and F_SETSIG in fcntl(2)).</p>
 </blockquote>
 <p>Now let&rsquo;s use <code>strace</code> to see which syscalls the binary performs:</p>
-<pre><code>$ strace --trace=%process ./example
+<pre tabindex="0"><code>$ strace --trace=%process ./example
 </code></pre><p><code>--trace=%process</code> filters the output to only show syscalls relating to process manipulation.</p>
-<pre><code>execve(&quot;./example&quot;, [&quot;./example&quot;], 0x7ffdfb5127c8 /* 36 vars */) = 0
+<pre tabindex="0"><code>execve(&quot;./example&quot;, [&quot;./example&quot;], 0x7ffdfb5127c8 /* 36 vars */) = 0
 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f38384c0810) = 120121
 Hello from child, PID: 120121
 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=120121, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---

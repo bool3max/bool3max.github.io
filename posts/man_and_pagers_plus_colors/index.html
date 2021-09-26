@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> How does &#39;man&#39; actually display the pages? | bool3max&#39;s blog</title>
-  <meta name="description" content="This blog contains my personal writings and ramblings that may or may not be useful to others.">
+  <meta name="description" content="This blog is a collection of quick references and notes that I write to cement my knowledge on various topics. Its contents may or may not be useful to others.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
@@ -12,8 +12,8 @@
 <meta property="og:description" content="How does &#39;man&#39; display the manuals?" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/man_and_pagers_plus_colors/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-02-17T13:44:42&#43;01:00" />
-<meta property="article:modified_time" content="2021-02-17T13:44:42&#43;01:00" />
+<meta property="article:published_time" content="2021-02-17T13:44:42+01:00" />
+<meta property="article:modified_time" content="2021-02-17T13:44:42+01:00" />
 
 
   <meta name="twitter:card" content="summary"/>
@@ -71,6 +71,12 @@
           </a>
         </li>
         
+        
+        <li>
+          <a class="icon" href="https://bool3max.github.io/posts/ieee754_explained/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
         
         <li>
           <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -194,7 +200,7 @@ that <code>less</code> will output whenever it&rsquo;s instructed to bold a spec
 but that were kept for compatibility reasons. These variables also aren&rsquo;t mentioned anywhere in less' documentation.</p>
 <p>Below is a fish function that I use to achieve colorization in manpages. It exports a set of these <code>LESS_TERMCAP_*</code> variables to my preference,
 and then simply runs <code>man</code>, which in turn runs <code>less</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#66d9ef">function</span> man --description <span style="color:#e6db74">&#34;manpages using the less pager but with 8bit colors&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#66d9ef">function</span> man --description <span style="color:#e6db74">&#34;manpages using the less pager but with 8bit colors&#34;</span>
     set -x LESS_TERMCAP_md <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;31m&#39;</span><span style="color:#f92672">)</span>
     set -x LESS_TERMCAP_me <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
     set -x LESS_TERMCAP_se <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>

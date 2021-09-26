@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> Userspace programs for process management on Linux | bool3max&#39;s blog</title>
-  <meta name="description" content="This blog contains my personal writings and ramblings that may or may not be useful to others.">
+  <meta name="description" content="This blog is a collection of quick references and notes that I write to cement my knowledge on various topics. Its contents may or may not be useful to others.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
@@ -12,8 +12,8 @@
 <meta property="og:description" content="Comparing different tools and solutions." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/linux_userspace_programs_for_process_management/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-01-26T16:10:17&#43;01:00" />
-<meta property="article:modified_time" content="2021-01-26T16:10:17&#43;01:00" />
+<meta property="article:published_time" content="2021-01-26T16:10:17+01:00" />
+<meta property="article:modified_time" content="2021-01-26T16:10:17+01:00" />
 
 
   <meta name="twitter:card" content="summary"/>
@@ -179,7 +179,7 @@
 
   
     <div class="content" itemprop="articleBody">
-      <h1 id="kill"><strong><code>kill</code></strong></h1>
+      <h1 id="kill">kill</h1>
 <p>Despite its name (that it&rsquo;s gotten from its most popular usecase), <code>kill</code> is very versatile tool used to send specified signals to individual
 processes, or process groups.</p>
 <p>It is part of the <code>util-linux</code> collection of programs and is widely available.</p>
@@ -208,7 +208,7 @@ processes, or process groups.</p>
 <li><code>kill -p firefox</code></li>
 </ul>
 <p>Don&rsquo;t send any signals, but print PIDs of named processes listed, and exit.</p>
-<h1 id="pidof"><strong><code>pidof</code></strong></h1>
+<h1 id="pidof">pidof</h1>
 <p><code>pidof</code> is a tool used to list PIDs of processes by name. It doesn&rsquo;t conduct any manipulation. It&rsquo;s very useful when dealing with other
 , more primitive tools that conduct process manipulation but don&rsquo;t have the ability to find PIDs based on their names.</p>
 <p>Here are some usage examples:</p>
@@ -220,7 +220,7 @@ processes, or process groups.</p>
 <li><code>pidof firefox kitty -S x</code></li>
 </ul>
 <p>List PIDs of all processes with the names <code>'firefox'</code> or <code>'kitty'</code>, and separate PIDs with the character <code>'x'</code>.</p>
-<h1 id="killall"><strong><code>killall</code></strong></h1>
+<h1 id="killall">killall</h1>
 <p><code>killall</code> is <code>kill</code> on steroids. In addition to support the same operations as <code>kill</code>, it sports a bunch of other features, such as case
 insensitive search, matching process names using regexes, killing all processes belonging to a group of a specified process, filtering processes
 based on spawn-time and owning user&hellip;</p>
@@ -235,7 +235,7 @@ and send a <code>SIGTERM (15)</code> to it. Interactively ask the user to confir
 </ul>
 <p>Case-insenstively match every process against the specified regex, and send it a <code>SIGKILL (9)</code> signal, prompting the user before every
 match.</p>
-<h1 id="pgrep-pkill"><strong><code>pgrep, pkill</code></strong></h1>
+<h1 id="pgrep-pkill">pgrep, pkill</h1>
 <p>These two are pretty similar <code>killall</code>, though they have even more functionality. <strong><code>pgrep</code></strong> matches process names against regexes and prints them out, while <strong><code>pkill</code></strong> does the
 same in addition to sending signals.</p>
 <p>They sport options such as <strong><code>-c</code></strong> (suppresses normal output and prints a count of process matches to stdout, eliminating the need for hacky shell piping such -

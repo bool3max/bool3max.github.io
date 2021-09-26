@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Bogdan Mitrović</copyright>
-    <lastBuildDate>Wed, 17 Feb 2021 13:44:42 +0100</lastBuildDate><atom:link href="https://bool3max.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Sep 2021 18:00:38 +0200</lastBuildDate><atom:link href="https://bool3max.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A primer on the binary system: signed values, two&#39;s complement, IEEE 754, and more</title>
+      <link>https://bool3max.github.io/posts/ieee754_explained/</link>
+      <pubDate>Sat, 18 Sep 2021 18:00:38 +0200</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/ieee754_explained/</guid>
+      <description>Modern 64-bit processors are capable of storing 2^64 different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
+Given any number of bits N, we can always conclude that the maximum number of different values representable using that particular bit count is always 2^N.</description>
+    </item>
+    
     <item>
       <title>How does &#39;man&#39; actually display the pages?</title>
       <link>https://bool3max.github.io/posts/man_and_pagers_plus_colors/</link>
@@ -80,8 +90,8 @@ Opening  opening a FIFO for reading will block until it is also open for writing
       
       <guid>https://bool3max.github.io/posts/context_managers_and_with_python3/</guid>
       <description>Context Managers in python3 are a simple but powerful feature.
-The most common example is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation do the work for you:
-with open(&amp;#34;file&amp;#34;, &amp;#34;rb&amp;#34;) as file: ... Instead of having to manually call file.close() later on, once the &amp;ldquo;with&amp;rdquo; block ends the associated cleanup (in this case flushing the file to disk and closing the file descriptors) is automatically performed.</description>
+The most common example of a context-manager in action is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation (in this case the open function) do the work for you:
+with open(&amp;#34;file&amp;#34;, &amp;#34;rb&amp;#34;) as file: ... Instead of having to manually call file.close() later on, once the &amp;ldquo;with&amp;rdquo; block ends, the appropriate cleanup actions (in this case flushing the file to disk and closing the file descriptors) are automatically performed.</description>
     </item>
     
     <item>
