@@ -399,7 +399,7 @@ is increased some constants used in calculations differ. I will note those along
 <p>The next 8 bits represent the <strong>biased exponent</strong> that is used to scale the value of the mantissa. The biased exponent is treated as a regular 8-bit unsigned integer, however
 it is <code>127</code>-biased (the stored value is increased or &ldquo;shifted&rdquo; by 127) to allow for storage of negative exponents. To obtain the actual value of the exponent, subtract <code>127</code> from its value, e.g. a biased exponent of
 <code>231</code> would denote an actual exponent of <code>231-127 = 104</code>. A bias is used instead of an encoding such as &ldquo;two&rsquo;s complement&rdquo; for efficient comparisons. Once the bias is
-taken into account, the value of the exponent ranges from <code>-126</code> to <code>128</code>.</p>
+taken into account, the value of the exponent ranges from <code>-126</code> to <code>+127</code> (<strong>not</strong> <code>-127</code> to <code>128</code> as you may believe - cases where the exponent field is all <code>0</code>s / all <code>1</code>s are treated specially, more on this later).</p>
 <p>The last 23 bits represent the <strong>mantissa</strong> (analogous to a <em>significand</em> in scientific notation). Its bits represent negative powers of two, starting with <code>2^(-1)</code>
 at the most significant bit, all the way through to <code>2^(-23)</code> at the least significant bit. A non-existent <code>1</code>-bit carrying the value <code>2^0</code> (<code>1.0</code>) is implied to be
 placed just between the exponent and mantissa bits - that&rsquo;s what the <code>+1</code> denotes in the equation pictured above, and is also why the mantissa is guarantted to be
