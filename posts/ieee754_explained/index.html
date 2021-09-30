@@ -173,6 +173,7 @@ Given any number of bits N, we can always conclude that the maximum number of di
       <ul>
         <li><a href="#scientific-notation">Scientific notation</a></li>
         <li><a href="#encoding-in-memory">Encoding in memory</a></li>
+        <li><a href="#range-and-precision-in-detail">Range and precision in detail</a></li>
       </ul>
     </li>
   </ul>
@@ -405,15 +406,18 @@ at the most significant bit, all the way through to <code>2^(-23)</code> at the 
 placed just between the exponent and mantissa bits - that&rsquo;s what the <code>+1</code> denotes in the equation pictured above, and is also why the mantissa is guarantted to be
 between <code>1.0</code> and <code>2.0</code> in value, i.e. <code>1.0 &lt;= mantissa &lt; 2.0</code>. This is called the &ldquo;leading bit convention&rdquo; or the &ldquo;implicit bit convention&rdquo;, and it allows the format
 to have an extra bit of precision. This is true in all cases but when dealing with a <em>denormalized</em> number, indicated by <strong>the biased exponent field being all 0s</strong> - more on this later.</p>
-<p>Once all three components are known obtaining the final value is quite easy - the formula pictured above is quite self-explanatory.
+<p>Once all three components are known obtaining the final value quite trivial - the formula pictured above is quite self-explanatory.
 <a href="https://fabiensanglard.net/floating_point_visually_explained/">This article</a> provides a nice additional visual explanation.
-<strong>Note that IEEE-754 representations in no way solve the representation problems (i.e. <code>0.2</code>, <code>0.3</code> and so forth) discussed in the
-fixed-point explanation. It&rsquo;s still all approximations, done using the mantissa this time.</strong></p>
+<strong>IEEE-754 representations in no way solve the representation issues discussed in the earlier</strong>. If the value cannot be represented by <strong>a combination of any powers of two
+ranging from -1 to -23 increased by 1.0 and then scaled (multiplied) by any power of two ranging from -126 to 127</strong>, then it cannot be <em>exactly</em> represented, and is instead <em><strong>approximated</strong></em> as closely as possible.
+This stands for integer numbers as well - for example, the value <code>16,777,217</code> cannot be exactly represented by a single-precision IEEE-754 format, and is instead
+rounded down to <code>16,777,216</code>. Perhaps somewhat counter-intuitively, the value <code>5</code> <em>can</em> be exactly represented. By setting the exponent field to <code>2</code>, and the mantissa field to <code>0.25</code> (i.e. setting the second most significant bit carrying the value <code>2^(-4)</code> or <code>0.25</code>),
+the final equation becomes <code>1 * 2^2 * (1 + 0.25) = 1.25 * 4 = 5</code>.</p>
 <h4 id="representing-zeroes">Representing zeroes</h4>
 <p>Zeroes are represented by setting the exponent and mantissa fields to all <code>0</code>s. The sign bit determines if the zero is positive (<code>+0</code>) or negative (<code>-0</code>).</p>
 <h4 id="denormalized-numbers">Denormalized numbers</h4>
 <p>When the exponent portion of a number is all <code>0</code>s the value is said to be <em>denormalized</em>. This comes with a couple deviations from the
-regular rules about representing floating point values. Firstly, the exponent&rsquo;s actual value (when the 127-bias is taken into account)
+regular rules about representing floating point values (and as such the general formula cannot be used in that case). Firstly, the exponent&rsquo;s actual value (when the 127-bias is taken into account)
 isn&rsquo;t <code>-127</code> as you may expect, but rather <code>-126</code>, just as if the biased exponent was <code>1</code>. Secondly, the implied <code>1</code>-bit no longer exists,
 leading to the mantissa being constrained between <code>0.0</code> and <code>1.0</code>, i.e. <code>0.0 &lt;= mantissa &lt; 1.0</code>. As the leading digit of the mantissa
 is a 0, this allows for representation of numbers even smaller than the smallest normalized number. For example, the numbers closest to 0
@@ -460,7 +464,8 @@ Their bitfield representations are listed in the table below:</p>
 </tbody>
 </table>
 <p>Mathematically undefined operations, such as taking the square root of a negative number for example, result in a NaN (e.g. <code>sqrt(-5.0)</code>).
-Divisions by zero for example result in ±∞ depending on the sign of the first operand (at least that&rsquo;s what I observed on my system).</p>
+Divisions by zero for example result in ±∞ depending on the sign of the first operand (at least that&rsquo;s what I&rsquo;ve observed on my system).</p>
+<h3 id="range-and-precision-in-detail">Range and precision in detail</h3>
 
     </div>
   </article>
@@ -513,6 +518,7 @@ Divisions by zero for example result in ±∞ depending on the sign of the first
       <ul>
         <li><a href="#scientific-notation">Scientific notation</a></li>
         <li><a href="#encoding-in-memory">Encoding in memory</a></li>
+        <li><a href="#range-and-precision-in-detail">Range and precision in detail</a></li>
       </ul>
     </li>
   </ul>
