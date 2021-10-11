@@ -169,11 +169,11 @@ Given any number of bits N, we can always conclude that the maximum number of di
 
   <ul>
     <li><a href="#fixed-point-representation">Fixed-point representation</a></li>
-    <li><a href="#ieee-754">IEEE-754</a>
+    <li><a href="#ieee-754-floating-point-representation">IEEE-754 (floating-point representation)</a>
       <ul>
         <li><a href="#scientific-notation">Scientific notation</a></li>
         <li><a href="#encoding-in-memory">Encoding in memory</a></li>
-        <li><a href="#range-and-precision-in-detail">Range and precision in detail</a></li>
+        <li><a href="#precision-explained-in-detail">Precision explained in detail</a></li>
       </ul>
     </li>
   </ul>
@@ -324,7 +324,7 @@ The C and C++ standards in particular do not define behavior when dealing with t
 <li><a href="https://youtu.be/gc1Nl3mmCuY">&ldquo;Floating Point Numbers&rdquo; - NERDfirst (17:29)</a></li>
 <li><a href="https://www.h-schmidt.net/FloatConverter/IEEE754.html">IEEE-754 Floating Point Converter</a></li>
 </ul>
-<p>It&rsquo;s immediately apparent that we need yet another encoding in order to represent and operate on non-integer (real, floating point) numbers.</p>
+<p>It&rsquo;s immediately apparent that we need yet another encoding in order to represent and operate on non-integer (real) numbers.</p>
 <h2 id="fixed-point-representation">Fixed-point representation</h2>
 <p>The most trivial way to represent real numbers using a binary format is by employing a &ldquo;fixed point representation&rdquo;. That is, in an N-bit pattern, choose a position
 between two adjecent bits in which the radix point will be placed. Bits to the left of the radix point (also called the <em>binary point</em>) represent the whole (integer)
@@ -349,7 +349,7 @@ after the decimal point repeating &ldquo;forever&rdquo; (often indicated by plac
 is no longer fixed to a specific position and can instead &ldquo;float&rdquo; around on demand. This allows for tradeoffs: a larger magnitude for the integer part of a number
 with lower fractional precision, or vice versa. The industry standard for representing floating point numbers in computers is the <a href="https://en.wikipedia.org/wiki/IEEE_754-1985">IEEE-754</a> standard, first introduced
 in 1985.</p>
-<h2 id="ieee-754">IEEE-754</h2>
+<h2 id="ieee-754-floating-point-representation">IEEE-754 (floating-point representation)</h2>
 <p>The standard was first introduced in 1985 and describes how floating point numbers of various widths are to be stored in memory, as well as how various
 arithmetic operations are to behave on those numbers. While all of the semantics of the standard could be implemented in software, it was commonly implemented in hardware
 by so called FPUs (&ldquo;floating-point units&rdquo;) for the sake of efficiency and speed. The first piece of hardware to implement IEEE-754 is the <a href="https://en.wikipedia.org/wiki/Intel_8087">Intel 8087</a>
@@ -465,7 +465,32 @@ Their bitfield representations are listed in the table below:</p>
 </table>
 <p>Mathematically undefined operations, such as taking the square root of a negative number for example, result in a NaN (e.g. <code>sqrt(-5.0)</code>).
 Divisions by zero for example result in ±∞ depending on the sign of the first operand (at least that&rsquo;s what I&rsquo;ve observed on my system).</p>
-<h3 id="range-and-precision-in-detail">Range and precision in detail</h3>
+<h3 id="precision-explained-in-detail">Precision explained in detail</h3>
+<p>The larger the absolute magnitude of the integer part of a number is, the less precision is available to cover the fractional part of the number. This is illustrated
+by this initially quite elusive (at least to me) graph found on the IEEE-754 Wikipedia page, pictured below:</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/IEEE754.svg/1024px-IEEE754.svg.png" alt="img"></p>
+<p>To understand why this is, let&rsquo;s recap what roles the parts of an IEEE-754 format actually play.</p>
+<p><strong>The exponent</strong> tells us between which two consecutive
+powers of 2 our value falls within - for example <code>[0.25, 0.5]</code> (the value falls between powers of two <code>-2</code> and <code>-1</code>), <code>[1, 2]</code> (the value falls between powers of two
+<code>0</code> and <code>1</code>), <code>[16, 32]</code> (the value falls between powers of two <code>4</code> and <code>5</code>), all the way up to <code>[2^127, 2^128]</code>. If the exponent is for example <code>18</code>, we know
+that the final value will fall somewhere between <code>[2^18, 2^19]</code> or <code>[262144, 524288]</code>.</p>
+<p><strong>The mantissa</strong> then <em>dividies</em> that window/range indicated by the exponent into <code>2^23</code> (or <code>8388608</code>) &ldquo;buckets&rdquo;, or other individual values.
+In other words, it approximates the exact location/offset of the final number in the range/window indicated by the exponent. Since the mantissa is constrained
+between <code>1.0</code> and <code>2.0</code> in normalized form, and since the final value is obtained by multiplying the exponent and mantissa, <strong>it is clear why
+the exponent only stores the lower end of the range</strong>. The closer the mantissa is to <code>1.0</code> the closer the final number is to the lower end of the range,
+and the closer it is to <code>2.0</code> the closer the final number is to the upper end of the range.</p>
+<p><strong>The shorter the range within which the final number falls in, the more &lsquo;<em>precisely</em>&rsquo; its location/offset within that range can be approximated</strong>, because
+each of the <code>8388608</code> buckets dividing the range represent a smaller value. For example, imagine that we are trying to represent a number in the range
+<code>[1, 2]</code>. Our range in that case is <code>(2 - 1) = 1</code>, and each of the different <code>8388608</code> mantissa representations dividing that range carry the value <code>(2 - 1) / 8388608</code>, or <code>0.00000011920928955078125</code> - <strong>that value being our <em>precision</em></strong> -
+i.e. the <strong>smallest difference between two consecutive numbers in that range</strong>.</p>
+<p>In contrast, had we instead wanted to represent a value in the range <code>[512, 1024]</code> (so <code>9</code> being the exponent), the precision would &lsquo;fall down&rsquo; to <code>(1024 - 512) / 8388608</code>, or <code>0.00006103515625</code>. Quite a bit less precise.</p>
+<p>Let&rsquo;s see an example which showcases the precision in action: say we want to represent <code>65536</code>. It is very trivial to represent exactly that value only
+using the exponent, as it is a direct power of two. We simply set the sign to <code>0</code>, the exponent to <code>16</code> (or <code>143</code> when accounting for the bias), and we leave
+the mantissa at <code>0</code>. Now, the exponent&rsquo;s value tells us that we can represent values in the range <code>[2^16, 2^17]</code>, or <code>[65536, 131072]</code> - essentially we are covering a range of 65536 values.
+Our precision in that case is: <code>65536 / 8388608 = 0.0078125</code>, or <code>7.8125e-3</code>. If we then flip the least significant bit of the mantissa on (the one carrying the value <code>2^(-23)</code>),
+the final value becomes: <code>+1 * 2^16 * (1 + 2^(-23)) = 65536.0078125</code>. This value is the <em>next largest representable one</em> after <code>65536</code>, and it is larger than it <em><strong>exactly</strong></em> by the value of the precision in that range (i.e. <code>7.8125e-3</code>).
+After it, the next largest value is: <code>+1 * 2^16 * (1 + 2^(-22)) = 65536.015625</code>. Again, the difference between it and the previous value is the precision: <code>65536.015625 - 65536.0078125 = 0.0078125</code>.
+Past <code>65536</code>, we cannot make jumps more precise/smaller than <code>7.8125e-3</code>.</p>
 
     </div>
   </article>
@@ -514,11 +539,11 @@ Divisions by zero for example result in ±∞ depending on the sign of the first
 
   <ul>
     <li><a href="#fixed-point-representation">Fixed-point representation</a></li>
-    <li><a href="#ieee-754">IEEE-754</a>
+    <li><a href="#ieee-754-floating-point-representation">IEEE-754 (floating-point representation)</a>
       <ul>
         <li><a href="#scientific-notation">Scientific notation</a></li>
         <li><a href="#encoding-in-memory">Encoding in memory</a></li>
-        <li><a href="#range-and-precision-in-detail">Range and precision in detail</a></li>
+        <li><a href="#precision-explained-in-detail">Precision explained in detail</a></li>
       </ul>
     </li>
   </ul>
