@@ -491,6 +491,9 @@ Our precision in that case is: <code>65536 / 8388608 = 0.0078125</code>, or <cod
 the final value becomes: <code>+1 * 2^16 * (1 + 2^(-23)) = 65536.0078125</code>. This value is the <em>next largest representable one</em> after <code>65536</code>, and it is larger than it <em><strong>exactly</strong></em> by the value of the precision in that range (i.e. <code>7.8125e-3</code>).
 After it, the next largest value is: <code>+1 * 2^16 * (1 + 2^(-22)) = 65536.015625</code>. Again, the difference between it and the previous value is the precision: <code>65536.015625 - 65536.0078125 = 0.0078125</code>.
 Past <code>65536</code>, we cannot make jumps more precise/smaller than <code>7.8125e-3</code>.</p>
+<p>From the graph pictured above we can observe that (at least concerning the 32-bit single-precision format) somewhere between 10⁶ and 10⁸ the precision reaches 10⁰ (1), meaning that past that particular cutoff point,
+we lose the ability to represent non-integer numbers, as our precision itself becomes a whole number without a fractional part. As far as the double-precision
+format goes, that cutoff point comes a lot later (it isn&rsquo;t even visible on the graph).</p>
 
     </div>
   </article>
