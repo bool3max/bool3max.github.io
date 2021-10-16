@@ -406,7 +406,7 @@ at the most significant bit, all the way through to <code>2^(-23)</code> at the 
 placed just between the exponent and mantissa bits - that&rsquo;s what the <code>+1</code> denotes in the equation pictured above, and is also why the mantissa is guarantted to be
 between <code>1.0</code> and <code>2.0</code> in value, i.e. <code>1.0 &lt;= mantissa &lt; 2.0</code>. This is called the &ldquo;leading bit convention&rdquo; or the &ldquo;implicit bit convention&rdquo;, and it allows the format
 to have an extra bit of precision. This is true in all cases but when dealing with a <em>denormalized</em> number, indicated by <strong>the biased exponent field being all 0s</strong> - more on this later.</p>
-<p>Once all three components are known obtaining the final value quite trivial - the formula pictured above is quite self-explanatory.
+<p>Once all three components are known obtaining the final value is quite trivial - the formula pictured above is quite self-explanatory.
 <a href="https://fabiensanglard.net/floating_point_visually_explained/">This article</a> provides a nice additional visual explanation.
 <strong>IEEE-754 representations in no way solve the representation issues discussed in the earlier</strong>. If the value cannot be represented by <strong>a combination of any powers of two
 ranging from -1 to -23 increased by 1.0 and then scaled (multiplied) by any power of two ranging from -126 to 127</strong>, then it cannot be <em>exactly</em> represented, and is instead <em><strong>approximated</strong></em> as closely as possible.
