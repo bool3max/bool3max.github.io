@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> A primer on the binary system: signed values, two&#39;s complement, IEEE 754, and more | bool3max&#39;s blog</title>
+  <title> A primer on the binary system: two&#39;s complement, IEEE-754 and more, explained | bool3max&#39;s blog</title>
   <meta name="description" content="This blog is a collection of quick references and notes that I write to cement my knowledge on various topics. Its contents may or may not be useful to others.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:title" content="A primer on the binary system: signed values, two&#39;s complement, IEEE 754, and more" />
+  <meta property="og:title" content="A primer on the binary system: two&#39;s complement, IEEE-754 and more, explained" />
 <meta property="og:description" content="Modern 64-bit processors are capable of storing 2^64 different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
 Given any number of bits N, we can always conclude that the maximum number of different values representable using that particular bit count is always 2^N." />
 <meta property="og:type" content="article" />
@@ -18,7 +18,7 @@ Given any number of bits N, we can always conclude that the maximum number of di
 
 
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="A primer on the binary system: signed values, two&#39;s complement, IEEE 754, and more"/>
+<meta name="twitter:title" content="A primer on the binary system: two&#39;s complement, IEEE-754 and more, explained"/>
 <meta name="twitter:description" content="Modern 64-bit processors are capable of storing 2^64 different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
 Given any number of bits N, we can always conclude that the maximum number of different values representable using that particular bit count is always 2^N."/>
 
@@ -105,42 +105,42 @@ Given any number of bits N, we can always conclude that the maximum number of di
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&text=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&text=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&is_video=false&description=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&is_video=false&description=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more&description=Modern%2064-bit%20processors%20are%20capable%20of%20storing%202%5e64%20different%20values%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20values%20is%20simply%20a%20different%20combination%20of%2064%20sequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%0aGiven%20any%20number%20of%20bits%20N%2c%20we%20can%20always%20conclude%20that%20the%20maximum%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%202%5eN." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&description=Modern%2064-bit%20processors%20are%20capable%20of%20storing%202%5e64%20different%20values%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20values%20is%20simply%20a%20different%20combination%20of%2064%20sequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%0aGiven%20any%20number%20of%20bits%20N%2c%20we%20can%20always%20conclude%20that%20the%20maximum%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%202%5eN." aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&t=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&t=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -186,7 +186,7 @@ Given any number of bits N, we can always conclude that the maximum number of di
   <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
     <header>
       <h1 class="posttitle" itemprop="name headline">
-        A primer on the binary system: signed values, two&#39;s complement, IEEE 754, and more
+        A primer on the binary system: two&#39;s complement, IEEE-754 and more, explained
       </h1>
       <div class="meta">
         
@@ -567,42 +567,42 @@ format goes, that cutoff point comes a lot later (it isn&rsquo;t even visible on
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&text=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&text=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&is_video=false&description=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&is_video=false&description=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more&description=Modern%2064-bit%20processors%20are%20capable%20of%20storing%202%5e64%20different%20values%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20values%20is%20simply%20a%20different%20combination%20of%2064%20sequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%0aGiven%20any%20number%20of%20bits%20N%2c%20we%20can%20always%20conclude%20that%20the%20maximum%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%202%5eN." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&description=Modern%2064-bit%20processors%20are%20capable%20of%20storing%202%5e64%20different%20values%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20values%20is%20simply%20a%20different%20combination%20of%2064%20sequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%0aGiven%20any%20number%20of%20bits%20N%2c%20we%20can%20always%20conclude%20that%20the%20maximum%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%202%5eN." aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&t=A%20primer%20on%20the%20binary%20system%3a%20signed%20values%2c%20two%27s%20complement%2c%20IEEE%20754%2c%20and%20more" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&t=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>
