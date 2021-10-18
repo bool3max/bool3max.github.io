@@ -14,8 +14,8 @@
       <pubDate>Sat, 18 Sep 2021 18:00:38 +0200</pubDate>
       
       <guid>https://bool3max.github.io/posts/ieee754_explained/</guid>
-      <description>Modern 64-bit processors are capable of storing 2^64 different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
-Given any number of bits N, we can always conclude that the maximum number of different values representable using that particular bit count is always 2^N.</description>
+      <description>Modern 64-bit processors are capable of storing $2^{64}$ different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
+Given any number of bits $ N $, we can always conclude that the maximum number of different values representable using that particular bit count is always $ 2^N $.</description>
     </item>
     
     <item>

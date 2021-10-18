@@ -9,8 +9,8 @@
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
   <meta property="og:title" content="A primer on the binary system: two&#39;s complement, IEEE-754 and more, explained" />
-<meta property="og:description" content="Modern 64-bit processors are capable of storing 2^64 different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
-Given any number of bits N, we can always conclude that the maximum number of different values representable using that particular bit count is always 2^N." />
+<meta property="og:description" content="Modern 64-bit processors are capable of storing $2^{64}$ different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
+Given any number of bits $ N $, we can always conclude that the maximum number of different values representable using that particular bit count is always $ 2^N $." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/ieee754_explained/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-09-18T18:00:38+02:00" />
@@ -19,8 +19,8 @@ Given any number of bits N, we can always conclude that the maximum number of di
 
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="A primer on the binary system: two&#39;s complement, IEEE-754 and more, explained"/>
-<meta name="twitter:description" content="Modern 64-bit processors are capable of storing 2^64 different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
-Given any number of bits N, we can always conclude that the maximum number of different values representable using that particular bit count is always 2^N."/>
+<meta name="twitter:description" content="Modern 64-bit processors are capable of storing $2^{64}$ different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
+Given any number of bits $ N $, we can always conclude that the maximum number of different values representable using that particular bit count is always $ 2^N $."/>
 
   
   
@@ -135,7 +135,7 @@ Given any number of bits N, we can always conclude that the maximum number of di
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&description=Modern%2064-bit%20processors%20are%20capable%20of%20storing%202%5e64%20different%20values%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20values%20is%20simply%20a%20different%20combination%20of%2064%20sequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%0aGiven%20any%20number%20of%20bits%20N%2c%20we%20can%20always%20conclude%20that%20the%20maximum%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%202%5eN." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&description=Modern%2064-bit%20processors%20are%20capable%20of%20storing%20%242%5e%7b64%7d%24%20different%20values%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20values%20is%20simply%20a%20different%20combination%20of%2064%20sequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%0aGiven%20any%20number%20of%20bits%20%24%20N%20%24%2c%20we%20can%20always%20conclude%20that%20the%20maximum%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%20%24%202%5eN%20%24." aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
@@ -204,9 +204,9 @@ Given any number of bits N, we can always conclude that the maximum number of di
 
   
     <div class="content" itemprop="articleBody">
-      <p>Modern 64-bit processors are capable of storing <code>2^64</code> different <em>values</em> within their general-purpose registers. Each one of those possible <em>values</em> is simply a different combination of 64
+      <p>Modern 64-bit processors are capable of storing $2^{64}$ different <em>values</em> within their general-purpose registers. Each one of those possible <em>values</em> is simply a different combination of 64
 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.</p>
-<p>Given any number of bits <code>N</code>, we can always conclude that the <em>maximum</em> number of different values representable using that particular bit count is always <code>2^N</code>.</p>
+<p>Given any number of bits $ N $, we can always conclude that the <em>maximum</em> number of different values representable using that particular bit count is always $ 2^N $.</p>
 <p>Each one of those <em>values</em> can also be thought of as a different <em>number</em>. Us humans have designed the binary system as a consequence of needing to represent the many different numbers found in the decimal system -
 the one <em>we</em> think and operate in. It turned out, however, that it&rsquo;s no small feat. As we&rsquo;ll see, representing positive (i.e. &ldquo;<em>unsigned</em>&quot;) integers is easy - but how do we represent negative integers? And what about non-integers (i.e. decimal, real numbers)?</p>
 <h3 id="on-numbers-vs-values">On &ldquo;numbers&rdquo; vs &ldquo;values&rdquo;</h3>
@@ -228,24 +228,24 @@ I will only be describing the systems/encodings in use today.</p>
 <p>&ldquo;<em>un</em>signed&rdquo; as in - &ldquo;no sign&rdquo; - the value is absolute</p>
 </blockquote>
 <p>Representing exclusively positive integers in a binary format is trivial. Each of the bits in the sequence
-carries a value twice as large as that of the previous, starting at <code>2^0</code>, or <code>1</code>. The most significant bit
-carries the value <code>2^(N - 1)</code>, where <code>N</code> is the total number of bits. The range of decimal values epresentable
-using <code>N</code> bits in this system ranges from <code>0</code> to <code>2^N - 1</code> (because we account for the case where all bits are zeroes).
-To convert a value encoded in this binary format to a decimal value, we simply add values of all the &ldquo;set&rdquo; (<code>1</code>) bits together.</p>
+carries a value twice as large as that of the previous, starting at $2^0$, or $1$. The most significant bit
+carries the value $2^{N - 1}$, where $N$ is the total number of bits. The range of decimal values epresentable
+using $N$ bits in this system ranges from $0$ to $2^{N - 1}$ (because we account for the case where all bits are zeroes).
+To convert a value encoded in this binary format to a decimal value, we simply add values of all the &ldquo;set&rdquo; (i.e. &ldquo;$1$&quot;) bits together.</p>
 <p>That&rsquo;s all that there really is to it. Here are some examples using 8-bit sequences, for the sake of clarity:</p>
 <p>Note that, when representing a single byte sequence in textual form, the most significant
 bit is most often writtten first.</p>
-<p><code>0 0 0 0 1 0 0 0</code> - <code>8</code> in decimal</p>
-<p><code>1 0 0 0 0 0 0 0</code> - <code>128</code> in decimal</p>
-<p><code>1 1 0 0 1 0 0 1</code> - <code>201</code> in decimal</p>
+<p><code>0 0 0 0 1 0 0 0</code> - $8$ in decimal</p>
+<p><code>1 0 0 0 0 0 0 0</code> - $128$ in decimal</p>
+<p><code>1 1 0 0 1 0 0 1</code> - $201$ in decimal</p>
 <h2 id="signed-integers">Signed integers</h2>
 <p>So, how do we represent negative integers? From the get-go it is obvious that this is going to require more work - an encoding of some kind. Historically, there have existed several solutions to this problem.
 I will describe two of them: the oldest and most trivial one - <strong>&ldquo;sign and magnitude&rdquo;</strong>, and the one currently in use in most modern systems - <strong>&ldquo;two&rsquo;s complement&rdquo;</strong>.</p>
 <h3 id="sign-and-magnitude">Sign and magnitude</h3>
-<p>In this method, the most significant bit denotes the sign of the value (+, positive (<code>0</code>) or -, negative (<code>1</code>)), while the remainder of the bits in the sequence represent the absolute value (<em>magnitude</em>), which is why it is called
+<p>In this method, the most significant bit denotes the sign of the value (+, positive ($0$) or -, negative ($1$)), while the remainder of the bits in the sequence represent the absolute value (<em>magnitude</em>), which is why it is called
 <em>sign and magnitude</em>.</p>
-<p>The magniute is encoded just as a regular unsinged integer. If we imagine an <code>N</code>-bit sequence, using &ldquo;sign and magnitude&rdquo; we can represent decimal values from <code>-(2^(N-1) - 1)</code> to <code>+(2^(N-1) - 1)</code>, inclusive. For example, using an 8-bit sequence we can represent decimal values from
-<code>-127</code> to <code>+127</code>.</p>
+<p>The magniute is encoded just as a regular unsinged integer. If we imagine an $N$-bit sequence, using &ldquo;sign and magnitude&rdquo; we can represent decimal values from $-2^{N - 1} - 1$ to $+2^{N - 1} - 1$, inclusive. For example, using an 8-bit sequence we can represent decimal values from
+$-127$ to $+127$.</p>
 <p>An intereseting property of &ldquo;sign and magnituide&rdquo; is that there are two ways to represent zero: <code>0 0 0 0 0 0 0 0</code> (+0) and <code>1 0 0 0 0 0 0 0</code> (-0), thus essentially wasting a value.
 In addition, basic operations on &ldquo;sign and magnitude&rdquo;-encoded values (such as comparisons or even basic arithmetic) have to account for the sign bit, leading to them being computationally more expensive, which is not a
 problem with the &ldquo;two&rsquo;s complement&rdquo; method, as we&rsquo;ll see.</p>
@@ -255,21 +255,21 @@ problem with the &ldquo;two&rsquo;s complement&rdquo; method, as we&rsquo;ll see
 <li>Performing a binary NOT operation on the whole bit sequence (i.e. reversing all of the bits)</li>
 <li>Adding 1 to the previous result (regular binary addition)</li>
 </ol>
-<p>Another method that is easier to visualise is locating the first set (<code>1</code>) bit from the right, and then inverting all of the bits to the left of that bit.</p>
+<p>Another method that is easier to visualise is locating the first set (&quot;$1$&quot;) bit from the right, and then inverting all of the bits to the left of that bit.</p>
 <p>Performing two&rsquo;s complement conversion on a negative number will, of course, convert it back to a positive one. The absolute value stays the same.</p>
 <p><strong>Despite not relying solely on a single bit to denote the sign of the value, the highest-order bit still does just that - <code>0</code> for positive, and <code>1</code> for negative</strong>.</p>
-<p>The range of decimal values representable using <code>N</code> bits in &ldquo;two&rsquo;s complement&rdquo; ranges from <code>-(2^(N-1))</code> to <code>+(2^(N-1) - 1)</code>, (i.e. from <code>-128</code> to <code>+127</code> using an <code>8</code>-bit sequence). The range is not &ldquo;symmetric&rdquo; as we need
+<p>The range of decimal values representable using $N$ bits in &ldquo;two&rsquo;s complement&rdquo; ranges from $-2^{N - 1}$ to $+2^{N - 1} - 1$, (i.e. from $-128$ to $+127$ using an $8$-bit sequence). The range is not &ldquo;symmetric&rdquo; as we need
 to represent the zero as well.</p>
 <blockquote>
-<p>Seeing as we can encode (using 8 bits, as an example) positive values from <code>0</code> to <code>+127</code>, and seeing as <code>+127</code>&rsquo;s bit pattern is the following: <code>0 1 1 1 1 1 1 1</code>, it is apparent why we cannot further encode larger positive values: it would require us to
-flip the highest order bit to a <code>1</code>, <em>which would no longer denote a positive value</em>. That&rsquo;s why the upper range is capped where all bits but the most significant one are set (<code>1</code>) - i.e. the value <code>2^(N - 1) - 1</code>.</p>
+<p>Seeing as we can encode (using 8 bits, as an example) positive values from $0$ to $+127$, and seeing as $+127$&rsquo;s bit pattern is the following: <code>0 1 1 1 1 1 1 1</code>, it is apparent why we cannot further encode larger positive values: it would require us to
+flip the highest order bit to a $1$, <em>which would no longer denote a positive value</em>. That&rsquo;s why the upper range is capped where all bits but the most significant one are set (&quot;$1$&quot;) - i.e. the value $2^{N - 1} - 1$.</p>
 </blockquote>
 <p>Two&rsquo;s complement solves many of the problems of the methods that came before it:</p>
 <ul>
 <li>there&rsquo;s only one way to represent a zero (<code>0 0 0 0 0 0 0 0</code>)
 <ul>
 <li>again, a side effect of this is that it encodes 1 more possible (than other solutions) value on either side of the range</li>
-<li>utilizing 8 bits sign and magnitude encodes values from <code>-127</code> to <code>+127</code>, but two&rsquo;s complement encodes values from <code>-128</code> to <code>+127</code></li>
+<li>utilizing 8 bits sign and magnitude encodes values from $-127$ to $+127$, but two&rsquo;s complement encodes values from $-128$ to $+127$</li>
 </ul>
 </li>
 <li><strong>arithmetic operations are trivial and require no additional computation - for example, adding 2 two&rsquo;s-complement-encoded values requires no operation bar performing regular binary addition - <em>regardless of the operands' signs</em></strong></li>
@@ -277,33 +277,33 @@ flip the highest order bit to a <code>1</code>, <em>which would no longer denote
 <p>Below are a couple step-by-step examples of converting an unsigned integer to its negative two&rsquo;s complement countepart:</p>
 <ul>
 <li>
-<p><code>0 1 0 0 0 0 1 0</code> (<code>66</code>)</p>
+<p><code>0 1 0 0 0 0 1 0</code> ($66$)</p>
 <ol>
 <li>Peform a binary NOT on the bit sequence: <code>1 0 1 1 1 1 0 1</code></li>
-<li>Add <code>1</code> to the previous result: <code>1 0 1 1 1 1 1 0</code></li>
-<li><code>-66</code></li>
+<li>Add $1$ to the previous result: <code>1 0 1 1 1 1 1 0</code></li>
+<li>$-66$</li>
 </ol>
 </li>
 <li>
-<p><code>0 0 0 0 0 0 0 1</code> (<code>1</code>)</p>
+<p><code>0 0 0 0 0 0 0 1</code> ($1$)</p>
 <ol>
 <li>Perform a binary NOT on the bit sequence: <code>1 1 1 1 1 1 1 0</code></li>
-<li>Add <code>1</code> to the previous result: <code>1 1 1 1 1 1 1 1</code></li>
-<li><code>-1</code></li>
+<li>Add $1$ to the previous result: <code>1 1 1 1 1 1 1 1</code></li>
+<li>$-1$</li>
 </ol>
 </li>
 </ul>
-<p>The process is of course exactly the same regardless of the length of the bit sequence (e.g. <code>32</code>, <code>64</code>, etc&hellip;)</p>
+<p>The process is of course exactly the same regardless of the length of the bit sequence (e.g. $32$, $64$, etc&hellip;)</p>
 <h4 id="the-most-negative-number">The most negative number</h4>
-<p>The most negative number representable using two&rsquo;s complement in an <code>N</code>-bit sequence is a special case. We know that applying the two&rsquo;s complement operation on <em>any</em> valid bit sequence will flip its sign, i.e.
-<code>-5</code> would become <code>+5</code>, <code>+77</code> would become <code>-77</code>, <code>-112</code> would become <code>+112</code> and so on. The same is not true for the most negative number - <code>-(2^(N-1))</code>. If we take an 8-bit sequence as an example, we know that it can
-represent decimal numbers ranging from <code>-128</code> to <code>+127</code> (exactly why - it is explained above). So what would happen if we apply two&rsquo;s complement (i.e. we try to negate) the bit sequence representing
-<code>-128</code>? We would expect to obtain <code>+128</code> as the result - but we know that it cannot be represented (it is by 1 larger than the largest representable number). So what do we get? We get the exact same bit sequence.
-We can see this in action, if we apply two&rsquo;s complement on the lowest number in an 8-bit system, i.e. <code>-128</code>:</p>
+<p>The most negative number representable using two&rsquo;s complement in an $N$-bit sequence is a special case. We know that applying the two&rsquo;s complement operation on <em>any</em> valid bit sequence will flip its sign, i.e.
+$-5$ would become $+5$, $+77$ would become $-77$, $-112$ would become $+112$ and so on. The same is not true for the most negative number - $-2^{N - 1}$. If we take an 8-bit sequence as an example, we know that it can
+represent decimal numbers ranging from $-128$ to $+127$ (exactly why - it is explained above). So what would happen if we apply two&rsquo;s complement (i.e. we try to negate) the bit sequence representing
+$-128$? We would expect to obtain $+128$ as the result - but we know that it cannot be represented (it is by 1 larger than the largest representable number). So what do we get? We get the exact same bit sequence.
+We can see this in action, if we apply two&rsquo;s complement on the lowest number in an 8-bit system, i.e. $-128$:</p>
 <ol>
-<li><code>1 0 0 0 0 0 0 0</code> (<code>-128</code> in two&rsquo;s complement)</li>
+<li><code>1 0 0 0 0 0 0 0</code> ($-128$ in two&rsquo;s complement)</li>
 <li><code>0 1 1 1 1 1 1 1</code> (reversing the bits)</li>
-<li><code>1 0 0 0 0 0 0 0</code> (after adding <code>1</code>) - the same bit sequence that we started with!</li>
+<li><code>1 0 0 0 0 0 0 0</code> (after adding $1$) - the same bit sequence that we started with!</li>
 </ol>
 <p>Thus, the <a href="https://en.wikipedia.org/wiki/Two%27s_complement#Most_negative_number">most negative number</a> is a special case in the two&rsquo;s complement system, and it has to be treated with special care.
 The C and C++ standards in particular do not define behavior when dealing with the most negative number. As an example, the following C snippet (on an x86-64 machine), produces <code>-128</code> as the result:
@@ -329,21 +329,21 @@ The C and C++ standards in particular do not define behavior when dealing with t
 <p>The most trivial way to represent real numbers using a binary format is by employing a &ldquo;fixed point representation&rdquo;. That is, in an N-bit pattern, choose a position
 between two adjecent bits in which the radix point will be placed. Bits to the left of the radix point (also called the <em>binary point</em>) represent the whole (integer)
 part of the number, while bits to the right of it represent the fractional part of the number. Starting from the radix point, bits to the right of it (i.e. the least significant half of the bits) represent
-<strong>negative powers of 2</strong>. The highest order bit of the fractional part of the bit pattern represents the value <code>2^(-1)</code> (<code>0.5</code>), while the lowest order bit represents the value
-<code>2^(-N / 2)</code>, where <code>N</code> is the number of bits in the entire bit pattern. This of course applies to bit patterns of any length.</p>
+<strong>negative powers of 2</strong>. The highest order bit of the fractional part of the bit pattern represents the value $2^{-1}$ ($0.5$), while the lowest order bit represents the value
+$2^{-(N / 2)}$, where $N$ is the number of bits in the entire bit pattern. This of course applies to bit patterns of any length.</p>
 <p>The most glaring issue of this system is that the magnitude of the integer part as well as the degree of precision of the fractional part are <strong>fixed</strong> and dependent
 on the position of the binary point. If we take an 8-bit wide sequence as an example, and if we assume that the binary point is fixed exactly in the middle - then, its
-integer part ranges from <code>0</code> through <code>15</code> (though two&rsquo;s complement could be utilized here to provide negative number representation), and its fractional part ranges from
-<code>0.0625</code> to <code>0.9375</code>. If we however at any point begin to desire more precision in the integer part (for example we need to store the value <code>38</code>) at the cost of less
+integer part ranges from $0$ through $15$ (though two&rsquo;s complement could be utilized here to provide negative number representation), and its fractional part ranges from
+$0.0625$ to $0.9375$. If we however at any point begin to desire more precision in the integer part (for example we need to store the value $38$) at the cost of less
 precision in the fractional part, we are out of luck, as the radix point&rsquo;s position is <strong>fixed</strong>.</p>
-<p>The other major problem is that fractional values that aren&rsquo;t combinations of integer powers of 2 are <strong>unrepresentable</strong>. To illustrate this, let&rsquo;s imagine <code>0.2</code> (or <code>1/5</code>). It cannot
-be represented as a power of two, nor as a combination of any number of powers of two. In contrast, <code>0.75</code> for example, is representable as <code>2^(-1) + 2^(-2)</code>.
+<p>The other major problem is that fractional values that aren&rsquo;t combinations of integer powers of 2 are <strong>unrepresentable</strong>. To illustrate this, let&rsquo;s imagine $0.2$ (or $\frac{1}{5}$). It cannot
+be represented as a power of two, nor as a combination of any number of powers of two. In contrast, $0.75$ for example, is representable as $2^{-1} + 2^{-2}$.
 So how do we represent those values? <strong>Well, we cannot</strong>. This problem is unfortunately not solved by any other more advanced representation, as we&rsquo;ll see later. The best
 we can do is <em><strong>approximate</strong></em> those values. The more bits we have to work with, the better our <em><strong>precision</strong></em> is, and the &ldquo;closer&rdquo; we can get to the desired, ultimately irrepresentable value.
-For example, using an 8-bit fixed-point representation sequence where the radix point is placed in the middle, the closest we can get to <code>0.2</code> is <code>0000.0011</code>, or <code>0.1875</code>, i.e. <code>1/16</code> + <code>1/8</code>.
-As the bit count increases, so does our precision, and we get closer and closer to <code>0.2</code>, but we never quite get there. The closest we can get to <code>0.35</code> is <code>0000.0110</code>,
-or <code>0.375</code>. Note that by &ldquo;close&rdquo; I don&rsquo;t necesserily mean &ldquo;just before&rdquo; or &ldquo;slighly less&rdquo; - <strong>the closes possible approximation may also be larger than the desired number</strong>.</p>
-<p>This issue is actually present in the decimal number system that we use every day: in it, we cannot exactly represent a value such as <code>1/3</code> (one third). We usually <em>approximate</em> it by writing it as <code>0.33333....</code>, with the digits
+For example, using an 8-bit fixed-point representation sequence where the radix point is placed in the middle, the closest we can get to $0.2$ is <code>0000.0011</code>, or $0.1875$, i.e. $ 2^{-4} + 2^{-3} = \frac{1}{16} + \frac{1}{8}$.
+As the bit count increases, so does our precision, and we get closer and closer to $0.2$, but we never quite get there. The closest we can get to $0.35$ is <code>0000.0110</code>,
+or $0.375$. Note that by &ldquo;close&rdquo; I don&rsquo;t necesserily mean &ldquo;just before&rdquo; or &ldquo;slighly less&rdquo; - <strong>the closes possible approximation may also be larger than the desired number</strong>.</p>
+<p>This issue is actually present in the decimal number system that we use every day: in it, we cannot exactly represent a value such as $\frac{1}{3}$ (one third). We usually <em>approximate</em> it by writing it as $0.33333&hellip;.$, with the digits
 after the decimal point repeating &ldquo;forever&rdquo; (often indicated by placing a dot mark above last written digit).</p>
 <p>To get around the first issue of fixed-point representations, a <strong>floating-point</strong> representation can be used. The name is quite self explanatory - the binary point
 is no longer fixed to a specific position and can instead &ldquo;float&rdquo; around on demand. This allows for tradeoffs: a larger magnitude for the integer part of a number
@@ -359,21 +359,21 @@ floating-point co-processor. In modern processors, IEEE-754 operations are imple
 <p>Representation of floating point numbers as described by IEEE-754 shares a lot of semantics with scientific notation, which I will first describe.</p>
 <p><strong>Scientific notation</strong> is a way of representing numerical values in the decimal number system, that are way too long to be conveniently written down in their entirety.
 The general form is this:</p>
-<p>m × 10^n</p>
-<p>, where <em>m</em> is a real number called the <strong>mantissa</strong>/<strong>significand</strong>, and <em>n</em> is an integer (whole number) called the <strong>exponent</strong> (this terminology
-comes into use again later). If <em>m</em> is negative, it is prefixed with a minus sign.</p>
+<p>$$M \times 10^N $$</p>
+<p>, where $M$ is a real number called the <strong>mantissa</strong>/<strong>significand</strong>, and $N$ is an integer (whole number) called the <strong>exponent</strong> (this terminology
+comes into use again later). If $M$ is negative, it is prefixed with a minus sign.</p>
 <p>Examples:</p>
 <ul>
-<li><code>88 120 000 000</code> in decimal notation can be written as <code>8.8812 * 10^11</code> in scientific notation.</li>
-<li><code>-67 000</code> in decimal notation can be written as <code>-6.7 * 10^4</code> in scientific notation</li>
-<li><code>0.000129</code> in decimal notation can be written as <code>1.29 * 10^(-4)</code></li>
+<li>$88 120 000 000$ in decimal notation can be written as $8.8812 \times 10^{11}$ in scientific notation.</li>
+<li>$-67 000$ in decimal notation can be written as $-6.7 \times 10^4$ in scientific notation</li>
+<li>$0.000129$ in decimal notation can be written as $1.29 \times 10^{-4}$</li>
 </ul>
 <p>While the mantissa <em>m</em> can generally be any real number, most commonly a subset of the scientific notation called <strong>normalized notation</strong> is used, whereby
-the absolute value of the mantissa is constrained between 1 and 10, i.e. <code>1 &lt;= |m| &lt; 10</code>.</p>
-<p>Meaning that, while <code>0.000129</code> can be written as <code>12.9 * 10^(-5)</code>, or even <code>1290 * 10^(-7)</code>, in <strong>normalized notation</strong> the mantissa is constrained to <code>1.29</code>, the exponent
-is therefore chosen accordingly to be <code>-4</code>, and the final expression ends up being <code>1.29 * 10^(-4)</code>.</p>
-<p>The degree of precision in the final value depends of course on the number of significant digits of the mantissa. For example, the significand <code>1.2345</code> allows for
-precise values such as <code>0.012345</code> or <code>0.12345</code>, while a mantissa with less significant digits, for example <code>1.234</code> would allow for lesser degrees of precion such as <code>0.01234</code> or <code>0.1234</code>.
+the absolute value of the mantissa is constrained between 1 and 10, i.e. $1 \leq |M| \lt 10$.</p>
+<p>Meaning that, while $0.000129$ can be written as $12.9 \times 10^{-5}$, or even $1290 \times 10^{-7}$, in <strong>normalized notation</strong> the mantissa is constrained to $1.29$, the exponent
+is therefore chosen accordingly to be $-4$, and the final expression ends up being $1.29 \times 10^{-4}$.</p>
+<p>The degree of precision in the final value depends of course on the number of significant digits of the mantissa. For example, the significand $1.2345$ allows for
+precise values such as $0.012345$ or $0.12345$, while a mantissa with less significant digits, for example $1.234$ would allow for lesser degrees of precion such as $0.01234$ or $0.1234$.
 This is explained in a bit more detail <a href="https://en.wikipedia.org/wiki/Scientific_notation#Significant_figures">here</a>.</p>
 <hr>
 <p>Now back to IEEE-754. The reason that I brought up scientific notation in the first place is that real numbers in computers are represented in much a similar way
@@ -395,38 +395,38 @@ is increased some constants used in calculations differ. I will note those along
 <p><img src="https://fabiensanglard.net/floating_point_visually_explained/floating_point_layout.svg" alt="img"></p>
 <p><img src="https://fabiensanglard.net/floating_point_visually_explained/floating_point_math.svg" alt="img"></p>
 <p>The final value comprised of these parts can be calculated as follows:</p>
-<p><img src="https://media.discordapp.net/attachments/888058346010202115/891403868095799306/unknown.png" alt="img"></p>
-<p>The most significant bit - <strong>the sign bit</strong> denotes the sign of the final number. <code>0</code> for positive and <code>1</code> for negative. As a result of this, two zero values are representable: +0 and -0.</p>
+<p>$$(-1)^s \times (1 + \text{mantissa}) \times 2^{\text{exponent} - 127}$$</p>
+<p>The most significant bit - <strong>the sign bit</strong> denotes the sign of the final number. $0$ for positive and $1$ for negative. As a result of this, two zero values are representable: $+0$ and $-0$.</p>
 <p>The next 8 bits represent the <strong>biased exponent</strong> that is used to scale the value of the mantissa. The biased exponent is treated as a regular 8-bit unsigned integer, however
-it is <code>127</code>-biased (the stored value is increased or &ldquo;shifted&rdquo; by 127) to allow for storage of negative exponents. To obtain the actual value of the exponent, subtract <code>127</code> from its value, e.g. a biased exponent of
-<code>231</code> would denote an actual exponent of <code>231-127 = 104</code>. A bias is used instead of an encoding such as &ldquo;two&rsquo;s complement&rdquo; for efficient comparisons. Once the bias is
-taken into account, the value of the exponent ranges from <code>-126</code> to <code>+127</code> (<strong>not</strong> <code>-127</code> to <code>128</code> as you may believe - cases where the exponent field is all <code>0</code>s / all <code>1</code>s are treated specially, more on this later).</p>
-<p>The last 23 bits represent the <strong>mantissa</strong> (analogous to a <em>significand</em> in scientific notation). Its bits represent negative powers of two, starting with <code>2^(-1)</code>
-at the most significant bit, all the way through to <code>2^(-23)</code> at the least significant bit. A non-existent <code>1</code>-bit carrying the value <code>2^0</code> (<code>1.0</code>) is implied to be
-placed just between the exponent and mantissa bits - that&rsquo;s what the <code>+1</code> denotes in the equation pictured above, and is also why the mantissa is guarantted to be
-between <code>1.0</code> and <code>2.0</code> in value, i.e. <code>1.0 &lt;= mantissa &lt; 2.0</code>. This is called the &ldquo;leading bit convention&rdquo; or the &ldquo;implicit bit convention&rdquo;, and it allows the format
+it is $127$-biased (the stored value is increased or &ldquo;shifted&rdquo; by 127) to allow for storage of negative exponents. To obtain the actual value of the exponent, subtract $127$ from its value, e.g. a biased exponent of
+$231$ would denote an actual exponent of $231-127 = 104$. A bias is used instead of an encoding such as &ldquo;two&rsquo;s complement&rdquo; for efficient comparisons. Once the bias is
+taken into account, the value of the exponent ranges from $-126$ to $+127$ (<strong>not</strong> $-127$ to $128$ as you may believe - cases where the exponent field is all $0$s / all $1$s are treated specially, more on this later).</p>
+<p>The last 23 bits represent the <strong>mantissa</strong> (analogous to a <em>significand</em> in scientific notation). Its bits represent negative powers of two, starting with $2^{-1}$
+at the most significant bit, all the way through to $2^{-23}$ at the least significant bit. A non-existent $1$-bit carrying the value $2^0$ ($1.0$) is implied to be
+placed just between the exponent and mantissa bits - that&rsquo;s what the $+1$ denotes in the equation pictured above, and is also why the mantissa is guarantted to be
+between $1.0$ and $2.0$ in value, i.e. $1.0 \le mantissa \lt 2.0$. This is called the &ldquo;leading bit convention&rdquo; or the &ldquo;implicit bit convention&rdquo;, and it allows the format
 to have an extra bit of precision. This is true in all cases but when dealing with a <em>denormalized</em> number, indicated by <strong>the biased exponent field being all 0s</strong> - more on this later.</p>
 <p>Once all three components are known obtaining the final value is quite trivial - the formula pictured above is quite self-explanatory.
 <a href="https://fabiensanglard.net/floating_point_visually_explained/">This article</a> provides a nice additional visual explanation.
 <strong>IEEE-754 representations in no way solve the representation issues discussed in the earlier</strong>. If the value cannot be represented by <strong>a combination of any powers of two
 ranging from -1 to -23 increased by 1.0 and then scaled (multiplied) by any power of two ranging from -126 to 127</strong>, then it cannot be <em>exactly</em> represented, and is instead <em><strong>approximated</strong></em> as closely as possible.
-This stands for integer numbers as well - for example, the value <code>16,777,217</code> cannot be exactly represented by a single-precision IEEE-754 format, and is instead
-rounded down to <code>16,777,216</code>. Perhaps somewhat counter-intuitively, the value <code>5</code> <em>can</em> be exactly represented. By setting the exponent field to <code>2</code>, and the mantissa field to <code>0.25</code> (i.e. setting the second most significant bit carrying the value <code>2^(-4)</code> or <code>0.25</code>),
-the final equation becomes <code>1 * 2^2 * (1 + 0.25) = 1.25 * 4 = 5</code>.</p>
+This stands for integer numbers as well - for example, the value $16,777,217$ cannot be exactly represented by a single-precision IEEE-754 format, and is instead
+rounded down to $16,777,216$. Perhaps somewhat counter-intuitively, the value $5$ <em>can</em> be exactly represented. By setting the exponent field to $2$, and the mantissa field to $0.25$ (i.e. setting the second most significant bit carrying the value $2^{-4}$ or $0.25$),
+the final equation becomes $1 \times 2^2 \times (1 + 0.25) = 1.25 \times 4 = 5$.</p>
 <h4 id="representing-zeroes">Representing zeroes</h4>
-<p>Zeroes are represented by setting the exponent and mantissa fields to all <code>0</code>s. The sign bit determines if the zero is positive (<code>+0</code>) or negative (<code>-0</code>).</p>
+<p>Zeroes are represented by setting the exponent and mantissa fields to all $0$s. The sign bit determines if the zero is positive ($+0$) or negative ($-0$).</p>
 <h4 id="denormalized-numbers">Denormalized numbers</h4>
-<p>When the exponent portion of a number is all <code>0</code>s the value is said to be <em>denormalized</em>. This comes with a couple deviations from the
+<p>When the exponent portion of a number is all $0$s the value is said to be <em>denormalized</em>. This comes with a couple deviations from the
 regular rules about representing floating point values (and as such the general formula cannot be used in that case). Firstly, the exponent&rsquo;s actual value (when the 127-bias is taken into account)
-isn&rsquo;t <code>-127</code> as you may expect, but rather <code>-126</code>, just as if the biased exponent was <code>1</code>. Secondly, the implied <code>1</code>-bit no longer exists,
-leading to the mantissa being constrained between <code>0.0</code> and <code>1.0</code>, i.e. <code>0.0 &lt;= mantissa &lt; 1.0</code>. As the leading digit of the mantissa
-is a 0, this allows for representation of numbers even smaller than the smallest normalized number. For example, the numbers closest to 0
-representable using a normalized single-precision format are <code>±2^(-126)</code> (≈ <code>±1.17549 * 10^(−38)</code>) - this is the case when the mantissa&rsquo;s bits
-are all <code>0</code>s and the biased exponent is <code>1</code>. In contrast, the numbers closest to 0 representable when utilizing denormalized values
-are <code>±2^(-23) * 2^(-126)</code> (≈ <code>±1.40130 * 10^(-45)</code>) - this being the case when the mantissa&rsquo;s least significant bit is set, and when the
-exponent&rsquo;s bits are of course all <code>0</code>s. Any non-zero number with magnitude smaller than the smallest representable normalized
+isn&rsquo;t $-127$ as you may expect, but rather $-126$, just as if the biased exponent was $1$. Secondly, the implied $1$-bit no longer exists,
+leading to the mantissa being constrained between $0.0$ and $1.0$, i.e. $0.0 \le mantissa \lt 1.0$. As the leading digit of the mantissa
+is a 0, this allows for representation of numbers even smaller than the smallest normalized number. For example, the numbers closest to $0$
+representable using a normalized single-precision format are $\pm2^{-126}$ ($\approx\pm1.17549 \times 10^{-38}$) - this is the case when the mantissa&rsquo;s bits
+are all $0$s and the biased exponent is $1$. In contrast, the numbers closest to $0$ representable when utilizing denormalized values
+are $\pm2^{-23} \times 2^{-126}$ ($\approx\pm1.40130 \times 10^{-45}$) - this being the case when the mantissa&rsquo;s least significant bit is set, and when the
+exponent&rsquo;s bits are of course all $0$s. Any non-zero number with magnitude smaller than the smallest representable normalized
 number is consider to be <strong>subnormal</strong>. The existence of denormalized numbers guarantees that there is always a non-zero
-difference between any two nearby floating point numbers, leading to operations such as <code>x - y</code> never being able to produce a zero result
+difference between any two nearby floating point numbers, leading to operations such as $x - y$ never being able to produce a zero result
 despite the operands not being equal.</p>
 <h4 id="other-special-values">Other special values</h4>
 <p>Being that the IEEE-754 standard also requires conforming implementations to support a number of arithmetic operations (e.g. taking the square
@@ -463,7 +463,7 @@ Their bitfield representations are listed in the table below:</p>
 </tr>
 </tbody>
 </table>
-<p>Mathematically undefined operations, such as taking the square root of a negative number for example, result in a NaN (e.g. <code>sqrt(-5.0)</code>).
+<p>Mathematically undefined operations, such as taking the square root of a negative number for example, result in a NaN (e.g. $\sqrt{-5.0}$).
 Divisions by zero for example result in ±∞ depending on the sign of the first operand (at least that&rsquo;s what I&rsquo;ve observed on my system).</p>
 <h3 id="precision-explained-in-detail">Precision explained in detail</h3>
 <p>The larger the absolute magnitude of the integer part of a number is, the less precision is available to cover the fractional part of the number. This is illustrated
@@ -471,27 +471,27 @@ by this initially quite elusive (at least to me) graph found on the IEEE-754 Wik
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/IEEE754.svg/1024px-IEEE754.svg.png" alt="img"></p>
 <p>To understand why this is, let&rsquo;s recap what roles the parts of an IEEE-754 format actually play.</p>
 <p><strong>The exponent</strong> tells us between which two consecutive
-powers of 2 our value falls within - for example <code>[0.25, 0.5]</code> (the value falls between powers of two <code>-2</code> and <code>-1</code>), <code>[1, 2]</code> (the value falls between powers of two
-<code>0</code> and <code>1</code>), <code>[16, 32]</code> (the value falls between powers of two <code>4</code> and <code>5</code>), all the way up to <code>[2^127, 2^128]</code>. If the exponent is for example <code>18</code>, we know
-that the final value will fall somewhere between <code>[2^18, 2^19]</code> or <code>[262144, 524288]</code>.</p>
-<p><strong>The mantissa</strong> then <em>dividies</em> that window/range indicated by the exponent into <code>2^23</code> (or <code>8388608</code>) &ldquo;buckets&rdquo;, or other individual values.
+powers of 2 our value falls within - for example $[0.25, 0.5]$ (the value falls between powers of two $-2$ and $-1$), $[1, 2]$ (the value falls between powers of two
+$0$ and $1$), $[16, 32]$ (the value falls between powers of two $4$ and $5$), all the way up to $[2^{127}, 2^{128}]$. If the exponent is for example $18$, we know
+that the final value will fall somewhere between $[2^{18}, 2^{19}]$ or $[262144, 524288]$.</p>
+<p><strong>The mantissa</strong> then <em>dividies</em> that window/range indicated by the exponent into $2^{23}$ (or $8388608$) &ldquo;buckets&rdquo;, or other individual values.
 In other words, it approximates the exact location/offset of the final number in the range/window indicated by the exponent. Since the mantissa is constrained
-between <code>1.0</code> and <code>2.0</code> in normalized form, and since the final value is obtained by multiplying the exponent and mantissa, <strong>it is clear why
-the exponent only stores the lower end of the range</strong>. The closer the mantissa is to <code>1.0</code> the closer the final number is to the lower end of the range,
-and the closer it is to <code>2.0</code> the closer the final number is to the upper end of the range.</p>
+between $1.0$ and $2.0$ in normalized form, and since the final value is obtained by multiplying the exponent and mantissa, <strong>it is clear why
+the exponent only stores the lower end of the range</strong>. The closer the mantissa is to $1.0$ the closer the final number is to the lower end of the range,
+and the closer it is to $2.0$ the closer the final number is to the upper end of the range.</p>
 <p><strong>The shorter the range within which the final number falls in, the more &lsquo;<em>precisely</em>&rsquo; its location/offset within that range can be approximated</strong>, because
-each of the <code>8388608</code> buckets dividing the range represent a smaller value. For example, imagine that we are trying to represent a number in the range
-<code>[1, 2]</code>. Our range in that case is <code>(2 - 1) = 1</code>, and each of the different <code>8388608</code> mantissa representations dividing that range carry the value <code>(2 - 1) / 8388608</code>, or <code>0.00000011920928955078125</code> - <strong>that value being our <em>precision</em></strong> -
+each of the $8388608$ buckets dividing the range represent a smaller value. For example, imagine that we are trying to represent a number in the range
+$[1, 2]$. Our range in that case is $(2 - 1) = 1$, and each of the different $8388608$ mantissa representations dividing that range carry the value $\frac{2 - 1}{8388608}$, or $0.00000011920928955078125$ - <strong>that value being our <em>precision</em></strong> -
 i.e. the <strong>smallest difference between two consecutive numbers in that range</strong>.</p>
-<p>In contrast, had we instead wanted to represent a value in the range <code>[512, 1024]</code> (so <code>9</code> being the exponent), the precision would &lsquo;fall down&rsquo; to <code>(1024 - 512) / 8388608</code>, or <code>0.00006103515625</code>. Quite a bit less precise.</p>
-<p>Let&rsquo;s see an example which showcases the precision in action: say we want to represent <code>65536</code>. It is very trivial to represent exactly that value only
-using the exponent, as it is a direct power of two. We simply set the sign to <code>0</code>, the exponent to <code>16</code> (or <code>143</code> when accounting for the bias), and we leave
-the mantissa at <code>0</code>. Now, the exponent&rsquo;s value tells us that we can represent values in the range <code>[2^16, 2^17]</code>, or <code>[65536, 131072]</code> - essentially we are covering a range of 65536 values.
-Our precision in that case is: <code>65536 / 8388608 = 0.0078125</code>, or <code>7.8125e-3</code>. If we then flip the least significant bit of the mantissa on (the one carrying the value <code>2^(-23)</code>),
-the final value becomes: <code>+1 * 2^16 * (1 + 2^(-23)) = 65536.0078125</code>. This value is the <em>next largest representable one</em> after <code>65536</code>, and it is larger than it <em><strong>exactly</strong></em> by the value of the precision in that range (i.e. <code>7.8125e-3</code>).
-After it, the next largest value is: <code>+1 * 2^16 * (1 + 2^(-22)) = 65536.015625</code>. Again, the difference between it and the previous value is the precision: <code>65536.015625 - 65536.0078125 = 0.0078125</code>.
-Past <code>65536</code>, we cannot make jumps more precise/smaller than <code>7.8125e-3</code>.</p>
-<p>From the graph pictured above we can observe that (at least concerning the 32-bit single-precision format) somewhere between 10⁶ and 10⁸ the precision reaches 10⁰ (1), meaning that past that particular cutoff point,
+<p>In contrast, had we instead wanted to represent a value in the range $[512, 1024]$ (so $9$ being the exponent), the precision would &lsquo;fall down&rsquo; to $\frac{1024 - 512}{8388608}$, or $0.00006103515625$. Quite a bit less precise.</p>
+<p>Let&rsquo;s see an example which showcases the precision in action: say we want to represent $65536$. It is very trivial to represent exactly that value only
+using the exponent, as it is a direct power of two. We simply set the sign to $0$, the exponent to $16$ (or $143$ when accounting for the bias), and we leave
+the mantissa at $0$. Now, the exponent&rsquo;s value tells us that we can represent values in the range $[2^{16}, 2^{17}]$, or $[65536, 131072]$ - essentially we are covering a range of $65536$ values.
+Our precision in that case is: $\frac{65536}{8388608} = 0.0078125$, or $7.8125\text{e-}3$. If we then flip the least significant bit of the mantissa on (the one carrying the value $2^{-23}$),
+the final value becomes: $+1 \times 2^{16} \times (1 + 2^{-23}) = 65536.0078125$. This value is the <em>next largest representable one</em> after $65536$, and it is larger than it <em><strong>exactly</strong></em> by the value of the precision in that range (i.e. $7.8125\text{e-}3$).
+After it, the next largest value is: $+1 \times 2^{16} * (1 + 2^{-22}) = 65536.015625$. Again, the difference between it and the previous value is the precision: $65536.015625 - 65536.0078125 = 0.0078125$.
+Past $65536$, we cannot make jumps more precise/smaller than $7.8125\text{e-}3$.</p>
+<p>From the graph pictured above we can observe that (at least concerning the 32-bit single-precision format) somewhere between $10^6$ and $10^8$ the precision reaches $10^0 = 1$, meaning that past that particular cutoff point,
 we lose the ability to represent non-integer numbers, as our precision itself becomes a whole number without a fractional part. As far as the double-precision
 format goes, that cutoff point comes a lot later (it isn&rsquo;t even visible on the graph).</p>
 
@@ -597,7 +597,7 @@ format goes, that cutoff point comes a lot later (it isn&rsquo;t even visible on
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&description=Modern%2064-bit%20processors%20are%20capable%20of%20storing%202%5e64%20different%20values%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20values%20is%20simply%20a%20different%20combination%20of%2064%20sequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%0aGiven%20any%20number%20of%20bits%20N%2c%20we%20can%20always%20conclude%20that%20the%20maximum%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%202%5eN." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&description=Modern%2064-bit%20processors%20are%20capable%20of%20storing%20%242%5e%7b64%7d%24%20different%20values%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20values%20is%20simply%20a%20different%20combination%20of%2064%20sequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%0aGiven%20any%20number%20of%20bits%20%24%20N%20%24%2c%20we%20can%20always%20conclude%20that%20the%20maximum%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%20%24%202%5eN%20%24." aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
@@ -654,5 +654,21 @@ format goes, that cutoff point comes a lot later (it isn&rsquo;t even visible on
 <script src=/js/main.js></script>
 
 
+  
+
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    },
+    svg: {
+      fontCache: 'global'
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 
 </html>
