@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://bool3max.github.io/posts/ieee754_explained/</loc>
-    <lastmod>2021-09-18T18:00:38+02:00</lastmod>
-  </url><url>
     <loc>https://bool3max.github.io/</loc>
-    <lastmod>2021-09-18T18:00:38+02:00</lastmod>
+    <lastmod>2021-10-22T11:52:38+02:00</lastmod>
   </url><url>
     <loc>https://bool3max.github.io/posts/</loc>
+    <lastmod>2021-10-22T11:52:38+02:00</lastmod>
+  </url><url>
+    <loc>https://bool3max.github.io/posts/modifying_bitfields_of_datatypes/</loc>
+    <lastmod>2021-10-22T11:52:38+02:00</lastmod>
+  </url><url>
+    <loc>https://bool3max.github.io/posts/ieee754_explained/</loc>
     <lastmod>2021-09-18T18:00:38+02:00</lastmod>
   </url><url>
     <loc>https://bool3max.github.io/posts/man_and_pagers_plus_colors/</loc>

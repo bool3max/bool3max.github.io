@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Bogdan Mitrović</copyright>
-    <lastBuildDate>Sat, 18 Sep 2021 18:00:38 +0200</lastBuildDate><atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Oct 2021 11:52:38 +0200</lastBuildDate><atom:link href="https://bool3max.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Techniques for directly modifying bitfields of various datatypes in C</title>
+      <link>https://bool3max.github.io/posts/modifying_bitfields_of_datatypes/</link>
+      <pubDate>Fri, 22 Oct 2021 11:52:38 +0200</pubDate>
+      
+      <guid>https://bool3max.github.io/posts/modifying_bitfields_of_datatypes/</guid>
+      <description>Suppose that you are learning about IEEE-754 and you are experimenting with how single-precision values are encoded in memory. Suppose also that you are experimenting with various bitstring representations of floatint point values, and you wish to store one of them in C&amp;rsquo;s float datatype. Your first thought might be to do something like this:
+const float num = 0b11000000000000000000001000000000; printf(&amp;#34;%.15f\n&amp;#34;, num); The bitstring constant used above represents the value -2.</description>
+    </item>
+    
     <item>
       <title>A primer on the binary system: two&#39;s complement, IEEE-754 and more, explained</title>
       <link>https://bool3max.github.io/posts/ieee754_explained/</link>
