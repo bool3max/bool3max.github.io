@@ -209,7 +209,7 @@ but you could also do it, for exmaple, like this:</p>
 <span style="color:#f92672">*</span> (((<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>) <span style="color:#f92672">&amp;</span>num) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
 printf(<span style="color:#e6db74">&#34;%u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, num); <span style="color:#75715e">// prints &#34;512&#34;
 </span></code></pre></div><p>Here we set the value of the second lowest-order byte of the integer to <code>2</code>, i.e. we flip its second least significant bit, which is consequently
-the 9th bit in the integer as a whole, thus the final value ends up being $2^9 = 512$.</p>
+the 9th bit in the integer as a whole, thus the final value ends up being $2^9 = 512$. On MSB architectures the value would instead become $2^{18} = 262144$.</p>
 <h2 id="using-an-union">Using an union</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#define BIT_CONSTANT 0b11000000000000000000001000000000
 </span><span style="color:#75715e"></span>
