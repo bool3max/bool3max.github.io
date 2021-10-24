@@ -191,9 +191,9 @@
 <p>All of this information is available in the <a href="https://linux.die.net/man/7/fifo"><code>fifo(7)</code></a> and <a href="https://linux.die.net/man/7/pipe"><code>pipe(7)</code></a> manpages.</p>
 <h1 id="opening">Opening</h1>
 <ul>
-<li>opening a FIFO for reading will block until it is also open for writing on the other end (&ldquo;other end&rdquo; here meaning inside another process or another thread in the same process).</li>
-<li>opening a FIFO for writing will block until it is also open for reading on the other end (same rules apply).</li>
-<li>opening a FIFO for reading <em>and</em> writing (<code>O_RDWR</code>) will <em>always</em> succeed, though this behavior is undefined by POSIX so I think I&rsquo;ll skip using it.
+<li>opening a FIFO for reading will block until it is also open for writing on another end</li>
+<li>opening a FIFO for writing will block until it is also open for reading on the another end (same rules)</li>
+<li>opening a FIFO for reading <em>and</em> writing (<code>O_RDWR</code>) will <em>always</em> succeed, though this behavior is undefined by POSIX
 <ul>
 <li>this is the only way to open a FIFO on the writing end which has not yet been opened on the reading end</li>
 </ul>
@@ -201,12 +201,12 @@
 </ul>
 <h3 id="o_nonblock-non-blocking-mode"><code>O_NONBLOCK</code> (non-blocking mode)</h3>
 <ul>
-<li>read-only
+<li>opening for read-only + the FIFO hasn&rsquo;t been opened on the writing end
 <ul>
 <li>the call immediately succeeds even if the FIFO is not yet open on the writing end</li>
 </ul>
 </li>
-<li>write-only
+<li>opening for write-only + the FIFO hasn&rsquo;t been opened on the writing end
 <ul>
 <li>the call immediately fails with the error <code>ENXIO</code> (no such device or address), unless, of course, the file is already opened for reading on the other end</li>
 </ul>
