@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> The basics of operations on FIFOs on Linux | bool3max&#39;s blog</title>
+  <title> The basics of operations on Pipes/FIFOs on Linux | bool3max&#39;s blog</title>
   <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:title" content="The basics of operations on FIFOs on Linux" />
+  <meta property="og:title" content="The basics of operations on Pipes/FIFOs on Linux" />
 <meta property="og:description" content="A TLDR of the rules." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/" /><meta property="article:section" content="posts" />
@@ -17,7 +17,7 @@
 
 
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="The basics of operations on FIFOs on Linux"/>
+<meta name="twitter:title" content="The basics of operations on Pipes/FIFOs on Linux"/>
 <meta name="twitter:description" content="A TLDR of the rules."/>
 
   
@@ -109,42 +109,42 @@
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&text=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&text=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&is_video=false&description=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&is_video=false&description=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&name=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux&description=A%20TLDR%20of%20the%20rules." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&name=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&description=A%20TLDR%20of%20the%20rules." aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&t=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&t=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -169,7 +169,7 @@
   <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
     <header>
       <h1 class="posttitle" itemprop="name headline">
-        The basics of operations on FIFOs on Linux
+        The basics of operations on Pipes/FIFOs on Linux
       </h1>
       <div class="meta">
         
@@ -187,9 +187,9 @@
 
   
     <div class="content" itemprop="articleBody">
-      <p>This post summarizes behavior of different operations on FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.</p>
+      <p>This post summarizes behavior of different operations on Pipe/FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.</p>
 <p>All of this information is available in the <a href="https://linux.die.net/man/7/fifo"><code>fifo(7)</code></a> and <a href="https://linux.die.net/man/7/pipe"><code>pipe(7)</code></a> manpages.</p>
-<h1 id="opening">Opening</h1>
+<h1 id="opening-fifos">Opening FIFOs</h1>
 <ul>
 <li>opening a FIFO for reading will block until it is also open for writing on another end</li>
 <li>opening a FIFO for writing will block until it is also open for reading on the another end (same rules)</li>
@@ -213,13 +213,14 @@
 </li>
 </ul>
 <h1 id="reading-and-writing">Reading and writing</h1>
+<p>The read/write semantics are exactly the same for pipes and FIFOs.</p>
 <ul>
-<li>attempting to read from a FIFO that has no data inside of it, but that has an open writer end will result in the <code>read()</code> call blocking until data is available, <strong>UNLESS</strong> the reader end was opened in non-blocking mode (<code>O_NONBLOCK</code>), in which case the <code>read()</code> call will return EOF (<strong><code>0</code></strong>)</li>
-<li>attempting to read from a FIFO that has no open writer ends will result in the <code>read()</code> call immediately returning EOF (<strong><code>0</code></strong>)</li>
-<li>attempting to write to a FIFO which is not open on the read end will result in the process being sent a <strong><code>SIGPIPE</code></strong> signal (the default action for which is TERM, i.e. to terminate the process)
+<li>attempting to read from a pipe/FIFO that has no data inside of it, but that has an open writer end will result in the <code>read()</code> call blocking until data is available, <strong>UNLESS</strong> the reader end was opened in non-blocking mode (<code>O_NONBLOCK</code>), in which case the <code>read()</code> call will return EOF (<strong><code>0</code></strong>)</li>
+<li>attempting to read from a pipe/FIFO that has no open writer ends will result in the <code>read()</code> call immediately returning EOF (<strong><code>0</code></strong>)</li>
+<li>attempting to write to a pipe/FIFO which is not open on the read end will result in the process being sent a <strong><code>SIGPIPE</code></strong> signal (the default action for which is TERM, i.e. to terminate the process)
 <ul>
 <li>if the calling process is ignoring this signal, <code>write()</code> will instead immediately fail with the error <code>EPIPE</code></li>
-<li>again, this can happen when a FIFO has been properly opened for writing, but the reading end had since been closed</li>
+<li>again, this can happen when a pipe/FIFO has been properly opened for writing, but the reading end had since been closed</li>
 </ul>
 </li>
 </ul>
@@ -275,42 +276,42 @@
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&text=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&text=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&is_video=false&description=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&is_video=false&description=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&name=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux&description=A%20TLDR%20of%20the%20rules." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&name=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&description=A%20TLDR%20of%20the%20rules." aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&t=The%20basics%20of%20operations%20on%20FIFOs%20on%20Linux" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&t=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>

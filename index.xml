@@ -83,14 +83,14 @@ The StackOverlfow question (What is the difference between concurrency and paral
     </item>
     
     <item>
-      <title>The basics of operations on FIFOs on Linux</title>
+      <title>The basics of operations on Pipes/FIFOs on Linux</title>
       <link>https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/</link>
       <pubDate>Tue, 24 Nov 2020 20:36:49 +0100</pubDate>
       
       <guid>https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/</guid>
-      <description>This post summarizes behavior of different operations on FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.
+      <description>This post summarizes behavior of different operations on Pipe/FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.
 All of this information is available in the fifo(7) and pipe(7) manpages.
-Opening  opening a FIFO for reading will block until it is also open for writing on another end opening a FIFO for writing will block until it is also open for reading on the another end (same rules) opening a FIFO for reading and writing (O_RDWR) will always succeed, though this behavior is undefined by POSIX  this is the only way to open a FIFO on the writing end which has not yet been opened on the reading end    O_NONBLOCK (non-blocking mode)  opening for read-only + the FIFO hasn&amp;rsquo;t been opened on the writing end  the call immediately succeeds even if the FIFO is not yet open on the writing end   opening for write-only + the FIFO hasn&amp;rsquo;t been opened on the writing end  the call immediately fails with the error ENXIO (no such device or address), unless, of course, the file is already opened for reading on the other end    Reading and writing  attempting to read from a FIFO that has no data inside of it, but that has an open writer end will result in the read() call blocking until data is available, UNLESS the reader end was opened in non-blocking mode (O_NONBLOCK), in which case the read() call will return EOF (0) attempting to read from a FIFO that has no open writer ends will result in the read() call immediately returning EOF (0) attempting to write to a FIFO which is not open on the read end will result in the process being sent a SIGPIPE signal (the default action for which is TERM, i.</description>
+Opening FIFOs  opening a FIFO for reading will block until it is also open for writing on another end opening a FIFO for writing will block until it is also open for reading on the another end (same rules) opening a FIFO for reading and writing (O_RDWR) will always succeed, though this behavior is undefined by POSIX  this is the only way to open a FIFO on the writing end which has not yet been opened on the reading end    O_NONBLOCK (non-blocking mode)  opening for read-only + the FIFO hasn&amp;rsquo;t been opened on the writing end  the call immediately succeeds even if the FIFO is not yet open on the writing end   opening for write-only + the FIFO hasn&amp;rsquo;t been opened on the writing end  the call immediately fails with the error ENXIO (no such device or address), unless, of course, the file is already opened for reading on the other end    Reading and writing The read/write semantics are exactly the same for pipes and FIFOs.</description>
     </item>
     
     <item>
