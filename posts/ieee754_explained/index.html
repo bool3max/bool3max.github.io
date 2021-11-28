@@ -409,7 +409,7 @@ $231$ would denote an actual exponent of $231-127 = 104$. A bias is used instead
 taken into account, the value of the exponent ranges from $-126$ to $+127$ (<strong>not</strong> $-127$ to $128$ as you may believe - cases where the exponent field is all $0$s / all $1$s are treated specially, more on this later).</p>
 <p>The last 23 bits represent the <strong>mantissa</strong> (analogous to a <em>significand</em> in scientific notation). Its bits represent negative powers of two, starting with $2^{-1}$
 at the most significant bit, all the way through to $2^{-23}$ at the least significant bit. A non-existent $1$-bit carrying the value $2^0$ ($1.0$) is implied to be
-placed just between the exponent and mantissa bits - that&rsquo;s what the $+1$ denotes in the equation pictured above, and is also why the mantissa is guarantted to be
+placed just between the exponent and mantissa bits - that&rsquo;s what the $+1$ denotes in the equation pictured above, and is also why the mantissa is guaranteed to be
 between $1.0$ and $2.0$ in value, i.e. $1.0 \le mantissa \lt 2.0$. This is called the &ldquo;leading bit convention&rdquo; or the &ldquo;implicit bit convention&rdquo;, and it allows the format
 to have an extra bit of precision. This is true in all cases but when dealing with a <em>denormalized</em> number, indicated by <strong>the biased exponent field being all 0s</strong> - more on this later.</p>
 <p>Once all three components are known obtaining the final value is quite trivial - the formula pictured above is quite self-explanatory.
