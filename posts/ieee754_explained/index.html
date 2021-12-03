@@ -417,7 +417,7 @@ to have an extra bit of precision. This is true in all cases but when dealing wi
 <strong>IEEE-754 representations in no way solve the representation issues discussed in the earlier</strong>. If the value cannot be represented by <strong>a combination of any powers of two
 ranging from -1 to -23 increased by 1.0 and then scaled (multiplied) by any power of two ranging from -126 to 127</strong>, then it cannot be <em>exactly</em> represented, and is instead <em><strong>approximated</strong></em> as closely as possible.
 This stands for integer numbers as well - for example, the value $16,777,217$ cannot be exactly represented by a single-precision IEEE-754 format, and is instead
-rounded down to $16,777,216$. Perhaps somewhat counter-intuitively, the value $5$ <em>can</em> be exactly represented. By setting the exponent field to $2$, and the mantissa field to $0.25$ (i.e. setting the second most significant bit carrying the value $2^{-4}$ or $0.25$),
+rounded down to $16,777,216$. Perhaps somewhat counter-intuitively, the value $5$ <em>can</em> be exactly represented. By setting the exponent field to $2$, and the mantissa field to $0.25$ (i.e. setting the second most significant bit carrying the value $2^{-2}$ or $0.25$),
 the final equation becomes $1 \times 2^2 \times (1 + 0.25) = 1.25 \times 4 = 5$.</p>
 <h4 id="representing-zeroes">Representing zeroes</h4>
 <p>Zeroes are represented by setting the exponent and mantissa fields to all $0$s. The sign bit determines if the zero is positive ($+0$) or negative ($-0$).</p>
