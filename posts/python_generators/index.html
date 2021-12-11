@@ -216,7 +216,7 @@ l <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <s
 <p>Both iterators and generators have their own short sections in the offical <a href="https://docs.python.org/3/tutorial/classes.html#iterators">python3 tutorial</a>. This post is my own explanation of them.</p>
 </blockquote>
 <h1 id="iterators">Iterators</h1>
-<p>Iterators are objects that define a <strong><code>__next__</code></strong> method that is called every time the next value of the iterable is desired. They can be <em>iterared</em> over, yielding their members one by one.</p>
+<p>Iterators are objects that define a <strong><code>__next__</code></strong> method that is called every time the next value of the iterable is desired. They can be <em>iterated</em> over, yielding their members one by one.</p>
 <p>An object is said to be iterable if it defines an <strong><code>__iter__</code></strong> method that returns an above mentioned <em><strong>iterator</strong></em>.</p>
 <blockquote>
 <p>It can be a little confusing. Think of it like this: strings are <em>iterable</em> (able to be iterated over) because their base class (<strong><code>str</code></strong>) defines an <strong><code>__iter__</code></strong> method that returns an <strong>iterator</strong> object which has a <strong><code>__next__</code></strong> method.</p>
