@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Interesting Python &#39;enumerate&#39; problem | bool3max&#39;s blog</title>
+  <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="Interesting Python &#39;enumerate&#39; problem" />
+<meta property="og:description" content="a = list(range(12)) for i, e in enumerate(a): print(f&#34;iteration: i: {i}, e: {e}&#34;) if i == 0: del a[0] del a[1] del a[2] continue if e % 2 == 0: del a[i] print(a) Examine the above piece of python3 code. When ran, it outputs:
+iteration: i: 0, e: 0 iteration: i: 1, e: 3 iteration: i: 2, e: 5 iteration: i: 3, e: 6 iteration: i: 4, e: 8 iteration: i: 5, e: 10 [1, 3, 5, 7, 9, 11] Initially I was quite puzzled as to why that is the case, but after examining the problem thorougly I came out of the other side with a few key takeaways that I will outline at the end." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.github.io/posts/python_enumerate_problem/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-12-25T00:24:10+01:00" />
+<meta property="article:modified_time" content="2021-12-25T00:24:10+01:00" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Interesting Python &#39;enumerate&#39; problem"/>
+<meta name="twitter:description" content="a = list(range(12)) for i, e in enumerate(a): print(f&#34;iteration: i: {i}, e: {e}&#34;) if i == 0: del a[0] del a[1] del a[2] continue if e % 2 == 0: del a[i] print(a) Examine the above piece of python3 code. When ran, it outputs:
+iteration: i: 0, e: 0 iteration: i: 1, e: 3 iteration: i: 2, e: 5 iteration: i: 3, e: 6 iteration: i: 4, e: 8 iteration: i: 5, e: 10 [1, 3, 5, 7, 9, 11] Initially I was quite puzzled as to why that is the case, but after examining the problem thorougly I came out of the other side with a few key takeaways that I will outline at the end."/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://bool3max.github.io/css/style-white.css">
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://bool3max.github.io/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://bool3max.github.io/posts/modifying_bitfields_of_datatypes/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&text=Interesting%20Python%20%27enumerate%27%20problem" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&title=Interesting%20Python%20%27enumerate%27%20problem" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&is_video=false&description=Interesting%20Python%20%27enumerate%27%20problem" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Interesting%20Python%20%27enumerate%27%20problem&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&title=Interesting%20Python%20%27enumerate%27%20problem" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&title=Interesting%20Python%20%27enumerate%27%20problem" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&name=Interesting%20Python%20%27enumerate%27%20problem&description=a%20%3d%20list%28range%2812%29%29%20for%20i%2c%20e%20in%20enumerate%28a%29%3a%20print%28f%26%2334%3biteration%3a%20i%3a%20%7bi%7d%2c%20e%3a%20%7be%7d%26%2334%3b%29%20if%20i%20%3d%3d%200%3a%20del%20a%5b0%5d%20del%20a%5b1%5d%20del%20a%5b2%5d%20continue%20if%20e%20%25%202%20%3d%3d%200%3a%20del%20a%5bi%5d%20print%28a%29%20Examine%20the%20above%20piece%20of%20python3%20code.%20When%20ran%2c%20it%20outputs%3a%0aiteration%3a%20i%3a%200%2c%20e%3a%200%20iteration%3a%20i%3a%201%2c%20e%3a%203%20iteration%3a%20i%3a%202%2c%20e%3a%205%20iteration%3a%20i%3a%203%2c%20e%3a%206%20iteration%3a%20i%3a%204%2c%20e%3a%208%20iteration%3a%20i%3a%205%2c%20e%3a%2010%20%5b1%2c%203%2c%205%2c%207%2c%209%2c%2011%5d%20Initially%20I%20was%20quite%20puzzled%20as%20to%20why%20that%20is%20the%20case%2c%20but%20after%20examining%20the%20problem%20thorougly%20I%20came%20out%20of%20the%20other%20side%20with%20a%20few%20key%20takeaways%20that%20I%20will%20outline%20at%20the%20end." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&t=Interesting%20Python%20%27enumerate%27%20problem" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#iteration-1">Iteration #1</a></li>
+        <li><a href="#iteration-2">Iteration #2</a></li>
+        <li><a href="#iteration-3">Iteration #3</a></li>
+        <li><a href="#iteration-4">Iteration #4</a></li>
+        <li><a href="#iteration-5">Iteration #5</a></li>
+        <li><a href="#iteration-6">Iteration #6</a></li>
+        <li><a href="#iteration-7">Iteration #7</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        Interesting Python &#39;enumerate&#39; problem
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2021-12-25 00:24:10 &#43;0100 CET" itemprop="datePublished">2021-12-25</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+    <div class="content" itemprop="articleBody">
+      <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a <span style="color:#f92672">=</span> list(range(<span style="color:#ae81ff">12</span>))
+
+<span style="color:#66d9ef">for</span> i, e <span style="color:#f92672">in</span> enumerate(a):
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;iteration: i: </span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">, e: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+    <span style="color:#66d9ef">if</span> i <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">del</span> a[<span style="color:#ae81ff">0</span>]
+        <span style="color:#66d9ef">del</span> a[<span style="color:#ae81ff">1</span>]
+        <span style="color:#66d9ef">del</span> a[<span style="color:#ae81ff">2</span>]
+        <span style="color:#66d9ef">continue</span>
+
+    <span style="color:#66d9ef">if</span> e <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+        <span style="color:#66d9ef">del</span> a[i]
+
+print(a)
+</code></pre></div><p>Examine the above piece of python3 code. When ran, it outputs:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">iteration: i: <span style="color:#ae81ff">0</span>, e: <span style="color:#ae81ff">0</span>
+iteration: i: <span style="color:#ae81ff">1</span>, e: <span style="color:#ae81ff">3</span>
+iteration: i: <span style="color:#ae81ff">2</span>, e: <span style="color:#ae81ff">5</span>
+iteration: i: <span style="color:#ae81ff">3</span>, e: <span style="color:#ae81ff">6</span>
+iteration: i: <span style="color:#ae81ff">4</span>, e: <span style="color:#ae81ff">8</span>
+iteration: i: <span style="color:#ae81ff">5</span>, e: <span style="color:#ae81ff">10</span>
+[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">11</span>]
+</code></pre></div><p>Initially I was quite puzzled as to why that is the case, but after examining the problem thorougly I came out of the other side with a few key takeaways that I will outline at the end.
+For now, let&rsquo;s walk through the elusive loop iteration by iteration and figure out why the output is what it is.</p>
+<hr>
+<h3 id="iteration-1">Iteration #1</h3>
+<p>At the beginning, the value of <code>a</code> is</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">a <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>]
+</code></pre></div><p>On the first iteration of the loop, we yield <code>enumerate</code>&rsquo;s iterator once. It keeps track of an index (<code>i</code> in our case, beginning at <code>0</code>), and it also yields from the iterator of the object we&rsquo;ve passed it (the <code>a</code> array).
+The first element of the array is <code>0</code>, so <code>enumarate</code> packages the two values together and delivers them to us.</p>
+<p>As this is the first iteration, we enter the first <code>if</code> block, and execute the 3 <code>del</code> statements:</p>
+<ul>
+<li><code>del a[0]</code>
+<ul>
+<li>we delete the first element in the array, after which its contents are: <code>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]</code></li>
+</ul>
+</li>
+<li><code>del a[1]</code>
+<ul>
+<li>we delete the second element in the array, after which its contents are: <code>[1, 3, 4, 5, 6, 7, 8, 9, 10, 11]</code></li>
+</ul>
+</li>
+<li><code>del a[2]</code>
+<ul>
+<li>we delete the third element in the array, after which its contents are: <code>[1, 3, 5, 6, 7, 8, 9, 10, 11]</code></li>
+</ul>
+</li>
+</ul>
+<p>We then encounter the <code>continue</code> statement and skip the rest of the loop&rsquo;s body. Onto the second iteration.</p>
+<h3 id="iteration-2">Iteration #2</h3>
+<p>The contents of the array are now:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>]
+</code></pre></div><p>We advance <code>enumerate</code>&rsquo;s iterator yet again. It yields <code>i = 1</code> (clearly, it is just an integer that it keeps track of and increments itself) and <code>e = 3</code>, the second element in the array.</p>
+<h3 id="iteration-3">Iteration #3</h3>
+<p>The contents of the array are still the same:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>]
+</code></pre></div><p>In this iteration <code>i = 2</code> and <code>e = 5</code>.</p>
+<h3 id="iteration-4">Iteration #4</h3>
+<p>Here, <code>i = 3</code> and <code>e = 6</code>. Since <code>6</code> is an even number, we enter the second <code>if</code> block and execute <code>del a[i]</code>, i.e. <code>del a[3]</code>. After that statement, the contents of the <code>a</code> array are now:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>]
+</code></pre></div><h3 id="iteration-5">Iteration #5</h3>
+<p>We enter the fifth iteration of the loop. The value of the array is still:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>]
+</code></pre></div><p>Thev values are <code>i = 4</code> (clearly), and <code>e = 8</code>. But wait. Why <code>8</code> and not <code>7</code>? - was my initial reaction. But here is where I had the epiphany.</p>
+<p>See, whenever <code>enumerate</code> yields (or rather when the iterator <em>returned</em> by <code>enumerate()</code> yields), it has to first obtain the appropriate value from the
+object (iterable) that we passed to it. <strong>It does that by advancing the iterator of that object.</strong> In this case we passed in a <code>list</code>, whose iterator implementation keeps track of
+a &ldquo;hidden&rdquo; index value that it uses to keep track of the current position in the list. When the iterator is first created, the &ldquo;hidden index&rdquo; is 0, and every time the iterator is
+advanced, the index is incremented.</p>
+<p>In the first iteration of our loop, the hidden index (not to be confused by the index <code>i</code> returned by <code>enumerate</code>) was at <code>0</code>. In the second iteration it was at <code>1</code>, in the third
+it was at <code>2</code>, and so forth. In the fifth iteration it was at <code>4</code>, and so when <code>enumerate</code> advanced the iterator of the list that we passed it, it of course grabbed the element that was
+at index <code>4</code> at that time, which just so happened to be <code>8</code>, since we were dynamically modifying the list as we were iterating it, using the iterator object tied to it.</p>
+<h3 id="iteration-6">Iteration #6</h3>
+<p><code>i = 5</code> and <code>e = 10</code></p>
+<p>Since <code>10</code> is even, <code>del a[5]</code> is executed, and the array&rsquo;s contents are:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">[<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">11</span>]
+</code></pre></div><h3 id="iteration-7">Iteration #7</h3>
+<p>This one never happens, but let&rsquo;s see why.</p>
+<p>If it did, <code>i</code> would be <code>6</code>. The hidden index of the list iterator would also be <code>6</code> (as we are on the seventh interation). As a result of our dynamic list splicing however, <code>a</code> now contains only 6 elements,
+and <code>a[6]</code> doesn&rsquo;t exist.</p>
+<p>I <em>guess</em> what happens under the hood (and this depends on the particular Python implementation), is that the list iterator tries to access <code>a[6]</code>, which raises an exception, which is propagated down to <code>enumerate</code>&rsquo;s iterator that catches it and raises
+<code>StopIteration</code> accordingly, leading to this iteration never actually happening. One could probably dig into CPython&rsquo;s sourcecode to find out what actually happens. But I will settle with my imaginary scenario.</p>
+<hr>
+<p>To recap:</p>
+<ul>
+<li><code>enumerate</code> requires its argument to be an <em>iterable</em> object.</li>
+<li>it iterates over that iterable (by creating the appropriate iterator), itself yielding the appropriate result along with an index integer that it keeps track of and increments itself.</li>
+<li>it stops when the iterator in question halts.</li>
+<li>this problem was &ldquo;confusing&rdquo; mainly because of the dynamic list alteration happening on a list <em>while</em> it is being iterated over, something that is rarely seen in real-world code and that should mostly be avoided</li>
+</ul>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts/">All posts</a></li>
+         
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#iteration-1">Iteration #1</a></li>
+        <li><a href="#iteration-2">Iteration #2</a></li>
+        <li><a href="#iteration-3">Iteration #3</a></li>
+        <li><a href="#iteration-4">Iteration #4</a></li>
+        <li><a href="#iteration-5">Iteration #5</a></li>
+        <li><a href="#iteration-6">Iteration #6</a></li>
+        <li><a href="#iteration-7">Iteration #7</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&text=Interesting%20Python%20%27enumerate%27%20problem" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&title=Interesting%20Python%20%27enumerate%27%20problem" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&is_video=false&description=Interesting%20Python%20%27enumerate%27%20problem" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Interesting%20Python%20%27enumerate%27%20problem&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&title=Interesting%20Python%20%27enumerate%27%20problem" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&title=Interesting%20Python%20%27enumerate%27%20problem" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&name=Interesting%20Python%20%27enumerate%27%20problem&description=a%20%3d%20list%28range%2812%29%29%20for%20i%2c%20e%20in%20enumerate%28a%29%3a%20print%28f%26%2334%3biteration%3a%20i%3a%20%7bi%7d%2c%20e%3a%20%7be%7d%26%2334%3b%29%20if%20i%20%3d%3d%200%3a%20del%20a%5b0%5d%20del%20a%5b1%5d%20del%20a%5b2%5d%20continue%20if%20e%20%25%202%20%3d%3d%200%3a%20del%20a%5bi%5d%20print%28a%29%20Examine%20the%20above%20piece%20of%20python3%20code.%20When%20ran%2c%20it%20outputs%3a%0aiteration%3a%20i%3a%200%2c%20e%3a%200%20iteration%3a%20i%3a%201%2c%20e%3a%203%20iteration%3a%20i%3a%202%2c%20e%3a%205%20iteration%3a%20i%3a%203%2c%20e%3a%206%20iteration%3a%20i%3a%204%2c%20e%3a%208%20iteration%3a%20i%3a%205%2c%20e%3a%2010%20%5b1%2c%203%2c%205%2c%207%2c%209%2c%2011%5d%20Initially%20I%20was%20quite%20puzzled%20as%20to%20why%20that%20is%20the%20case%2c%20but%20after%20examining%20the%20problem%20thorougly%20I%20came%20out%20of%20the%20other%20side%20with%20a%20few%20key%20takeaways%20that%20I%20will%20outline%20at%20the%20end." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fpython_enumerate_problem%2f&t=Interesting%20Python%20%27enumerate%27%20problem" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2021  Bogdan Mitrović 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+
+
+</html>
