@@ -11,7 +11,7 @@
   <meta property="og:title" content="The basics of operations on Pipes/FIFOs on Linux" />
 <meta property="og:description" content="A TLDR of the rules." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://bool3max.win/posts/semantics_of_linux_fifo_operations/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-11-24T20:36:49+01:00" />
 <meta property="article:modified_time" content="2020-11-24T20:36:49+01:00" />
 
@@ -25,7 +25,7 @@
     
   
   
-  <link rel="stylesheet" href="https://bool3max.github.io/css/style-white.css">
+  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
   
   
   
@@ -36,7 +36,7 @@
   
 
   
-<link rel="icon" type="image/png" href="https://bool3max.github.io/images/favicon.ico" />
+<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
 
   
   
@@ -66,14 +66,14 @@
       <ul>
         
         <li>
-          <a class="icon" href=" https://bool3max.github.io/posts/context_managers_and_with_python3/" aria-label="Previous">
+          <a class="icon" href=" https://bool3max.win/posts/context_managers_and_with_python3/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
         
         
         <li>
-          <a class="icon" href="https://bool3max.github.io/posts/parallelism_and_concurrency/" aria-label="Next">
+          <a class="icon" href="https://bool3max.win/posts/parallelism_and_concurrency/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -104,47 +104,47 @@
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&text=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&text=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&is_video=false&description=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&is_video=false&description=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&name=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&description=A%20TLDR%20of%20the%20rules." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&name=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&description=A%20TLDR%20of%20the%20rules." aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&t=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&t=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -271,47 +271,47 @@
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&text=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&text=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&is_video=false&description=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&is_video=false&description=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&title=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&name=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&description=A%20TLDR%20of%20the%20rules." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&name=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux&description=A%20TLDR%20of%20the%20rules." aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fsemantics_of_linux_fifo_operations%2f&t=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fsemantics_of_linux_fifo_operations%2f&t=The%20basics%20of%20operations%20on%20Pipes%2fFIFOs%20on%20Linux" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>

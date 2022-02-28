@@ -11,7 +11,7 @@
   <meta property="og:title" content="Parallelism and Concurrency: The basics" />
 <meta property="og:description" content="This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.github.io/posts/parallelism_and_concurrency/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://bool3max.win/posts/parallelism_and_concurrency/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-11-28T13:41:36+01:00" />
 <meta property="article:modified_time" content="2020-11-28T13:41:36+01:00" />
 
@@ -25,7 +25,7 @@
     
   
   
-  <link rel="stylesheet" href="https://bool3max.github.io/css/style-white.css">
+  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
   
   
   
@@ -36,7 +36,7 @@
   
 
   
-<link rel="icon" type="image/png" href="https://bool3max.github.io/images/favicon.ico" />
+<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
 
   
   
@@ -66,14 +66,14 @@
       <ul>
         
         <li>
-          <a class="icon" href=" https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/" aria-label="Previous">
+          <a class="icon" href=" https://bool3max.win/posts/semantics_of_linux_fifo_operations/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
         
         
         <li>
-          <a class="icon" href="https://bool3max.github.io/posts/utf8/" aria-label="Next">
+          <a class="icon" href="https://bool3max.win/posts/utf8/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -104,47 +104,47 @@
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&text=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&text=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&is_video=false&description=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&is_video=false&description=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=Parallelism%20and%20Concurrency%3a%20The%20basics&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Parallelism%20and%20Concurrency%3a%20The%20basics&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&name=Parallelism%20and%20Concurrency%3a%20The%20basics&description=This%20post%20documents%20my%20understanding%20of%20the%20basics%20regarding%20concurrency%20and%20parallelism%20and%20their%20manifestation%20in%20operating%20systems." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&name=Parallelism%20and%20Concurrency%3a%20The%20basics&description=This%20post%20documents%20my%20understanding%20of%20the%20basics%20regarding%20concurrency%20and%20parallelism%20and%20their%20manifestation%20in%20operating%20systems." aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&t=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&t=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -342,47 +342,47 @@ exit_group(0)                           = ?
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&text=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&text=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&is_video=false&description=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&is_video=false&description=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=Parallelism%20and%20Concurrency%3a%20The%20basics&body=Check out this article: https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Parallelism%20and%20Concurrency%3a%20The%20basics&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&title=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&name=Parallelism%20and%20Concurrency%3a%20The%20basics&description=This%20post%20documents%20my%20understanding%20of%20the%20basics%20regarding%20concurrency%20and%20parallelism%20and%20their%20manifestation%20in%20operating%20systems." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&name=Parallelism%20and%20Concurrency%3a%20The%20basics&description=This%20post%20documents%20my%20understanding%20of%20the%20basics%20regarding%20concurrency%20and%20parallelism%20and%20their%20manifestation%20in%20operating%20systems." aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.github.io%2fposts%2fparallelism_and_concurrency%2f&t=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fparallelism_and_concurrency%2f&t=Parallelism%20and%20Concurrency%3a%20The%20basics" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>

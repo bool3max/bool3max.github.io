@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>bool3max&#39;s blog</title>
-    <link>https://bool3max.github.io/</link>
+    <link>https://bool3max.win/</link>
     <description>Recent content on bool3max&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Bogdan Mitrović</copyright>
-    <lastBuildDate>Fri, 22 Oct 2021 11:52:38 +0200</lastBuildDate><atom:link href="https://bool3max.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Oct 2021 11:52:38 +0200</lastBuildDate><atom:link href="https://bool3max.win/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Techniques for directly modifying bitfields of various datatypes in C</title>
-      <link>https://bool3max.github.io/posts/modifying_bitfields_of_datatypes/</link>
+      <link>https://bool3max.win/posts/modifying_bitfields_of_datatypes/</link>
       <pubDate>Fri, 22 Oct 2021 11:52:38 +0200</pubDate>
       
-      <guid>https://bool3max.github.io/posts/modifying_bitfields_of_datatypes/</guid>
+      <guid>https://bool3max.win/posts/modifying_bitfields_of_datatypes/</guid>
       <description>Suppose that you are learning about IEEE-754 and you are experimenting with how single-precision values are encoded in memory. Suppose also that you are experimenting with various bitstring representations of floatint point values, and you wish to store one of them in C&amp;rsquo;s float datatype. Your first thought might be to do something like this:
 const float num = 0b11000000000000000000001000000000; printf(&amp;#34;%.15f\n&amp;#34;, num); The bitstring constant used above represents the value -2.</description>
     </item>
     
     <item>
       <title>A primer on the binary system: two&#39;s complement, IEEE-754 and more, explained</title>
-      <link>https://bool3max.github.io/posts/ieee754_explained/</link>
+      <link>https://bool3max.win/posts/ieee754_explained/</link>
       <pubDate>Sat, 18 Sep 2021 18:00:38 +0200</pubDate>
       
-      <guid>https://bool3max.github.io/posts/ieee754_explained/</guid>
+      <guid>https://bool3max.win/posts/ieee754_explained/</guid>
       <description>Modern 64-bit processors are capable of storing $2^{64}$ different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
 Given any number of bits $ N $, we can always conclude that the maximum number of different values representable using that particular bit count is always $ 2^N $.</description>
     </item>
     
     <item>
       <title>How does &#39;man&#39; actually display the pages?</title>
-      <link>https://bool3max.github.io/posts/man_and_pagers_plus_colors/</link>
+      <link>https://bool3max.win/posts/man_and_pagers_plus_colors/</link>
       <pubDate>Wed, 17 Feb 2021 13:44:42 +0100</pubDate>
       
-      <guid>https://bool3max.github.io/posts/man_and_pagers_plus_colors/</guid>
+      <guid>https://bool3max.win/posts/man_and_pagers_plus_colors/</guid>
       <description>When you normally execute, say man 3 printf, man simply does the job of looking up and fetching the particular manpage. The actual act of displaying it, is done by a pager.
 The default pager that man uses, less, is in essence a simple TUI program that allows for easy navigation of a particular text buffer (scrolling, searching, etc&amp;hellip; all using vi-like keybindings). It can output stylized text (bolds, underlines, etc&amp;hellip;) which it does by default for manpages.</description>
     </item>
     
     <item>
       <title>Userspace programs for process management on Linux</title>
-      <link>https://bool3max.github.io/posts/linux_userspace_programs_for_process_management/</link>
+      <link>https://bool3max.win/posts/linux_userspace_programs_for_process_management/</link>
       <pubDate>Tue, 26 Jan 2021 16:10:17 +0100</pubDate>
       
-      <guid>https://bool3max.github.io/posts/linux_userspace_programs_for_process_management/</guid>
+      <guid>https://bool3max.win/posts/linux_userspace_programs_for_process_management/</guid>
       <description>kill Despite its name (that it&amp;rsquo;s gotten from its most popular usecase), kill is very versatile tool used to send specified signals to individual processes, or process groups.
 It is part of the util-linux collection of programs and is widely available.
 Here area a couple of usage examples. If no signal name/number is specified, SIGTERM (15) is assumed:
@@ -52,20 +52,20 @@ Here area a couple of usage examples. If no signal name/number is specified, SIG
     
     <item>
       <title>Guide to screensharing on Sway from Firefox/Chromium</title>
-      <link>https://bool3max.github.io/posts/sway_screenshare_guide/</link>
+      <link>https://bool3max.win/posts/sway_screenshare_guide/</link>
       <pubDate>Mon, 25 Jan 2021 14:01:59 +0100</pubDate>
       
-      <guid>https://bool3max.github.io/posts/sway_screenshare_guide/</guid>
+      <guid>https://bool3max.win/posts/sway_screenshare_guide/</guid>
       <description>I spent some time trying to get things to work and in the end I decided to compile the instructions in a compact and coherent guide.
  Install Chromium 81.0.4044.122 or later, or Firefox 84.0-1 or later. Install pipewire, and if you&amp;rsquo;re using Chromium, libpipewire02 as well. If you&amp;rsquo;re using Arch, both packages are available in the official repositories. Install xdg-desktop-portal-wlr. It is available in the official Arch repositories. If you&amp;rsquo;re running Firefox, make sure that MOZ_ENABLE_WAYLAND=1 is set before you start it to make sure it&amp;rsquo;s running natively.</description>
     </item>
     
     <item>
       <title>UTF-8</title>
-      <link>https://bool3max.github.io/posts/utf8/</link>
+      <link>https://bool3max.win/posts/utf8/</link>
       <pubDate>Thu, 03 Dec 2020 21:29:03 +0100</pubDate>
       
-      <guid>https://bool3max.github.io/posts/utf8/</guid>
+      <guid>https://bool3max.win/posts/utf8/</guid>
       <description>As of writing, Unicode contains 1,112,064 possible codepoints.
  Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in 1,112,064 actually available codepoints.
  It&amp;rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &amp;ldquo;double dot above&amp;rdquo; mark that, when rendered, simply appears above the adjecent previous character.</description>
@@ -73,10 +73,10 @@ Here area a couple of usage examples. If no signal name/number is specified, SIG
     
     <item>
       <title>Parallelism and Concurrency: The basics</title>
-      <link>https://bool3max.github.io/posts/parallelism_and_concurrency/</link>
+      <link>https://bool3max.win/posts/parallelism_and_concurrency/</link>
       <pubDate>Sat, 28 Nov 2020 13:41:36 +0100</pubDate>
       
-      <guid>https://bool3max.github.io/posts/parallelism_and_concurrency/</guid>
+      <guid>https://bool3max.win/posts/parallelism_and_concurrency/</guid>
       <description>This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.
  Definitions Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&amp;rsquo;t exactly set in stone, and the definitions are somewhat convoluted.
 The StackOverlfow question (What is the difference between concurrency and parallelism?) in particular has quite a number of somewhat conflicting answers, which is understandable, since if someone asked me what the difference between the two terms are - I wouldn&amp;rsquo;t be able to answer.</description>
@@ -84,10 +84,10 @@ The StackOverlfow question (What is the difference between concurrency and paral
     
     <item>
       <title>The basics of operations on Pipes/FIFOs on Linux</title>
-      <link>https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/</link>
+      <link>https://bool3max.win/posts/semantics_of_linux_fifo_operations/</link>
       <pubDate>Tue, 24 Nov 2020 20:36:49 +0100</pubDate>
       
-      <guid>https://bool3max.github.io/posts/semantics_of_linux_fifo_operations/</guid>
+      <guid>https://bool3max.win/posts/semantics_of_linux_fifo_operations/</guid>
       <description>This post summarizes behavior of different operations on Pipe/FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.
 All of this information is available in the fifo(7) and pipe(7) manpages.
 Opening FIFOs  opening a FIFO for reading will block until it is also open for writing on another end opening a FIFO for writing will block until it is also open for reading on the another end (same rules) opening a FIFO for reading and writing (O_RDWR) will always succeed, though this behavior is undefined by POSIX  this is the only way to open a FIFO on the writing end which has not yet been opened on the reading end    O_NONBLOCK (non-blocking mode)  opening for read-only + the FIFO hasn&amp;rsquo;t been opened on the writing end  the call immediately succeeds even if the FIFO is not yet open on the writing end   opening for write-only + the FIFO hasn&amp;rsquo;t been opened on the writing end  the call immediately fails with the error ENXIO (no such device or address), unless, of course, the file is already opened for reading on the other end    Reading and writing The read/write semantics are exactly the same for pipes and FIFOs.</description>
@@ -95,10 +95,10 @@ Opening FIFOs  opening a FIFO for reading will block until it is also open for w
     
     <item>
       <title>Context Managers and the &#39;with&#39; keyword in Python3</title>
-      <link>https://bool3max.github.io/posts/context_managers_and_with_python3/</link>
+      <link>https://bool3max.win/posts/context_managers_and_with_python3/</link>
       <pubDate>Sat, 21 Nov 2020 14:52:04 +0100</pubDate>
       
-      <guid>https://bool3max.github.io/posts/context_managers_and_with_python3/</guid>
+      <guid>https://bool3max.win/posts/context_managers_and_with_python3/</guid>
       <description>Context Managers in python3 are a simple but powerful feature.
 The most common example of a context-manager in action is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation (in this case the open function) do the work for you:
 with open(&amp;#34;file&amp;#34;, &amp;#34;rb&amp;#34;) as file: ... Instead of having to manually call file.close() later on, once the &amp;ldquo;with&amp;rdquo; block ends, the appropriate cleanup actions (in this case flushing the file to disk and closing the file descriptors) are automatically performed.</description>
@@ -106,10 +106,10 @@ with open(&amp;#34;file&amp;#34;, &amp;#34;rb&amp;#34;) as file: ... Instead of 
     
     <item>
       <title>Briefly explaining Python3 Decorators</title>
-      <link>https://bool3max.github.io/posts/python_decorators_explained/</link>
+      <link>https://bool3max.win/posts/python_decorators_explained/</link>
       <pubDate>Sat, 14 Nov 2020 18:42:28 +0100</pubDate>
       
-      <guid>https://bool3max.github.io/posts/python_decorators_explained/</guid>
+      <guid>https://bool3max.win/posts/python_decorators_explained/</guid>
       <description>Decorators are a way to modify behavior of functions using other functions.
 Take a look at the following routine:
 def sum(x, y): return x + y Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:
@@ -118,30 +118,30 @@ def increment(func): def add_one(x, y): return func(x, y) + 1 return add_one @in
     
     <item>
       <title>Iterators and Generators in Python3</title>
-      <link>https://bool3max.github.io/posts/python_generators/</link>
+      <link>https://bool3max.win/posts/python_generators/</link>
       <pubDate>Thu, 05 Nov 2020 00:32:02 +0100</pubDate>
       
-      <guid>https://bool3max.github.io/posts/python_generators/</guid>
+      <guid>https://bool3max.win/posts/python_generators/</guid>
       <description>Recently I needed a way to infinitely loop over a list in Python. Traditionally, this is extremely easy to do with simple indexing if the size of the list is known in advance. For example, an approach could look something like this:
 l = [1, 2, 3] i = 0 while True: print(l[i]) i += 1 if i == len(l): i = 0 Eventually I settled on a an inbuilt approach using the itertools module from the standard library.</description>
     </item>
     
     <item>
       <title>Languages versus their implementations</title>
-      <link>https://bool3max.github.io/posts/languages_versus_implementations/</link>
+      <link>https://bool3max.win/posts/languages_versus_implementations/</link>
       <pubDate>Fri, 16 Oct 2020 14:23:54 +0200</pubDate>
       
-      <guid>https://bool3max.github.io/posts/languages_versus_implementations/</guid>
+      <guid>https://bool3max.win/posts/languages_versus_implementations/</guid>
       <description>Python is a programming language. It is nothing more but one large document of text and code examples (a standard) that describes exactly how the language is to behave. You can&amp;rsquo;t run it, download it, or execute it. That&amp;rsquo;s it, it&amp;rsquo;s just text.
 The latest edition of it is up on the official Python website as the The Python Language Reference. As Python also consists of a standard library of functions, a document that describes how the modules and their respective functions are to behave is also readily available as The Python Standard Library.</description>
     </item>
     
     <item>
       <title>Python3 OOP gotchas</title>
-      <link>https://bool3max.github.io/posts/python3_oop_guide/</link>
+      <link>https://bool3max.win/posts/python3_oop_guide/</link>
       <pubDate>Mon, 12 Oct 2020 16:22:05 +0200</pubDate>
       
-      <guid>https://bool3max.github.io/posts/python3_oop_guide/</guid>
+      <guid>https://bool3max.win/posts/python3_oop_guide/</guid>
       <description>This is not a tutorial, but rather a personal document that I write for myself in order to cement the knowledge and explain &amp;ldquo;tricky&amp;rdquo; concepts and gotchas when it comes to OOP and classes in python3
  Useful resources:
  Official python &amp;lsquo;Classes&amp;rsquo; tutorial Data model section of the official python &amp;lsquo;Language Reference&amp;rsquo; &amp;ldquo;Supercharge your classes with Python super() article on realpython.org&amp;rdquo; - a really good read  How does self actually work?</description>
@@ -149,10 +149,10 @@ The latest edition of it is up on the official Python website as the The Python 
     
     <item>
       <title>Why I prefer fish over bash for scripting</title>
-      <link>https://bool3max.github.io/posts/fish_scripting_over_bash/</link>
+      <link>https://bool3max.win/posts/fish_scripting_over_bash/</link>
       <pubDate>Mon, 28 Sep 2020 15:45:48 +0200</pubDate>
       
-      <guid>https://bool3max.github.io/posts/fish_scripting_over_bash/</guid>
+      <guid>https://bool3max.win/posts/fish_scripting_over_bash/</guid>
       <description>Scripting with fish is simple. It is readable. You don&amp;rsquo;t need to have deep experience with it in order to understand the syntax.
 Compared to bash, it feels intuitive.
 Everything is a builtin builtins are commands that you call from the shell, but unlike regular commands that execute external binaries and spawn new processes, they are built right into the shell (e.g. echo, math, set, count).
@@ -161,30 +161,30 @@ The core syntax of fish is very simple, and most all of the operations are done 
     
     <item>
       <title>Understanding the ELF file structure</title>
-      <link>https://bool3max.github.io/posts/elf/</link>
+      <link>https://bool3max.win/posts/elf/</link>
       <pubDate>Sun, 09 Aug 2020 18:54:26 +0200</pubDate>
       
-      <guid>https://bool3max.github.io/posts/elf/</guid>
+      <guid>https://bool3max.win/posts/elf/</guid>
       <description>I recently took it upon myself to, at least at the surface level, understand how the ELF (&amp;quot;Executable and Linkable Format&amp;quot;) works. In order to do that, I set out to create a tiny python3 module for parsing (meta-)data out of ELF files.
 The result of that is p3elf, during the development of which I familiarized myself with ELF, binary IO in python, as well as setuptools and publishing python packages on PyPI.</description>
     </item>
     
     <item>
       <title>Brief explanation of booting/GPT</title>
-      <link>https://bool3max.github.io/posts/uefi_disks/</link>
+      <link>https://bool3max.win/posts/uefi_disks/</link>
       <pubDate>Wed, 18 Sep 2019 17:42:03 +0200</pubDate>
       
-      <guid>https://bool3max.github.io/posts/uefi_disks/</guid>
+      <guid>https://bool3max.win/posts/uefi_disks/</guid>
       <description>This document serves as a quick reference to how UEFI and GPT work in regards to booting a modern system.
  I will not cover BIOS/MBR in this document. I will acknowledge their existence and will compare them to their modern counterparts, but I feel that it is a waste of time to dig deeper into their inner workings. I will also not cover or mention the compatibility possibilites/issues of using UEFI/MBR or BIOS/GPT.</description>
     </item>
     
     <item>
       <title>Type Conversion and Declarations in C</title>
-      <link>https://bool3max.github.io/posts/c_tc_and_decl/</link>
+      <link>https://bool3max.win/posts/c_tc_and_decl/</link>
       <pubDate>Wed, 14 Nov 2018 18:05:02 +0200</pubDate>
       
-      <guid>https://bool3max.github.io/posts/c_tc_and_decl/</guid>
+      <guid>https://bool3max.win/posts/c_tc_and_decl/</guid>
       <description>This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
  Type Conversion   Implicit conversion - conversion done automatically by the compiler (no casts) - assignment conversion, or usual arithmetic conversion &amp;ndash; RULES:
  integer ranks (excluding extended and enumerated types):  long long int, unsigned long long int long int, unsigned long int int, unsigned int short int, unsigned short int char, singed char, unsigned char _Bool   integer promotion: an operation that converts any type whose rank is less than int or unsigned int to int (provided it can fit) or else unsigned int Usual arithmetic conversion &amp;ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument:  either operand is floating type:  float -&amp;gt; double -&amp;gt; long double convert the other operand to the same floating type   neither operand is a floating type:  First, perform integer promotion on both operands If types of both operands are now the same, the process ends, if not, perform the following rules, and stop at the first one that applies  If both operands have signed types or if both operands have unsigned types, convert the operand whose type rank is lower to the type of the operand whose type rank is higher If the operand with the unsigned type has a rank HIGHER or EQUAL to the rank of the signed operand, convert the operand with the singed type to the type of the operand with the unsigned type If the operand with the signed type can represent all of the values of the type with the unsigned operand, convert the unsigned operand to the type of the signed operand If none of the above rules apply, convert BOTH operands to the unsigned &amp;ldquo;version&amp;rdquo; of the type of the signed operand       Assignment conversion:  The usual arithmetic conversion rules do not apply here.</description>
@@ -192,10 +192,10 @@ The result of that is p3elf, during the development of which I familiarized myse
     
     <item>
       <title>The 0xFFFFFFFF problem</title>
-      <link>https://bool3max.github.io/posts/int_problem/</link>
+      <link>https://bool3max.win/posts/int_problem/</link>
       <pubDate>Thu, 13 Sep 2018 02:51:42 +0200</pubDate>
       
-      <guid>https://bool3max.github.io/posts/int_problem/</guid>
+      <guid>https://bool3max.win/posts/int_problem/</guid>
       <description>This is a pretty old document that I wrote for myself back when I was first learning C, but the explanation is pretty good so I published it here for future reference. I hope to soon push a reference document that explains some tricky concepts and things from the C standard that are not so easy to remember off the top of the head (such as type conversion, declarations, storage durations, scopes, etc&amp;hellip;)</description>
     </item>
     
