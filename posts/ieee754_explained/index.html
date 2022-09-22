@@ -214,18 +214,18 @@ Given any number of bits $ N $, we can always conclude that the maximum number o
 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.</p>
 <p>Given any number of bits $ N $, we can always conclude that the <em>maximum</em> number of different values representable using that particular bit count is always $ 2^N $.</p>
 <p>Each one of those <em>values</em> can also be thought of as a different <em>number</em>. Us humans have designed the binary system as a consequence of needing to represent the many different numbers found in the decimal system -
-the one <em>we</em> think and operate in. It turned out, however, that it&rsquo;s no small feat. As we&rsquo;ll see, representing positive (i.e. &ldquo;<em>unsigned</em>&quot;) integers is easy - but how do we represent negative integers? And what about non-integers (i.e. decimal, real numbers)?</p>
+the one <em>we</em> think and operate in. It turned out, however, that it&rsquo;s no small feat. As we&rsquo;ll see, representing positive (i.e. &ldquo;<em>unsigned</em>&rdquo;) integers is easy - but how do we represent negative integers? And what about non-integers (i.e. decimal, real numbers)?</p>
 <h3 id="on-numbers-vs-values">On &ldquo;numbers&rdquo; vs &ldquo;values&rdquo;</h3>
 <p>While we most often think of binary values as numbers, they can also simply represent different abstract ideas.
 For example, think of the many syscall functions in the Linux kernel. They usually expose a &ldquo;<code>flags</code>&rdquo; argument - a value composed of one or more binary OR&rsquo;d &lsquo;flags&rsquo;, each of which is a value with exactly one set bit.
 We never care what the decimal representation of the final flag argument is (after it has been &ldquo;fed&rdquo; the many other individual possible options), we simply use the macros provided by the appropriate header to construct the final value.
 However nothing stops us from observing the decimal value of the final argument, and possibly using it in the future. I wouldn&rsquo;t call that good practice though. For example:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;fcntl.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">int32_t</span> fd1 <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;/some/file&#34;</span>, O_APPEND <span style="color:#f92672">|</span> O_CREAT <span style="color:#f92672">|</span> O_NONBLOCK),
-        fd2 <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;/some/other/file&#34;</span>, <span style="color:#ae81ff">3136</span>);
-</code></pre></div><p>Both <code>open()</code> calls receive <em>exactly</em> the same value as their second argument, i.e. the exact same set of flags, but there&rsquo;s no reason to ever use the second variant, unless you&rsquo;re doing code golf.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;fcntl.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int32_t</span> fd1 <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;/some/file&#34;</span>, O_APPEND <span style="color:#f92672">|</span> O_CREAT <span style="color:#f92672">|</span> O_NONBLOCK),
+</span></span><span style="display:flex;"><span>        fd2 <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;/some/other/file&#34;</span>, <span style="color:#ae81ff">3136</span>);
+</span></span></code></pre></div><p>Both <code>open()</code> calls receive <em>exactly</em> the same value as their second argument, i.e. the exact same set of flags, but there&rsquo;s no reason to ever use the second variant, unless you&rsquo;re doing code golf.</p>
 <h1 id="representations">Representations</h1>
 <p>Now, let&rsquo;s take a look into how different kinds of numbers in the decimal system are represented in binary form.
 I will only be describing the systems/encodings in use today.</p>
@@ -237,7 +237,7 @@ I will only be describing the systems/encodings in use today.</p>
 carries a value twice as large as that of the previous, starting at $2^0$, or $1$. The most significant bit
 carries the value $2^{N - 1}$, where $N$ is the total number of bits. The range of decimal values epresentable
 using $N$ bits in this system ranges from $0$ to $2^{N - 1}$ (because we account for the case where all bits are zeroes).
-To convert a value encoded in this binary format to a decimal value, we simply add values of all the &ldquo;set&rdquo; (i.e. &ldquo;$1$&quot;) bits together.</p>
+To convert a value encoded in this binary format to a decimal value, we simply add values of all the &ldquo;set&rdquo; (i.e. &ldquo;$1$&rdquo;) bits together.</p>
 <p>That&rsquo;s all that there really is to it. Here are some examples using 8-bit sequences, for the sake of clarity:</p>
 <p>Note that, when representing a single byte sequence in textual form, the most significant
 bit is most often writtten first.</p>
@@ -278,7 +278,7 @@ flip the highest order bit to a $1$, <em>which would no longer denote a positive
 <li>utilizing 8 bits sign and magnitude encodes values from $-127$ to $+127$, but two&rsquo;s complement encodes values from $-128$ to $+127$</li>
 </ul>
 </li>
-<li><strong>arithmetic operations are trivial and require no additional computation - for example, adding 2 two&rsquo;s-complement-encoded values requires no operation bar performing regular binary addition - <em>regardless of the operands' signs</em></strong></li>
+<li><strong>arithmetic operations are trivial and require no additional computation - for example, adding 2 two&rsquo;s-complement-encoded values requires no operation bar performing regular binary addition - <em>regardless of the operands&rsquo; signs</em></strong></li>
 </ul>
 <p>Below are a couple step-by-step examples of converting an unsigned integer to its negative two&rsquo;s complement countepart:</p>
 <ul>
@@ -314,8 +314,8 @@ We can see this in action, if we apply two&rsquo;s complement on the lowest numb
 <p>Thus, the <a href="https://en.wikipedia.org/wiki/Two%27s_complement#Most_negative_number">most negative number</a> is a special case in the two&rsquo;s complement system, and it has to be treated with special care.
 The C and C++ standards in particular do not define behavior when dealing with the most negative number. As an example, the following C snippet (on an x86-64 machine), produces <code>-128</code> as the result:
 (as is, well, expected in this special case):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">signed</span> <span style="color:#66d9ef">char</span> b <span style="color:#f92672">=</span> (<span style="color:#66d9ef">signed</span> <span style="color:#66d9ef">char</span>) <span style="color:#f92672">-</span><span style="color:#ae81ff">128</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">signed</span> <span style="color:#66d9ef">char</span>) <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
-</code></pre></div><h1 id="real-numbers">Real numbers</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">signed</span> <span style="color:#66d9ef">char</span> b <span style="color:#f92672">=</span> (<span style="color:#66d9ef">signed</span> <span style="color:#66d9ef">char</span>) <span style="color:#f92672">-</span><span style="color:#ae81ff">128</span> <span style="color:#f92672">*</span> (<span style="color:#66d9ef">signed</span> <span style="color:#66d9ef">char</span>) <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span></code></pre></div><h1 id="real-numbers">Real numbers</h1>
 <blockquote>
 <p>Floating-point arithmetic is considered an esoteric subject by many people.
 -David Goldberg</p>
@@ -417,7 +417,7 @@ to have an extra bit of precision. This is true in all cases but when dealing wi
 <strong>IEEE-754 representations in no way solve the representation issues discussed in the earlier</strong>. If the value cannot be represented by <strong>a combination of any powers of two
 ranging from -1 to -23 increased by 1.0 and then scaled (multiplied) by any power of two ranging from -126 to 127</strong>, then it cannot be <em>exactly</em> represented, and is instead <em><strong>approximated</strong></em> as closely as possible.
 This stands for integer numbers as well - for example, the value $16,777,217$ cannot be exactly represented by a single-precision IEEE-754 format, and is instead
-rounded down to $16,777,216$. Perhaps somewhat counter-intuitively, the value $5$ <em>can</em> be exactly represented. By setting the exponent field to $2$, and the mantissa field to $0.25$ (i.e. setting the second most significant bit carrying the value $2^{-2}$ or $0.25$),
+rounded down to $16,777,216$. Perhaps somewhat counter-intuitively, the value $5$ <em>can</em> be exactly represented. By setting the exponent field to $2$, and the mantissa field to $0.25$ (i.e. setting the second least significant bit carrying the value $2^{-2}$ or $0.25$),
 the final equation becomes $1 \times 2^2 \times (1 + 0.25) = 1.25 \times 4 = 5$.</p>
 <h4 id="representing-zeroes">Representing zeroes</h4>
 <p>Zeroes are represented by setting the exponent and mantissa fields to all $0$s. The sign bit determines if the zero is positive ($+0$) or negative ($-0$).</p>

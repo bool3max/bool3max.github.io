@@ -269,7 +269,7 @@
 <p>From our shell we can see that this is exactly how the € is encoded:</p>
 </li>
 </ul>
-<pre tabindex="0"><code>echo -n &quot;€&quot; | xxd -g 1 -c 10 -u
+<pre tabindex="0"><code>echo -n &#34;€&#34; | xxd -g 1 -c 10 -u
 00000000: E2 82 AC                       ...
 </code></pre><h1 id="writing-an-utf-8-decoder">Writing an UTF-8 decoder</h1>
 <p>This is something I&rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Literally all text that you see nowadays on screen was at some point encoded as UTF-8, then decoded to get all invididual codepoints, and then rendered to the screen with a relevant font.</p>

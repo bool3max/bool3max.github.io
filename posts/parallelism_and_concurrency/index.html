@@ -247,42 +247,41 @@
 <hr>
 <p>So far I&rsquo;ve talked more <em>about</em> what &ldquo;tools&rdquo; are used to achieve concurrency rather than how to actually use them. But before I do I want to explore them a bit further:</p>
 <p>Let&rsquo;s write a trivial binary that proves that the <code>fork(2)</code> wrapper really calls the <code>clone(2)</code> syscall under the hood:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;pthread.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/types.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) {
-    pid_t return_pid <span style="color:#f92672">=</span> fork();
-
-    <span style="color:#66d9ef">if</span>(return_pid <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
-        perror(<span style="color:#e6db74">&#34;Error forking&#34;</span>);
-        <span style="color:#66d9ef">return</span> EXIT_FAILURE;
-    }
-
-    <span style="color:#66d9ef">if</span>(return_pid <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
-        <span style="color:#75715e">// parent
-</span><span style="color:#75715e"></span>        fprintf(stdout, <span style="color:#e6db74">&#34;Hello from parent, PID: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, getpid());
-
-    } <span style="color:#66d9ef">else</span> {
-        <span style="color:#75715e">// child
-</span><span style="color:#75715e"></span>        fprintf(stdout, <span style="color:#e6db74">&#34;Hello from child, PID: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, getpid());
-        <span style="color:#66d9ef">return</span> EXIT_SUCCESS;
-    }
-
-    <span style="color:#66d9ef">return</span> EXIT_SUCCESS; 
-}
-
-</code></pre></div><p>First, the entire reason that we&rsquo;re able to write data to <code>stdout</code> from the child process (whose code is in the last &lsquo;else&rsquo; block) is that the spawned child retains access to all the open file descriptors of the parent (and <code>stdout</code> is file descriptor 0):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;pthread.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/types.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) {
+</span></span><span style="display:flex;"><span>    pid_t return_pid <span style="color:#f92672">=</span> fork();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(return_pid <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+</span></span><span style="display:flex;"><span>        perror(<span style="color:#e6db74">&#34;Error forking&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> EXIT_FAILURE;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(return_pid <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// parent
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        fprintf(stdout, <span style="color:#e6db74">&#34;Hello from parent, PID: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, getpid());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// child
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        fprintf(stdout, <span style="color:#e6db74">&#34;Hello from child, PID: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, getpid());
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> EXIT_SUCCESS;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> EXIT_SUCCESS; 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>First, the entire reason that we&rsquo;re able to write data to <code>stdout</code> from the child process (whose code is in the last &rsquo;else&rsquo; block) is that the spawned child retains access to all the open file descriptors of the parent (and <code>stdout</code> is file descriptor 0):</p>
 <blockquote>
 <p>The child inherits copies of the parent&rsquo;s set of open file descriptors.  Each file descriptor in the child refers to the same open file description (see open(2)) as the corresponding file descriptor in the parent.  This means that the two file descriptors share open file status flags, file offset, and signal-driven I/O attributes (see the description of F_SETOWN and F_SETSIG in fcntl(2)).</p>
 </blockquote>
 <p>Now let&rsquo;s use <code>strace</code> to see which syscalls the binary performs:</p>
 <pre tabindex="0"><code>$ strace --trace=%process ./example
 </code></pre><p><code>--trace=%process</code> filters the output to only show syscalls relating to process manipulation.</p>
-<pre tabindex="0"><code>execve(&quot;./example&quot;, [&quot;./example&quot;], 0x7ffdfb5127c8 /* 36 vars */) = 0
+<pre tabindex="0"><code>execve(&#34;./example&#34;, [&#34;./example&#34;], 0x7ffdfb5127c8 /* 36 vars */) = 0
 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f38384c0810) = 120121
 Hello from child, PID: 120121
 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=120121, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---

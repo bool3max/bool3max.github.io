@@ -47,7 +47,7 @@ The default pager that man uses, less, is in essence a simple TUI program that a
       <description>kill Despite its name (that it&amp;rsquo;s gotten from its most popular usecase), kill is very versatile tool used to send specified signals to individual processes, or process groups.
 It is part of the util-linux collection of programs and is widely available.
 Here area a couple of usage examples. If no signal name/number is specified, SIGTERM (15) is assumed:
- kill firefox:  Send a SIGTERM (15) signal to every process invoked as &#39;firefox&#39;.</description>
+kill firefox: Send a SIGTERM (15) signal to every process invoked as &#39;firefox&#39;.</description>
     </item>
     
     <item>
@@ -57,7 +57,7 @@ Here area a couple of usage examples. If no signal name/number is specified, SIG
       
       <guid>https://bool3max.win/posts/sway_screenshare_guide/</guid>
       <description>I spent some time trying to get things to work and in the end I decided to compile the instructions in a compact and coherent guide.
- Install Chromium 81.0.4044.122 or later, or Firefox 84.0-1 or later. Install pipewire, and if you&amp;rsquo;re using Chromium, libpipewire02 as well. If you&amp;rsquo;re using Arch, both packages are available in the official repositories. Install xdg-desktop-portal-wlr. It is available in the official Arch repositories. If you&amp;rsquo;re running Firefox, make sure that MOZ_ENABLE_WAYLAND=1 is set before you start it to make sure it&amp;rsquo;s running natively.</description>
+Install Chromium 81.0.4044.122 or later, or Firefox 84.0-1 or later. Install pipewire, and if you&amp;rsquo;re using Chromium, libpipewire02 as well. If you&amp;rsquo;re using Arch, both packages are available in the official repositories. Install xdg-desktop-portal-wlr. It is available in the official Arch repositories. If you&amp;rsquo;re running Firefox, make sure that MOZ_ENABLE_WAYLAND=1 is set before you start it to make sure it&amp;rsquo;s running natively.</description>
     </item>
     
     <item>
@@ -67,8 +67,8 @@ Here area a couple of usage examples. If no signal name/number is specified, SIG
       
       <guid>https://bool3max.win/posts/utf8/</guid>
       <description>As of writing, Unicode contains 1,112,064 possible codepoints.
- Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in 1,112,064 actually available codepoints.
- It&amp;rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &amp;ldquo;double dot above&amp;rdquo; mark that, when rendered, simply appears above the adjecent previous character.</description>
+Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in 1,112,064 actually available codepoints.
+It&amp;rsquo;s important to note that not all (in fact most) codepoints are not characters. A common example is the Combining Diaeresis (e.g. ï) or the &amp;ldquo;double dot above&amp;rdquo; mark that, when rendered, simply appears above the adjecent previous character.</description>
     </item>
     
     <item>
@@ -78,7 +78,7 @@ Here area a couple of usage examples. If no signal name/number is specified, SIG
       
       <guid>https://bool3max.win/posts/parallelism_and_concurrency/</guid>
       <description>This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.
- Definitions Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&amp;rsquo;t exactly set in stone, and the definitions are somewhat convoluted.
+Definitions Before I begin I want to define what exactly parallelism and concurrency are. However as it turns out, this isn&amp;rsquo;t exactly set in stone, and the definitions are somewhat convoluted.
 The StackOverlfow question (What is the difference between concurrency and parallelism?) in particular has quite a number of somewhat conflicting answers, which is understandable, since if someone asked me what the difference between the two terms are - I wouldn&amp;rsquo;t be able to answer.</description>
     </item>
     
@@ -90,7 +90,7 @@ The StackOverlfow question (What is the difference between concurrency and paral
       <guid>https://bool3max.win/posts/semantics_of_linux_fifo_operations/</guid>
       <description>This post summarizes behavior of different operations on Pipe/FIFO files on linux and is to serve as a future reference. It may or may not go particularly in-depth on the subject, it depends.
 All of this information is available in the fifo(7) and pipe(7) manpages.
-Opening FIFOs  opening a FIFO for reading will block until it is also open for writing on another end opening a FIFO for writing will block until it is also open for reading on the another end (same rules) opening a FIFO for reading and writing (O_RDWR) will always succeed, though this behavior is undefined by POSIX  this is the only way to open a FIFO on the writing end which has not yet been opened on the reading end    O_NONBLOCK (non-blocking mode)  opening for read-only + the FIFO hasn&amp;rsquo;t been opened on the writing end  the call immediately succeeds even if the FIFO is not yet open on the writing end   opening for write-only + the FIFO hasn&amp;rsquo;t been opened on the writing end  the call immediately fails with the error ENXIO (no such device or address), unless, of course, the file is already opened for reading on the other end    Reading and writing The read/write semantics are exactly the same for pipes and FIFOs.</description>
+Opening FIFOs opening a FIFO for reading will block until it is also open for writing on another end opening a FIFO for writing will block until it is also open for reading on the another end (same rules) opening a FIFO for reading and writing (O_RDWR) will always succeed, though this behavior is undefined by POSIX this is the only way to open a FIFO on the writing end which has not yet been opened on the reading end O_NONBLOCK (non-blocking mode) opening for read-only + the FIFO hasn&amp;rsquo;t been opened on the writing end the call immediately succeeds even if the FIFO is not yet open on the writing end opening for write-only + the FIFO hasn&amp;rsquo;t been opened on the writing end the call immediately fails with the error ENXIO (no such device or address), unless, of course, the file is already opened for reading on the other end Reading and writing The read/write semantics are exactly the same for pipes and FIFOs.</description>
     </item>
     
     <item>
@@ -143,8 +143,8 @@ The latest edition of it is up on the official Python website as the The Python 
       
       <guid>https://bool3max.win/posts/python3_oop_guide/</guid>
       <description>This is not a tutorial, but rather a personal document that I write for myself in order to cement the knowledge and explain &amp;ldquo;tricky&amp;rdquo; concepts and gotchas when it comes to OOP and classes in python3
- Useful resources:
- Official python &amp;lsquo;Classes&amp;rsquo; tutorial Data model section of the official python &amp;lsquo;Language Reference&amp;rsquo; &amp;ldquo;Supercharge your classes with Python super() article on realpython.org&amp;rdquo; - a really good read  How does self actually work?</description>
+Useful resources:
+Official python &amp;lsquo;Classes&amp;rsquo; tutorial Data model section of the official python &amp;lsquo;Language Reference&amp;rsquo; &amp;ldquo;Supercharge your classes with Python super() article on realpython.org&amp;rdquo; - a really good read How does self actually work?</description>
     </item>
     
     <item>
@@ -176,7 +176,7 @@ The result of that is p3elf, during the development of which I familiarized myse
       
       <guid>https://bool3max.win/posts/uefi_disks/</guid>
       <description>This document serves as a quick reference to how UEFI and GPT work in regards to booting a modern system.
- I will not cover BIOS/MBR in this document. I will acknowledge their existence and will compare them to their modern counterparts, but I feel that it is a waste of time to dig deeper into their inner workings. I will also not cover or mention the compatibility possibilites/issues of using UEFI/MBR or BIOS/GPT.</description>
+I will not cover BIOS/MBR in this document. I will acknowledge their existence and will compare them to their modern counterparts, but I feel that it is a waste of time to dig deeper into their inner workings. I will also not cover or mention the compatibility possibilites/issues of using UEFI/MBR or BIOS/GPT.</description>
     </item>
     
     <item>
@@ -186,8 +186,8 @@ The result of that is p3elf, during the development of which I familiarized myse
       
       <guid>https://bool3max.win/posts/c_tc_and_decl/</guid>
       <description>This document explains the rules of type conversion, declarations, as well as object properties described in the C standard. It is not meant to be read as a tutorial, but rather as a quick reference.
- Type Conversion   Implicit conversion - conversion done automatically by the compiler (no casts) - assignment conversion, or usual arithmetic conversion &amp;ndash; RULES:
- integer ranks (excluding extended and enumerated types):  long long int, unsigned long long int long int, unsigned long int int, unsigned int short int, unsigned short int char, singed char, unsigned char _Bool   integer promotion: an operation that converts any type whose rank is less than int or unsigned int to int (provided it can fit) or else unsigned int Usual arithmetic conversion &amp;ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument:  either operand is floating type:  float -&amp;gt; double -&amp;gt; long double convert the other operand to the same floating type   neither operand is a floating type:  First, perform integer promotion on both operands If types of both operands are now the same, the process ends, if not, perform the following rules, and stop at the first one that applies  If both operands have signed types or if both operands have unsigned types, convert the operand whose type rank is lower to the type of the operand whose type rank is higher If the operand with the unsigned type has a rank HIGHER or EQUAL to the rank of the signed operand, convert the operand with the singed type to the type of the operand with the unsigned type If the operand with the signed type can represent all of the values of the type with the unsigned operand, convert the unsigned operand to the type of the signed operand If none of the above rules apply, convert BOTH operands to the unsigned &amp;ldquo;version&amp;rdquo; of the type of the signed operand       Assignment conversion:  The usual arithmetic conversion rules do not apply here.</description>
+Type Conversion Implicit conversion - conversion done automatically by the compiler (no casts) - assignment conversion, or usual arithmetic conversion &amp;ndash; RULES:
+integer ranks (excluding extended and enumerated types): long long int, unsigned long long int long int, unsigned long int int, unsigned int short int, unsigned short int char, singed char, unsigned char _Bool integer promotion: an operation that converts any type whose rank is less than int or unsigned int to int (provided it can fit) or else unsigned int Usual arithmetic conversion &amp;ndash; conversion done upon non-equivalent types of operands with binary operators, or perhaps mismatch return type from a function or a function parameter/argument: either operand is floating type: float -&amp;gt; double -&amp;gt; long double convert the other operand to the same floating type neither operand is a floating type: First, perform integer promotion on both operands If types of both operands are now the same, the process ends, if not, perform the following rules, and stop at the first one that applies If both operands have signed types or if both operands have unsigned types, convert the operand whose type rank is lower to the type of the operand whose type rank is higher If the operand with the unsigned type has a rank HIGHER or EQUAL to the rank of the signed operand, convert the operand with the singed type to the type of the operand with the unsigned type If the operand with the signed type can represent all of the values of the type with the unsigned operand, convert the unsigned operand to the type of the signed operand If none of the above rules apply, convert BOTH operands to the unsigned &amp;ldquo;version&amp;rdquo; of the type of the signed operand Assignment conversion: The usual arithmetic conversion rules do not apply here.</description>
     </item>
     
     <item>

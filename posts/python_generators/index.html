@@ -197,21 +197,21 @@
   
     <div class="content" itemprop="articleBody">
       <p>Recently I needed a way to infinitely loop over a list in Python. Traditionally, this is extremely easy to do with simple indexing if the size of the list is known in advance. For example, an approach could look something like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">l <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]
-i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-
-<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
-    print(l[i])
-    i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
-    <span style="color:#66d9ef">if</span> i <span style="color:#f92672">==</span> len(l):
-        i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-</code></pre></div><p>Eventually I settled on a an inbuilt approach using the <code>itertools</code> module from the standard library. Consequently the code became a lot cleaner:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> itertools
-l <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]
-
-<span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> itertools<span style="color:#f92672">.</span>cycle(l):
-    print(n)
-</code></pre></div><p>But for the fun of it, I decided to try to re-implement <code>itertools.cycle</code> myself, and in order to do that, I first have to understand how generators work in <code>python3</code>. I already do, but I will explain it here, after which I will demonstrate the <code>itertools.cycle</code> re-implementation.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>l <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]
+</span></span><span style="display:flex;"><span>i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    print(l[i])
+</span></span><span style="display:flex;"><span>    i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> i <span style="color:#f92672">==</span> len(l):
+</span></span><span style="display:flex;"><span>        i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>Eventually I settled on a an inbuilt approach using the <code>itertools</code> module from the standard library. Consequently the code became a lot cleaner:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> itertools
+</span></span><span style="display:flex;"><span>l <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> itertools<span style="color:#f92672">.</span>cycle(l):
+</span></span><span style="display:flex;"><span>    print(n)
+</span></span></code></pre></div><p>But for the fun of it, I decided to try to re-implement <code>itertools.cycle</code> myself, and in order to do that, I first have to understand how generators work in <code>python3</code>. I already do, but I will explain it here, after which I will demonstrate the <code>itertools.cycle</code> re-implementation.</p>
 <blockquote>
 <p>Both iterators and generators have their own short sections in the offical <a href="https://docs.python.org/3/tutorial/classes.html#iterators">python3 tutorial</a>. This post is my own explanation of them.</p>
 </blockquote>
@@ -222,85 +222,85 @@ l <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <s
 <p>It can be a little confusing. Think of it like this: strings are <em>iterable</em> (able to be iterated over) because their base class (<strong><code>str</code></strong>) defines an <strong><code>__iter__</code></strong> method that returns an <strong>iterator</strong> object which has a <strong><code>__next__</code></strong> method.</p>
 </blockquote>
 <p>For example, in the following code:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> <span style="color:#e6db74">&#34;abc&#34;</span>: 
-    print(n)
-</code></pre></div><p>, behind the scenes, <strong><code>for</code></strong> calls <code>iter()</code> on <code>&quot;abc&quot;</code>, which in turn calls <strong><code>&quot;abc&quot;.__iter__()</code></strong>. Since <strong><code>&quot;123&quot;</code></strong> is of type <strong><code>str</code></strong>, a class that defines the <code>__iter__</code> method, that one is called, and an iterator object is returned.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> <span style="color:#e6db74">&#34;abc&#34;</span>: 
+</span></span><span style="display:flex;"><span>    print(n)
+</span></span></code></pre></div><p>, behind the scenes, <strong><code>for</code></strong> calls <code>iter()</code> on <code>&quot;abc&quot;</code>, which in turn calls <strong><code>&quot;abc&quot;.__iter__()</code></strong>. Since <strong><code>&quot;123&quot;</code></strong> is of type <strong><code>str</code></strong>, a class that defines the <code>__iter__</code> method, that one is called, and an iterator object is returned.</p>
 <p>Then, <strong><code>for</code></strong> simply calls the <strong><code>__next__</code></strong> method on that interator object, passing its return value to you in the form of a variable, until <strong><code>__next__</code></strong> raises a <strong><code>StopIteration</code></strong> exception, at which point the loop stops.</p>
 <blockquote>
 <p>It actually calls <code>next()</code> on the iterator object, which in turn calls its <code>__next__</code> method. The <code>next()</code> builtin is handy because it provides another parameter that can be used to specify a value to be returned if the iterator object is already exahusted.</p>
 </blockquote>
 <h3 id="example">Example</h3>
 <p>We can see this in action:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;</span> string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;abc&#34;</span>
-<span style="color:#f92672">&gt;</span> iterator <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>__iter__()
-
-<span style="color:#f92672">&gt;</span> print(iterator<span style="color:#f92672">.</span>__next__())
-<span style="color:#e6db74">&#39;a&#39;</span>
-<span style="color:#f92672">&gt;</span> print(iterator<span style="color:#f92672">.</span>__next__())
-<span style="color:#e6db74">&#39;b&#39;</span>
-<span style="color:#f92672">&gt;</span> print(iterator<span style="color:#f92672">.</span>__next__())
-<span style="color:#e6db74">&#39;c&#39;</span>
-
-<span style="color:#f92672">&gt;</span> print(iterator<span style="color:#f92672">.</span>__next__())
-Traceback (most recent call last):
-  File <span style="color:#e6db74">&#34;&lt;stdin&gt;&#34;</span>, line <span style="color:#ae81ff">1</span>, <span style="color:#f92672">in</span> <span style="color:#f92672">&lt;</span>module<span style="color:#f92672">&gt;</span>
-<span style="color:#a6e22e">StopIteration</span>
-</code></pre></div><p>As we can see, when we exhaust the iterator, a <code>StopIteration</code> exception is raised.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;abc&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> iterator <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>__iter__()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> print(iterator<span style="color:#f92672">.</span>__next__())
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;a&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> print(iterator<span style="color:#f92672">.</span>__next__())
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;b&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> print(iterator<span style="color:#f92672">.</span>__next__())
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;c&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> print(iterator<span style="color:#f92672">.</span>__next__())
+</span></span><span style="display:flex;"><span>Traceback (most recent call last):
+</span></span><span style="display:flex;"><span>  File <span style="color:#e6db74">&#34;&lt;stdin&gt;&#34;</span>, line <span style="color:#ae81ff">1</span>, <span style="color:#f92672">in</span> <span style="color:#f92672">&lt;</span>module<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">StopIteration</span>
+</span></span></code></pre></div><p>As we can see, when we exhaust the iterator, a <code>StopIteration</code> exception is raised.</p>
 <p>Using the built-in <strong><code>next()</code></strong> function we have a greater degree of control: we can designate a value to be returned in the case where <code>__next__</code> would exhaust the object (and raise an exception):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;</span> string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;abc&#34;</span>
-<span style="color:#f92672">&gt;</span> iterator <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>__iter__()
-
-<span style="color:#f92672">&gt;</span> print(next(iterator, <span style="color:#ae81ff">3</span>))
-<span style="color:#e6db74">&#39;a&#39;</span>
-<span style="color:#f92672">&gt;</span> print(next(iterator, <span style="color:#ae81ff">3</span>))
-<span style="color:#e6db74">&#39;b&#39;</span>
-<span style="color:#f92672">&gt;</span> print(next(iterator, <span style="color:#ae81ff">3</span>))
-<span style="color:#e6db74">&#39;c&#39;</span>
-<span style="color:#f92672">&gt;</span> print(next(iterator, <span style="color:#ae81ff">3</span>))
-<span style="color:#ae81ff">3</span>
-<span style="color:#f92672">&gt;</span> print(next(iterator, <span style="color:#ae81ff">3</span>))
-<span style="color:#ae81ff">3</span>
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;abc&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> iterator <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>__iter__()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> print(next(iterator, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;a&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> print(next(iterator, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;b&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> print(next(iterator, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;c&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> print(next(iterator, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> print(next(iterator, <span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">3</span>
+</span></span></code></pre></div><blockquote>
 <p>Instead of directly calling <code>object.__iter__()</code>, you should probably use the built-in <a href="https://docs.python.org/3/library/functions.html#iter"><strong><code>iter()</code></strong></a> method, as it has a little added functionality depending on the use case, but ultimately does the same thing (iterate over an object, that is).</p>
 </blockquote>
 <h2 id="re-implementing-itertoolscycle-using-iterators">Re-implementing <strong><code>itertools.cycle</code></strong> using iterators</h2>
 <p>Knowing all this, we can write a custom class that can infinitely iterate over another iterable:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InfiniteIterable</span>:
-    <span style="color:#66d9ef">def</span> __init__(self, original):
-        self<span style="color:#f92672">.</span>original_iterable <span style="color:#f92672">=</span> original
-        self<span style="color:#f92672">.</span>len <span style="color:#f92672">=</span> len(original)
-        self<span style="color:#f92672">.</span>i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-    <span style="color:#66d9ef">def</span> __iter__(self):
-        <span style="color:#66d9ef">return</span> self
-    <span style="color:#66d9ef">def</span> __next__(self):
-        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>i <span style="color:#f92672">&gt;</span> (self<span style="color:#f92672">.</span>len <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>):
-            self<span style="color:#f92672">.</span>i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-
-        ret <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>original_iterable[self<span style="color:#f92672">.</span>i]
-        self<span style="color:#f92672">.</span>i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
-
-        <span style="color:#66d9ef">return</span> ret
-
-<span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> InfiniteIterable(<span style="color:#e6db74">&#34;abc&#34;</span>):
-    print(n)
-</code></pre></div><p>Since we never raise a <strong><code>StopIteration</code></strong> exception from our <code>__next__</code> method, the iterator never halts!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">InfiniteIterable</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, original):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>original_iterable <span style="color:#f92672">=</span> original
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>len <span style="color:#f92672">=</span> len(original)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __iter__(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __next__(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>i <span style="color:#f92672">&gt;</span> (self<span style="color:#f92672">.</span>len <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ret <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>original_iterable[self<span style="color:#f92672">.</span>i]
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> ret
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> InfiniteIterable(<span style="color:#e6db74">&#34;abc&#34;</span>):
+</span></span><span style="display:flex;"><span>    print(n)
+</span></span></code></pre></div><p>Since we never raise a <strong><code>StopIteration</code></strong> exception from our <code>__next__</code> method, the iterator never halts!</p>
 <blockquote>
 <p>Since our custom class is an iterable object in and of itself (i.e. it defines an <code>__next__</code> method), <code>__iter__</code> just returns <code>self</code>! But if we didn&rsquo;t want to implement iteration logic from within this class, we could make <code>__iter__</code> return an instance of some other class.</p>
 </blockquote>
 <h1 id="generators">Generators</h1>
 <p>Generators are just simpler, syntatic-sugary ways to quickly create iterators from within regular functions. That&rsquo;s it. When you want to &ldquo;return&rdquo; the next value, you use the <strong><code>yield</code></strong> statement. When your function returns, the generator raises <strong><code>StopIteration</code></strong> itself, making the proccess of writing complex iterators really simple.</p>
 <h2 id="implementing-infiniteiterable-using-generators">Implementing <strong><code>InfiniteIterable</code></strong> using generators</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">InfiniteIterable</span>(original_iterable):
-    i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
-        <span style="color:#66d9ef">yield</span> original_iterable[i]
-        i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
-        <span style="color:#66d9ef">if</span> i <span style="color:#f92672">&gt;</span> (len(original_iterable) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>):
-            i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
-
-<span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> InfiniteIterable(<span style="color:#e6db74">&#34;abc&#34;</span>):
-    print(n)
-</code></pre></div><p>This accomplishes the exact same task as manually writing the iterable does, but in a more readable manner. It is essentially just syntatic sugar.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">InfiniteIterable</span>(original_iterable):
+</span></span><span style="display:flex;"><span>    i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">yield</span> original_iterable[i]
+</span></span><span style="display:flex;"><span>        i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> i <span style="color:#f92672">&gt;</span> (len(original_iterable) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>            i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> InfiniteIterable(<span style="color:#e6db74">&#34;abc&#34;</span>):
+</span></span><span style="display:flex;"><span>    print(n)
+</span></span></code></pre></div><p>This accomplishes the exact same task as manually writing the iterable does, but in a more readable manner. It is essentially just syntatic sugar.</p>
 <h3 id="a-caveat">A caveat</h3>
 <p>In these two implementations, I accessed members using the subscript notation <strong><code>[]</code></strong> (so me calling the argument &ldquo;<code>original_iterable</code>&rdquo; is a bit misleading), which is implemented using the <strong><code>__getitem__</code></strong> method under the hood. Therefore, if the original argument does not define this method, my implementation would not work. Most of the builtin types do, so it&rsquo;s not a problem.</p>
 

@@ -197,20 +197,20 @@ for info and a bit of history).</p>
 <p>Those strings represent ANSI escape sequences that <code>less</code> outputs in certain situations. For example, <code>LESS_TERMCAP_md</code> is the sequence
 that <code>less</code> will output whenever it&rsquo;s instructed to bold a specific part of the text.</p>
 <p>The strings have quite cryptic names as they&rsquo;re artifacts of an old library (<code>termcap</code>) that less used to access the terminal back in the day,
-but that were kept for compatibility reasons. These variables also aren&rsquo;t mentioned anywhere in less' documentation.</p>
+but that were kept for compatibility reasons. These variables also aren&rsquo;t mentioned anywhere in less&rsquo; documentation.</p>
 <p>Below is a fish function that I use to achieve colorization in manpages. It exports a set of these <code>LESS_TERMCAP_*</code> variables to my preference,
 and then simply runs <code>man</code>, which in turn runs <code>less</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#66d9ef">function</span> man --description <span style="color:#e6db74">&#34;manpages using the less pager but with 8bit colors&#34;</span>
-    set -x LESS_TERMCAP_md <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;31m&#39;</span><span style="color:#f92672">)</span>
-    set -x LESS_TERMCAP_me <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
-    set -x LESS_TERMCAP_se <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
-    set -x LESS_TERMCAP_so <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;44;33m&#39;</span><span style="color:#f92672">)</span>
-    set -x LESS_TERMCAP_ue <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span> 
-    set -x LESS_TERMCAP_us <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;32m&#39;</span><span style="color:#f92672">)</span>
-
-    command man $argv
-end
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> man --description <span style="color:#e6db74">&#34;manpages using the less pager but with 8bit colors&#34;</span>
+</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_md <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;31m&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_me <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_se <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_so <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;44;33m&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_ue <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span> 
+</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_us <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;32m&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    command man $argv
+</span></span><span style="display:flex;"><span>end
+</span></span></code></pre></div>
     </div>
   </article>
 
