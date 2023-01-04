@@ -16,7 +16,6 @@ const float num = 0b11000000000000000000001000000000; printf(&#34;%.15f\n&#34;, 
 <meta property="article:published_time" content="2021-10-22T11:52:38+02:00" />
 <meta property="article:modified_time" content="2021-10-22T11:52:38+02:00" />
 
-
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Techniques for directly modifying bitfields of various datatypes in C"/>
 <meta name="twitter:description" content="Suppose that you are learning about IEEE-754 and you are experimenting with how single-precision values are encoded in memory. Suppose also that you are experimenting with various bitstring representations of floatint point values, and you wish to store one of them in C&rsquo;s float datatype. Your first thought might be to do something like this:
@@ -185,7 +184,7 @@ const float num = 0b11000000000000000000001000000000; printf(&#34;%.15f\n&#34;, 
 experimenting with various bitstring representations of floatint point values, and you wish to store one of them in C&rsquo;s <code>float</code> datatype. Your first thought
 might be to do something like this:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">float</span> num <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>b11000000000000000000001000000000;
-</span></span><span style="display:flex;"><span>printf(<span style="color:#e6db74">&#34;%.15f</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, num);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%.15f</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, num);
 </span></span></code></pre></div><p>The bitstring constant used above represents the value <code>-2.0001220703125</code> in IEEE-754 single-precision, but compiling and running this, you get:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#ae81ff">3221225984.000000000000000</span>
 </span></span></code></pre></div><p>That&rsquo;s because the compiler treats the bistring constant as an integer, and only later converts it to the type of the l-value of the assignment statement, i.e. to a <code>float</code>.
@@ -199,7 +198,7 @@ There are multiple ways to &ldquo;work around&rdquo; this. I am familiar with a 
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> num;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">*</span> ((<span style="color:#66d9ef">uint32_t</span> <span style="color:#f92672">*</span>) <span style="color:#f92672">&amp;</span>num) <span style="color:#f92672">=</span> BIT_CONSTANT;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>printf(<span style="color:#e6db74">&#34;%.15f</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, num); <span style="color:#75715e">// -2.0001220703125
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%.15f</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, num); <span style="color:#75715e">// -2.0001220703125
 </span></span></span></code></pre></div><p>Here, we first take the pointer (address) of the float in which we desire to store the bit constant (<code>&amp;num</code>), but we cast it to a <code>uint32_t</code> pointer.
 Dereferencing that <code>uint32_t *</code> pointer will now &ldquo;trick&rdquo; the compiler, and since the types of both sides of the assignments now match, no manipulation is done to the final value.
 The 4 bytes at <code>num</code> are now the same ones written in our constant, and printing out <code>num</code> as a float yields the expected value (-2.0001220703125).</p>
@@ -207,7 +206,7 @@ The 4 bytes at <code>num</code> are now the same ones written in our constant, a
 but you could also do it, for exmaple, like this:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">uint32_t</span> num <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">*</span> (((<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>) <span style="color:#f92672">&amp;</span>num) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
-</span></span><span style="display:flex;"><span>printf(<span style="color:#e6db74">&#34;%u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, num); <span style="color:#75715e">// prints &#34;512&#34;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, num); <span style="color:#75715e">// prints &#34;512&#34;
 </span></span></span></code></pre></div><p>Here we set the value of the second lowest-order byte of the integer to <code>2</code>, i.e. we flip its second least significant bit, which is consequently
 the 9th bit in the integer as a whole, thus the final value ends up being $2^9 = 512$. On MSB architectures the value would instead become $2^{18} = 262144$.</p>
 <h2 id="using-an-union">Using an union</h2>
@@ -220,21 +219,21 @@ the 9th bit in the integer as a whole, thus the final value ends up being $2^9 =
 </span></span><span style="display:flex;"><span>    .data <span style="color:#f92672">=</span> BIT_CONSTANT
 </span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>printf(<span style="color:#e6db74">&#34;%.15f</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, value.num); <span style="color:#75715e">// -2.0001220703125
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%.15f</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, value.num); <span style="color:#75715e">// -2.0001220703125
 </span></span></span></code></pre></div><p>This one is quite self-explanatory. We create a <code>union</code> with two fields: an unsigned integer, and a float. Both of the types are 4-bytes wide, and setting one
 will directly modify the bytes actually stored in the union, with no conversions or other manipulations being done.</p>
 <h2 id="using-memcpy">Using <code>memcpy</code></h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#define BIT_CONSTANT 0b11000000000000000000001000000000
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> num;
-</span></span><span style="display:flex;"><span>memcpy(<span style="color:#f92672">&amp;</span>num, <span style="color:#f92672">&amp;</span> (<span style="color:#66d9ef">uint32_t</span>) {BIT_CONSTANT}, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">float</span>));
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">memcpy</span>(<span style="color:#f92672">&amp;</span>num, <span style="color:#f92672">&amp;</span> (<span style="color:#66d9ef">uint32_t</span>) {BIT_CONSTANT}, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">float</span>));
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>printf(<span style="color:#e6db74">&#34;%.15f</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, value.num); <span style="color:#75715e">// -2.0001220703125
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%.15f</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, value.num); <span style="color:#75715e">// -2.0001220703125
 </span></span></span></code></pre></div><p>As <code>memcpy</code> simply copies raw bytes from one location in memory to the other, this is the most trivial example to understand.
 Note that the second argument to the function call utilizes a C99 feature called <a href="https://en.cppreference.com/w/c/language/compound_literal">compound literals</a> - it isn&rsquo;t a cast.</p>
 <p>It&rsquo;s as if I had written this instead:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">uint32_t</span> value <span style="color:#f92672">=</span> BIT_CONSTANT;
-</span></span><span style="display:flex;"><span>memcpy(<span style="color:#f92672">&amp;</span>num, <span style="color:#f92672">&amp;</span>value, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">float</span>));
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">memcpy</span>(<span style="color:#f92672">&amp;</span>num, <span style="color:#f92672">&amp;</span>value, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">float</span>));
 </span></span></code></pre></div><hr>
 <p>All of these techniques of course work regardless of the datatype of the destination the bytes at which we wish to manipulate directly.</p>
 
@@ -348,7 +347,7 @@ Note that the second argument to the function call utilizes a C99 feature called
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2022  Bogdan Mitrović 
+    Copyright  &copy; 2023  Bogdan Mitrović 
   </div>
   <div class="footer-right">
     <nav>
