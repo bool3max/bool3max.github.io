@@ -227,7 +227,8 @@ Arch Linux&rsquo;s &ldquo;bleeding edge&rdquo; package repository is still stuck
 </span></span><span style="display:flex;"><span>        err <span style="color:#f92672">=</span> <span style="color:#a6e22e">select</span>(<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, <span style="color:#f92672">&amp;</span>timeout);
 </span></span><span style="display:flex;"><span>        Py_END_ALLOW_THREADS
 </span></span><span style="display:flex;"><span>...
-</span></span></code></pre></div><p>On 3.10, no checks for <code>clock_nanosleep</code> or <code>nanosleep</code> are made, and of course <code>select</code> is called unconditionally.</p>
+</span></span></code></pre></div><p>On 3.10, no checks for the availability of <code>clock_nanosleep</code> or <code>nanosleep</code> are made, and of course <code>select</code> is called unconditionally. Python 3.11 was released on Oct. 24, 2022., so it still did take them a fair amount of time to add support
+for those newer system calls.</p>
 
     </div>
   </article>
