@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> How is time.sleep implemented in CPython? | bool3max&#39;s blog</title>
+  <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="How is time.sleep implemented in CPython?" />
+<meta property="og:description" content="I recently got curious as to how the time.sleep function from Python&rsquo;s standard library was implemented by CPython - and as it turns out, it&rsquo;s pretty easy to figure out.
+All I had to do was strace a minimal example Python program that utlizies the function:
+strace python3 -c &#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;);&#39; 2&gt; out.txt And sure enough, near the very end of strace&rsquo;s output, we see the following system call:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.win/posts/time_sleep_cpython_implementation/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-04-22T21:25:29+02:00" />
+<meta property="article:modified_time" content="2023-04-22T21:25:29+02:00" />
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How is time.sleep implemented in CPython?"/>
+<meta name="twitter:description" content="I recently got curious as to how the time.sleep function from Python&rsquo;s standard library was implemented by CPython - and as it turns out, it&rsquo;s pretty easy to figure out.
+All I had to do was strace a minimal example Python program that utlizies the function:
+strace python3 -c &#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;);&#39; 2&gt; out.txt And sure enough, near the very end of strace&rsquo;s output, we see the following system call:"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://bool3max.win/posts/modifying_bitfields_of_datatypes/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&text=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&title=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&is_video=false&description=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=How%20is%20time.sleep%20implemented%20in%20CPython%3f&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&title=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&title=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&name=How%20is%20time.sleep%20implemented%20in%20CPython%3f&description=I%20recently%20got%20curious%20as%20to%20how%20the%20time.sleep%20function%20from%20Python%26rsquo%3bs%20standard%20library%20was%20implemented%20by%20CPython%20-%20and%20as%20it%20turns%20out%2c%20it%26rsquo%3bs%20pretty%20easy%20to%20figure%20out.%0aAll%20I%20had%20to%20do%20was%20strace%20a%20minimal%20example%20Python%20program%20that%20utlizies%20the%20function%3a%0astrace%20python3%20-c%20%26%2339%3bfrom%20time%20import%20sleep%3b%20sleep%280.5%29%3b%20print%28%26%2334%3bDone%21%26%2334%3b%29%3b%26%2339%3b%202%26gt%3b%20out.txt%20And%20sure%20enough%2c%20near%20the%20very%20end%20of%20strace%26rsquo%3bs%20output%2c%20we%20see%20the%20following%20system%20call%3a" aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&t=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <nav id="TableOfContents"></nav>
+    </div>
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        How is time.sleep implemented in CPython?
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2023-04-22 21:25:29 &#43;0200 CEST" itemprop="datePublished">2023-04-22</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+    <div class="content" itemprop="articleBody">
+      <p>I recently got curious as to how the <code>time.sleep</code> function from Python&rsquo;s standard library was implemented by CPython - and as it turns out, it&rsquo;s pretty easy to figure out.</p>
+<p>All I had to do was <code>strace</code> a minimal example Python program that utlizies the function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>strace python3 -c <span style="color:#e6db74">&#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;);&#39;</span> 2&gt; out.txt
+</span></span></code></pre></div><p>And sure enough, near the very end of strace&rsquo;s output, we see the following system call:</p>
+<pre tabindex="0"><code>pselect6(0, NULL, NULL, NULL, {tv_sec=0, tv_nsec=500000000}, NULL) = 0 (Timeout)
+</code></pre><p>If it weren&rsquo;t for the very familiar names of the <code>struct timespec</code> members being listed I wouldn&rsquo;t have any idea that this syscall was the one responsible for performing the sleep operation.
+As I am unfamiliar with the <code>select</code> and <code>pselect6</code> syscalls - a couple of questions arose:</p>
+<ul>
+<li>What do <code>select</code> and <code>pselect6</code> have to do with sleeping?</li>
+<li>Why use those instead of specialized syscalls - <code>nanosleep</code> and <code>clock_nanosleep</code>?</li>
+</ul>
+<p>As always - the answers lie in <a href="https://man7.org/linux/man-pages/man2/select.2.html">the manpages</a>. <code>select</code> and <code>pselect6</code> are used to monitor groups of file descriptors for <em>readiness</em> of certain IO operations (reading, writing, etc..)
+You pass them some file descriptors, and the syscalls block <em>until</em>:</p>
+<ul>
+<li>at least one of them becomes ready for the specified IO operation</li>
+<li>the call is interrupted by a signal handler</li>
+<li><strong>the timeout specified by the <code>timeout</code> argument expires</strong></li>
+</ul>
+<p>Therefore, a call to <code>pselect6</code> of the following form:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">pselect6</span>(<span style="color:#ae81ff">0</span>, NULL, NULL, NULL, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> timespec <span style="color:#f92672">*</span>, NULL);
+</span></span></code></pre></div><p>is equivalent of blocking until the timeout expires and returning, i.e. &ldquo;sleeping&rdquo; for the duration of the timeout. That&rsquo;s all well and good - but it feels &ldquo;hacky&rdquo; - the syscalls aren&rsquo;t being used for their
+original purpose at all - why not use syscalls designed for sleeping in the first place?</p>
+<p>Well, as is often the case - the same question <a href="https://stackoverflow.com/questions/3125645/why-use-select-instead-of-sleep">has been asked before</a>.
+The answer is not concrete nor exciting: <strong>portability</strong>. The <em><strong>CHANGE HISTORY</strong></em> sections of <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pselect.html">select</a> and <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/nanosleep.html">nanosleep</a>&rsquo;s
+respective POSIX specification pages seem to indicate that <code>select</code> was first specified in &lsquo;Issue 4 Version 2&rsquo; of the standard, released sometime in 1994, and that <code>nanosleep</code> was standardized in Issue 5, released sometime in 1997 - all according to <a href="https://en.wikipedia.org/wiki/Single_UNIX_Specification">&lsquo;Single UNIX Specification&rsquo;</a>
+on WikiPedia. According to <a href="https://unix.stackexchange.com/a/319986">this answer on the Unix&amp;Linux StackExchange</a>, <code>nanosleep</code> also seems to have made its way into Linux in version <code>2.0.30</code>, released in April 1997.</p>
+<p>That&rsquo;s all well and good - but it&rsquo;s 2023. and <code>nanosleep</code> has been present in the Linux kernel for seemingly 26 years. Why not use it?</p>
+<p>Well, I went digging into <a href="https://github.com/python/cpython">CPython&rsquo;s source code</a> to find out. And as it turns out, if we take a peek at the source code for the <code>time.sleep</code> function at <a href="https://github.com/python/cpython/blob/e38bebb9ee805df6848f42845e71c8da8a821ad3/Modules/timemodule.c#L2136"><code>cpython/Modules/timemodule.c</code></a>, we see the following bit of code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifdef HAVE_CLOCK_NANOSLEEP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ret <span style="color:#f92672">=</span> <span style="color:#a6e22e">clock_nanosleep</span>(CLOCK_MONOTONIC, TIMER_ABSTIME, <span style="color:#f92672">&amp;</span>timeout_abs, NULL);
+</span></span><span style="display:flex;"><span>        err <span style="color:#f92672">=</span> ret;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#elif defined(HAVE_NANOSLEEP)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ret <span style="color:#f92672">=</span> <span style="color:#a6e22e">nanosleep</span>(<span style="color:#f92672">&amp;</span>timeout_ts, NULL);
+</span></span><span style="display:flex;"><span>        err <span style="color:#f92672">=</span> errno;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#else
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ret <span style="color:#f92672">=</span> <span style="color:#a6e22e">select</span>(<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, <span style="color:#f92672">&amp;</span>timeout_tv);
+</span></span><span style="display:flex;"><span>        err <span style="color:#f92672">=</span> errno;
+</span></span></code></pre></div><p>Huh? So CPython <em>does</em> actually support <code>clock_nanosleep</code>. In fact it prefers it, and only falls back to <code>select</code> if the former isn&rsquo;t supported. So why does my system&rsquo;s Python interpreter call <code>select</code>? Well, as it turns out
+Arch Linux&rsquo;s &ldquo;bleeding edge&rdquo; package repository is still stuck on Python3 version <code>3.10.10</code>. And as the official <a href="https://docs.python.org/3/library/time.html#time.sleep"><code>time.sleep</code> documentation</a> says:</p>
+<blockquote>
+<p>Changed in version 3.11: On Unix, the <code>clock_nanosleep()</code> and <code>nanosleep()</code> functions are now used if available. On Windows, a waitable timer is now used.</p>
+</blockquote>
+<p>We can confirm this by switching to the <code>3.10</code> branch on CPython&rsquo;s GitHub mirror and checking the <a href="https://github.com/python/cpython/blob/4075e0166fcae0eef5e3abe1a97b3c227ce6861c/Modules/timemodule.c#L2052"><code>time.sleep</code> definition</a> again:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef MS_WINDOWS
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">_PyTime_AsTimeval</span>(secs, <span style="color:#f92672">&amp;</span>timeout, _PyTime_ROUND_CEILING) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Py_BEGIN_ALLOW_THREADS
+</span></span><span style="display:flex;"><span>        err <span style="color:#f92672">=</span> <span style="color:#a6e22e">select</span>(<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, <span style="color:#f92672">&amp;</span>timeout);
+</span></span><span style="display:flex;"><span>        Py_END_ALLOW_THREADS
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>On 3.10, no checks for <code>clock_nanosleep</code> or <code>nanosleep</code> are made, and of course <code>select</code> is called unconditionally.</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts/">All posts</a></li>
+         
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents"></nav>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&text=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&title=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&is_video=false&description=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=How%20is%20time.sleep%20implemented%20in%20CPython%3f&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&title=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&title=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&name=How%20is%20time.sleep%20implemented%20in%20CPython%3f&description=I%20recently%20got%20curious%20as%20to%20how%20the%20time.sleep%20function%20from%20Python%26rsquo%3bs%20standard%20library%20was%20implemented%20by%20CPython%20-%20and%20as%20it%20turns%20out%2c%20it%26rsquo%3bs%20pretty%20easy%20to%20figure%20out.%0aAll%20I%20had%20to%20do%20was%20strace%20a%20minimal%20example%20Python%20program%20that%20utlizies%20the%20function%3a%0astrace%20python3%20-c%20%26%2339%3bfrom%20time%20import%20sleep%3b%20sleep%280.5%29%3b%20print%28%26%2334%3bDone%21%26%2334%3b%29%3b%26%2339%3b%202%26gt%3b%20out.txt%20And%20sure%20enough%2c%20near%20the%20very%20end%20of%20strace%26rsquo%3bs%20output%2c%20we%20see%20the%20following%20system%20call%3a" aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&t=How%20is%20time.sleep%20implemented%20in%20CPython%3f" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2023  Bogdan Mitrović 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+
+
+</html>
