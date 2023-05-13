@@ -205,7 +205,7 @@
 <li>the call immediately succeeds even if the FIFO is not yet open on the writing end</li>
 </ul>
 </li>
-<li>opening for write-only + the FIFO hasn&rsquo;t been opened on the writing end
+<li>opening for write-only + the FIFO hasn&rsquo;t been opened on the reading end
 <ul>
 <li>the call immediately fails with the error <code>ENXIO</code> (no such device or address), unless, of course, the file is already opened for reading on the other end</li>
 </ul>
