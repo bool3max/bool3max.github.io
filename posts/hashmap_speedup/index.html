@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> A HashMap speedup tale: The number of allocations matters | bool3max&#39;s blog</title>
+  <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="A HashMap speedup tale: The number of allocations matters" />
+<meta property="og:description" content="I recently wrote bhashmap - a C11 hash table implementation library. This post will document one of the latest optimizations, which is in hindsight extremely simple to understand and implement, but which resulted in a ~30% runtime speedup.
+Background Before talking about the optimization, let&rsquo;s quickly get up to speed with how things worked before. I will focus only on the details relevant to this particular optimization.
+At the core of every hash table implementation is a key-value pair, and here the case is no different: every such pair is represented by a HashPair struct:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.win/posts/hashmap_speedup/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-14T21:01:28+02:00" />
+<meta property="article:modified_time" content="2023-06-14T21:01:28+02:00" />
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="A HashMap speedup tale: The number of allocations matters"/>
+<meta name="twitter:description" content="I recently wrote bhashmap - a C11 hash table implementation library. This post will document one of the latest optimizations, which is in hindsight extremely simple to understand and implement, but which resulted in a ~30% runtime speedup.
+Background Before talking about the optimization, let&rsquo;s quickly get up to speed with how things worked before. I will focus only on the details relevant to this particular optimization.
+At the core of every hash table implementation is a key-value pair, and here the case is no different: every such pair is represented by a HashPair struct:"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://bool3max.win/posts/time_sleep_cpython_implementation/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&text=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&is_video=false&description=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&name=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&description=I%20recently%20wrote%20bhashmap%20-%20a%20C11%20hash%20table%20implementation%20library.%20This%20post%20will%20document%20one%20of%20the%20latest%20optimizations%2c%20which%20is%20in%20hindsight%20extremely%20simple%20to%20understand%20and%20implement%2c%20but%20which%20resulted%20in%20a%20~30%25%20runtime%20speedup.%0aBackground%20Before%20talking%20about%20the%20optimization%2c%20let%26rsquo%3bs%20quickly%20get%20up%20to%20speed%20with%20how%20things%20worked%20before.%20I%20will%20focus%20only%20on%20the%20details%20relevant%20to%20this%20particular%20optimization.%0aAt%20the%20core%20of%20every%20hash%20table%20implementation%20is%20a%20key-value%20pair%2c%20and%20here%20the%20case%20is%20no%20different%3a%20every%20such%20pair%20is%20represented%20by%20a%20HashPair%20struct%3a" aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&t=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <nav id="TableOfContents"></nav>
+    </div>
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        A HashMap speedup tale: The number of allocations matters
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2023-06-14 21:01:28 &#43;0200 CEST" itemprop="datePublished">2023-06-14</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+    <div class="content" itemprop="articleBody">
+      <p>I recently wrote <a href="https://github.com/boo3lmax/bhashmap"><strong><code>bhashmap</code></strong></a> - a C11 hash table implementation
+library. This post will document one of the latest optimizations, which is in hindsight extremely
+simple to understand and implement, but which resulted in a ~30% runtime speedup.</p>
+<h1 id="background">Background</h1>
+<p>Before talking about the optimization, let&rsquo;s quickly get up to speed with how things worked before.
+I will focus only on the details relevant to this particular optimization.</p>
+<p>At the core of every hash table implementation is a key-value pair, and here the case is no different:
+every such pair is represented by a <code>HashPair</code> struct:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> HashPair {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">size_t</span> keylen;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> HashPair <span style="color:#f92672">*</span>next;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>Looks simple enough. For every key-value pair we store a pointer to the <code>key</code>, its length (<code>keylen</code>),
+and a pointer to its associated <code>value</code>. For every key inserted into the map, <strong><code>bhashmap</code></strong> makes
+and stores a copy of it interally.</p>
+<p>For example, after the following call:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">/* Some heap-allocated string */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>name <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_name</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* Create new hash map of size 16 */</span>
+</span></span><span style="display:flex;"><span>BHashMap <span style="color:#f92672">*</span>map <span style="color:#f92672">=</span> <span style="color:#a6e22e">bhm_create</span>(<span style="color:#ae81ff">16</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* Associate the name with the value 5000 */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">size_t</span> val <span style="color:#f92672">=</span> <span style="color:#ae81ff">5000</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bhm_insert</span>(map, name, <span style="color:#a6e22e">strlen</span>(name) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, <span style="color:#f92672">&amp;</span>val);
+</span></span></code></pre></div><p>The caller is free to mess with the memory occupied by <code>name</code>, or even to release it entirely,
+as a copy of the key has been made. This is a deliberate design decision, and one of great
+relevance to this article.</p>
+<p>That means, that whenever a new key-value pair is to be inserted into the map, we have to do the following:</p>
+<ol>
+<li>Allocate memory for the new <code>struct HashPair</code></li>
+<li>Allocate memory for a copy of the key that is to be stored</li>
+<li>Copy the bytes of the key over to the new buffer</li>
+<li>&hellip;</li>
+</ol>
+<p>The semi-pseudo code (with no regard for error-checking, etc&hellip;) for that might look something along
+the lines of the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> HashPair<span style="color:#f92672">*</span> <span style="color:#a6e22e">create_pair</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">size_t</span> keylen, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> HashPair <span style="color:#f92672">*</span>new_pair <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> HashPair));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>new_pair <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> HashPair) {
+</span></span><span style="display:flex;"><span>        .key <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(keylen),
+</span></span><span style="display:flex;"><span>        .keylen <span style="color:#f92672">=</span> keylen,
+</span></span><span style="display:flex;"><span>        .value <span style="color:#f92672">=</span> value
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memcpy</span>(new_pair<span style="color:#f92672">-&gt;</span>key, key, keylen);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> new_pair;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Makes sense. This is very self-explanatory code. It just works, and it&rsquo;s something
+I&rsquo;d write and not thing about at all.</p>
+<p>However, the big thing here is that for every new pair, we perform two allocations (<code>malloc</code> calls):
+one for the struct itself, and one for the copy of the key. And <code>malloc</code> calls aren&rsquo;t cheap -
+when inserting tens of thousands of pairs into the hashtable, the overhead adds up
+and has a considerable effect on performance.
+The question then is - could we get the number of allocations down to just one?
+Of course, I wouldn&rsquo;t be writing this article otherwise.</p>
+<h1 id="the-optimization">The optimization</h1>
+<p>Let&rsquo;s get straight to the point:</p>
+<p>By editing the definition of <code>struct HashPair</code>
+to utilize <a href="https://en.wikipedia.org/wiki/Flexible_array_member"><strong>flexible array members</strong></a>,
+we can allocate the memory for the struct itself, as well as the memory needed to store the copy
+of the key in one fell swoop:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> HashPair {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">size_t</span> keylen;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> HashPair <span style="color:#f92672">*</span>next;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> key[];
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>We no longer store the key copy as a pointer to some allocated memory, but rather
+as an array right <em>in</em> the struct itself. This also has the added benefit of the CPU not having
+to follow pointers to memory around when accessing the key.</p>
+<p>The <code>create_pair</code> implementation would now look like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> HashPair<span style="color:#f92672">*</span> <span style="color:#a6e22e">create_pair</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">size_t</span> keylen, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> HashPair <span style="color:#f92672">*</span>new_pair <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> HashPair) <span style="color:#f92672">+</span> keylen);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>new_pair <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> HashPair) {
+</span></span><span style="display:flex;"><span>        .keylen <span style="color:#f92672">=</span> keylen,
+</span></span><span style="display:flex;"><span>        .value <span style="color:#f92672">=</span> value
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memcpy</span>(new_pair<span style="color:#f92672">-&gt;</span>key, key, keylen);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> new_pair;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Notice that on the first line, we allocate enough memory to hold the instance of the struct,
+plus enough memory needed to store the copy of the key.</p>
+<h1 id="results">Results</h1>
+<p>Every <a href="https://github.com/bool3max/bhashmap/tree/master/src/benchmarks">benchmark</a> I&rsquo;ve tested
+seems to indicate a ~33% runtime speed improvement compared to the unoptimized version,
+which is <em>huge</em> for such a simple optimization:</p>
+<p>Here&rsquo;s the unoptimized version&rsquo;s average runtime of 16 iterations of the
+<a href="https://github.com/bool3max/bhashmap/blob/master/src/benchmarks/benchmark_words400k.c"><code>words_400k</code></a>
+benchmark, which inserts 466,500 key-value pairs into the map.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ ./buildrel/bench_words400k
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Avg. time of <span style="color:#ae81ff">16</span> ITERATIONS: 312ms
+</span></span></code></pre></div><p>And the optimized version:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ ./buildrel/bench_words400k
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Avg. time of <span style="color:#ae81ff">1</span> ITERATIONS: 204ms
+</span></span></code></pre></div><p>A 34% runtime speed improvement!</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts/">All posts</a></li>
+         
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents"></nav>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&text=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&is_video=false&description=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&name=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&description=I%20recently%20wrote%20bhashmap%20-%20a%20C11%20hash%20table%20implementation%20library.%20This%20post%20will%20document%20one%20of%20the%20latest%20optimizations%2c%20which%20is%20in%20hindsight%20extremely%20simple%20to%20understand%20and%20implement%2c%20but%20which%20resulted%20in%20a%20~30%25%20runtime%20speedup.%0aBackground%20Before%20talking%20about%20the%20optimization%2c%20let%26rsquo%3bs%20quickly%20get%20up%20to%20speed%20with%20how%20things%20worked%20before.%20I%20will%20focus%20only%20on%20the%20details%20relevant%20to%20this%20particular%20optimization.%0aAt%20the%20core%20of%20every%20hash%20table%20implementation%20is%20a%20key-value%20pair%2c%20and%20here%20the%20case%20is%20no%20different%3a%20every%20such%20pair%20is%20represented%20by%20a%20HashPair%20struct%3a" aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&t=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2023  Bogdan Mitrović 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+
+
+</html>
