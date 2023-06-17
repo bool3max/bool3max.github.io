@@ -251,7 +251,7 @@ of the key in one fell swoop:</p>
 </span></span><span style="display:flex;"><span>};
 </span></span></code></pre></div><p>We no longer store the key copy as a pointer to some allocated memory, but rather
 as an array right <em>in</em> the struct itself. This also has the added benefit of the CPU not having
-to follow pointers to memory around when accessing the key.</p>
+to follow pointers around when accessing the key - it is stored right alongside the accompanying struct.</p>
 <p>The <code>create_pair</code> implementation would now look like so:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> HashPair<span style="color:#f92672">*</span> <span style="color:#a6e22e">create_pair</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">size_t</span> keylen, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value) {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> HashPair <span style="color:#f92672">*</span>new_pair <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> HashPair) <span style="color:#f92672">+</span> keylen);
