@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> The joys of C API design: stripping whitespace from C-strings | bool3max&#39;s blog</title>
+  <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="The joys of C API design: stripping whitespace from C-strings" />
+<meta property="og:description" content="Suppose you are tasked with stripping leading and trailing whitespace from a string. In dynamic, garbage-collected languages whose standard libraries are usually equipped with functions that handle this, you don&rsquo;t even think about the implementation. In Python (whose strings are immutable), you&rsquo;d simply call the string&rsquo;s .strip() method and get a stripped string back. In Golang, you&rsquo;d call strings.TrimSpaces() and receive a new, stripped slice of the string.
+While designing such a function in C (where you are required to manually manage memory) isn&rsquo;t difficult - it can be done in a seemingly myriad of ways." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bool3max.win/posts/c_strip_whitespace/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-07-04T09:18:46+02:00" />
+<meta property="article:modified_time" content="2023-07-04T09:18:46+02:00" />
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="The joys of C API design: stripping whitespace from C-strings"/>
+<meta name="twitter:description" content="Suppose you are tasked with stripping leading and trailing whitespace from a string. In dynamic, garbage-collected languages whose standard libraries are usually equipped with functions that handle this, you don&rsquo;t even think about the implementation. In Python (whose strings are immutable), you&rsquo;d simply call the string&rsquo;s .strip() method and get a stripped string back. In Golang, you&rsquo;d call strings.TrimSpaces() and receive a new, stripped slice of the string.
+While designing such a function in C (where you are required to manually manage memory) isn&rsquo;t difficult - it can be done in a seemingly myriad of ways."/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://bool3max.win/posts/hashmap_speedup/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&text=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&is_video=false&description=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&name=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&description=Suppose%20you%20are%20tasked%20with%20stripping%20leading%20and%20trailing%20whitespace%20from%20a%20string.%20In%20dynamic%2c%20garbage-collected%20languages%20whose%20standard%20libraries%20are%20usually%20equipped%20with%20functions%20that%20handle%20this%2c%20you%20don%26rsquo%3bt%20even%20think%20about%20the%20implementation.%20In%20Python%20%28whose%20strings%20are%20immutable%29%2c%20you%26rsquo%3bd%20simply%20call%20the%20string%26rsquo%3bs%20.strip%28%29%20method%20and%20get%20a%20stripped%20string%20back.%20In%20Golang%2c%20you%26rsquo%3bd%20call%20strings.TrimSpaces%28%29%20and%20receive%20a%20new%2c%20stripped%20slice%20of%20the%20string.%0aWhile%20designing%20such%20a%20function%20in%20C%20%28where%20you%20are%20required%20to%20manually%20manage%20memory%29%20isn%26rsquo%3bt%20difficult%20-%20it%20can%20be%20done%20in%20a%20seemingly%20myriad%20of%20ways." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&t=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#strip_inplace-strip_inplace_1"><code>strip_inplace</code>, <code>strip_inplace_1</code></a></li>
+        <li><a href="#strip_alloc"><code>strip_alloc</code></a></li>
+        <li><a href="#strip_buf"><code>strip_buf</code></a></li>
+        <li><a href="#strip_len"><code>strip_len</code></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        The joys of C API design: stripping whitespace from C-strings
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2023-07-04 09:18:46 &#43;0200 CEST" itemprop="datePublished">2023-07-04</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+    <div class="content" itemprop="articleBody">
+      <p>Suppose you are tasked with stripping leading and trailing whitespace from a string. In dynamic, garbage-collected languages whose standard libraries are usually equipped with functions that handle this, you don&rsquo;t even think about the implementation. In Python (whose strings are immutable), you&rsquo;d simply call the string&rsquo;s <code>.strip()</code> method and get a stripped string back. In Golang, you&rsquo;d call <code>strings.TrimSpaces()</code> and receive a new, stripped slice of the string.</p>
+<p>While designing such a function in C (where you are required to manually manage memory) isn&rsquo;t difficult - it can be done in a seemingly myriad of ways. Do you modify the original string? Do you allocate a new string on the heap? If so, how do you return a pointer to it? Or, do you fill in a provided buffer instead? What if the buffer isn&rsquo;t large enough? Etc&hellip;</p>
+<p>Below I&rsquo;ll document the implementations I managed to come up with. All of them assume that we are working with traditional, null-terminated C-style strings.</p>
+<h3 id="strip_inplace-strip_inplace_1"><code>strip_inplace</code>, <code>strip_inplace_1</code></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">strip_inplace</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>string) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>new_start <span style="color:#f92672">=</span> string;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>new_start))
+</span></span><span style="display:flex;"><span>        new_start<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// End of string - string was composed of all-whitespace character, or it was empty
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span>(<span style="color:#f92672">*</span>new_start <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\0&#39;</span>) <span style="color:#66d9ef">return</span> new_start;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>e <span style="color:#f92672">=</span> string <span style="color:#f92672">+</span> <span style="color:#a6e22e">strlen</span>(string) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>e))
+</span></span><span style="display:flex;"><span>        e<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    e[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> new_start;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>strip_inplace</code> strips the passed in string by modifying it, well, in-place. To strip
+<em>leading</em> whitespace, it returns a pointer to the string&rsquo;s first non-whitespace character.
+To strip <em>trailing</em> whitespace, it replaces the first byte past the last non-whitespace
+character in the string with a null byte, indicating end of string.</p>
+<p>Proper use of this function looks like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">/* returns pointer to some heap-allocated, null-terminated string */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_some_string</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str_stripped <span style="color:#f92672">=</span> <span style="color:#a6e22e">strip_inplace</span>(str);
+</span></span></code></pre></div><p>If you are responsible for freeing the memory of the original string, be careful not to overwrite the pointer
+to the original string, as you will need to call <code>free</code> on it, <em>not</em> on the one returned by <code>str_stripped</code>!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">strip_inplace_1</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>string, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>ret) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>new_start <span style="color:#f92672">=</span> string;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>new_start))
+</span></span><span style="display:flex;"><span>        new_start<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// End of string - string was composed of all-whitespace character, or it was empty
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span>(<span style="color:#f92672">*</span>new_start <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\0&#39;</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span>ret <span style="color:#f92672">=</span> new_start;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>e <span style="color:#f92672">=</span> string <span style="color:#f92672">+</span> <span style="color:#a6e22e">strlen</span>(string) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>e))
+</span></span><span style="display:flex;"><span>        e<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    e[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>ret <span style="color:#f92672">=</span> new_start;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>strip_inplace_1</code> does the exact same thing, except that it yields the pointer to the start of the &rsquo;new&rsquo; string differently - instead of performing a regular return, it overwrites
+a passed-in pointer. Thus, proper use of the function may look like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_some_string</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str_stripped;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">strip_inplace_1</span>(str, <span style="color:#f92672">&amp;</span>str_stripped);
+</span></span></code></pre></div><h3 id="strip_alloc"><code>strip_alloc</code></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">strip_alloc</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>string) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">size_t</span> original_len <span style="color:#f92672">=</span> <span style="color:#a6e22e">strlen</span>(string);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>new_start <span style="color:#f92672">=</span> string;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>new_start)) {
+</span></span><span style="display:flex;"><span>        new_start<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#f92672">*</span>new_start <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\0&#39;</span>) { 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>buf) <span style="color:#66d9ef">return</span> buf;
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span>buf <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> buf;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>e <span style="color:#f92672">=</span> string <span style="color:#f92672">+</span> original_len <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>e)) {
+</span></span><span style="display:flex;"><span>        e<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(new_start <span style="color:#f92672">==</span> string <span style="color:#f92672">&amp;&amp;</span> e <span style="color:#f92672">==</span> (string <span style="color:#f92672">+</span> original_len <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> string;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(e <span style="color:#f92672">-</span> new_start <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span>buf) <span style="color:#66d9ef">return</span> buf;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memcpy</span>(buf, new_start, e <span style="color:#f92672">-</span> new_start <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// null-terminate the buffer
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    buf[e <span style="color:#f92672">-</span> new_start <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> buf;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>strip_alloc</code> strips the passed-in string and stores it in a new, heap-allocated buffer, returning its address. The caller is then responsible for freeing the memory returned by this function. <em>If</em> the passed in string was already stripped (i.e. it didn&rsquo;t need any stripping), the function then simply returns a pointer the same passed-in string. Thus, proper use of the function should look like so:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_some_string</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str_stripped <span style="color:#f92672">=</span> <span style="color:#a6e22e">strip_alloc</span>(str);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* ... */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (str_stripped <span style="color:#f92672">!=</span> str) {f
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">free</span>(str_stripped);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Choosing what to return in this case is a design decision that can be tweaked. We could for example choose to return a NULL pointer instead.</p>
+<p>As with the first implementation, a different way of returning the pointer to the string
+by virtue of overwriting a passed-in pointer could be presented, but I&rsquo;ll spare you the entire definition
+as it is almost entirely the same, and after all just a matter of taste.</p>
+<h3 id="strip_buf"><code>strip_buf</code></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">strip_buf</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>string, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buffer, <span style="color:#66d9ef">size_t</span> bufsize) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>new_start <span style="color:#f92672">=</span> string;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>new_start))
+</span></span><span style="display:flex;"><span>        new_start<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#f92672">*</span>new_start <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\0&#39;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">memset</span>(buffer, <span style="color:#ae81ff">0</span>, bufsize);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>end <span style="color:#f92672">=</span> string <span style="color:#f92672">+</span> <span style="color:#a6e22e">strlen</span>(string) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>end))
+</span></span><span style="display:flex;"><span>        end<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ptrdiff_t</span> diff <span style="color:#f92672">=</span> end <span style="color:#f92672">-</span> new_start;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(bufsize <span style="color:#f92672">&lt;</span> (diff <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>)) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memcpy</span>(buffer, new_start, bufsize <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        buffer[bufsize <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memcpy</span>(buffer, new_start, diff <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memset</span>(buffer <span style="color:#f92672">+</span> diff <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, bufsize <span style="color:#f92672">-</span> (diff <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> buffer;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>strip_buf</code> strips the passed-in string and stores it in the user-provided buffer. It writes
+at most <code>bufsize</code> bytes, including the null-terminating byte. If the buffer isn&rsquo;t large enough to accommodate
+the entire stripped string, it is then truncated. If the buffer is larger than the stripped string,
+the rest of it is padded with null-terminating bytes. The function returns back the pointer to the passed in buffer.</p>
+<p>Returning back the pointer to the passed in buffer is a design decition that at first may not seem that interesting or important. However, it enables the caller to do the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_some_string</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> str_stripped[<span style="color:#ae81ff">128</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">process_string</span>(<span style="color:#a6e22e">strip_buf</span>(str, str_stripped, <span style="color:#ae81ff">128</span>));
+</span></span></code></pre></div><p>If the <code>strip_buf</code> function weren&rsquo;t returning any value, the above snippet of code would then have to look like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_some_string</span>();
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> str_stripped[<span style="color:#ae81ff">128</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">strip_buf</span>(str, str_stripped, <span style="color:#ae81ff">128</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">process_string</span>(str_stripped);
+</span></span></code></pre></div><p>Some might argue that the longer version is more explicit and therefore more readable, but when the stripping function returns the pointer back, it gives us the freedom to write the code both ways.</p>
+<h3 id="strip_len"><code>strip_len</code></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">size_t</span> <span style="color:#a6e22e">strip_len</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>string, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>ptr) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>start <span style="color:#f92672">=</span> string;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>start)) {
+</span></span><span style="display:flex;"><span>        start<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>end <span style="color:#f92672">=</span> string <span style="color:#f92672">+</span> <span style="color:#a6e22e">strlen</span>(string) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>end)) {
+</span></span><span style="display:flex;"><span>        end<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>ptr <span style="color:#f92672">=</span> start;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">size_t</span>) (end <span style="color:#f92672">-</span> start <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>strip_len</code> does not modify the passed in string, does not fill any memory, and does no allocations.
+It stores the pointer to the first non-whitespace character of the string at <code>*ptr</code> and returns the
+count of characters from that character until the last non-whitespace character of the string.
+Though not inherentl useful,these two values together represent a stripped version of the passed-in string.</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts/">All posts</a></li>
+         
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#strip_inplace-strip_inplace_1"><code>strip_inplace</code>, <code>strip_inplace_1</code></a></li>
+        <li><a href="#strip_alloc"><code>strip_alloc</code></a></li>
+        <li><a href="#strip_buf"><code>strip_buf</code></a></li>
+        <li><a href="#strip_len"><code>strip_len</code></a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&text=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&is_video=false&description=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&name=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&description=Suppose%20you%20are%20tasked%20with%20stripping%20leading%20and%20trailing%20whitespace%20from%20a%20string.%20In%20dynamic%2c%20garbage-collected%20languages%20whose%20standard%20libraries%20are%20usually%20equipped%20with%20functions%20that%20handle%20this%2c%20you%20don%26rsquo%3bt%20even%20think%20about%20the%20implementation.%20In%20Python%20%28whose%20strings%20are%20immutable%29%2c%20you%26rsquo%3bd%20simply%20call%20the%20string%26rsquo%3bs%20.strip%28%29%20method%20and%20get%20a%20stripped%20string%20back.%20In%20Golang%2c%20you%26rsquo%3bd%20call%20strings.TrimSpaces%28%29%20and%20receive%20a%20new%2c%20stripped%20slice%20of%20the%20string.%0aWhile%20designing%20such%20a%20function%20in%20C%20%28where%20you%20are%20required%20to%20manually%20manage%20memory%29%20isn%26rsquo%3bt%20difficult%20-%20it%20can%20be%20done%20in%20a%20seemingly%20myriad%20of%20ways." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&t=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2023  Bogdan Mitrović 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+
+
+</html>

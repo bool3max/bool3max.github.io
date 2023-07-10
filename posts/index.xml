@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Bogdan Mitrović</copyright>
-    <lastBuildDate>Wed, 14 Jun 2023 21:01:28 +0200</lastBuildDate><atom:link href="https://bool3max.win/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 04 Jul 2023 09:18:46 +0200</lastBuildDate><atom:link href="https://bool3max.win/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The joys of C API design: stripping whitespace from C-strings</title>
+      <link>https://bool3max.win/posts/c_strip_whitespace/</link>
+      <pubDate>Tue, 04 Jul 2023 09:18:46 +0200</pubDate>
+      
+      <guid>https://bool3max.win/posts/c_strip_whitespace/</guid>
+      <description>Suppose you are tasked with stripping leading and trailing whitespace from a string. In dynamic, garbage-collected languages whose standard libraries are usually equipped with functions that handle this, you don&amp;rsquo;t even think about the implementation. In Python (whose strings are immutable), you&amp;rsquo;d simply call the string&amp;rsquo;s .strip() method and get a stripped string back. In Golang, you&amp;rsquo;d call strings.TrimSpaces() and receive a new, stripped slice of the string.
+While designing such a function in C (where you are required to manually manage memory) isn&amp;rsquo;t difficult - it can be done in a seemingly myriad of ways.</description>
+    </item>
+    
     <item>
       <title>A HashMap speedup tale: The number of allocations matters</title>
       <link>https://bool3max.win/posts/hashmap_speedup/</link>
