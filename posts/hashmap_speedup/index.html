@@ -237,7 +237,8 @@ the lines of the following:</p>
 </span></span></code></pre></div><p>Makes sense. This is very self-explanatory code. It just works, and it&rsquo;s something
 I&rsquo;d write and not thing about at all.</p>
 <p>However, the big thing here is that for every new pair, we perform two allocations (<code>malloc</code> calls):
-one for the struct itself, and one for the copy of the key. And <code>malloc</code> calls aren&rsquo;t cheap -
+one for the struct itself, and one for the copy of the key. Every such <code>malloc</code> call then has to be followed up by a <code>free</code> later on.
+And <code>malloc</code>/<code>free</code> calls aren&rsquo;t cheap -
 when inserting tens of thousands of pairs into the hashtable, the overhead adds up
 and has a considerable effect on performance.
 The question then is - could we get the number of allocations down to just one?
