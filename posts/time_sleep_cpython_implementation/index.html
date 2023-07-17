@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> How is time.sleep implemented in CPython? | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/time_sleep_cpython_implementation/'>
   <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
@@ -11,7 +18,7 @@
   <meta property="og:title" content="How is time.sleep implemented in CPython?" />
 <meta property="og:description" content="I recently got curious as to how the time.sleep function from Python&rsquo;s standard library was implemented by CPython - and as it turns out, it&rsquo;s pretty easy to figure out.
 All I had to do was strace a minimal example Python program that utlizies the function:
-strace python3 -c &#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;);&#39; 2&gt; out.txt And sure enough, near the very end of strace&rsquo;s output, we see the following system call:" />
+1strace python3 -c &#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;);&#39; 2&gt; out.txt And sure enough, near the very end of strace&rsquo;s output, we see the following system call:" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bool3max.win/posts/time_sleep_cpython_implementation/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-04-22T21:25:29+02:00" />
@@ -21,14 +28,15 @@ strace python3 -c &#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;
 <meta name="twitter:title" content="How is time.sleep implemented in CPython?"/>
 <meta name="twitter:description" content="I recently got curious as to how the time.sleep function from Python&rsquo;s standard library was implemented by CPython - and as it turns out, it&rsquo;s pretty easy to figure out.
 All I had to do was strace a minimal example Python program that utlizies the function:
-strace python3 -c &#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;);&#39; 2&gt; out.txt And sure enough, near the very end of strace&rsquo;s output, we see the following system call:"/>
+1strace python3 -c &#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;);&#39; 2&gt; out.txt And sure enough, near the very end of strace&rsquo;s output, we see the following system call:"/>
 
   
   
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+
   
   
   
@@ -142,7 +150,7 @@ strace python3 -c &#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&name=How%20is%20time.sleep%20implemented%20in%20CPython%3f&description=I%20recently%20got%20curious%20as%20to%20how%20the%20time.sleep%20function%20from%20Python%26rsquo%3bs%20standard%20library%20was%20implemented%20by%20CPython%20-%20and%20as%20it%20turns%20out%2c%20it%26rsquo%3bs%20pretty%20easy%20to%20figure%20out.%0aAll%20I%20had%20to%20do%20was%20strace%20a%20minimal%20example%20Python%20program%20that%20utlizies%20the%20function%3a%0astrace%20python3%20-c%20%26%2339%3bfrom%20time%20import%20sleep%3b%20sleep%280.5%29%3b%20print%28%26%2334%3bDone%21%26%2334%3b%29%3b%26%2339%3b%202%26gt%3b%20out.txt%20And%20sure%20enough%2c%20near%20the%20very%20end%20of%20strace%26rsquo%3bs%20output%2c%20we%20see%20the%20following%20system%20call%3a" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&name=How%20is%20time.sleep%20implemented%20in%20CPython%3f&description=I%20recently%20got%20curious%20as%20to%20how%20the%20time.sleep%20function%20from%20Python%26rsquo%3bs%20standard%20library%20was%20implemented%20by%20CPython%20-%20and%20as%20it%20turns%20out%2c%20it%26rsquo%3bs%20pretty%20easy%20to%20figure%20out.%0aAll%20I%20had%20to%20do%20was%20strace%20a%20minimal%20example%20Python%20program%20that%20utlizies%20the%20function%3a%0a1strace%20python3%20-c%20%26%2339%3bfrom%20time%20import%20sleep%3b%20sleep%280.5%29%3b%20print%28%26%2334%3bDone%21%26%2334%3b%29%3b%26%2339%3b%202%26gt%3b%20out.txt%20And%20sure%20enough%2c%20near%20the%20very%20end%20of%20strace%26rsquo%3bs%20output%2c%20we%20see%20the%20following%20system%20call%3a" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
@@ -154,9 +162,11 @@ strace python3 -c &#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;
 </ul>
 
     </div>
+    
     <div id="toc">
       <nav id="TableOfContents"></nav>
     </div>
+    
   </span>
 </div>
 
@@ -181,13 +191,14 @@ strace python3 -c &#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;
     </header>
 
   
+    
     <div class="content" itemprop="articleBody">
       <p>I recently got curious as to how the <code>time.sleep</code> function from Python&rsquo;s standard library was implemented by CPython - and as it turns out, it&rsquo;s pretty easy to figure out.</p>
 <p>All I had to do was <code>strace</code> a minimal example Python program that utlizies the function:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>strace python3 -c <span style="color:#e6db74">&#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;);&#39;</span> 2&gt; out.txt
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>strace python3 -c <span style="color:#d14">&#39;from time import sleep; sleep(0.5); print(&#34;Done!&#34;);&#39;</span> 2&gt; out.txt
 </span></span></code></pre></div><p>And sure enough, near the very end of strace&rsquo;s output, we see the following system call:</p>
-<pre tabindex="0"><code>pselect6(0, NULL, NULL, NULL, {tv_sec=0, tv_nsec=500000000}, NULL) = 0 (Timeout)
-</code></pre><p>If it weren&rsquo;t for the very familiar names of the <code>struct timespec</code> members being listed I wouldn&rsquo;t have any idea that this syscall was the one responsible for performing the sleep operation.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>pselect6(0, NULL, NULL, NULL, {tv_sec=0, tv_nsec=500000000}, NULL) = 0 (Timeout)
+</span></span></code></pre></div><p>If it weren&rsquo;t for the very familiar names of the <code>struct timespec</code> members being listed I wouldn&rsquo;t have any idea that this syscall was the one responsible for performing the sleep operation.
 As I am unfamiliar with the <code>select</code> and <code>pselect6</code> syscalls - a couple of questions arose:</p>
 <ul>
 <li>What do <code>select</code> and <code>pselect6</code> have to do with sleeping?</li>
@@ -201,7 +212,7 @@ You pass them some file descriptors, and the syscalls block <em>until</em>:</p>
 <li><strong>the timeout specified by the <code>timeout</code> argument expires</strong></li>
 </ul>
 <p>Therefore, a call to <code>pselect6</code> of the following form:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">pselect6</span>(<span style="color:#ae81ff">0</span>, NULL, NULL, NULL, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> timespec <span style="color:#f92672">*</span>, NULL);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#900;font-weight:bold">pselect6</span>(<span style="color:#099">0</span>, <span style="color:#0086b3">NULL</span>, <span style="color:#0086b3">NULL</span>, <span style="color:#0086b3">NULL</span>, <span style="color:#000;font-weight:bold">const</span> <span style="color:#000;font-weight:bold">struct</span> timespec <span style="color:#000;font-weight:bold">*</span>, <span style="color:#0086b3">NULL</span>);
 </span></span></code></pre></div><p>is equivalent of blocking until the timeout expires and returning, i.e. &ldquo;sleeping&rdquo; for the duration of the timeout. That&rsquo;s all well and good - but it feels &ldquo;hacky&rdquo; - the syscalls aren&rsquo;t being used for their
 original purpose at all - why not use syscalls designed for sleeping in the first place?</p>
 <p>Well, as is often the case - the same question <a href="https://stackoverflow.com/questions/3125645/why-use-select-instead-of-sleep">has been asked before</a>.
@@ -211,29 +222,29 @@ on WikiPedia. According to <a href="https://unix.stackexchange.com/a/319986">thi
 goes.</p>
 <p>That&rsquo;s all well and good - but it&rsquo;s 2023. and <code>nanosleep</code> has been present in the Linux kernel for seemingly 26 years. Why not use it?</p>
 <p>Well, I went digging into <a href="https://github.com/python/cpython">CPython&rsquo;s source code</a> to find out. And as it turns out, if we take a peek at the source code for the <code>time.sleep</code> function at <a href="https://github.com/python/cpython/blob/e38bebb9ee805df6848f42845e71c8da8a821ad3/Modules/timemodule.c#L2136"><code>cpython/Modules/timemodule.c</code></a>, we see the following bit of code:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifdef HAVE_CLOCK_NANOSLEEP
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ret <span style="color:#f92672">=</span> <span style="color:#a6e22e">clock_nanosleep</span>(CLOCK_MONOTONIC, TIMER_ABSTIME, <span style="color:#f92672">&amp;</span>timeout_abs, NULL);
-</span></span><span style="display:flex;"><span>        err <span style="color:#f92672">=</span> ret;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#elif defined(HAVE_NANOSLEEP)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ret <span style="color:#f92672">=</span> <span style="color:#a6e22e">nanosleep</span>(<span style="color:#f92672">&amp;</span>timeout_ts, NULL);
-</span></span><span style="display:flex;"><span>        err <span style="color:#f92672">=</span> errno;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#else
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        ret <span style="color:#f92672">=</span> <span style="color:#a6e22e">select</span>(<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, <span style="color:#f92672">&amp;</span>timeout_tv);
-</span></span><span style="display:flex;"><span>        err <span style="color:#f92672">=</span> errno;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#999;font-weight:bold;font-style:italic">#ifdef HAVE_CLOCK_NANOSLEEP
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#999;font-weight:bold;font-style:italic"></span>        ret <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">clock_nanosleep</span>(CLOCK_MONOTONIC, TIMER_ABSTIME, <span style="color:#000;font-weight:bold">&amp;</span>timeout_abs, <span style="color:#0086b3">NULL</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>        err <span style="color:#000;font-weight:bold">=</span> ret;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#999;font-weight:bold;font-style:italic">#elif defined(HAVE_NANOSLEEP)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#999;font-weight:bold;font-style:italic"></span>        ret <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">nanosleep</span>(<span style="color:#000;font-weight:bold">&amp;</span>timeout_ts, <span style="color:#0086b3">NULL</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>        err <span style="color:#000;font-weight:bold">=</span> errno;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#999;font-weight:bold;font-style:italic">#else
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#999;font-weight:bold;font-style:italic"></span>        ret <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">select</span>(<span style="color:#099">0</span>, (fd_set <span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">0</span>, (fd_set <span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">0</span>, (fd_set <span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">0</span>, <span style="color:#000;font-weight:bold">&amp;</span>timeout_tv);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>        err <span style="color:#000;font-weight:bold">=</span> errno;
 </span></span></code></pre></div><p>Huh? So CPython <em>does</em> actually support <code>clock_nanosleep</code>. In fact it prefers it, and only falls back to <code>select</code> if the former isn&rsquo;t supported. So why does my system&rsquo;s Python interpreter call <code>select</code>? Well, as it turns out
 Arch Linux&rsquo;s &ldquo;bleeding edge&rdquo; package repository is still stuck on Python3 version <code>3.10.10</code>. And as the official <a href="https://docs.python.org/3/library/time.html#time.sleep"><code>time.sleep</code> documentation</a> says:</p>
 <blockquote>
 <p>Changed in version 3.11: On Unix, the <code>clock_nanosleep()</code> and <code>nanosleep()</code> functions are now used if available. On Windows, a waitable timer is now used.</p>
 </blockquote>
 <p>We can confirm this by switching to the <code>3.10</code> branch on CPython&rsquo;s GitHub mirror and checking the <a href="https://github.com/python/cpython/blob/4075e0166fcae0eef5e3abe1a97b3c227ce6861c/Modules/timemodule.c#L2052"><code>time.sleep</code> definition</a> again:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#ifndef MS_WINDOWS
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">_PyTime_AsTimeval</span>(secs, <span style="color:#f92672">&amp;</span>timeout, _PyTime_ROUND_CEILING) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Py_BEGIN_ALLOW_THREADS
-</span></span><span style="display:flex;"><span>        err <span style="color:#f92672">=</span> <span style="color:#a6e22e">select</span>(<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, (fd_set <span style="color:#f92672">*</span>)<span style="color:#ae81ff">0</span>, <span style="color:#f92672">&amp;</span>timeout);
-</span></span><span style="display:flex;"><span>        Py_END_ALLOW_THREADS
-</span></span><span style="display:flex;"><span>...
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#999;font-weight:bold;font-style:italic">#ifndef MS_WINDOWS
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#999;font-weight:bold;font-style:italic"></span>        <span style="color:#000;font-weight:bold">if</span> (<span style="color:#900;font-weight:bold">_PyTime_AsTimeval</span>(secs, <span style="color:#000;font-weight:bold">&amp;</span>timeout, _PyTime_ROUND_CEILING) <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#099">0</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>            <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>        Py_BEGIN_ALLOW_THREADS
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>        err <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">select</span>(<span style="color:#099">0</span>, (fd_set <span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">0</span>, (fd_set <span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">0</span>, (fd_set <span style="color:#000;font-weight:bold">*</span>)<span style="color:#099">0</span>, <span style="color:#000;font-weight:bold">&amp;</span>timeout);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>        Py_END_ALLOW_THREADS
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>...
 </span></span></code></pre></div><p>On 3.10, no checks for the availability of <code>clock_nanosleep</code> or <code>nanosleep</code> are made, and of course <code>select</code> is called unconditionally. Python 3.11 was released on Oct. 24, 2022., so it still did take them a fair amount of time to add support
 for those newer system calls.</p>
 
@@ -242,6 +253,7 @@ for those newer system calls.</p>
 
   
   
+
 
 
 
@@ -262,9 +274,11 @@ for those newer system calls.</p>
       </ul>
     </div>
 
+    
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents"></nav>
     </div>
+    
 
     <div id="share-footer" style="display: none">
       
@@ -310,7 +324,7 @@ for those newer system calls.</p>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&name=How%20is%20time.sleep%20implemented%20in%20CPython%3f&description=I%20recently%20got%20curious%20as%20to%20how%20the%20time.sleep%20function%20from%20Python%26rsquo%3bs%20standard%20library%20was%20implemented%20by%20CPython%20-%20and%20as%20it%20turns%20out%2c%20it%26rsquo%3bs%20pretty%20easy%20to%20figure%20out.%0aAll%20I%20had%20to%20do%20was%20strace%20a%20minimal%20example%20Python%20program%20that%20utlizies%20the%20function%3a%0astrace%20python3%20-c%20%26%2339%3bfrom%20time%20import%20sleep%3b%20sleep%280.5%29%3b%20print%28%26%2334%3bDone%21%26%2334%3b%29%3b%26%2339%3b%202%26gt%3b%20out.txt%20And%20sure%20enough%2c%20near%20the%20very%20end%20of%20strace%26rsquo%3bs%20output%2c%20we%20see%20the%20following%20system%20call%3a" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2ftime_sleep_cpython_implementation%2f&name=How%20is%20time.sleep%20implemented%20in%20CPython%3f&description=I%20recently%20got%20curious%20as%20to%20how%20the%20time.sleep%20function%20from%20Python%26rsquo%3bs%20standard%20library%20was%20implemented%20by%20CPython%20-%20and%20as%20it%20turns%20out%2c%20it%26rsquo%3bs%20pretty%20easy%20to%20figure%20out.%0aAll%20I%20had%20to%20do%20was%20strace%20a%20minimal%20example%20Python%20program%20that%20utlizies%20the%20function%3a%0a1strace%20python3%20-c%20%26%2339%3bfrom%20time%20import%20sleep%3b%20sleep%280.5%29%3b%20print%28%26%2334%3bDone%21%26%2334%3b%29%3b%26%2339%3b%202%26gt%3b%20out.txt%20And%20sure%20enough%2c%20near%20the%20very%20end%20of%20strace%26rsquo%3bs%20output%2c%20we%20see%20the%20following%20system%20call%3a" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
@@ -327,8 +341,10 @@ for those newer system calls.</p>
       
         <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
           <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
         <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
           <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
         <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
           <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
         <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -365,6 +381,9 @@ for those newer system calls.</p>
 <link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
 <script src=/lib/jquery/jquery.min.js></script>
 <script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
 
 
 

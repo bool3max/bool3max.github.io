@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> The 0xFFFFFFFF problem | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/int_problem/'>
   <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
@@ -24,7 +31,8 @@
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+
   
   
   
@@ -144,6 +152,7 @@
 </ul>
 
     </div>
+    
     <div id="toc">
       <nav id="TableOfContents">
   <ul>
@@ -151,6 +160,7 @@
   </ul>
 </nav>
     </div>
+    
   </span>
 </div>
 
@@ -175,6 +185,7 @@
     </header>
 
   
+    
     <div class="content" itemprop="articleBody">
       <blockquote>
 <p>This is a pretty old document that I wrote for myself back when I was first learning C, but the explanation is pretty good so I published it here for future reference. I hope to soon push a reference document that explains some tricky concepts and things from the C standard that are not so easy to remember off the top of the head (such as type conversion, declarations, storage durations, scopes, etc&hellip;)</p>
@@ -183,10 +194,10 @@
 <p>For future reference, always refer to the latest C standard as it has answers to many questions of the same nature such as this one. The C11 draft can be found <a href="https://port70.net/~nsz/c/c11/n1570.html">here</a>.</p>
 </blockquote>
 <p>Recently, I posted <a href="https://stackoverflow.com/questions/51160300/why-do-c-compilers-not-warn-when-assigning-integer-value-too-high-for-signed-typ?noredirect=1#comment89304841_51160300">this question to StackOverflow</a> about the following program:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xFFFFFFFF</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, n); <span style="color:#75715e">//was originaly %u
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">void</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#458;font-weight:bold">int</span> n <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0xFFFFFFFF</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#900;font-weight:bold">printf</span>(<span style="color:#d14">&#34;%d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, n); <span style="color:#998;font-style:italic">//was originaly %u
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#998;font-style:italic"></span>}
 </span></span></code></pre></div><p>In this explanation, I will disregard the fact that I used the wrong conversion specifier in my <code>printf</code> call (used <code>%u</code> instead of <code>%d</code>), thus I will replace it with the correct one, and will come back to the topic of <code>%u</code> later on in the explanation.</p>
 <p>So, what exactly is happening here? Initially, I was confused as to why this program&rsquo;s output was <code>-1</code> (at least on a linux/gcc 64bit platform).</p>
 <p>Let&rsquo;s break the &ldquo;problem&rdquo; down into pieces and analyze each statement and operand separately:</p>
@@ -230,7 +241,7 @@ In this case, <code>0xFFFFFFFF</code> is too large to fit in the first contender
 </ul>
 <h2 id="the-u-problem">The <code>%u</code> problem</h2>
 <p>As I said, in my original question I (for some unknown reason?) substituted the <code>%d</code> conversion specifier with the <code>%u</code> conversion specifier, resulting in the following statement:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%u</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, n);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#900;font-weight:bold">printf</span>(<span style="color:#d14">&#34;%u</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, n);
 </span></span></code></pre></div><p>This statement prints out <code>4294967295</code>. Why? Let&rsquo;s find out:</p>
 <p>The <code>%u</code> conversion expects an unsigned integer as the argument. We&rsquo;ve, however, supplied it a <em>singed</em> integer. However, this time there is no conversion, as the conversion from <code>int</code> to <code>unsigned int</code> is impossible, nonexistent, and therefore the behaviour is undefined.</p>
 <p>In the case of GCC, <code>%u</code> (or rather, <code>printf</code>) <em>assumes</em> that the value passed to it is of the correct type (<code>uint</code> in this case), and prints its value accordingly. <code>0xFFFFFFFF</code> in an unsigned system has the decimal value <em>4294967295</em>, which is then simply printed.</p>
@@ -240,6 +251,7 @@ In this case, <code>0xFFFFFFFF</code> is too large to fit in the first contender
 
   
   
+
 
 
 
@@ -260,6 +272,7 @@ In this case, <code>0xFFFFFFFF</code> is too large to fit in the first contender
       </ul>
     </div>
 
+    
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents">
   <ul>
@@ -267,6 +280,7 @@ In this case, <code>0xFFFFFFFF</code> is too large to fit in the first contender
   </ul>
 </nav>
     </div>
+    
 
     <div id="share-footer" style="display: none">
       
@@ -329,8 +343,10 @@ In this case, <code>0xFFFFFFFF</code> is too large to fit in the first contender
       
         <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
           <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
         <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
           <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
         <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
           <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
         <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -367,6 +383,9 @@ In this case, <code>0xFFFFFFFF</code> is too large to fit in the first contender
 <link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
 <script src=/lib/jquery/jquery.min.js></script>
 <script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
 
 
 

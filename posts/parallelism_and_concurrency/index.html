@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> Parallelism and Concurrency: The basics | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/parallelism_and_concurrency/'>
   <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
@@ -24,7 +31,8 @@
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+
   
   
   
@@ -150,6 +158,7 @@
 </ul>
 
     </div>
+    
     <div id="toc">
       <nav id="TableOfContents">
   <ul>
@@ -162,6 +171,7 @@
   </ul>
 </nav>
     </div>
+    
   </span>
 </div>
 
@@ -186,6 +196,7 @@
     </header>
 
   
+    
     <div class="content" itemprop="articleBody">
       <blockquote>
 <p>This post documents my understanding of the basics regarding concurrency and parallelism and their manifestation in operating systems.</p>
@@ -246,48 +257,48 @@
 <hr>
 <p>So far I&rsquo;ve talked more <em>about</em> what &ldquo;tools&rdquo; are used to achieve concurrency rather than how to actually use them. But before I do I want to explore them a bit further:</p>
 <p>Let&rsquo;s write a trivial binary that proves that the <code>fork(2)</code> wrapper really calls the <code>clone(2)</code> syscall under the hood:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;pthread.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdint.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/types.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">void</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pid_t</span> return_pid <span style="color:#f92672">=</span> <span style="color:#a6e22e">fork</span>();
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(return_pid <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">perror</span>(<span style="color:#e6db74">&#34;Error forking&#34;</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> EXIT_FAILURE;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(return_pid <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// parent
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">fprintf</span>(stdout, <span style="color:#e6db74">&#34;Hello from parent, PID: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#a6e22e">getpid</span>());
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// child
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#a6e22e">fprintf</span>(stdout, <span style="color:#e6db74">&#34;Hello from child, PID: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#a6e22e">getpid</span>());
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> EXIT_SUCCESS;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> EXIT_SUCCESS; 
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;pthread.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdint.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdio.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;stdlib.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;unistd.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#999;font-weight:bold;font-style:italic">#include</span> <span style="color:#999;font-weight:bold;font-style:italic">&lt;sys/types.h&gt;</span><span style="color:#999;font-weight:bold;font-style:italic">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#999;font-weight:bold;font-style:italic"></span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">main</span>(<span style="color:#458;font-weight:bold">void</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#458;font-weight:bold">pid_t</span> return_pid <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">fork</span>();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#000;font-weight:bold">if</span>(return_pid <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">-</span><span style="color:#099">1</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        <span style="color:#900;font-weight:bold">perror</span>(<span style="color:#d14">&#34;Error forking&#34;</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        <span style="color:#000;font-weight:bold">return</span> EXIT_FAILURE;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    <span style="color:#000;font-weight:bold">if</span>(return_pid <span style="color:#000;font-weight:bold">!=</span> <span style="color:#099">0</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        <span style="color:#998;font-style:italic">// parent
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#998;font-style:italic"></span>        <span style="color:#900;font-weight:bold">fprintf</span>(stdout, <span style="color:#d14">&#34;Hello from parent, PID: %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, <span style="color:#900;font-weight:bold">getpid</span>());
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>    } <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>        <span style="color:#998;font-style:italic">// child
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style="color:#998;font-style:italic"></span>        <span style="color:#900;font-weight:bold">fprintf</span>(stdout, <span style="color:#d14">&#34;Hello from child, PID: %d</span><span style="color:#d14">\n</span><span style="color:#d14">&#34;</span>, <span style="color:#900;font-weight:bold">getpid</span>());
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>        <span style="color:#000;font-weight:bold">return</span> EXIT_SUCCESS;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>    <span style="color:#000;font-weight:bold">return</span> EXIT_SUCCESS; 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>}
 </span></span></code></pre></div><p>First, the entire reason that we&rsquo;re able to write data to <code>stdout</code> from the child process (whose code is in the last &rsquo;else&rsquo; block) is that the spawned child retains access to all the open file descriptors of the parent (and <code>stdout</code> is file descriptor 0):</p>
 <blockquote>
 <p>The child inherits copies of the parent&rsquo;s set of open file descriptors.  Each file descriptor in the child refers to the same open file description (see open(2)) as the corresponding file descriptor in the parent.  This means that the two file descriptors share open file status flags, file offset, and signal-driven I/O attributes (see the description of F_SETOWN and F_SETSIG in fcntl(2)).</p>
 </blockquote>
 <p>Now let&rsquo;s use <code>strace</code> to see which syscalls the binary performs:</p>
-<pre tabindex="0"><code>$ strace --trace=%process ./example
-</code></pre><p><code>--trace=%process</code> filters the output to only show syscalls relating to process manipulation.</p>
-<pre tabindex="0"><code>execve(&#34;./example&#34;, [&#34;./example&#34;], 0x7ffdfb5127c8 /* 36 vars */) = 0
-clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f38384c0810) = 120121
-Hello from child, PID: 120121
---- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=120121, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
-Hello from parent, PID: 120120
-exit_group(0)                           = ?
-+++ exited with 0 +++
-</code></pre><p>We see that a call to <code>clone(2)</code> is in fact performed, and its return value (the child&rsquo;s PID) matches the one printed in our message. We also see that the parent is sent a <code>SIGCHLD</code> singal once the child that it spawned has finished running, but that&rsquo;s a topic I&rsquo;ll maybe explore later.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ strace --trace=%process ./example
+</span></span></code></pre></div><p><code>--trace=%process</code> filters the output to only show syscalls relating to process manipulation.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>execve(&#34;./example&#34;, [&#34;./example&#34;], 0x7ffdfb5127c8 /* 36 vars */) = 0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f38384c0810) = 120121
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Hello from child, PID: 120121
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=120121, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>Hello from parent, PID: 120120
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>exit_group(0)                           = ?
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>+++ exited with 0 +++
+</span></span></code></pre></div><p>We see that a call to <code>clone(2)</code> is in fact performed, and its return value (the child&rsquo;s PID) matches the one printed in our message. We also see that the parent is sent a <code>SIGCHLD</code> singal once the child that it spawned has finished running, but that&rsquo;s a topic I&rsquo;ll maybe explore later.</p>
 <hr>
 <p>Let&rsquo;s get back on topic: how do tasks ran by the linux kernel correlate to parallelism or concurrency? On the surface it&rsquo;s really simple: the kernel uses a <a href="https://en.wikipedia.org/wiki/Scheduling_(computing)">scheduler</a> to determine which currently active processes run when. If it has access to multiple CPU cores, it is able to achieve true parallelism by balancing multiple tasks over multiple cores (allowing them to run <em>truly</em> at the same time). If there are no multiple cores (or if there are multiple tasks running on a single core), only one task is able to run at a time, and thus the scheduler quickly &ldquo;juggles&rdquo; between tasks, giving the <em>illusion</em> of parallelism.</p>
 <p>The scheduler currently used by the linux kernel is the <a href="https://en.wikipedia.org/wiki/Completely_Fair_Scheduler">Completely Fair Scheduler (CFS)</a>, since kernel 2.6.23.</p>
@@ -298,6 +309,7 @@ exit_group(0)                           = ?
 
   
   
+
 
 
 
@@ -318,6 +330,7 @@ exit_group(0)                           = ?
       </ul>
     </div>
 
+    
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents">
   <ul>
@@ -330,6 +343,7 @@ exit_group(0)                           = ?
   </ul>
 </nav>
     </div>
+    
 
     <div id="share-footer" style="display: none">
       
@@ -392,8 +406,10 @@ exit_group(0)                           = ?
       
         <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
           <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
         <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
           <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
         <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
           <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
         <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -430,6 +446,9 @@ exit_group(0)                           = ?
 <link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
 <script src=/lib/jquery/jquery.min.js></script>
 <script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
 
 
 

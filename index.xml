@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Bogdan Mitrović</copyright>
-    <lastBuildDate>Tue, 04 Jul 2023 09:18:46 +0200</lastBuildDate><atom:link href="https://bool3max.win/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 Jul 2023 09:37:12 +0200</lastBuildDate><atom:link href="https://bool3max.win/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How is shell redirection implemented?</title>
+      <link>https://bool3max.win/posts/how_shell_redirection_is_implemented/</link>
+      <pubDate>Mon, 17 Jul 2023 09:37:12 +0200</pubDate>
+      
+      <guid>https://bool3max.win/posts/how_shell_redirection_is_implemented/</guid>
+      <description>Shell redirection allows you to redirect a process&amp;rsquo; standard streams to paths other than the controlling terminal. This post will focus on explaining how it is implemented by shells (such as bash). If you are unfamiliar with redirection and would like to familiarize yourself with the concept and syntax (as far as bash is concerned), then GNU Bash Reference Manual - Redirections is a good place to start.
+The fundamentals A running shell process maintains a set of open standard file descriptors for stdout (1), stderr(2) and stdin (0) that are tied to the controlling terminal.</description>
+    </item>
+    
     <item>
       <title>The joys of C API design: stripping whitespace from C-strings</title>
       <link>https://bool3max.win/posts/c_strip_whitespace/</link>
@@ -37,7 +47,7 @@ At the core of every hash table implementation is a key-value pair, and here the
       <guid>https://bool3max.win/posts/time_sleep_cpython_implementation/</guid>
       <description>I recently got curious as to how the time.sleep function from Python&amp;rsquo;s standard library was implemented by CPython - and as it turns out, it&amp;rsquo;s pretty easy to figure out.
 All I had to do was strace a minimal example Python program that utlizies the function:
-strace python3 -c &amp;#39;from time import sleep; sleep(0.5); print(&amp;#34;Done!&amp;#34;);&amp;#39; 2&amp;gt; out.txt And sure enough, near the very end of strace&amp;rsquo;s output, we see the following system call:</description>
+1strace python3 -c &amp;#39;from time import sleep; sleep(0.5); print(&amp;#34;Done!&amp;#34;);&amp;#39; 2&amp;gt; out.txt And sure enough, near the very end of strace&amp;rsquo;s output, we see the following system call:</description>
     </item>
     
     <item>
@@ -47,7 +57,7 @@ strace python3 -c &amp;#39;from time import sleep; sleep(0.5); print(&amp;#34;Do
       
       <guid>https://bool3max.win/posts/modifying_bitfields_of_datatypes/</guid>
       <description>Suppose that you are learning about IEEE-754 and you are experimenting with how single-precision values are encoded in memory. Suppose also that you are experimenting with various bitstring representations of floatint point values, and you wish to store one of them in C&amp;rsquo;s float datatype. Your first thought might be to do something like this:
-const float num = 0b11000000000000000000001000000000; printf(&amp;#34;%.15f\n&amp;#34;, num); The bitstring constant used above represents the value -2.</description>
+1const float num = 0b11000000000000000000001000000000; 2printf(&amp;#34;%.15f\n&amp;#34;, num); The bitstring constant used above represents the value -2.</description>
     </item>
     
     <item>
@@ -133,7 +143,7 @@ Opening FIFOs opening a FIFO for reading will block until it is also open for wr
       <guid>https://bool3max.win/posts/context_managers_and_with_python3/</guid>
       <description>Context Managers in python3 are a simple but powerful feature.
 The most common example of a context-manager in action is opening a file and not having to worry about manually closing it later on, and instead letting the context manager implementation (in this case the open function) do the work for you:
-with open(&amp;#34;file&amp;#34;, &amp;#34;rb&amp;#34;) as file: ... Instead of having to manually call file.close() later on, once the &amp;ldquo;with&amp;rdquo; block ends, the appropriate cleanup actions (in this case flushing the file to disk and closing the file descriptors) are automatically performed.</description>
+1with open(&amp;#34;file&amp;#34;, &amp;#34;rb&amp;#34;) as file: 2 ... Instead of having to manually call file.close() later on, once the &amp;ldquo;with&amp;rdquo; block ends, the appropriate cleanup actions (in this case flushing the file to disk and closing the file descriptors) are automatically performed.</description>
     </item>
     
     <item>
@@ -144,8 +154,8 @@ with open(&amp;#34;file&amp;#34;, &amp;#34;rb&amp;#34;) as file: ... Instead of 
       <guid>https://bool3max.win/posts/python_decorators_explained/</guid>
       <description>Decorators are a way to modify behavior of functions using other functions.
 Take a look at the following routine:
-def sum(x, y): return x + y Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:
-def increment(func): def add_one(x, y): return func(x, y) + 1 return add_one @increment def sum(x, y): return x + y &amp;gt; sum(5, 4) 10 Under the hood, sum becomes increment(sum), i.</description>
+1def sum(x, y): 2 return x + y Say we wanted to alter this function so that it would always return a result by 1 larger than the sum. We can write a decorator for that:
+1def increment(func): 2 def add_one(x, y): 3 return func(x, y) + 1 4 5 return add_one 6 7@increment 8def sum(x, y): 9 return x + y 1&amp;gt; sum(5, 4) 210 Under the hood, sum becomes increment(sum), i.</description>
     </item>
     
     <item>
@@ -155,7 +165,7 @@ def increment(func): def add_one(x, y): return func(x, y) + 1 return add_one @in
       
       <guid>https://bool3max.win/posts/python_generators/</guid>
       <description>Recently I needed a way to infinitely loop over a list in Python. Traditionally, this is extremely easy to do with simple indexing if the size of the list is known in advance. For example, an approach could look something like this:
-l = [1, 2, 3] i = 0 while True: print(l[i]) i += 1 if i == len(l): i = 0 Eventually I settled on a an inbuilt approach using the itertools module from the standard library.</description>
+1l = [1, 2, 3] 2i = 0 3 4while True: 5 print(l[i]) 6 i += 1 7 if i == len(l): 8 i = 0 Eventually I settled on a an inbuilt approach using the itertools module from the standard library.</description>
     </item>
     
     <item>

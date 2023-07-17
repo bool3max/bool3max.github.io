@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> UTF-8 | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/utf8/'>
   <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
@@ -24,7 +31,8 @@
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+
   
   
   
@@ -150,6 +158,7 @@
 </ul>
 
     </div>
+    
     <div id="toc">
       <nav id="TableOfContents">
   <ul>
@@ -162,6 +171,7 @@
   </ul>
 </nav>
     </div>
+    
   </span>
 </div>
 
@@ -186,6 +196,7 @@
     </header>
 
   
+    
     <div class="content" itemprop="articleBody">
       <p>As of writing, <a href="https://en.wikipedia.org/wiki/Unicode">Unicode</a> contains <strong>1,112,064</strong> possible codepoints.</p>
 <blockquote>
@@ -268,9 +279,9 @@
 <p>From our shell we can see that this is exactly how the € is encoded:</p>
 </li>
 </ul>
-<pre tabindex="0"><code>echo -n &#34;€&#34; | xxd -g 1 -c 10 -u
-00000000: E2 82 AC                       ...
-</code></pre><h1 id="writing-an-utf-8-decoder">Writing an UTF-8 decoder</h1>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>echo -n &#34;€&#34; | xxd -g 1 -c 10 -u
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>00000000: E2 82 AC                       ...
+</span></span></code></pre></div><h1 id="writing-an-utf-8-decoder">Writing an UTF-8 decoder</h1>
 <p>This is something I&rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Literally all text that you see nowadays on screen was at some point encoded as UTF-8, then decoded to get all invididual codepoints, and then rendered to the screen with a relevant font.</p>
 <blockquote>
 <p>String related functions in C&rsquo;s stdlib pay no attention to any sort of encoding at all. They follow the &lsquo;1 byte = 1 character&rsquo; mantra. Support for different encodings exists via <a href="https://en.cppreference.com/w/c/string/wide">Wide strings</a> and <a href="https://en.cppreference.com/w/c/string/multibyte">Multi-byte strings</a> but I&rsquo;ve never had a reason to use those functions. They are also very intertwined with the C locale, which is also a very complicated topic as evident by the infamous <a href="https://github.com/mpv-player/mpv/commit/1e70e82baa9193f6f027338b0fab0f5078971fbe">mpv developer C locale rant</a>.</p>
@@ -294,6 +305,7 @@
 
 
 
+
   <div id="footer-post-container">
   <div id="footer-post">
 
@@ -309,6 +321,7 @@
       </ul>
     </div>
 
+    
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents">
   <ul>
@@ -321,6 +334,7 @@
   </ul>
 </nav>
     </div>
+    
 
     <div id="share-footer" style="display: none">
       
@@ -383,8 +397,10 @@
       
         <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
           <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
         <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
           <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
         <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
           <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
         <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -421,6 +437,9 @@
 <link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
 <script src=/lib/jquery/jquery.min.js></script>
 <script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
 
 
 

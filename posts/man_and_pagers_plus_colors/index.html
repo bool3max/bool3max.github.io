@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> How does &#39;man&#39; actually display the pages? | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/man_and_pagers_plus_colors/'>
   <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
@@ -24,7 +31,8 @@
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+
   
   
   
@@ -150,6 +158,7 @@
 </ul>
 
     </div>
+    
     <div id="toc">
       <nav id="TableOfContents">
   <ul>
@@ -157,6 +166,7 @@
   </ul>
 </nav>
     </div>
+    
   </span>
 </div>
 
@@ -181,6 +191,7 @@
     </header>
 
   
+    
     <div class="content" itemprop="articleBody">
       <p>When you normally execute, say <code>man 3 printf</code>, <code>man</code> simply does the job of looking up and fetching the particular manpage. The actual
 act of <em>displaying</em> it, is done by a <strong>pager</strong>.</p>
@@ -199,22 +210,23 @@ that <code>less</code> will output whenever it&rsquo;s instructed to bold a spec
 but that were kept for compatibility reasons. These variables also aren&rsquo;t mentioned anywhere in less&rsquo; documentation.</p>
 <p>Below is a fish function that I use to achieve colorization in manpages. It exports a set of these <code>LESS_TERMCAP_*</code> variables to my preference,
 and then simply runs <code>man</code>, which in turn runs <code>less</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> man --description <span style="color:#e6db74">&#34;manpages using the less pager but with 8bit colors&#34;</span>
-</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_md <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;31m&#39;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_me <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_se <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_so <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;44;33m&#39;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_ue <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[0m&#39;</span><span style="color:#f92672">)</span> 
-</span></span><span style="display:flex;"><span>    set -x LESS_TERMCAP_us <span style="color:#f92672">(</span>echo -e <span style="color:#e6db74">&#39;\e[01;32m&#39;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    command man $argv
-</span></span><span style="display:flex;"><span>end
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#000;font-weight:bold">function</span> man --description <span style="color:#d14">&#34;manpages using the less pager but with 8bit colors&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#0086b3">set</span> -x LESS_TERMCAP_md <span style="color:#000;font-weight:bold">(</span><span style="color:#0086b3">echo</span> -e <span style="color:#d14">&#39;\e[01;31m&#39;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#0086b3">set</span> -x LESS_TERMCAP_me <span style="color:#000;font-weight:bold">(</span><span style="color:#0086b3">echo</span> -e <span style="color:#d14">&#39;\e[0m&#39;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#0086b3">set</span> -x LESS_TERMCAP_se <span style="color:#000;font-weight:bold">(</span><span style="color:#0086b3">echo</span> -e <span style="color:#d14">&#39;\e[0m&#39;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#0086b3">set</span> -x LESS_TERMCAP_so <span style="color:#000;font-weight:bold">(</span><span style="color:#0086b3">echo</span> -e <span style="color:#d14">&#39;\e[01;44;33m&#39;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#0086b3">set</span> -x LESS_TERMCAP_ue <span style="color:#000;font-weight:bold">(</span><span style="color:#0086b3">echo</span> -e <span style="color:#d14">&#39;\e[0m&#39;</span><span style="color:#000;font-weight:bold">)</span> 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#0086b3">set</span> -x LESS_TERMCAP_us <span style="color:#000;font-weight:bold">(</span><span style="color:#0086b3">echo</span> -e <span style="color:#d14">&#39;\e[01;32m&#39;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#0086b3">command</span> man <span style="color:#008080">$argv</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>end
 </span></span></code></pre></div>
     </div>
   </article>
 
   
   
+
 
 
 
@@ -235,6 +247,7 @@ and then simply runs <code>man</code>, which in turn runs <code>less</code>:</p>
       </ul>
     </div>
 
+    
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents">
   <ul>
@@ -242,6 +255,7 @@ and then simply runs <code>man</code>, which in turn runs <code>less</code>:</p>
   </ul>
 </nav>
     </div>
+    
 
     <div id="share-footer" style="display: none">
       
@@ -304,8 +318,10 @@ and then simply runs <code>man</code>, which in turn runs <code>less</code>:</p>
       
         <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
           <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
         <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
           <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
         <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
           <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
         <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -342,6 +358,9 @@ and then simply runs <code>man</code>, which in turn runs <code>less</code>:</p>
 <link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
 <script src=/lib/jquery/jquery.min.js></script>
 <script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
 
 
 

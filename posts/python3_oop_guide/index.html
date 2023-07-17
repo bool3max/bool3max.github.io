@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> Python3 OOP gotchas | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/python3_oop_guide/'>
   <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
@@ -24,7 +31,8 @@
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+
   
   
   
@@ -150,6 +158,7 @@
 </ul>
 
     </div>
+    
     <div id="toc">
       <nav id="TableOfContents">
   <ul>
@@ -157,6 +166,7 @@
   </ul>
 </nav>
     </div>
+    
   </span>
 </div>
 
@@ -181,6 +191,7 @@
     </header>
 
   
+    
     <div class="content" itemprop="articleBody">
       <blockquote>
 <p>This is not a tutorial, but rather a personal document that I write for myself in order to cement the knowledge and explain &ldquo;tricky&rdquo; concepts and gotchas when it comes to OOP and classes in <code>python3</code></p>
@@ -193,71 +204,71 @@
 </ul>
 <h1 id="how-does-self-actually-work">How does <code>self</code> actually work?</h1>
 <p>Consider the following class definition:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Dog</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, name):
-</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>name <span style="color:#f92672">=</span> name
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">speak</span>(self, age):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;My name is </span><span style="color:#e6db74">{</span>self<span style="color:#f92672">.</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74"> and I am </span><span style="color:#e6db74">{</span>age<span style="color:#e6db74">}</span><span style="color:#e6db74"> years old.&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>jake <span style="color:#f92672">=</span> Dog(<span style="color:#e6db74">&#34;Jake&#34;</span>)
-</span></span><span style="display:flex;"><span>print(jake<span style="color:#f92672">.</span>speak(<span style="color:#ae81ff">3</span>))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;My name is Jake and I am 3 years old.&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">Dog</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#000;font-weight:bold">def</span> __init__(<span style="color:#999">self</span>, name):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>name <span style="color:#000;font-weight:bold">=</span> name
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">speak</span>(<span style="color:#999">self</span>, age):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        <span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">f</span><span style="color:#d14">&#34;My name is </span><span style="color:#d14">{</span><span style="color:#999">self</span><span style="color:#000;font-weight:bold">.</span>name<span style="color:#d14">}</span><span style="color:#d14"> and I am </span><span style="color:#d14">{</span>age<span style="color:#d14">}</span><span style="color:#d14"> years old.&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>jake <span style="color:#000;font-weight:bold">=</span> Dog(<span style="color:#d14">&#34;Jake&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#0086b3">print</span>(jake<span style="color:#000;font-weight:bold">.</span>speak(<span style="color:#099">3</span>))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#d14">&#34;My name is Jake and I am 3 years old.&#34;</span>
 </span></span></code></pre></div><p>When we call <code>jake.speak</code>, the <code>self</code> arguement is &ldquo;automatically&rdquo; passed into the method because the method belongs to an already instantiated instance of a class.</p>
 <p>We can achieve the same effect by instantiating <code>jake</code>, then calling <code>Dog.speak</code> directly while passing the value of the <code>self</code> argument manually, like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>jake <span style="color:#f92672">=</span> Dog(<span style="color:#e6db74">&#34;jake&#34;</span>)
-</span></span><span style="display:flex;"><span>print(Dog<span style="color:#f92672">.</span>speak(jake, <span style="color:#ae81ff">3</span>))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;My name is Jake and I am 3 years old.&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>jake <span style="color:#000;font-weight:bold">=</span> Dog(<span style="color:#d14">&#34;jake&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#0086b3">print</span>(Dog<span style="color:#000;font-weight:bold">.</span>speak(jake, <span style="color:#099">3</span>))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#d14">&#34;My name is Jake and I am 3 years old.&#34;</span>
 </span></span></code></pre></div><p>The same is true for the <code>__init__</code> method, which is a method like any other, except that it is called automatically when instantiating new instances of the class.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> types
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>jake <span style="color:#f92672">=</span> types<span style="color:#f92672">.</span>SimpleNamespace()
-</span></span><span style="display:flex;"><span>Dog<span style="color:#f92672">.</span>__init__(jake, <span style="color:#e6db74">&#34;Jake&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>print(jake<span style="color:#f92672">.</span>name)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;Jake&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">types</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>jake <span style="color:#000;font-weight:bold">=</span> types<span style="color:#000;font-weight:bold">.</span>SimpleNamespace()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>Dog<span style="color:#000;font-weight:bold">.</span>__init__(jake, <span style="color:#d14">&#34;Jake&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#0086b3">print</span>(jake<span style="color:#000;font-weight:bold">.</span>name)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#d14">&#34;Jake&#34;</span>
 </span></span></code></pre></div><p>Of course this is undesirable, as now we cannot access other methods defined in the class (e.g. <code>speak</code>).</p>
 <h1 id="super-and-method-resolution-order-mro"><code>super()</code> and Method Resolution Order (MRO)</h1>
 <p>Method Resolution Order (<em>MRO</em>) is the order in which method lookup is performed by the interpreter for an instance of a given class.</p>
 <p>Defined classes have an <code>__mro__</code> attribute that results in a tuple describing the MRO.</p>
 <blockquote>
 <p>Instances don&rsquo;t have this method defined, but this can very easily be circumvented using the special <em><code>instance</code></em>.<code>__class__</code> attribute, which returns the reference of the class that the instance belongs to:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(instance<span style="color:#f92672">.</span>__class__<span style="color:#f92672">.</span>__mro__)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#0086b3">print</span>(instance<span style="color:#000;font-weight:bold">.</span>__class__<span style="color:#000;font-weight:bold">.</span>__mro__)
 </span></span></code></pre></div></blockquote>
 <p>Examine the following code:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mymethod</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;mymethod of class A&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">B</span>(A):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mymethod</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;mymethod of class B&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>(B):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mymethod</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;mymethod of class C&#34;</span>
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>instance <span style="color:#f92672">=</span> C()
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;C.__mro__ = </span><span style="color:#e6db74">{</span>C<span style="color:#f92672">.</span>__mro__<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>print(instance<span style="color:#f92672">.</span>mymethod())
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">A</span>:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">mymethod</span>(<span style="color:#999">self</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;mymethod of class A&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">B</span>(A):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">mymethod</span>(<span style="color:#999">self</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        <span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;mymethod of class B&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">C</span>(B):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">mymethod</span>(<span style="color:#999">self</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        <span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;mymethod of class C&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>instance <span style="color:#000;font-weight:bold">=</span> C()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#0086b3">print</span>(<span style="color:#d14">f</span><span style="color:#d14">&#34;C.__mro__ = </span><span style="color:#d14">{</span>C<span style="color:#000;font-weight:bold">.</span>__mro__<span style="color:#d14">}</span><span style="color:#d14">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#0086b3">print</span>(instance<span style="color:#000;font-weight:bold">.</span>mymethod())
 </span></span></code></pre></div><p>This then logs:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>C<span style="color:#f92672">.</span>__mro__ <span style="color:#f92672">=</span> (<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">__main__</span><span style="color:#f92672">.</span>C<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#f92672">.</span><span style="color:#e6db74">B</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#f92672">.</span>A<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>object<span style="color:#e6db74">&#39;&gt;)</span>
-</span></span><span style="display:flex;"><span>mymethod of <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>C<span style="color:#000;font-weight:bold">.</span>__mro__ <span style="color:#000;font-weight:bold">=</span> (<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">class</span> <span style="color:#a61717;background-color:#e3d2d2">&#39;</span><span style="color:#458;font-weight:bold">__main__</span><span style="color:#000;font-weight:bold">.</span>C<span style="color:#d14">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#000;font-weight:bold">.</span><span style="color:#d14">B</span><span style="color:#d14">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#000;font-weight:bold">.</span>A<span style="color:#d14">&#39;&gt;, &lt;class &#39;</span><span style="color:#0086b3">object</span><span style="color:#d14">&#39;&gt;)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>mymethod of <span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">C</span>
 </span></span></code></pre></div><p>This means that any method lookups done on <em>instances</em> of class C will first be done on methods defined class C, then class B, then class A, and then in the &ldquo;base&rdquo; <em>object</em> class, <strong>stopping at the first class in which the desired method is found</strong>, because every class in the &ldquo;chain&rdquo; inherits the next one (C inherits B, which inherits A which by default inherits <code>object</code>).</p>
 <p>In our case, the <em><strong>mymethod</strong></em> method was in fact defined in the first class listed in the <code>__mro__</code> tuple, so naturally, it is <code>C.mymethod</code> that gets called in the end.</p>
 <p>If we remove the <code>mymethod</code> method from the <code>C</code> class, <strong>the MRO will stay the same</strong>, however since <code>mymethod</code> doesn&rsquo;t exist inside of the <code>C</code> class anymore, it will instead &ldquo;come&rdquo; from the next one in the MRO chain that it <em>is</em> defined in, in this case the <code>B</code> class.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>(B):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pass</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>instance <span style="color:#f92672">=</span> C()
-</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;C.__mro__ = </span><span style="color:#e6db74">{</span>C<span style="color:#f92672">.</span>__mro__<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>print(instance<span style="color:#f92672">.</span>mymethod())
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">C</span>(B):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#000;font-weight:bold">pass</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>instance <span style="color:#000;font-weight:bold">=</span> C()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#0086b3">print</span>(<span style="color:#d14">f</span><span style="color:#d14">&#34;C.__mro__ = </span><span style="color:#d14">{</span>C<span style="color:#000;font-weight:bold">.</span>__mro__<span style="color:#d14">}</span><span style="color:#d14">&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#0086b3">print</span>(instance<span style="color:#000;font-weight:bold">.</span>mymethod())
 </span></span></code></pre></div><p>this logs:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>C<span style="color:#f92672">.</span>__mro__ <span style="color:#f92672">=</span> (<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">__main__</span><span style="color:#f92672">.</span>C<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#f92672">.</span><span style="color:#e6db74">B</span><span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#f92672">.</span>A<span style="color:#e6db74">&#39;&gt;, &lt;class &#39;</span>object<span style="color:#e6db74">&#39;&gt;)</span>
-</span></span><span style="display:flex;"><span>mymethod of <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">B</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>C<span style="color:#000;font-weight:bold">.</span>__mro__ <span style="color:#000;font-weight:bold">=</span> (<span style="color:#000;font-weight:bold">&lt;</span><span style="color:#000;font-weight:bold">class</span> <span style="color:#a61717;background-color:#e3d2d2">&#39;</span><span style="color:#458;font-weight:bold">__main__</span><span style="color:#000;font-weight:bold">.</span>C<span style="color:#d14">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#000;font-weight:bold">.</span><span style="color:#d14">B</span><span style="color:#d14">&#39;&gt;, &lt;class &#39;</span>__main__<span style="color:#000;font-weight:bold">.</span>A<span style="color:#d14">&#39;&gt;, &lt;class &#39;</span><span style="color:#0086b3">object</span><span style="color:#d14">&#39;&gt;)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>mymethod of <span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">B</span>
 </span></span></code></pre></div><h2 id="super-explained"><code>super()</code> explained</h2>
 <p>The <a href="https://docs.python.org/3/library/functions.html#super">official super() builtin documentation</a> explains its use and functionality pretty well, but to explain it using an example: let&rsquo;s say that we wanted the <code>mymethod</code> method in the C class to return the same string returned by the <code>mymethod</code> method of the A class, with an additional <code>!</code> appended
 at the end.</p>
@@ -265,9 +276,9 @@ at the end.</p>
 <p>Obviously that is a simplified example, in the real world <code>A.mymethod</code> could execute some long, complicated logic that we wish to re-implement (alongside some <em>other</em> logic) inside of <code>C.mymethod</code>.</p>
 </blockquote>
 <p>Inside of the <code>C</code> class we can accomplish this by calling <code>super()</code> which creates a <em>proxy object</em> that delegeates all method calls to the appropriate class:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span>(B):
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mymethod</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> super(B, self)<span style="color:#f92672">.</span>mymethod() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;!!!&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">C</span>(B):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">mymethod</span>(<span style="color:#999">self</span>):
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>        <span style="color:#000;font-weight:bold">return</span> <span style="color:#0086b3">super</span>(B, <span style="color:#999">self</span>)<span style="color:#000;font-weight:bold">.</span>mymethod() <span style="color:#000;font-weight:bold">+</span> <span style="color:#d14">&#34;!!!&#34;</span>
 </span></span></code></pre></div><p>The output will therefore be: <code>mymethod of class A!!!</code>.</p>
 <p><code>super()</code> is more useful when you provide no arguments to it however, as it automatically goes up the hierarchy and provides you with the first class that defines the appropriate method (or attribute, as <code>super()</code> works for attribute lookups as well).</p>
 
@@ -276,6 +287,7 @@ at the end.</p>
 
   
   
+
 
 
 
@@ -296,6 +308,7 @@ at the end.</p>
       </ul>
     </div>
 
+    
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents">
   <ul>
@@ -303,6 +316,7 @@ at the end.</p>
   </ul>
 </nav>
     </div>
+    
 
     <div id="share-footer" style="display: none">
       
@@ -365,8 +379,10 @@ at the end.</p>
       
         <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
           <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
         <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
           <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
         <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
           <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
         <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -403,6 +419,9 @@ at the end.</p>
 <link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
 <script src=/lib/jquery/jquery.min.js></script>
 <script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
 
 
 

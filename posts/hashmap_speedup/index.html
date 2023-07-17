@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> A HashMap speedup tale: The number of allocations matters | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/hashmap_speedup/'>
   <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
@@ -28,7 +35,8 @@ At the core of every hash table implementation is a key-value pair, and here the
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+
   
   
   
@@ -154,9 +162,11 @@ At the core of every hash table implementation is a key-value pair, and here the
 </ul>
 
     </div>
+    
     <div id="toc">
       <nav id="TableOfContents"></nav>
     </div>
+    
   </span>
 </div>
 
@@ -181,6 +191,7 @@ At the core of every hash table implementation is a key-value pair, and here the
     </header>
 
   
+    
     <div class="content" itemprop="articleBody">
       <p>I recently wrote <a href="https://github.com/bool3max/bhashmap"><strong><code>bhashmap</code></strong></a> - a C11 hash table implementation
 library. This post will document one of the latest optimizations, which is in hindsight extremely
@@ -190,25 +201,25 @@ simple to understand and implement, but which resulted in a ~30% runtime speedup
 I will focus only on the details relevant to this particular optimization.</p>
 <p>At the core of every hash table implementation is a key-value pair, and here the case is no different:
 every such pair is represented by a <code>HashPair</code> struct:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> HashPair {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">size_t</span> keylen;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> HashPair <span style="color:#f92672">*</span>next;
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#000;font-weight:bold">struct</span> HashPair {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>key;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#458;font-weight:bold">size_t</span> keylen;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>value;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#000;font-weight:bold">struct</span> HashPair <span style="color:#000;font-weight:bold">*</span>next;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>};
 </span></span></code></pre></div><p>Looks simple enough. For every key-value pair we store a pointer to the <code>key</code>, its length (<code>keylen</code>),
 and a pointer to its associated <code>value</code>. For every key inserted into the map, <strong><code>bhashmap</code></strong> makes
 and stores a copy of it interally.</p>
 <p>For example, after the following call:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">/* Some heap-allocated string */</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>name <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_name</span>();
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">/* Create new hash map of size 16 */</span>
-</span></span><span style="display:flex;"><span>BHashMap <span style="color:#f92672">*</span>map <span style="color:#f92672">=</span> <span style="color:#a6e22e">bhm_create</span>(<span style="color:#ae81ff">16</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">/* Associate the name with the value 5000 */</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">size_t</span> val <span style="color:#f92672">=</span> <span style="color:#ae81ff">5000</span>;
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">bhm_insert</span>(map, name, <span style="color:#a6e22e">strlen</span>(name) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, <span style="color:#f92672">&amp;</span>val);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#998;font-style:italic">/* Some heap-allocated string */</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>name <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">get_name</span>();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#998;font-style:italic">/* Create new hash map of size 16 */</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>BHashMap <span style="color:#000;font-weight:bold">*</span>map <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">bhm_create</span>(<span style="color:#099">16</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#998;font-style:italic">/* Associate the name with the value 5000 */</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#458;font-weight:bold">size_t</span> val <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">5000</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span><span style="color:#900;font-weight:bold">bhm_insert</span>(map, name, <span style="color:#900;font-weight:bold">strlen</span>(name) <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>, <span style="color:#000;font-weight:bold">&amp;</span>val);
 </span></span></code></pre></div><p>The caller is free to mess with the memory occupied by <code>name</code>, or even to release it entirely,
 as a copy of the key has been made. This is a deliberate design decision, and one of great
 relevance to this article.</p>
@@ -221,19 +232,19 @@ relevance to this article.</p>
 </ol>
 <p>The semi-pseudo code (with no regard for error-checking, etc&hellip;) for that might look something along
 the lines of the following:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> HashPair<span style="color:#f92672">*</span> <span style="color:#a6e22e">create_pair</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">size_t</span> keylen, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> HashPair <span style="color:#f92672">*</span>new_pair <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> HashPair));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>new_pair <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> HashPair) {
-</span></span><span style="display:flex;"><span>        .key <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(keylen),
-</span></span><span style="display:flex;"><span>        .keylen <span style="color:#f92672">=</span> keylen,
-</span></span><span style="display:flex;"><span>        .value <span style="color:#f92672">=</span> value
-</span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memcpy</span>(new_pair<span style="color:#f92672">-&gt;</span>key, key, keylen);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> new_pair;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#000;font-weight:bold">struct</span> HashPair<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">create_pair</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">size_t</span> keylen, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>value) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#000;font-weight:bold">struct</span> HashPair <span style="color:#000;font-weight:bold">*</span>new_pair <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">malloc</span>(<span style="color:#000;font-weight:bold">sizeof</span>(<span style="color:#000;font-weight:bold">struct</span> HashPair));
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#000;font-weight:bold">*</span>new_pair <span style="color:#000;font-weight:bold">=</span> (<span style="color:#000;font-weight:bold">struct</span> HashPair) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        .key <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">malloc</span>(keylen),
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        .keylen <span style="color:#000;font-weight:bold">=</span> keylen,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        .value <span style="color:#000;font-weight:bold">=</span> value
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    };
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#900;font-weight:bold">memcpy</span>(new_pair<span style="color:#000;font-weight:bold">-&gt;</span>key, key, keylen);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#000;font-weight:bold">return</span> new_pair;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>}
 </span></span></code></pre></div><p>Makes sense. This is very self-explanatory code. It just works, and it&rsquo;s something
 I&rsquo;d write and not thing about at all.</p>
 <p>However, the big thing here is that for every new pair, we perform two allocations (<code>malloc</code> calls):
@@ -249,29 +260,29 @@ Of course, I wouldn&rsquo;t be writing this article otherwise.</p>
 to utilize <a href="https://en.wikipedia.org/wiki/Flexible_array_member"><strong>flexible array members</strong></a>,
 we can allocate the memory for the struct itself, as well as the memory needed to store the copy
 of the key in one fell swoop:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> HashPair {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">size_t</span> keylen;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> HashPair <span style="color:#f92672">*</span>next;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> key[];
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#000;font-weight:bold">struct</span> HashPair {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#458;font-weight:bold">size_t</span> keylen;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>value;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#000;font-weight:bold">struct</span> HashPair <span style="color:#000;font-weight:bold">*</span>next;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    <span style="color:#458;font-weight:bold">unsigned</span> <span style="color:#458;font-weight:bold">char</span> key[];
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>};
 </span></span></code></pre></div><p>We no longer store the key copy as a pointer to some allocated memory, but rather
 as an array right <em>in</em> the struct itself. This also has the added benefit of the CPU not having
 to follow pointers around when accessing the key - it is stored right alongside the accompanying struct.</p>
 <p>The <code>create_pair</code> implementation would now look like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> HashPair<span style="color:#f92672">*</span> <span style="color:#a6e22e">create_pair</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>key, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">size_t</span> keylen, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>value) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> HashPair <span style="color:#f92672">*</span>new_pair <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> HashPair) <span style="color:#f92672">+</span> keylen);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>new_pair <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> HashPair) {
-</span></span><span style="display:flex;"><span>        .keylen <span style="color:#f92672">=</span> keylen,
-</span></span><span style="display:flex;"><span>        .value <span style="color:#f92672">=</span> value
-</span></span><span style="display:flex;"><span>    };
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memcpy</span>(new_pair<span style="color:#f92672">-&gt;</span>key, key, keylen);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> new_pair;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#000;font-weight:bold">struct</span> HashPair<span style="color:#000;font-weight:bold">*</span> <span style="color:#900;font-weight:bold">create_pair</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>key, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">size_t</span> keylen, <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span>value) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#000;font-weight:bold">struct</span> HashPair <span style="color:#000;font-weight:bold">*</span>new_pair <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">malloc</span>(<span style="color:#000;font-weight:bold">sizeof</span>(<span style="color:#000;font-weight:bold">struct</span> HashPair) <span style="color:#000;font-weight:bold">+</span> keylen);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#000;font-weight:bold">*</span>new_pair <span style="color:#000;font-weight:bold">=</span> (<span style="color:#000;font-weight:bold">struct</span> HashPair) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        .keylen <span style="color:#000;font-weight:bold">=</span> keylen,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        .value <span style="color:#000;font-weight:bold">=</span> value
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    };
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#900;font-weight:bold">memcpy</span>(new_pair<span style="color:#000;font-weight:bold">-&gt;</span>key, key, keylen);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#000;font-weight:bold">return</span> new_pair;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>}
 </span></span></code></pre></div><p>Notice that on the first line, we allocate enough memory to hold the instance of the struct,
 plus enough memory needed to store the copy of the key.</p>
 <h1 id="results">Results</h1>
@@ -281,13 +292,13 @@ which is <em>huge</em> for such a simple optimization.</p>
 <p>Here&rsquo;s the unoptimized version&rsquo;s average runtime of 16 iterations of the
 <a href="https://github.com/bool3max/bhashmap/blob/master/src/benchmarks/benchmark_words400k.c"><code>words_400k</code></a>
 benchmark, which inserts 466,550 key-value pairs into the map.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ ./buildrel/bench_words400k
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Avg. time of <span style="color:#ae81ff">16</span> ITERATIONS: 312ms
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ./buildrel/bench_words400k
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Avg. <span style="color:#0086b3">time</span> of <span style="color:#099">16</span> ITERATIONS: 312ms
 </span></span></code></pre></div><p>And the optimized version:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ ./buildrel/bench_words400k
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Avg. time of <span style="color:#ae81ff">16</span> ITERATIONS: 204ms
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ./buildrel/bench_words400k
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Avg. <span style="color:#0086b3">time</span> of <span style="color:#099">16</span> ITERATIONS: 204ms
 </span></span></code></pre></div><p>A 34% runtime speed improvement!</p>
 
     </div>
@@ -295,6 +306,7 @@ benchmark, which inserts 466,550 key-value pairs into the map.</p>
 
   
   
+
 
 
 
@@ -315,9 +327,11 @@ benchmark, which inserts 466,550 key-value pairs into the map.</p>
       </ul>
     </div>
 
+    
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents"></nav>
     </div>
+    
 
     <div id="share-footer" style="display: none">
       
@@ -380,8 +394,10 @@ benchmark, which inserts 466,550 key-value pairs into the map.</p>
       
         <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
           <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
         <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
           <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
         <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
           <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
         <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -418,6 +434,9 @@ benchmark, which inserts 466,550 key-value pairs into the map.</p>
 <link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
 <script src=/lib/jquery/jquery.min.js></script>
 <script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
 
 
 

@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> The joys of C API design: stripping whitespace from C-strings | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/c_strip_whitespace/'>
   <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
@@ -26,7 +33,8 @@ While designing such a function in C (where you are required to manually manage 
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/style-white.css">
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+
   
   
   
@@ -72,6 +80,12 @@ While designing such a function in C (where you are required to manually manage 
           </a>
         </li>
         
+        
+        <li>
+          <a class="icon" href="https://bool3max.win/posts/how_shell_redirection_is_implemented/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
         
         <li>
           <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -146,6 +160,7 @@ While designing such a function in C (where you are required to manually manage 
 </ul>
 
     </div>
+    
     <div id="toc">
       <nav id="TableOfContents">
   <ul>
@@ -160,6 +175,7 @@ While designing such a function in C (where you are required to manually manage 
   </ul>
 </nav>
     </div>
+    
   </span>
 </div>
 
@@ -184,164 +200,165 @@ While designing such a function in C (where you are required to manually manage 
     </header>
 
   
+    
     <div class="content" itemprop="articleBody">
       <p>Suppose you are tasked with stripping leading and trailing whitespace from a string. In dynamic, garbage-collected languages whose standard libraries are usually equipped with functions that handle this, you don&rsquo;t even think about the implementation. In Python (whose strings are immutable), you&rsquo;d simply call the string&rsquo;s <code>.strip()</code> method and get a stripped string back. In Golang, you&rsquo;d call <code>strings.TrimSpaces()</code> and receive a new, stripped slice of the string.</p>
 <p>While designing such a function in C (where you are required to manually manage memory) isn&rsquo;t difficult - it can be done in a seemingly myriad of ways. Do you modify the original string? Do you allocate a new string on the heap? If so, how do you return a pointer to it? Or, do you fill in a provided buffer instead? What if the buffer isn&rsquo;t large enough? Etc&hellip;</p>
 <p>Below I&rsquo;ll document the implementations I managed to come up with. All of them assume that we are working with traditional, null-terminated C-style strings.</p>
 <h3 id="strip_inplace-strip_inplace_1"><code>strip_inplace</code>, <code>strip_inplace_1</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">strip_inplace</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>string) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>new_start <span style="color:#f92672">=</span> string;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>new_start))
-</span></span><span style="display:flex;"><span>        new_start<span style="color:#f92672">++</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// End of string - string was composed of all-whitespace character, or it was empty
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span>(<span style="color:#f92672">*</span>new_start <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\0&#39;</span>) <span style="color:#66d9ef">return</span> new_start;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>e <span style="color:#f92672">=</span> string <span style="color:#f92672">+</span> <span style="color:#a6e22e">strlen</span>(string) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>e))
-</span></span><span style="display:flex;"><span>        e<span style="color:#f92672">--</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    e[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> new_start;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span><span style="color:#900;font-weight:bold">strip_inplace</span>(<span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>string) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>new_start <span style="color:#000;font-weight:bold">=</span> string;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#000;font-weight:bold">while</span>(<span style="color:#900;font-weight:bold">isspace</span>(<span style="color:#000;font-weight:bold">*</span>new_start))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        new_start<span style="color:#000;font-weight:bold">++</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#998;font-style:italic">// End of string - string was composed of all-whitespace character, or it was empty
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">if</span>(<span style="color:#000;font-weight:bold">*</span>new_start <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#39;\0&#39;</span>) <span style="color:#000;font-weight:bold">return</span> new_start;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>e <span style="color:#000;font-weight:bold">=</span> string <span style="color:#000;font-weight:bold">+</span> <span style="color:#900;font-weight:bold">strlen</span>(string) <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#000;font-weight:bold">while</span>(<span style="color:#900;font-weight:bold">isspace</span>(<span style="color:#000;font-weight:bold">*</span>e))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        e<span style="color:#000;font-weight:bold">--</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    e[<span style="color:#099">1</span>] <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    <span style="color:#000;font-weight:bold">return</span> new_start;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>}
 </span></span></code></pre></div><p><code>strip_inplace</code> strips the passed in string by modifying it, well, in-place. To strip
 <em>leading</em> whitespace, it returns a pointer to the string&rsquo;s first non-whitespace character.
 To strip <em>trailing</em> whitespace, it replaces the first byte past the last non-whitespace
 character in the string with a null byte, indicating end of string.</p>
 <p>Proper use of this function looks like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">/* returns pointer to some heap-allocated, null-terminated string */</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_some_string</span>();
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str_stripped <span style="color:#f92672">=</span> <span style="color:#a6e22e">strip_inplace</span>(str);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#998;font-style:italic">/* returns pointer to some heap-allocated, null-terminated string */</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">get_some_string</span>();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str_stripped <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">strip_inplace</span>(str);
 </span></span></code></pre></div><p>If you are responsible for freeing the memory of the original string, be careful not to overwrite the pointer
 to the original string, as you will need to call <code>free</code> on it, <em>not</em> on the one returned by <code>strip_inplace</code>!</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">strip_inplace_1</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>string, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>ret) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>new_start <span style="color:#f92672">=</span> string;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>new_start))
-</span></span><span style="display:flex;"><span>        new_start<span style="color:#f92672">++</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// End of string - string was composed of all-whitespace character, or it was empty
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span>(<span style="color:#f92672">*</span>new_start <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\0&#39;</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span>ret <span style="color:#f92672">=</span> new_start;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>e <span style="color:#f92672">=</span> string <span style="color:#f92672">+</span> <span style="color:#a6e22e">strlen</span>(string) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>e))
-</span></span><span style="display:flex;"><span>        e<span style="color:#f92672">--</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    e[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>ret <span style="color:#f92672">=</span> new_start;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#458;font-weight:bold">void</span> <span style="color:#000;font-weight:bold">*</span><span style="color:#900;font-weight:bold">strip_inplace_1</span>(<span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>string, <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">**</span>ret) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>new_start <span style="color:#000;font-weight:bold">=</span> string;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#000;font-weight:bold">while</span>(<span style="color:#900;font-weight:bold">isspace</span>(<span style="color:#000;font-weight:bold">*</span>new_start))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        new_start<span style="color:#000;font-weight:bold">++</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#998;font-style:italic">// End of string - string was composed of all-whitespace character, or it was empty
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">if</span>(<span style="color:#000;font-weight:bold">*</span>new_start <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#39;\0&#39;</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#000;font-weight:bold">*</span>ret <span style="color:#000;font-weight:bold">=</span> new_start;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        <span style="color:#000;font-weight:bold">return</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>e <span style="color:#000;font-weight:bold">=</span> string <span style="color:#000;font-weight:bold">+</span> <span style="color:#900;font-weight:bold">strlen</span>(string) <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#000;font-weight:bold">while</span>(<span style="color:#900;font-weight:bold">isspace</span>(<span style="color:#000;font-weight:bold">*</span>e))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        e<span style="color:#000;font-weight:bold">--</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    e[<span style="color:#099">1</span>] <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    <span style="color:#000;font-weight:bold">*</span>ret <span style="color:#000;font-weight:bold">=</span> new_start;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>}
 </span></span></code></pre></div><p><code>strip_inplace_1</code> does the exact same thing, except that it yields the pointer to the start of the stripped string differently - instead of performing a regular return, it
 writes its address to a passed-in pointer. Thus, proper use of the function may look like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_some_string</span>();
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str_stripped;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">strip_inplace_1</span>(str, <span style="color:#f92672">&amp;</span>str_stripped);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">get_some_string</span>();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str_stripped;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#900;font-weight:bold">strip_inplace_1</span>(str, <span style="color:#000;font-weight:bold">&amp;</span>str_stripped);
 </span></span></code></pre></div><h3 id="strip_alloc"><code>strip_alloc</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">strip_alloc</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>string) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">size_t</span> original_len <span style="color:#f92672">=</span> <span style="color:#a6e22e">strlen</span>(string);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>new_start <span style="color:#f92672">=</span> string;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>new_start)) {
-</span></span><span style="display:flex;"><span>        new_start<span style="color:#f92672">++</span>;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#f92672">*</span>new_start <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\0&#39;</span>) { 
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(<span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>buf) <span style="color:#66d9ef">return</span> buf;
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">*</span>buf <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> buf;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>e <span style="color:#f92672">=</span> string <span style="color:#f92672">+</span> original_len <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>e)) {
-</span></span><span style="display:flex;"><span>        e<span style="color:#f92672">--</span>;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(new_start <span style="color:#f92672">==</span> string <span style="color:#f92672">&amp;&amp;</span> e <span style="color:#f92672">==</span> (string <span style="color:#f92672">+</span> original_len <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>))
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> string;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf <span style="color:#f92672">=</span> <span style="color:#a6e22e">malloc</span>(e <span style="color:#f92672">-</span> new_start <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span>buf) <span style="color:#66d9ef">return</span> buf;
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">memcpy</span>(buf, new_start, e <span style="color:#f92672">-</span> new_start <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// null-terminate the buffer
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    buf[e <span style="color:#f92672">-</span> new_start <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> buf;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span><span style="color:#900;font-weight:bold">strip_alloc</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>string) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#458;font-weight:bold">size_t</span> original_len <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">strlen</span>(string);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>new_start <span style="color:#000;font-weight:bold">=</span> string;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#000;font-weight:bold">while</span>(<span style="color:#900;font-weight:bold">isspace</span>(<span style="color:#000;font-weight:bold">*</span>new_start)) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        new_start<span style="color:#000;font-weight:bold">++</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#000;font-weight:bold">if</span>(<span style="color:#000;font-weight:bold">*</span>new_start <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#39;\0&#39;</span>) { 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>buf <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">malloc</span>(<span style="color:#099">1</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        <span style="color:#000;font-weight:bold">if</span> (<span style="color:#000;font-weight:bold">!</span>buf) <span style="color:#000;font-weight:bold">return</span> buf;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        <span style="color:#000;font-weight:bold">*</span>buf <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        <span style="color:#000;font-weight:bold">return</span> buf;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>e <span style="color:#000;font-weight:bold">=</span> string <span style="color:#000;font-weight:bold">+</span> original_len <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    <span style="color:#000;font-weight:bold">while</span>(<span style="color:#900;font-weight:bold">isspace</span>(<span style="color:#000;font-weight:bold">*</span>e)) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>        e<span style="color:#000;font-weight:bold">--</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="color:#000;font-weight:bold">if</span>(new_start <span style="color:#000;font-weight:bold">==</span> string <span style="color:#000;font-weight:bold">&amp;&amp;</span> e <span style="color:#000;font-weight:bold">==</span> (string <span style="color:#000;font-weight:bold">+</span> original_len <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        <span style="color:#000;font-weight:bold">return</span> string;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>    <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>buf <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">malloc</span>(e <span style="color:#000;font-weight:bold">-</span> new_start <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span> <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>    <span style="color:#000;font-weight:bold">if</span>(<span style="color:#000;font-weight:bold">!</span>buf) <span style="color:#000;font-weight:bold">return</span> buf;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>    <span style="color:#900;font-weight:bold">memcpy</span>(buf, new_start, e <span style="color:#000;font-weight:bold">-</span> new_start <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>    <span style="color:#998;font-style:italic">// null-terminate the buffer
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span><span style="color:#998;font-style:italic"></span>    buf[e <span style="color:#000;font-weight:bold">-</span> new_start <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>] <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>    <span style="color:#000;font-weight:bold">return</span> buf;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>}
 </span></span></code></pre></div><p><code>strip_alloc</code> strips the passed-in string and stores it in a new, heap-allocated buffer, returning its address. The caller is then responsible for freeing the memory returned by this function. <em>If</em> the passed in string was already stripped (i.e. it didn&rsquo;t need any stripping), the function then simply returns a pointer the same passed-in string. Thus, proper use of the function should look like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_some_string</span>();
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str_stripped <span style="color:#f92672">=</span> <span style="color:#a6e22e">strip_alloc</span>(str);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">/* ... */</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (str_stripped <span style="color:#f92672">!=</span> str) {f
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">free</span>(str_stripped);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">get_some_string</span>();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str_stripped <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">strip_alloc</span>(str);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#998;font-style:italic">/* ... */</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#000;font-weight:bold">if</span> (str_stripped <span style="color:#000;font-weight:bold">!=</span> str) {f
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>    <span style="color:#900;font-weight:bold">free</span>(str_stripped);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>}
 </span></span></code></pre></div><p>Choosing what to return in this case is a design decision that can be tweaked. We could for example choose to return a NULL pointer instead.</p>
 <p>As with the first implementation, a different way of returning the pointer to the string
 by virtue of overwriting a passed-in pointer could be presented, but I&rsquo;ll spare you the entire definition
 as it is almost entirely the same, and after all just a matter of taste.</p>
 <h3 id="strip_buf"><code>strip_buf</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">strip_buf</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>string, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buffer, <span style="color:#66d9ef">size_t</span> bufsize) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>new_start <span style="color:#f92672">=</span> string;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>new_start))
-</span></span><span style="display:flex;"><span>        new_start<span style="color:#f92672">++</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#f92672">*</span>new_start <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\0&#39;</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">memset</span>(buffer, <span style="color:#ae81ff">0</span>, bufsize);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>end <span style="color:#f92672">=</span> string <span style="color:#f92672">+</span> <span style="color:#a6e22e">strlen</span>(string) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>end))
-</span></span><span style="display:flex;"><span>        end<span style="color:#f92672">--</span>;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ptrdiff_t</span> diff <span style="color:#f92672">=</span> end <span style="color:#f92672">-</span> new_start;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(bufsize <span style="color:#f92672">&lt;</span> (diff <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>)) {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memcpy</span>(buffer, new_start, bufsize <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>        buffer[bufsize <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
-</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memcpy</span>(buffer, new_start, diff <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memset</span>(buffer <span style="color:#f92672">+</span> diff <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>, bufsize <span style="color:#f92672">-</span> (diff <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>));
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> buffer;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span><span style="color:#900;font-weight:bold">strip_buf</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>string, <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>buffer, <span style="color:#458;font-weight:bold">size_t</span> bufsize) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>new_start <span style="color:#000;font-weight:bold">=</span> string;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#000;font-weight:bold">while</span>(<span style="color:#900;font-weight:bold">isspace</span>(<span style="color:#000;font-weight:bold">*</span>new_start))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        new_start<span style="color:#000;font-weight:bold">++</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#000;font-weight:bold">if</span>(<span style="color:#000;font-weight:bold">*</span>new_start <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#39;\0&#39;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        <span style="color:#000;font-weight:bold">return</span> <span style="color:#900;font-weight:bold">memset</span>(buffer, <span style="color:#099">0</span>, bufsize);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>end <span style="color:#000;font-weight:bold">=</span> string <span style="color:#000;font-weight:bold">+</span> <span style="color:#900;font-weight:bold">strlen</span>(string) <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#000;font-weight:bold">while</span>(<span style="color:#900;font-weight:bold">isspace</span>(<span style="color:#000;font-weight:bold">*</span>end))
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        end<span style="color:#000;font-weight:bold">--</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#458;font-weight:bold">ptrdiff_t</span> diff <span style="color:#000;font-weight:bold">=</span> end <span style="color:#000;font-weight:bold">-</span> new_start;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    <span style="color:#000;font-weight:bold">if</span>(bufsize <span style="color:#000;font-weight:bold">&lt;</span> (diff <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">2</span>)) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>        <span style="color:#900;font-weight:bold">memcpy</span>(buffer, new_start, bufsize <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        buffer[bufsize <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>] <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#39;\0&#39;</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    } <span style="color:#000;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>        <span style="color:#900;font-weight:bold">memcpy</span>(buffer, new_start, diff <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>        <span style="color:#900;font-weight:bold">memset</span>(buffer <span style="color:#000;font-weight:bold">+</span> diff <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>, <span style="color:#099">0</span>, bufsize <span style="color:#000;font-weight:bold">-</span> (diff <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>));
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>    <span style="color:#000;font-weight:bold">return</span> buffer;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>}
 </span></span></code></pre></div><p><code>strip_buf</code> strips the passed-in string and stores it in the user-provided buffer. It writes
 at most <code>bufsize</code> bytes, including the null-terminating byte. If the buffer isn&rsquo;t large enough to accommodate
 the entire stripped string, it is then truncated. If the buffer is larger than the stripped string,
 the rest of it is padded with null-terminating bytes. The function returns back the pointer to the passed in buffer.</p>
 <p>Returning back the pointer to the passed in buffer is a design decition that at first may not seem that interesting or important. However, it enables the caller to do the following:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_some_string</span>();
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> str_stripped[<span style="color:#ae81ff">128</span>];
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">process_string</span>(<span style="color:#a6e22e">strip_buf</span>(str, str_stripped, <span style="color:#ae81ff">128</span>));
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">get_some_string</span>();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#458;font-weight:bold">char</span> str_stripped[<span style="color:#099">128</span>];
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#900;font-weight:bold">process_string</span>(<span style="color:#900;font-weight:bold">strip_buf</span>(str, str_stripped, <span style="color:#099">128</span>));
 </span></span></code></pre></div><p>If the <code>strip_buf</code> function weren&rsquo;t returning any value, the above snippet of code would then have to look like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_some_string</span>();
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">char</span> str_stripped[<span style="color:#ae81ff">128</span>];
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">strip_buf</span>(str, str_stripped, <span style="color:#ae81ff">128</span>);
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">process_string</span>(str_stripped);
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>str <span style="color:#000;font-weight:bold">=</span> <span style="color:#900;font-weight:bold">get_some_string</span>();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#458;font-weight:bold">char</span> str_stripped[<span style="color:#099">128</span>];
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#900;font-weight:bold">strip_buf</span>(str, str_stripped, <span style="color:#099">128</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#900;font-weight:bold">process_string</span>(str_stripped);
 </span></span></code></pre></div><p>Some might argue that the longer version is more explicit and therefore more readable, but when the stripping function returns the pointer back, it gives us the freedom to write the code either way.</p>
 <h3 id="strip_len"><code>strip_len</code></h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">size_t</span> <span style="color:#a6e22e">strip_len</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>string, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>ptr) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>start <span style="color:#f92672">=</span> string;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>start)) {
-</span></span><span style="display:flex;"><span>        start<span style="color:#f92672">++</span>;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>end <span style="color:#f92672">=</span> string <span style="color:#f92672">+</span> <span style="color:#a6e22e">strlen</span>(string) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (<span style="color:#a6e22e">isspace</span>(<span style="color:#f92672">*</span>end)) {
-</span></span><span style="display:flex;"><span>        end<span style="color:#f92672">--</span>;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>ptr <span style="color:#f92672">=</span> start;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">size_t</span>) (end <span style="color:#f92672">-</span> start <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#458;font-weight:bold">size_t</span> <span style="color:#900;font-weight:bold">strip_len</span>(<span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>string, <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">**</span>ptr) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>start <span style="color:#000;font-weight:bold">=</span> string;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#900;font-weight:bold">isspace</span>(<span style="color:#000;font-weight:bold">*</span>start)) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        start<span style="color:#000;font-weight:bold">++</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#000;font-weight:bold">const</span> <span style="color:#458;font-weight:bold">char</span> <span style="color:#000;font-weight:bold">*</span>end <span style="color:#000;font-weight:bold">=</span> string <span style="color:#000;font-weight:bold">+</span> <span style="color:#900;font-weight:bold">strlen</span>(string) <span style="color:#000;font-weight:bold">-</span> <span style="color:#099">1</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#000;font-weight:bold">while</span> (<span style="color:#900;font-weight:bold">isspace</span>(<span style="color:#000;font-weight:bold">*</span>end)) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        end<span style="color:#000;font-weight:bold">--</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    <span style="color:#000;font-weight:bold">*</span>ptr <span style="color:#000;font-weight:bold">=</span> start;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#000;font-weight:bold">return</span> (<span style="color:#458;font-weight:bold">size_t</span>) (end <span style="color:#000;font-weight:bold">-</span> start <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>}
 </span></span></code></pre></div><p><code>strip_len</code> does not modify the passed in string, does not fill any memory, and does no allocations.
 It stores the pointer to the first non-whitespace character of the string at <code>*ptr</code> and returns the
 count of characters from that character until the last non-whitespace character of the string.
@@ -352,6 +369,7 @@ Though not inherently useful, these two values together represent a stripped ver
 
   
   
+
 
 
 
@@ -372,6 +390,7 @@ Though not inherently useful, these two values together represent a stripped ver
       </ul>
     </div>
 
+    
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents">
   <ul>
@@ -386,6 +405,7 @@ Though not inherently useful, these two values together represent a stripped ver
   </ul>
 </nav>
     </div>
+    
 
     <div id="share-footer" style="display: none">
       
@@ -448,8 +468,10 @@ Though not inherently useful, these two values together represent a stripped ver
       
         <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
           <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
         <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
           <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
         <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
           <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
         <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -486,6 +508,9 @@ Though not inherently useful, these two values together represent a stripped ver
 <link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
 <script src=/lib/jquery/jquery.min.js></script>
 <script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
 
 
 
