@@ -1,182 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    
-      <title>
-        Common bitwise operations ::
-        bool3max&#39;s blog
-      </title>
-    
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta
-  name="description"
-  content="A short reference listing some of the common bitwise operations that I document as I encounter them
-  Create a mask with a single set bit  (1 &amp;lt;&amp;lt; k) can be used to create a mask where a single k &#43; 1-th bit is set.
- Extracting bits  Say we wanted to extract the highest 3 bits of a single byte (0bxxxxxxxx). We create a bitmask with those bits set to 1s, and all other bits to 0s, and we AND the two values together:"
-/>
-<meta
-  name="keywords"
-  content=""
-/>
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://bool3max.github.io/posts/common_bitwise_operations/" />
-
-
-
-
-
-<link rel="stylesheet" href="https://bool3max.github.io/assets/style.css" />
-
-<link rel="stylesheet" href="https://bool3max.github.io/style.css" />
-
-
-<link
-  rel="apple-touch-icon-precomposed"
-  sizes="144x144"
-  href="https://bool3max.github.io/img/apple-touch-icon-144-precomposed.png"
-/>
-<link rel="shortcut icon" href="https://bool3max.github.io/img/favicon.png" />
-
-
-<link href="https://bool3max.github.io/assets/fonts/Inter-Italic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-Regular.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-Medium.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-MediumItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-Bold.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-<link href="https://bool3max.github.io/assets/fonts/Inter-BoldItalic.woff2" rel="preload" type="font/woff2" as="font" crossorigin="">
-
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Common bitwise operations"/>
-<meta name="twitter:description" content="A post documenting common bitwise operations and hacks that I append to as I learn."/>
-
-
-
-<meta property="og:title" content="Common bitwise operations" />
-<meta property="og:description" content="A post documenting common bitwise operations and hacks that I append to as I learn." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.github.io/posts/common_bitwise_operations/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-12-17T20:52:23&#43;01:00" />
-<meta property="article:modified_time" content="2020-12-17T20:52:23&#43;01:00" /><meta property="og:site_name" content="bool3max&#39;s blog" />
-
-
-
-
-
-
-
-  </head>
-  <body class="dark-theme">
-    <div class="container">
-      <header class="header">
-  <span class="header__inner">
-    <a
-  href="/"
-  class="logo"
-  style="text-decoration: none;"
->
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   
-    <span class="logo__mark"><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44">
-  <path fill="none" d="M15 8l14.729 14.382L15 35.367" />
-</svg>
-</span>
-    <span class="logo__text"
-      >bool3max&#39;s blog</span
-    >
-    <span class="logo__cursor"></span>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Common bitwise operations | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'http://localhost:1313/posts/common_bitwise_operations/'>
+  <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:url" content="http://localhost:1313/posts/common_bitwise_operations/">
+  <meta property="og:site_name" content="bool3max&#39;s blog">
+  <meta property="og:title" content="Common bitwise operations">
+  <meta property="og:description" content="A post documenting common bitwise operations and hacks.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2020-12-17T20:52:23+01:00">
+    <meta property="article:modified_time" content="2020-12-17T20:52:23+01:00">
+
   
-</a>
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Common bitwise operations">
+  <meta name="twitter:description" content="A post documenting common bitwise operations and hacks.">
 
-    <span class="header__right">
-      
-        <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+  
+  
     
-      
-        
-          <li><a href="https://github.com/bool3max/">GitHub</a></li>
-        
-      
-        
-          <li><a href="/posts/">All posts</a></li>
-        
-      
-    
-  </ul>
+  
+  
+  <link rel="stylesheet" href="http://localhost:1313/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
 
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="https://github.com/bool3max/">GitHub</a></li>
-      
-    
-      
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="http://localhost:1313/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
         <li><a href="/posts/">All posts</a></li>
-      
-    
-  </ul>
-</nav>
-
-        <span class="menu-trigger">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-          </svg>
-        </span>
-      
-      <span class="theme-toggle">
-        <svg
-  class="theme-toggler"
-  width="24"
-  height="24"
-  viewBox="0 0 48 48"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <path
-    d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
-  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
-  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"
-  />
-</svg>
-
-      </span>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
     </span>
-  </span>
-</header>
-
-
-      <div class="content">
+    <br/>
+    <span id="actions">
+      <ul>
         
+        <li>
+          <a class="icon" href=" http://localhost:1313/posts/utf8/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="http://localhost:1313/posts/sway_screenshare_guide/" aria-label="Next">
+            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
+          </a>
+        </li>
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
   
   
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&text=Common%20bitwise%20operations" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&title=Common%20bitwise%20operations" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&is_video=false&description=Common%20bitwise%20operations" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Common%20bitwise%20operations&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&title=Common%20bitwise%20operations" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&title=Common%20bitwise%20operations" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&name=Common%20bitwise%20operations&description=A%20post%20documenting%20common%20bitwise%20operations%20and%20hacks." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&t=Common%20bitwise%20operations" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
 
-  <div class="post">
-    <h1 class="post-title">Common bitwise operations</h1>
-    <div class="post-meta">
-      
-        <span class="post-date">
-          2020-12-17
-        </span>
-
-        
-          
-        
-      
-
-      
-
-
-      
     </div>
-
     
-
+    <div id="toc">
+      <nav id="TableOfContents"></nav>
+    </div>
     
+  </span>
+</div>
 
-    <div class="post-content">
-      
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        Common bitwise operations
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2020-12-17 20:52:23 &#43;0100 CET" itemprop="datePublished">2020-12-17</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
       <blockquote>
 <p>A short reference listing some of the common bitwise operations that I document as I encounter them</p>
 </blockquote>
@@ -188,63 +203,174 @@
 <li><strong>Extracting bits</strong></li>
 </ul>
 <p>Say we wanted to extract the highest 3 bits of a single byte (0b<strong>xxx</strong>xxxxx). We create a bitmask with those bits set to 1s, and all other bits to 0s, and we AND the two values together:</p>
-<pre><code>mask = 0xEO (0b11100000)
-extracted = value &amp; mask
-</code></pre><p>Explanation: since the highest 3 bits in the mask are set to one, respective bits in the value will remain ones, while zeroes will remain zeroes. Since all other bits are irrelevant, our mask has them at all 0s, so that the value&rsquo;s bits don&rsquo;t interfere.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mask = 0xEO (0b11100000)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>extracted = value &amp; mask
+</span></span></code></pre></div><p>Explanation: since the highest 3 bits in the mask are set to one, respective bits in the value will remain ones, while zeroes will remain zeroes. Since all other bits are irrelevant, our mask has them at all 0s, so that the value&rsquo;s bits don&rsquo;t interfere.</p>
 <ul>
 <li><strong>Setting bits</strong></li>
 </ul>
 <p>Say we wanted to <strong>set</strong> the first and fifth bits of a byte. We create a mask where only those two bits are set (others are zeroes) and we OR it against our value:</p>
-<pre><code>mask = 0x11 (0b00010001)
-value |= mask
-</code></pre><p>Explanation: the respective zeroes in the original value become ones (obvious), while all other values remain the same (if they&rsquo;re zeroes they remain zeroes since they&rsquo;re matched against the zeroes in the mask - same for ones).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mask = 0x11 (0b00010001)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>value |= mask
+</span></span></code></pre></div><p>Explanation: the respective zeroes in the original value become ones (obvious), while all other values remain the same (if they&rsquo;re zeroes they remain zeroes since they&rsquo;re matched against the zeroes in the mask - same for ones).</p>
 <ul>
 <li><strong>Clearing bits</strong></li>
 </ul>
 <p>Say we wanted to <strong>unset</strong>/<strong>clear</strong> the first and fifth bits of a byte. We create a bit mask where those bits are zeroes, and the rest are ones, and we AND it over the original value:</p>
-<pre><code>mask = 0x11 (0b11101110)
-value &amp;= mask
-</code></pre><p>If we&rsquo;re dealing with a <em>single bit</em> here, we can use this idiom to quickly create the bitmask on the right-hand side of the assignment:</p>
-<pre><code>mask = ~(1 &lt;&lt; 4)
-value &amp;= mask
-
-// or even shorter
-
-value &amp;= ~(1 &lt;&lt; 4)
-</code></pre><ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mask = 0x11 (0b11101110)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>value &amp;= mask
+</span></span></code></pre></div><p>If we&rsquo;re dealing with a <em>single bit</em> here, we can use this idiom to quickly create the bitmask on the right-hand side of the assignment:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mask = ~(1 &lt;&lt; 4)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>value &amp;= mask
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>// or even shorter
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>value &amp;= ~(1 &lt;&lt; 4)
+</span></span></code></pre></div><ul>
 <li><strong>Flipping bits</strong></li>
 </ul>
 <p>If we want to, for example, flip the first and third bits of a byte, we create a mask where those bits are ones and others are zeroes, and we XOR it againast the original value:</p>
-<pre><code>mask = 0x5 (0b00000101)
-value ^= mask
-</code></pre><p>Explanation: XOR produces 0 if both bits are the same, and 1 if they&rsquo;re different. Zeroes become ones (0 ^ 1 = 1), and ones become zeroes (1 ^ 1 = 0), and all other bits retain their value (obvious).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mask = 0x5 (0b00000101)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>value ^= mask
+</span></span></code></pre></div><p>Explanation: XOR produces 0 if both bits are the same, and 1 if they&rsquo;re different. Zeroes become ones (0 ^ 1 = 1), and ones become zeroes (1 ^ 1 = 0), and all other bits retain their value (obvious).</p>
 
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts/">All posts</a></li>
+         
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents"></nav>
     </div>
     
 
-    
+    <div id="share-footer" style="display: none">
       
+      <ul>
+  
+  
     
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&text=Common%20bitwise%20operations" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&title=Common%20bitwise%20operations" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&is_video=false&description=Common%20bitwise%20operations" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Common%20bitwise%20operations&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&title=Common%20bitwise%20operations" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&title=Common%20bitwise%20operations" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&name=Common%20bitwise%20operations&description=A%20post%20documenting%20common%20bitwise%20operations%20and%20hacks." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fcommon_bitwise_operations%2f&t=Common%20bitwise%20operations" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
   </div>
+</div>
 
-      </div>
 
-      
-        <footer class="footer">
-  <div class="footer__inner">
-    
-      <div class="copyright copyright--user">© Bogdan Mitrović</div>
-      
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2024  Bogdan Mitrović 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </nav>
   </div>
 </footer>
 
-<script src="https://bool3max.github.io/assets/main.js"></script>
-<script src="https://bool3max.github.io/assets/prism.js"></script>
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
 
 
-      
-    </div>
 
-    
-  </body>
+
 </html>

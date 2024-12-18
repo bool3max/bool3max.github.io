@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -8,33 +8,33 @@
   
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Guide to screensharing on Sway from Firefox/Chromium | bool3max&#39;s blog</title>
-  <link rel = 'canonical' href = 'https://bool3max.win/posts/sway_screenshare_guide/'>
+  <title> Threads and processes don&#39;t exist | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'http://localhost:1313/posts/threads_and_processes_dont_exist/'>
   <meta name="description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:url" content="https://bool3max.win/posts/sway_screenshare_guide/">
+  <meta property="og:url" content="http://localhost:1313/posts/threads_and_processes_dont_exist/">
   <meta property="og:site_name" content="bool3max&#39;s blog">
-  <meta property="og:title" content="Guide to screensharing on Sway from Firefox/Chromium">
-  <meta property="og:description" content="...">
+  <meta property="og:title" content="Threads and processes don&#39;t exist">
+  <meta property="og:description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2021-01-25T14:01:59+01:00">
-    <meta property="article:modified_time" content="2021-01-25T14:01:59+01:00">
+    <meta property="article:published_time" content="2023-08-24T21:07:04+02:00">
+    <meta property="article:modified_time" content="2023-08-24T21:07:04+02:00">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Guide to screensharing on Sway from Firefox/Chromium">
-  <meta name="twitter:description" content="...">
+  <meta name="twitter:title" content="Threads and processes don&#39;t exist">
+  <meta name="twitter:description" content="I am currently a student. This blog is a collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
 
   
   
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+  <link rel="stylesheet" href="http://localhost:1313/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
 
   
   
@@ -46,7 +46,7 @@
   
 
   
-<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
+<link rel="icon" type="image/png" href="http://localhost:1313/images/favicon.ico" />
 
   
   
@@ -76,17 +76,11 @@
       <ul>
         
         <li>
-          <a class="icon" href=" https://bool3max.win/posts/utf8/" aria-label="Previous">
+          <a class="icon" href=" http://localhost:1313/posts/how_shell_redirection_is_implemented/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
         
-        
-        <li>
-          <a class="icon" href="https://bool3max.win/posts/linux_userspace_programs_for_process_management/" aria-label="Next">
-            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
-          </a>
-        </li>
         
         <li>
           <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
@@ -114,47 +108,47 @@
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&text=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&text=Threads%20and%20processes%20don%27t%20exist" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&title=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&is_video=false&description=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&is_video=false&description=Threads%20and%20processes%20don%27t%20exist" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Threads%20and%20processes%20don%27t%20exist&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&title=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&title=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&name=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium&description=..." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&name=Threads%20and%20processes%20don%27t%20exist&description=" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&t=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&t=Threads%20and%20processes%20don%27t%20exist" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -173,13 +167,13 @@
   <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
     <header>
       <h1 class="posttitle" itemprop="name headline">
-        Guide to screensharing on Sway from Firefox/Chromium
+        Threads and processes don&#39;t exist
       </h1>
       <div class="meta">
         
         <div class="postdate">
           
-          <time datetime="2021-01-25 14:01:59 &#43;0100 CET" itemprop="datePublished">2021-01-25</time>
+          <time datetime="2023-08-24 21:07:04 &#43;0200 CEST" itemprop="datePublished">2023-08-24</time>
           
         </div>
         
@@ -192,19 +186,7 @@
   
     
     <div class="content" itemprop="articleBody">
-      <p>I spent some time trying to get things to work and in the end I decided to compile the instructions in a compact and coherent guide.</p>
-<ol>
-<li>Install Chromium  <code>81.0.4044.122</code> or later, or Firefox <code>84.0-1</code> or later.</li>
-<li>Install <code>pipewire</code>, and <strong>if</strong> you&rsquo;re using Chromium, <code>libpipewire02</code> as well. If you&rsquo;re using Arch, both packages are available in the official repositories.</li>
-<li>Install <code>xdg-desktop-portal-wlr</code>. It is available in the official Arch repositories.</li>
-<li>If you&rsquo;re running Firefox, make sure that <code>MOZ_ENABLE_WAYLAND=1</code> is set before you start it to make sure it&rsquo;s running natively. If you&rsquo;re using Chromium, start it with the following flags, for the same reason: <code>chromium --enable-features=UseOzonePlatform --enable-gpu --ozone-platform=wayland</code>.</li>
-<li>If you&rsquo;re running Chrome, enable <code>enable-webrtc-pipewire-capturer</code> in <code>chrome://flags</code>.</li>
-<li>Make sure that the environment variables <code>XDG_SESSION_TYPE=wayland</code> and <code>XDG_CURRENT_DESKTOP=sway</code> are set and exported - it doesn&rsquo;t work without them.</li>
-<li>From the shell, run: <code>$ /usr/lib/xdg-desktop-portal -r &amp; /usr/lib/xdg-desktop-portal-wlr</code>. This will run the former as a background job, so don&rsquo;t close your shell.</li>
-<li>Run your browser.</li>
-<li>Profit, screen sharing should now work (I tested it in both FF and Chromium and it works on discordapp.com). You can also test if it works <a href="http://mozilla.github.io/webrtc-landing/gum_test.html">here</a>.</li>
-</ol>
-
+      
     </div>
   </article>
 
@@ -246,47 +228,47 @@
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&text=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&text=Threads%20and%20processes%20don%27t%20exist" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&title=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&is_video=false&description=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&is_video=false&description=Threads%20and%20processes%20don%27t%20exist" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Threads%20and%20processes%20don%27t%20exist&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&title=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&title=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&name=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium&description=..." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&name=Threads%20and%20processes%20don%27t%20exist&description=" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fsway_screenshare_guide%2f&t=Guide%20to%20screensharing%20on%20Sway%20from%20Firefox%2fChromium" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&t=Threads%20and%20processes%20don%27t%20exist" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>

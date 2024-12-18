@@ -5,8 +5,7 @@
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
-  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> A HashMap speedup tale: The number of allocations matters | bool3max&#39;s blog</title>
@@ -15,27 +14,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:title" content="A HashMap speedup tale: The number of allocations matters" />
-<meta property="og:description" content="I recently wrote bhashmap - a C11 hash table implementation library. This post will document one of the latest optimizations, which is in hindsight extremely simple to understand and implement, but which resulted in a ~30% runtime speedup.
-Background Before talking about the optimization, let&rsquo;s quickly get up to speed with how things worked before. I will focus only on the details relevant to this particular optimization.
-At the core of every hash table implementation is a key-value pair, and here the case is no different: every such pair is represented by a HashPair struct:" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.win/posts/hashmap_speedup/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-06-14T21:01:28+02:00" />
-<meta property="article:modified_time" content="2023-06-14T21:01:28+02:00" />
+  <meta property="og:url" content="https://bool3max.win/posts/hashmap_speedup/">
+  <meta property="og:site_name" content="bool3max&#39;s blog">
+  <meta property="og:title" content="A HashMap speedup tale: The number of allocations matters">
+  <meta property="og:description" content="I recently wrote bhashmap - a C11 hash table implementation library. This post will document one of the latest optimizations, which is in hindsight extremely simple to understand and implement, but which resulted in a ~30% runtime speedup.
+Background Before talking about the optimization, let’s quickly get up to speed with how things worked before. I will focus only on the details relevant to this particular optimization.
+At the core of every hash table implementation is a key-value pair, and here the case is no different: every such pair is represented by a HashPair struct:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2023-06-14T21:01:28+02:00">
+    <meta property="article:modified_time" content="2023-06-14T21:01:28+02:00">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="A HashMap speedup tale: The number of allocations matters"/>
-<meta name="twitter:description" content="I recently wrote bhashmap - a C11 hash table implementation library. This post will document one of the latest optimizations, which is in hindsight extremely simple to understand and implement, but which resulted in a ~30% runtime speedup.
-Background Before talking about the optimization, let&rsquo;s quickly get up to speed with how things worked before. I will focus only on the details relevant to this particular optimization.
-At the core of every hash table implementation is a key-value pair, and here the case is no different: every such pair is represented by a HashPair struct:"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="A HashMap speedup tale: The number of allocations matters">
+  <meta name="twitter:description" content="I recently wrote bhashmap - a C11 hash table implementation library. This post will document one of the latest optimizations, which is in hindsight extremely simple to understand and implement, but which resulted in a ~30% runtime speedup.
+Background Before talking about the optimization, let’s quickly get up to speed with how things worked before. I will focus only on the details relevant to this particular optimization.
+At the core of every hash table implementation is a key-value pair, and here the case is no different: every such pair is represented by a HashPair struct:">
 
   
   
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
 
   
   
@@ -150,7 +153,7 @@ At the core of every hash table implementation is a key-value pair, and here the
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&name=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&description=I%20recently%20wrote%20bhashmap%20-%20a%20C11%20hash%20table%20implementation%20library.%20This%20post%20will%20document%20one%20of%20the%20latest%20optimizations%2c%20which%20is%20in%20hindsight%20extremely%20simple%20to%20understand%20and%20implement%2c%20but%20which%20resulted%20in%20a%20~30%25%20runtime%20speedup.%0aBackground%20Before%20talking%20about%20the%20optimization%2c%20let%26rsquo%3bs%20quickly%20get%20up%20to%20speed%20with%20how%20things%20worked%20before.%20I%20will%20focus%20only%20on%20the%20details%20relevant%20to%20this%20particular%20optimization.%0aAt%20the%20core%20of%20every%20hash%20table%20implementation%20is%20a%20key-value%20pair%2c%20and%20here%20the%20case%20is%20no%20different%3a%20every%20such%20pair%20is%20represented%20by%20a%20HashPair%20struct%3a" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&name=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&description=%3cp%3eI%20recently%20wrote%20%3ca%20href%3d%22https%3a%2f%2fgithub.com%2fbool3max%2fbhashmap%22%3e%3cstrong%3e%3ccode%3ebhashmap%3c%2fcode%3e%3c%2fstrong%3e%3c%2fa%3e%20-%20a%20C11%20hash%20table%20implementation%0alibrary.%20This%20post%20will%20document%20one%20of%20the%20latest%20optimizations%2c%20which%20is%20in%20hindsight%20extremely%0asimple%20to%20understand%20and%20implement%2c%20but%20which%20resulted%20in%20a%20~30%25%20runtime%20speedup.%3c%2fp%3e%0a%3ch1%20id%3d%22background%22%3eBackground%3c%2fh1%3e%0a%3cp%3eBefore%20talking%20about%20the%20optimization%2c%20let%26rsquo%3bs%20quickly%20get%20up%20to%20speed%20with%20how%20things%20worked%20before.%0aI%20will%20focus%20only%20on%20the%20details%20relevant%20to%20this%20particular%20optimization.%3c%2fp%3e%0a%3cp%3eAt%20the%20core%20of%20every%20hash%20table%20implementation%20is%20a%20key-value%20pair%2c%20and%20here%20the%20case%20is%20no%20different%3a%0aevery%20such%20pair%20is%20represented%20by%20a%20%3ccode%3eHashPair%3c%2fcode%3e%20struct%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
@@ -377,7 +380,7 @@ benchmark, which inserts 466,550 key-value pairs into the map.</p>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&name=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&description=I%20recently%20wrote%20bhashmap%20-%20a%20C11%20hash%20table%20implementation%20library.%20This%20post%20will%20document%20one%20of%20the%20latest%20optimizations%2c%20which%20is%20in%20hindsight%20extremely%20simple%20to%20understand%20and%20implement%2c%20but%20which%20resulted%20in%20a%20~30%25%20runtime%20speedup.%0aBackground%20Before%20talking%20about%20the%20optimization%2c%20let%26rsquo%3bs%20quickly%20get%20up%20to%20speed%20with%20how%20things%20worked%20before.%20I%20will%20focus%20only%20on%20the%20details%20relevant%20to%20this%20particular%20optimization.%0aAt%20the%20core%20of%20every%20hash%20table%20implementation%20is%20a%20key-value%20pair%2c%20and%20here%20the%20case%20is%20no%20different%3a%20every%20such%20pair%20is%20represented%20by%20a%20HashPair%20struct%3a" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&name=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&description=%3cp%3eI%20recently%20wrote%20%3ca%20href%3d%22https%3a%2f%2fgithub.com%2fbool3max%2fbhashmap%22%3e%3cstrong%3e%3ccode%3ebhashmap%3c%2fcode%3e%3c%2fstrong%3e%3c%2fa%3e%20-%20a%20C11%20hash%20table%20implementation%0alibrary.%20This%20post%20will%20document%20one%20of%20the%20latest%20optimizations%2c%20which%20is%20in%20hindsight%20extremely%0asimple%20to%20understand%20and%20implement%2c%20but%20which%20resulted%20in%20a%20~30%25%20runtime%20speedup.%3c%2fp%3e%0a%3ch1%20id%3d%22background%22%3eBackground%3c%2fh1%3e%0a%3cp%3eBefore%20talking%20about%20the%20optimization%2c%20let%26rsquo%3bs%20quickly%20get%20up%20to%20speed%20with%20how%20things%20worked%20before.%0aI%20will%20focus%20only%20on%20the%20details%20relevant%20to%20this%20particular%20optimization.%3c%2fp%3e%0a%3cp%3eAt%20the%20core%20of%20every%20hash%20table%20implementation%20is%20a%20key-value%20pair%2c%20and%20here%20the%20case%20is%20no%20different%3a%0aevery%20such%20pair%20is%20represented%20by%20a%20%3ccode%3eHashPair%3c%2fcode%3e%20struct%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
@@ -410,7 +413,7 @@ benchmark, which inserts 466,550 key-value pairs into the map.</p>
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2023  Bogdan Mitrović 
+    Copyright  &copy; 2024  Bogdan Mitrović 
   </div>
   <div class="footer-right">
     <nav>

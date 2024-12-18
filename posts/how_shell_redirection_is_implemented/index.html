@@ -5,8 +5,7 @@
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
-  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> How is shell redirection implemented? | bool3max&#39;s blog</title>
@@ -15,25 +14,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:title" content="How is shell redirection implemented?" />
-<meta property="og:description" content="Shell redirection allows you to redirect a process&rsquo; standard streams to paths other than the controlling terminal. This post will focus on explaining how it is implemented by shells (such as bash). If you are unfamiliar with redirection and would like to familiarize yourself with the concept and syntax (as far as bash is concerned), then GNU Bash Reference Manual - Redirections is a good place to start.
-The fundamentals A running shell process maintains a set of open standard file descriptors for stdout (1), stderr(2) and stdin (0) that are tied to the controlling terminal." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.win/posts/how_shell_redirection_is_implemented/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-07-17T09:37:12+02:00" />
-<meta property="article:modified_time" content="2023-07-17T09:37:12+02:00" />
+  <meta property="og:url" content="https://bool3max.win/posts/how_shell_redirection_is_implemented/">
+  <meta property="og:site_name" content="bool3max&#39;s blog">
+  <meta property="og:title" content="How is shell redirection implemented?">
+  <meta property="og:description" content="Shell redirection allows you to redirect a process’ standard streams to paths other than the controlling terminal. This post will focus on explaining how it is implemented by shells (such as bash). If you are unfamiliar with redirection and would like to familiarize yourself with the concept and syntax (as far as bash is concerned), then GNU Bash Reference Manual - Redirections is a good place to start.
+The fundamentals A running shell process maintains a set of open standard file descriptors for stdout (1), stderr(2) and stdin (0) that are tied to the controlling terminal. This can be observed by querying the /proc virtual filesystem. For example, in bash:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2023-07-17T09:37:12+02:00">
+    <meta property="article:modified_time" content="2023-07-17T09:37:12+02:00">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="How is shell redirection implemented?"/>
-<meta name="twitter:description" content="Shell redirection allows you to redirect a process&rsquo; standard streams to paths other than the controlling terminal. This post will focus on explaining how it is implemented by shells (such as bash). If you are unfamiliar with redirection and would like to familiarize yourself with the concept and syntax (as far as bash is concerned), then GNU Bash Reference Manual - Redirections is a good place to start.
-The fundamentals A running shell process maintains a set of open standard file descriptors for stdout (1), stderr(2) and stdin (0) that are tied to the controlling terminal."/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="How is shell redirection implemented?">
+  <meta name="twitter:description" content="Shell redirection allows you to redirect a process’ standard streams to paths other than the controlling terminal. This post will focus on explaining how it is implemented by shells (such as bash). If you are unfamiliar with redirection and would like to familiarize yourself with the concept and syntax (as far as bash is concerned), then GNU Bash Reference Manual - Redirections is a good place to start.
+The fundamentals A running shell process maintains a set of open standard file descriptors for stdout (1), stderr(2) and stdin (0) that are tied to the controlling terminal. This can be observed by querying the /proc virtual filesystem. For example, in bash:">
 
   
   
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
 
   
   
@@ -142,7 +145,7 @@ The fundamentals A running shell process maintains a set of open standard file d
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&name=How%20is%20shell%20redirection%20implemented%3f&description=Shell%20redirection%20allows%20you%20to%20redirect%20a%20process%26rsquo%3b%20standard%20streams%20to%20paths%20other%20than%20the%20controlling%20terminal.%20This%20post%20will%20focus%20on%20explaining%20how%20it%20is%20implemented%20by%20shells%20%28such%20as%20bash%29.%20If%20you%20are%20unfamiliar%20with%20redirection%20and%20would%20like%20to%20familiarize%20yourself%20with%20the%20concept%20and%20syntax%20%28as%20far%20as%20bash%20is%20concerned%29%2c%20then%20GNU%20Bash%20Reference%20Manual%20-%20Redirections%20is%20a%20good%20place%20to%20start.%0aThe%20fundamentals%20A%20running%20shell%20process%20maintains%20a%20set%20of%20open%20standard%20file%20descriptors%20for%20stdout%20%281%29%2c%20stderr%282%29%20and%20stdin%20%280%29%20that%20are%20tied%20to%20the%20controlling%20terminal." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&name=How%20is%20shell%20redirection%20implemented%3f&description=%3cp%3eShell%20redirection%20allows%20you%20to%20redirect%20a%20process%26rsquo%3b%20standard%20streams%20to%20paths%20other%20than%20the%20controlling%20terminal.%20This%20post%20will%20focus%20on%20explaining%20how%20it%20is%20implemented%0aby%20shells%20%28such%20as%20%3ccode%3ebash%3c%2fcode%3e%29.%20If%20you%20are%20unfamiliar%20with%20redirection%20and%20would%20like%20to%20familiarize%20yourself%20with%20the%20concept%20and%20syntax%20%28as%20far%20as%20bash%20is%20concerned%29%2c%20then%0a%3ca%20href%3d%22https%3a%2f%2fwww.gnu.org%2fsoftware%2fbash%2fmanual%2fhtml_node%2fRedirections.html%22%3eGNU%20Bash%20Reference%20Manual%20-%20Redirections%3c%2fa%3e%20is%20a%20good%20place%20to%20start.%3c%2fp%3e%0a%3ch2%20id%3d%22the-fundamentals%22%3eThe%20fundamentals%3c%2fh2%3e%0a%3cp%3eA%20running%20shell%20process%20maintains%20a%20set%20of%20open%20standard%20file%20descriptors%20for%20stdout%20%281%29%2c%20stderr%282%29%20and%20stdin%20%280%29%20that%20are%0atied%20to%20the%20controlling%20terminal.%20This%20can%20be%20observed%20by%20querying%20the%20%3ccode%3e%2fproc%3c%2fcode%3e%20virtual%20filesystem.%20For%20example%2c%20in%20%3ccode%3ebash%3c%2fcode%3e%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
@@ -233,17 +236,17 @@ directory. We will trace all syscalls that happen using <code>strace</code>, and
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ strace -f bash -c <span style="color:#d14">&#39;./print.py 1&gt;pyout.txt 2&gt;pyerr.txt&#39;</span>
 </span></span></code></pre></div><p>The <code>-f</code> switch is necessary so that <code>strace</code> also tracks any forked processes that the main process spawns. Remember that the sycalls we are looking for
 happen in the forked child process. The interesting portion(s) of the output can be seen below:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>...
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>2103644 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f020f1faa10) = 2103645
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>...
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>2103645 openat(AT_FDCWD, &#34;pyout.txt&#34;, O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>2103645 dup2(3, 1)                      = 1
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>2103645 close(3)                        = 0
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>2103645 openat(AT_FDCWD, &#34;pyerr.txt&#34;, O_WRONLY|O_CREAT|O_TRUNC, 0666) = 3
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>2103645 dup2(3, 2)                      = 2
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>2103645 close(3)                        = 0
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>2103645 execve(&#34;./print.py&#34;, [&#34;./print.py&#34;], 0x55e27ce84140 /* 41 vars */) = 0
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>...
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#000;font-weight:bold">...</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#099">2103644</span> clone(child_stack<span style="color:#000;font-weight:bold">=</span>NULL, flags<span style="color:#000;font-weight:bold">=</span>CLONE_CHILD_CLEARTID<span style="color:#000;font-weight:bold">|</span>CLONE_CHILD_SETTID<span style="color:#000;font-weight:bold">|</span>SIGCHLD, child_tidptr<span style="color:#000;font-weight:bold">=</span><span style="color:#099">0x7f020f1faa10</span>) <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">2103645</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#000;font-weight:bold">...</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#099">2103645</span> openat(AT_FDCWD, <span style="color:#d14">&#34;pyout.txt&#34;</span>, O_WRONLY<span style="color:#000;font-weight:bold">|</span>O_CREAT<span style="color:#000;font-weight:bold">|</span>O_TRUNC, <span style="color:#099">0666</span>) <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">3</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#099">2103645</span> dup2(<span style="color:#099">3</span>, <span style="color:#099">1</span>)                      <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#099">2103645</span> close(<span style="color:#099">3</span>)                        <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#099">2103645</span> openat(AT_FDCWD, <span style="color:#d14">&#34;pyerr.txt&#34;</span>, O_WRONLY<span style="color:#000;font-weight:bold">|</span>O_CREAT<span style="color:#000;font-weight:bold">|</span>O_TRUNC, <span style="color:#099">0666</span>) <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">3</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#099">2103645</span> dup2(<span style="color:#099">3</span>, <span style="color:#099">2</span>)                      <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">2</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#099">2103645</span> close(<span style="color:#099">3</span>)                        <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#099">2103645</span> execve(<span style="color:#d14">&#34;./print.py&#34;</span>, [<span style="color:#d14">&#34;./print.py&#34;</span>], <span style="color:#099">0x55e27ce84140</span> <span style="color:#000;font-weight:bold">/*</span> <span style="color:#099">41</span> vars <span style="color:#000;font-weight:bold">*/</span>) <span style="color:#000;font-weight:bold">=</span> <span style="color:#099">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#000;font-weight:bold">...</span>
 </span></span></code></pre></div><ul>
 <li>First, the parent <code>bash</code> process clones itself, and the child PID is returned.</li>
 <li>Then, the child process opens the file <code>pyout.txt</code>, receiving file descriptor 3.</li>
@@ -345,7 +348,7 @@ by Viacheslav Biriukov sheds light on and solidifies the difference between the 
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&name=How%20is%20shell%20redirection%20implemented%3f&description=Shell%20redirection%20allows%20you%20to%20redirect%20a%20process%26rsquo%3b%20standard%20streams%20to%20paths%20other%20than%20the%20controlling%20terminal.%20This%20post%20will%20focus%20on%20explaining%20how%20it%20is%20implemented%20by%20shells%20%28such%20as%20bash%29.%20If%20you%20are%20unfamiliar%20with%20redirection%20and%20would%20like%20to%20familiarize%20yourself%20with%20the%20concept%20and%20syntax%20%28as%20far%20as%20bash%20is%20concerned%29%2c%20then%20GNU%20Bash%20Reference%20Manual%20-%20Redirections%20is%20a%20good%20place%20to%20start.%0aThe%20fundamentals%20A%20running%20shell%20process%20maintains%20a%20set%20of%20open%20standard%20file%20descriptors%20for%20stdout%20%281%29%2c%20stderr%282%29%20and%20stdin%20%280%29%20that%20are%20tied%20to%20the%20controlling%20terminal." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&name=How%20is%20shell%20redirection%20implemented%3f&description=%3cp%3eShell%20redirection%20allows%20you%20to%20redirect%20a%20process%26rsquo%3b%20standard%20streams%20to%20paths%20other%20than%20the%20controlling%20terminal.%20This%20post%20will%20focus%20on%20explaining%20how%20it%20is%20implemented%0aby%20shells%20%28such%20as%20%3ccode%3ebash%3c%2fcode%3e%29.%20If%20you%20are%20unfamiliar%20with%20redirection%20and%20would%20like%20to%20familiarize%20yourself%20with%20the%20concept%20and%20syntax%20%28as%20far%20as%20bash%20is%20concerned%29%2c%20then%0a%3ca%20href%3d%22https%3a%2f%2fwww.gnu.org%2fsoftware%2fbash%2fmanual%2fhtml_node%2fRedirections.html%22%3eGNU%20Bash%20Reference%20Manual%20-%20Redirections%3c%2fa%3e%20is%20a%20good%20place%20to%20start.%3c%2fp%3e%0a%3ch2%20id%3d%22the-fundamentals%22%3eThe%20fundamentals%3c%2fh2%3e%0a%3cp%3eA%20running%20shell%20process%20maintains%20a%20set%20of%20open%20standard%20file%20descriptors%20for%20stdout%20%281%29%2c%20stderr%282%29%20and%20stdin%20%280%29%20that%20are%0atied%20to%20the%20controlling%20terminal.%20This%20can%20be%20observed%20by%20querying%20the%20%3ccode%3e%2fproc%3c%2fcode%3e%20virtual%20filesystem.%20For%20example%2c%20in%20%3ccode%3ebash%3c%2fcode%3e%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
@@ -378,7 +381,7 @@ by Viacheslav Biriukov sheds light on and solidifies the difference between the 
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2023  Bogdan Mitrović 
+    Copyright  &copy; 2024  Bogdan Mitrović 
   </div>
   <div class="footer-right">
     <nav>

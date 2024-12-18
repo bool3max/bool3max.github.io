@@ -5,8 +5,7 @@
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
-  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> The joys of C API design: stripping whitespace from C-strings | bool3max&#39;s blog</title>
@@ -15,25 +14,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:title" content="The joys of C API design: stripping whitespace from C-strings" />
-<meta property="og:description" content="Suppose you are tasked with stripping leading and trailing whitespace from a string. In dynamic, garbage-collected languages whose standard libraries are usually equipped with functions that handle this, you don&rsquo;t even think about the implementation. In Python (whose strings are immutable), you&rsquo;d simply call the string&rsquo;s .strip() method and get a stripped string back. In Golang, you&rsquo;d call strings.TrimSpaces() and receive a new, stripped slice of the string.
-While designing such a function in C (where you are required to manually manage memory) isn&rsquo;t difficult - it can be done in a seemingly myriad of ways." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://bool3max.win/posts/c_strip_whitespace/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-07-04T09:18:46+02:00" />
-<meta property="article:modified_time" content="2023-07-04T09:18:46+02:00" />
+  <meta property="og:url" content="https://bool3max.win/posts/c_strip_whitespace/">
+  <meta property="og:site_name" content="bool3max&#39;s blog">
+  <meta property="og:title" content="The joys of C API design: stripping whitespace from C-strings">
+  <meta property="og:description" content="Suppose you are tasked with stripping leading and trailing whitespace from a string. In dynamic, garbage-collected languages whose standard libraries are usually equipped with functions that handle this, you don’t even think about the implementation. In Python (whose strings are immutable), you’d simply call the string’s .strip() method and get a stripped string back. In Golang, you’d call strings.TrimSpaces() and receive a new, stripped slice of the string.
+While designing such a function in C (where you are required to manually manage memory) isn’t difficult - it can be done in a seemingly myriad of ways. Do you modify the original string? Do you allocate a new string on the heap? If so, how do you return a pointer to it? Or, do you fill in a provided buffer instead? What if the buffer isn’t large enough? Etc…">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2023-07-04T09:18:46+02:00">
+    <meta property="article:modified_time" content="2023-07-04T09:18:46+02:00">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="The joys of C API design: stripping whitespace from C-strings"/>
-<meta name="twitter:description" content="Suppose you are tasked with stripping leading and trailing whitespace from a string. In dynamic, garbage-collected languages whose standard libraries are usually equipped with functions that handle this, you don&rsquo;t even think about the implementation. In Python (whose strings are immutable), you&rsquo;d simply call the string&rsquo;s .strip() method and get a stripped string back. In Golang, you&rsquo;d call strings.TrimSpaces() and receive a new, stripped slice of the string.
-While designing such a function in C (where you are required to manually manage memory) isn&rsquo;t difficult - it can be done in a seemingly myriad of ways."/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The joys of C API design: stripping whitespace from C-strings">
+  <meta name="twitter:description" content="Suppose you are tasked with stripping leading and trailing whitespace from a string. In dynamic, garbage-collected languages whose standard libraries are usually equipped with functions that handle this, you don’t even think about the implementation. In Python (whose strings are immutable), you’d simply call the string’s .strip() method and get a stripped string back. In Golang, you’d call strings.TrimSpaces() and receive a new, stripped slice of the string.
+While designing such a function in C (where you are required to manually manage memory) isn’t difficult - it can be done in a seemingly myriad of ways. Do you modify the original string? Do you allocate a new string on the heap? If so, how do you return a pointer to it? Or, do you fill in a provided buffer instead? What if the buffer isn’t large enough? Etc…">
 
   
   
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/styles.e2f2d7d64f4907d6088394b77f01fb2fe78ce5e2639a19c5cb617ff3e9b07968c5b2f2ca5ed5831a540360c5c5b380ac4d2fe85d7f873a89fffe3fe1d63febcc.css" integrity="sha512-4vLX1k9JB9YIg5S3fwH7L&#43;eM5eJjmhnFy2F/8&#43;mweWjFsvLKXtWDGlQDYMXFs4CsTS/oXX&#43;HOon//j/h1j/rzA=="> 
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
 
   
   
@@ -148,7 +151,7 @@ While designing such a function in C (where you are required to manually manage 
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&name=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&description=Suppose%20you%20are%20tasked%20with%20stripping%20leading%20and%20trailing%20whitespace%20from%20a%20string.%20In%20dynamic%2c%20garbage-collected%20languages%20whose%20standard%20libraries%20are%20usually%20equipped%20with%20functions%20that%20handle%20this%2c%20you%20don%26rsquo%3bt%20even%20think%20about%20the%20implementation.%20In%20Python%20%28whose%20strings%20are%20immutable%29%2c%20you%26rsquo%3bd%20simply%20call%20the%20string%26rsquo%3bs%20.strip%28%29%20method%20and%20get%20a%20stripped%20string%20back.%20In%20Golang%2c%20you%26rsquo%3bd%20call%20strings.TrimSpaces%28%29%20and%20receive%20a%20new%2c%20stripped%20slice%20of%20the%20string.%0aWhile%20designing%20such%20a%20function%20in%20C%20%28where%20you%20are%20required%20to%20manually%20manage%20memory%29%20isn%26rsquo%3bt%20difficult%20-%20it%20can%20be%20done%20in%20a%20seemingly%20myriad%20of%20ways." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&name=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&description=%3cp%3eSuppose%20you%20are%20tasked%20with%20stripping%20leading%20and%20trailing%20whitespace%20from%20a%20string.%20In%20dynamic%2c%20garbage-collected%20languages%20whose%20standard%20libraries%20are%20usually%20equipped%20with%20functions%20that%20handle%20this%2c%20you%20don%26rsquo%3bt%20even%20think%20about%20the%20implementation.%20In%20Python%20%28whose%20strings%20are%20immutable%29%2c%20you%26rsquo%3bd%20simply%20call%20the%20string%26rsquo%3bs%20%3ccode%3e.strip%28%29%3c%2fcode%3e%20method%20and%20get%20a%20stripped%20string%20back.%20In%20Golang%2c%20you%26rsquo%3bd%20call%20%3ccode%3estrings.TrimSpaces%28%29%3c%2fcode%3e%20and%20receive%20a%20new%2c%20stripped%20slice%20of%20the%20string.%3c%2fp%3e%0a%3cp%3eWhile%20designing%20such%20a%20function%20in%20C%20%28where%20you%20are%20required%20to%20manually%20manage%20memory%29%20isn%26rsquo%3bt%20difficult%20-%20it%20can%20be%20done%20in%20a%20seemingly%20myriad%20of%20ways.%20Do%20you%20modify%20the%20original%20string%3f%20Do%20you%20allocate%20a%20new%20string%20on%20the%20heap%3f%20If%20so%2c%20how%20do%20you%20return%20a%20pointer%20to%20it%3f%20Or%2c%20do%20you%20fill%20in%20a%20provided%20buffer%20instead%3f%20What%20if%20the%20buffer%20isn%26rsquo%3bt%20large%20enough%3f%20Etc%26hellip%3b%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
@@ -451,7 +454,7 @@ Though not inherently useful, these two values together represent a stripped ver
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&name=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&description=Suppose%20you%20are%20tasked%20with%20stripping%20leading%20and%20trailing%20whitespace%20from%20a%20string.%20In%20dynamic%2c%20garbage-collected%20languages%20whose%20standard%20libraries%20are%20usually%20equipped%20with%20functions%20that%20handle%20this%2c%20you%20don%26rsquo%3bt%20even%20think%20about%20the%20implementation.%20In%20Python%20%28whose%20strings%20are%20immutable%29%2c%20you%26rsquo%3bd%20simply%20call%20the%20string%26rsquo%3bs%20.strip%28%29%20method%20and%20get%20a%20stripped%20string%20back.%20In%20Golang%2c%20you%26rsquo%3bd%20call%20strings.TrimSpaces%28%29%20and%20receive%20a%20new%2c%20stripped%20slice%20of%20the%20string.%0aWhile%20designing%20such%20a%20function%20in%20C%20%28where%20you%20are%20required%20to%20manually%20manage%20memory%29%20isn%26rsquo%3bt%20difficult%20-%20it%20can%20be%20done%20in%20a%20seemingly%20myriad%20of%20ways." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&name=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&description=%3cp%3eSuppose%20you%20are%20tasked%20with%20stripping%20leading%20and%20trailing%20whitespace%20from%20a%20string.%20In%20dynamic%2c%20garbage-collected%20languages%20whose%20standard%20libraries%20are%20usually%20equipped%20with%20functions%20that%20handle%20this%2c%20you%20don%26rsquo%3bt%20even%20think%20about%20the%20implementation.%20In%20Python%20%28whose%20strings%20are%20immutable%29%2c%20you%26rsquo%3bd%20simply%20call%20the%20string%26rsquo%3bs%20%3ccode%3e.strip%28%29%3c%2fcode%3e%20method%20and%20get%20a%20stripped%20string%20back.%20In%20Golang%2c%20you%26rsquo%3bd%20call%20%3ccode%3estrings.TrimSpaces%28%29%3c%2fcode%3e%20and%20receive%20a%20new%2c%20stripped%20slice%20of%20the%20string.%3c%2fp%3e%0a%3cp%3eWhile%20designing%20such%20a%20function%20in%20C%20%28where%20you%20are%20required%20to%20manually%20manage%20memory%29%20isn%26rsquo%3bt%20difficult%20-%20it%20can%20be%20done%20in%20a%20seemingly%20myriad%20of%20ways.%20Do%20you%20modify%20the%20original%20string%3f%20Do%20you%20allocate%20a%20new%20string%20on%20the%20heap%3f%20If%20so%2c%20how%20do%20you%20return%20a%20pointer%20to%20it%3f%20Or%2c%20do%20you%20fill%20in%20a%20provided%20buffer%20instead%3f%20What%20if%20the%20buffer%20isn%26rsquo%3bt%20large%20enough%3f%20Etc%26hellip%3b%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
@@ -484,7 +487,7 @@ Though not inherently useful, these two values together represent a stripped ver
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2023  Bogdan Mitrović 
+    Copyright  &copy; 2024  Bogdan Mitrović 
   </div>
   <div class="footer-right">
     <nav>
