@@ -2,83 +2,83 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://bool3max.win/</loc>
+    <loc>http://localhost:1313/</loc>
     <lastmod>2024-12-10T21:07:04+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/</loc>
+    <loc>http://localhost:1313/posts/</loc>
     <lastmod>2024-12-10T21:07:04+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/threads_and_processes_dont_exist/</loc>
+    <loc>http://localhost:1313/posts/threads_and_processes_dont_exist/</loc>
     <lastmod>2024-12-10T21:07:04+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/how_shell_redirection_is_implemented/</loc>
+    <loc>http://localhost:1313/posts/how_shell_redirection_is_implemented/</loc>
     <lastmod>2023-07-17T09:37:12+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/c_strip_whitespace/</loc>
+    <loc>http://localhost:1313/posts/c_strip_whitespace/</loc>
     <lastmod>2023-07-04T09:18:46+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/hashmap_speedup/</loc>
+    <loc>http://localhost:1313/posts/hashmap_speedup/</loc>
     <lastmod>2023-06-14T21:01:28+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/time_sleep_cpython_implementation/</loc>
+    <loc>http://localhost:1313/posts/time_sleep_cpython_implementation/</loc>
     <lastmod>2023-04-22T21:25:29+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/modifying_bitfields_of_datatypes/</loc>
+    <loc>http://localhost:1313/posts/modifying_bitfields_of_datatypes/</loc>
     <lastmod>2021-10-22T11:52:38+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/ieee754_explained/</loc>
+    <loc>http://localhost:1313/posts/ieee754_explained/</loc>
     <lastmod>2021-09-18T18:00:38+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/man_and_pagers_plus_colors/</loc>
+    <loc>http://localhost:1313/posts/man_and_pagers_plus_colors/</loc>
     <lastmod>2021-02-17T13:44:42+01:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/linux_userspace_programs_for_process_management/</loc>
+    <loc>http://localhost:1313/posts/linux_userspace_programs_for_process_management/</loc>
     <lastmod>2021-01-26T16:10:17+01:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/sway_screenshare_guide/</loc>
+    <loc>http://localhost:1313/posts/sway_screenshare_guide/</loc>
     <lastmod>2021-01-25T14:01:59+01:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/utf8/</loc>
+    <loc>http://localhost:1313/posts/utf8/</loc>
     <lastmod>2020-12-03T21:29:03+01:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/parallelism_and_concurrency/</loc>
+    <loc>http://localhost:1313/posts/parallelism_and_concurrency/</loc>
     <lastmod>2020-11-28T13:41:36+01:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/semantics_of_linux_fifo_operations/</loc>
+    <loc>http://localhost:1313/posts/semantics_of_linux_fifo_operations/</loc>
     <lastmod>2020-11-24T20:36:49+01:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/context_managers_and_with_python3/</loc>
+    <loc>http://localhost:1313/posts/context_managers_and_with_python3/</loc>
     <lastmod>2020-11-21T14:52:04+01:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/python_decorators_explained/</loc>
+    <loc>http://localhost:1313/posts/python_decorators_explained/</loc>
     <lastmod>2020-11-14T18:42:28+01:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/python_generators/</loc>
+    <loc>http://localhost:1313/posts/python_generators/</loc>
     <lastmod>2020-11-05T00:32:02+01:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/languages_versus_implementations/</loc>
+    <loc>http://localhost:1313/posts/languages_versus_implementations/</loc>
     <lastmod>2020-10-16T14:23:54+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/python3_oop_guide/</loc>
+    <loc>http://localhost:1313/posts/python3_oop_guide/</loc>
     <lastmod>2020-10-12T16:22:05+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/fish_scripting_over_bash/</loc>
+    <loc>http://localhost:1313/posts/fish_scripting_over_bash/</loc>
     <lastmod>2020-09-28T15:45:48+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/elf/</loc>
+    <loc>http://localhost:1313/posts/elf/</loc>
     <lastmod>2020-08-09T18:54:26+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/uefi_disks/</loc>
+    <loc>http://localhost:1313/posts/uefi_disks/</loc>
     <lastmod>2019-09-18T17:42:03+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/c_tc_and_decl/</loc>
+    <loc>http://localhost:1313/posts/c_tc_and_decl/</loc>
     <lastmod>2018-11-14T18:05:02+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/posts/int_problem/</loc>
+    <loc>http://localhost:1313/posts/int_problem/</loc>
     <lastmod>2018-09-13T02:51:42+02:00</lastmod>
   </url><url>
-    <loc>https://bool3max.win/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
   </url><url>
-    <loc>https://bool3max.win/tags/</loc>
+    <loc>http://localhost:1313/tags/</loc>
   </url>
 </urlset>

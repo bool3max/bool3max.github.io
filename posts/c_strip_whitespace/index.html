@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -9,12 +9,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> The joys of C API design: stripping whitespace from C-strings | bool3max&#39;s blog</title>
-  <link rel = 'canonical' href = 'https://bool3max.win/posts/c_strip_whitespace/'>
+  <link rel = 'canonical' href = 'http://localhost:1313/posts/c_strip_whitespace/'>
   <meta name="description" content="A collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:url" content="https://bool3max.win/posts/c_strip_whitespace/">
+  <meta property="og:url" content="http://localhost:1313/posts/c_strip_whitespace/">
   <meta property="og:site_name" content="bool3max&#39;s blog">
   <meta property="og:title" content="The joys of C API design: stripping whitespace from C-strings">
   <meta property="og:description" content="Suppose you are tasked with stripping leading and trailing whitespace from a string. In dynamic, garbage-collected languages whose standard libraries are usually equipped with functions that handle this, you don’t even think about the implementation. In Python (whose strings are immutable), you’d simply call the string’s .strip() method and get a stripped string back. In Golang, you’d call strings.TrimSpaces() and receive a new, stripped slice of the string.
@@ -36,7 +36,7 @@ While designing such a function in C (where you are required to manually manage 
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+  <link rel="stylesheet" href="http://localhost:1313/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
 
   
   
@@ -48,7 +48,7 @@ While designing such a function in C (where you are required to manually manage 
   
 
   
-<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
+<link rel="icon" type="image/png" href="http://localhost:1313/images/favicon.ico" />
 
   
   
@@ -78,14 +78,14 @@ While designing such a function in C (where you are required to manually manage 
       <ul>
         
         <li>
-          <a class="icon" href=" https://bool3max.win/posts/hashmap_speedup/" aria-label="Previous">
+          <a class="icon" href=" http://localhost:1313/posts/hashmap_speedup/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
         
         
         <li>
-          <a class="icon" href="https://bool3max.win/posts/how_shell_redirection_is_implemented/" aria-label="Next">
+          <a class="icon" href="http://localhost:1313/posts/how_shell_redirection_is_implemented/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -116,47 +116,47 @@ While designing such a function in C (where you are required to manually manage 
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&text=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&text=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&is_video=false&description=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&is_video=false&description=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&name=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&description=%3cp%3eSuppose%20you%20are%20tasked%20with%20stripping%20leading%20and%20trailing%20whitespace%20from%20a%20string.%20In%20dynamic%2c%20garbage-collected%20languages%20whose%20standard%20libraries%20are%20usually%20equipped%20with%20functions%20that%20handle%20this%2c%20you%20don%26rsquo%3bt%20even%20think%20about%20the%20implementation.%20In%20Python%20%28whose%20strings%20are%20immutable%29%2c%20you%26rsquo%3bd%20simply%20call%20the%20string%26rsquo%3bs%20%3ccode%3e.strip%28%29%3c%2fcode%3e%20method%20and%20get%20a%20stripped%20string%20back.%20In%20Golang%2c%20you%26rsquo%3bd%20call%20%3ccode%3estrings.TrimSpaces%28%29%3c%2fcode%3e%20and%20receive%20a%20new%2c%20stripped%20slice%20of%20the%20string.%3c%2fp%3e%0a%3cp%3eWhile%20designing%20such%20a%20function%20in%20C%20%28where%20you%20are%20required%20to%20manually%20manage%20memory%29%20isn%26rsquo%3bt%20difficult%20-%20it%20can%20be%20done%20in%20a%20seemingly%20myriad%20of%20ways.%20Do%20you%20modify%20the%20original%20string%3f%20Do%20you%20allocate%20a%20new%20string%20on%20the%20heap%3f%20If%20so%2c%20how%20do%20you%20return%20a%20pointer%20to%20it%3f%20Or%2c%20do%20you%20fill%20in%20a%20provided%20buffer%20instead%3f%20What%20if%20the%20buffer%20isn%26rsquo%3bt%20large%20enough%3f%20Etc%26hellip%3b%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&name=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&description=%3cp%3eSuppose%20you%20are%20tasked%20with%20stripping%20leading%20and%20trailing%20whitespace%20from%20a%20string.%20In%20dynamic%2c%20garbage-collected%20languages%20whose%20standard%20libraries%20are%20usually%20equipped%20with%20functions%20that%20handle%20this%2c%20you%20don%26rsquo%3bt%20even%20think%20about%20the%20implementation.%20In%20Python%20%28whose%20strings%20are%20immutable%29%2c%20you%26rsquo%3bd%20simply%20call%20the%20string%26rsquo%3bs%20%3ccode%3e.strip%28%29%3c%2fcode%3e%20method%20and%20get%20a%20stripped%20string%20back.%20In%20Golang%2c%20you%26rsquo%3bd%20call%20%3ccode%3estrings.TrimSpaces%28%29%3c%2fcode%3e%20and%20receive%20a%20new%2c%20stripped%20slice%20of%20the%20string.%3c%2fp%3e%0a%3cp%3eWhile%20designing%20such%20a%20function%20in%20C%20%28where%20you%20are%20required%20to%20manually%20manage%20memory%29%20isn%26rsquo%3bt%20difficult%20-%20it%20can%20be%20done%20in%20a%20seemingly%20myriad%20of%20ways.%20Do%20you%20modify%20the%20original%20string%3f%20Do%20you%20allocate%20a%20new%20string%20on%20the%20heap%3f%20If%20so%2c%20how%20do%20you%20return%20a%20pointer%20to%20it%3f%20Or%2c%20do%20you%20fill%20in%20a%20provided%20buffer%20instead%3f%20What%20if%20the%20buffer%20isn%26rsquo%3bt%20large%20enough%3f%20Etc%26hellip%3b%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&t=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&t=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -419,47 +419,47 @@ Though not inherently useful, these two values together represent a stripped ver
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&text=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&text=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&is_video=false&description=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&is_video=false&description=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&title=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&name=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&description=%3cp%3eSuppose%20you%20are%20tasked%20with%20stripping%20leading%20and%20trailing%20whitespace%20from%20a%20string.%20In%20dynamic%2c%20garbage-collected%20languages%20whose%20standard%20libraries%20are%20usually%20equipped%20with%20functions%20that%20handle%20this%2c%20you%20don%26rsquo%3bt%20even%20think%20about%20the%20implementation.%20In%20Python%20%28whose%20strings%20are%20immutable%29%2c%20you%26rsquo%3bd%20simply%20call%20the%20string%26rsquo%3bs%20%3ccode%3e.strip%28%29%3c%2fcode%3e%20method%20and%20get%20a%20stripped%20string%20back.%20In%20Golang%2c%20you%26rsquo%3bd%20call%20%3ccode%3estrings.TrimSpaces%28%29%3c%2fcode%3e%20and%20receive%20a%20new%2c%20stripped%20slice%20of%20the%20string.%3c%2fp%3e%0a%3cp%3eWhile%20designing%20such%20a%20function%20in%20C%20%28where%20you%20are%20required%20to%20manually%20manage%20memory%29%20isn%26rsquo%3bt%20difficult%20-%20it%20can%20be%20done%20in%20a%20seemingly%20myriad%20of%20ways.%20Do%20you%20modify%20the%20original%20string%3f%20Do%20you%20allocate%20a%20new%20string%20on%20the%20heap%3f%20If%20so%2c%20how%20do%20you%20return%20a%20pointer%20to%20it%3f%20Or%2c%20do%20you%20fill%20in%20a%20provided%20buffer%20instead%3f%20What%20if%20the%20buffer%20isn%26rsquo%3bt%20large%20enough%3f%20Etc%26hellip%3b%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&name=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings&description=%3cp%3eSuppose%20you%20are%20tasked%20with%20stripping%20leading%20and%20trailing%20whitespace%20from%20a%20string.%20In%20dynamic%2c%20garbage-collected%20languages%20whose%20standard%20libraries%20are%20usually%20equipped%20with%20functions%20that%20handle%20this%2c%20you%20don%26rsquo%3bt%20even%20think%20about%20the%20implementation.%20In%20Python%20%28whose%20strings%20are%20immutable%29%2c%20you%26rsquo%3bd%20simply%20call%20the%20string%26rsquo%3bs%20%3ccode%3e.strip%28%29%3c%2fcode%3e%20method%20and%20get%20a%20stripped%20string%20back.%20In%20Golang%2c%20you%26rsquo%3bd%20call%20%3ccode%3estrings.TrimSpaces%28%29%3c%2fcode%3e%20and%20receive%20a%20new%2c%20stripped%20slice%20of%20the%20string.%3c%2fp%3e%0a%3cp%3eWhile%20designing%20such%20a%20function%20in%20C%20%28where%20you%20are%20required%20to%20manually%20manage%20memory%29%20isn%26rsquo%3bt%20difficult%20-%20it%20can%20be%20done%20in%20a%20seemingly%20myriad%20of%20ways.%20Do%20you%20modify%20the%20original%20string%3f%20Do%20you%20allocate%20a%20new%20string%20on%20the%20heap%3f%20If%20so%2c%20how%20do%20you%20return%20a%20pointer%20to%20it%3f%20Or%2c%20do%20you%20fill%20in%20a%20provided%20buffer%20instead%3f%20What%20if%20the%20buffer%20isn%26rsquo%3bt%20large%20enough%3f%20Etc%26hellip%3b%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fc_strip_whitespace%2f&t=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fc_strip_whitespace%2f&t=The%20joys%20of%20C%20API%20design%3a%20stripping%20whitespace%20from%20C-strings" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>

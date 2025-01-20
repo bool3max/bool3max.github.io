@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -9,12 +9,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> Threads and processes don&#39;t exist | bool3max&#39;s blog</title>
-  <link rel = 'canonical' href = 'https://bool3max.win/posts/threads_and_processes_dont_exist/'>
+  <link rel = 'canonical' href = 'http://localhost:1313/posts/threads_and_processes_dont_exist/'>
   <meta name="description" content="A collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:url" content="https://bool3max.win/posts/threads_and_processes_dont_exist/">
+  <meta property="og:url" content="http://localhost:1313/posts/threads_and_processes_dont_exist/">
   <meta property="og:site_name" content="bool3max&#39;s blog">
   <meta property="og:title" content="Threads and processes don&#39;t exist">
   <meta property="og:description" content="On Linux, threads and processes don’t actually exist. Underneath all the abstractions, the kernel knows only of “tasks” - independent flows of execution, created using the clone(2) family of syscalls. The differences between what we call a “thread” and what we call a “process” lie in the flags argument of the clone syscall, which determines many kinds of properties of the eventually spawned task. The most notable of those is the sharing of virtual memory space, which is controlled by the CLONE_VM flag of the argument.">
@@ -34,7 +34,7 @@
     
   
   
-  <link rel="stylesheet" href="https://bool3max.win/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+  <link rel="stylesheet" href="http://localhost:1313/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
 
   
   
@@ -46,7 +46,7 @@
   
 
   
-<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
+<link rel="icon" type="image/png" href="http://localhost:1313/images/favicon.ico" />
 
   
   
@@ -76,7 +76,7 @@
       <ul>
         
         <li>
-          <a class="icon" href=" https://bool3max.win/posts/how_shell_redirection_is_implemented/" aria-label="Previous">
+          <a class="icon" href=" http://localhost:1313/posts/how_shell_redirection_is_implemented/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
@@ -108,47 +108,47 @@
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&text=Threads%20and%20processes%20don%27t%20exist" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&text=Threads%20and%20processes%20don%27t%20exist" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&is_video=false&description=Threads%20and%20processes%20don%27t%20exist" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&is_video=false&description=Threads%20and%20processes%20don%27t%20exist" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=Threads%20and%20processes%20don%27t%20exist&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Threads%20and%20processes%20don%27t%20exist&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&name=Threads%20and%20processes%20don%27t%20exist&description=%3cp%3eOn%20Linux%2c%20threads%20and%20processes%20don%26rsquo%3bt%20actually%20exist.%20Underneath%20all%20the%20abstractions%2c%20the%20kernel%20knows%20only%20of%20%26ldquo%3btasks%26rdquo%3b%20-%20independent%20flows%20of%20execution%2c%20created%20using%20the%20%3ca%20href%3d%22https%3a%2f%2fman7.org%2flinux%2fman-pages%2fman2%2fclone.2.html%22%3e%3ccode%3eclone%282%29%3c%2fcode%3e%3c%2fa%3e%0afamily%20of%20syscalls.%20The%20differences%20between%20what%20we%20call%20a%20%26ldquo%3bthread%26rdquo%3b%20and%20what%20we%20call%20a%20%26ldquo%3bprocess%26rdquo%3b%20lie%20in%20the%20%3ccode%3eflags%3c%2fcode%3e%20argument%20of%20the%20clone%20syscall%2c%20which%20determines%20many%20kinds%20of%20properties%20of%20the%20eventually%20spawned%20task.%0aThe%20most%20notable%20of%20those%20is%20the%20sharing%20of%20virtual%20memory%20space%2c%20which%20is%20controlled%20by%20the%20%3ccode%3eCLONE_VM%3c%2fcode%3e%20flag%20of%20the%20argument.%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&name=Threads%20and%20processes%20don%27t%20exist&description=%3cp%3eOn%20Linux%2c%20threads%20and%20processes%20don%26rsquo%3bt%20actually%20exist.%20Underneath%20all%20the%20abstractions%2c%20the%20kernel%20knows%20only%20of%20%26ldquo%3btasks%26rdquo%3b%20-%20independent%20flows%20of%20execution%2c%20created%20using%20the%20%3ca%20href%3d%22https%3a%2f%2fman7.org%2flinux%2fman-pages%2fman2%2fclone.2.html%22%3e%3ccode%3eclone%282%29%3c%2fcode%3e%3c%2fa%3e%0afamily%20of%20syscalls.%20The%20differences%20between%20what%20we%20call%20a%20%26ldquo%3bthread%26rdquo%3b%20and%20what%20we%20call%20a%20%26ldquo%3bprocess%26rdquo%3b%20lie%20in%20the%20%3ccode%3eflags%3c%2fcode%3e%20argument%20of%20the%20clone%20syscall%2c%20which%20determines%20many%20kinds%20of%20properties%20of%20the%20eventually%20spawned%20task.%0aThe%20most%20notable%20of%20those%20is%20the%20sharing%20of%20virtual%20memory%20space%2c%20which%20is%20controlled%20by%20the%20%3ccode%3eCLONE_VM%3c%2fcode%3e%20flag%20of%20the%20argument.%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&t=Threads%20and%20processes%20don%27t%20exist" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&t=Threads%20and%20processes%20don%27t%20exist" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -270,47 +270,47 @@ calls <code>clone(2)</code>.</p>
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&text=Threads%20and%20processes%20don%27t%20exist" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&text=Threads%20and%20processes%20don%27t%20exist" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&is_video=false&description=Threads%20and%20processes%20don%27t%20exist" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&is_video=false&description=Threads%20and%20processes%20don%27t%20exist" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=Threads%20and%20processes%20don%27t%20exist&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Threads%20and%20processes%20don%27t%20exist&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&title=Threads%20and%20processes%20don%27t%20exist" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&name=Threads%20and%20processes%20don%27t%20exist&description=%3cp%3eOn%20Linux%2c%20threads%20and%20processes%20don%26rsquo%3bt%20actually%20exist.%20Underneath%20all%20the%20abstractions%2c%20the%20kernel%20knows%20only%20of%20%26ldquo%3btasks%26rdquo%3b%20-%20independent%20flows%20of%20execution%2c%20created%20using%20the%20%3ca%20href%3d%22https%3a%2f%2fman7.org%2flinux%2fman-pages%2fman2%2fclone.2.html%22%3e%3ccode%3eclone%282%29%3c%2fcode%3e%3c%2fa%3e%0afamily%20of%20syscalls.%20The%20differences%20between%20what%20we%20call%20a%20%26ldquo%3bthread%26rdquo%3b%20and%20what%20we%20call%20a%20%26ldquo%3bprocess%26rdquo%3b%20lie%20in%20the%20%3ccode%3eflags%3c%2fcode%3e%20argument%20of%20the%20clone%20syscall%2c%20which%20determines%20many%20kinds%20of%20properties%20of%20the%20eventually%20spawned%20task.%0aThe%20most%20notable%20of%20those%20is%20the%20sharing%20of%20virtual%20memory%20space%2c%20which%20is%20controlled%20by%20the%20%3ccode%3eCLONE_VM%3c%2fcode%3e%20flag%20of%20the%20argument.%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&name=Threads%20and%20processes%20don%27t%20exist&description=%3cp%3eOn%20Linux%2c%20threads%20and%20processes%20don%26rsquo%3bt%20actually%20exist.%20Underneath%20all%20the%20abstractions%2c%20the%20kernel%20knows%20only%20of%20%26ldquo%3btasks%26rdquo%3b%20-%20independent%20flows%20of%20execution%2c%20created%20using%20the%20%3ca%20href%3d%22https%3a%2f%2fman7.org%2flinux%2fman-pages%2fman2%2fclone.2.html%22%3e%3ccode%3eclone%282%29%3c%2fcode%3e%3c%2fa%3e%0afamily%20of%20syscalls.%20The%20differences%20between%20what%20we%20call%20a%20%26ldquo%3bthread%26rdquo%3b%20and%20what%20we%20call%20a%20%26ldquo%3bprocess%26rdquo%3b%20lie%20in%20the%20%3ccode%3eflags%3c%2fcode%3e%20argument%20of%20the%20clone%20syscall%2c%20which%20determines%20many%20kinds%20of%20properties%20of%20the%20eventually%20spawned%20task.%0aThe%20most%20notable%20of%20those%20is%20the%20sharing%20of%20virtual%20memory%20space%2c%20which%20is%20controlled%20by%20the%20%3ccode%3eCLONE_VM%3c%2fcode%3e%20flag%20of%20the%20argument.%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fthreads_and_processes_dont_exist%2f&t=Threads%20and%20processes%20don%27t%20exist" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fthreads_and_processes_dont_exist%2f&t=Threads%20and%20processes%20don%27t%20exist" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>
