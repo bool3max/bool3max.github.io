@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>en-us</language>
     <copyright>Bogdan Mitrović</copyright>
-    <lastBuildDate>Mon, 17 Jul 2023 09:37:12 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 10 Dec 2024 21:07:04 +0200</lastBuildDate>
     <atom:link href="https://bool3max.win/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Threads and processes don&#39;t exist</title>
+      <link>https://bool3max.win/posts/threads_and_processes_dont_exist/</link>
+      <pubDate>Tue, 10 Dec 2024 21:07:04 +0200</pubDate>
+      <guid>https://bool3max.win/posts/threads_and_processes_dont_exist/</guid>
+      <description>&lt;p&gt;On Linux, threads and processes don&amp;rsquo;t actually exist. Underneath all the abstractions, the kernel knows only of &amp;ldquo;tasks&amp;rdquo; - independent flows of execution, created using the &lt;a href=&#34;https://man7.org/linux/man-pages/man2/clone.2.html&#34;&gt;&lt;code&gt;clone(2)&lt;/code&gt;&lt;/a&gt;&#xA;family of syscalls. The differences between what we call a &amp;ldquo;thread&amp;rdquo; and what we call a &amp;ldquo;process&amp;rdquo; lie in the &lt;code&gt;flags&lt;/code&gt; argument of the clone syscall, which determines many kinds of properties of the eventually spawned task.&#xA;The most notable of those is the sharing of virtual memory space, which is controlled by the &lt;code&gt;CLONE_VM&lt;/code&gt; flag of the argument.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>How is shell redirection implemented?</title>
       <link>https://bool3max.win/posts/how_shell_redirection_is_implemented/</link>
