@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -9,12 +9,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> A primer on the binary system: two&#39;s complement, IEEE-754 and more, explained | bool3max&#39;s blog</title>
-  <link rel = 'canonical' href = 'http://localhost:1313/posts/ieee754_explained/'>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/ieee754_explained/'>
   <meta name="description" content="A collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:url" content="http://localhost:1313/posts/ieee754_explained/">
+  <meta property="og:url" content="https://bool3max.win/posts/ieee754_explained/">
   <meta property="og:site_name" content="bool3max&#39;s blog">
   <meta property="og:title" content="A primer on the binary system: two&#39;s complement, IEEE-754 and more, explained">
   <meta property="og:description" content="Modern 64-bit processors are capable of storing $2^{64}$ different values within their general-purpose registers. Each one of those possible values is simply a different combination of 64 sequential bits - and each one of those bits can, of course, exist in one of two states at a single point in time.
@@ -36,7 +36,7 @@ Given any number of bits $ N $, we can always conclude that the maximum number o
     
   
   
-  <link rel="stylesheet" href="http://localhost:1313/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
 
   
   
@@ -48,7 +48,7 @@ Given any number of bits $ N $, we can always conclude that the maximum number o
   
 
   
-<link rel="icon" type="image/png" href="http://localhost:1313/images/favicon.ico" />
+<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
 
   
   
@@ -78,14 +78,14 @@ Given any number of bits $ N $, we can always conclude that the maximum number o
       <ul>
         
         <li>
-          <a class="icon" href=" http://localhost:1313/posts/man_and_pagers_plus_colors/" aria-label="Previous">
+          <a class="icon" href=" https://bool3max.win/posts/man_and_pagers_plus_colors/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
         
         
         <li>
-          <a class="icon" href="http://localhost:1313/posts/modifying_bitfields_of_datatypes/" aria-label="Next">
+          <a class="icon" href="https://bool3max.win/posts/modifying_bitfields_of_datatypes/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -116,47 +116,47 @@ Given any number of bits $ N $, we can always conclude that the maximum number o
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&text=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&text=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&is_video=false&description=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&is_video=false&description=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&description=%3cp%3eModern%2064-bit%20processors%20are%20capable%20of%20storing%20%242%5e%7b64%7d%24%20different%20%3cem%3evalues%3c%2fem%3e%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20%3cem%3evalues%3c%2fem%3e%20is%20simply%20a%20different%20combination%20of%2064%0asequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%3c%2fp%3e%0a%3cp%3eGiven%20any%20number%20of%20bits%20%24%20N%20%24%2c%20we%20can%20always%20conclude%20that%20the%20%3cem%3emaximum%3c%2fem%3e%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%20%24%202%5eN%20%24.%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&description=%3cp%3eModern%2064-bit%20processors%20are%20capable%20of%20storing%20%242%5e%7b64%7d%24%20different%20%3cem%3evalues%3c%2fem%3e%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20%3cem%3evalues%3c%2fem%3e%20is%20simply%20a%20different%20combination%20of%2064%0asequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%3c%2fp%3e%0a%3cp%3eGiven%20any%20number%20of%20bits%20%24%20N%20%24%2c%20we%20can%20always%20conclude%20that%20the%20%3cem%3emaximum%3c%2fem%3e%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%20%24%202%5eN%20%24.%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&t=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&t=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -618,47 +618,47 @@ We can prove this by examining the output of the code above:</p>
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&text=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&text=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&is_video=false&description=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&is_video=false&description=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&title=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&description=%3cp%3eModern%2064-bit%20processors%20are%20capable%20of%20storing%20%242%5e%7b64%7d%24%20different%20%3cem%3evalues%3c%2fem%3e%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20%3cem%3evalues%3c%2fem%3e%20is%20simply%20a%20different%20combination%20of%2064%0asequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%3c%2fp%3e%0a%3cp%3eGiven%20any%20number%20of%20bits%20%24%20N%20%24%2c%20we%20can%20always%20conclude%20that%20the%20%3cem%3emaximum%3c%2fem%3e%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%20%24%202%5eN%20%24.%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&name=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained&description=%3cp%3eModern%2064-bit%20processors%20are%20capable%20of%20storing%20%242%5e%7b64%7d%24%20different%20%3cem%3evalues%3c%2fem%3e%20within%20their%20general-purpose%20registers.%20Each%20one%20of%20those%20possible%20%3cem%3evalues%3c%2fem%3e%20is%20simply%20a%20different%20combination%20of%2064%0asequential%20bits%20-%20and%20each%20one%20of%20those%20bits%20can%2c%20of%20course%2c%20exist%20in%20one%20of%20two%20states%20at%20a%20single%20point%20in%20time.%3c%2fp%3e%0a%3cp%3eGiven%20any%20number%20of%20bits%20%24%20N%20%24%2c%20we%20can%20always%20conclude%20that%20the%20%3cem%3emaximum%3c%2fem%3e%20number%20of%20different%20values%20representable%20using%20that%20particular%20bit%20count%20is%20always%20%24%202%5eN%20%24.%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fieee754_explained%2f&t=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fieee754_explained%2f&t=A%20primer%20on%20the%20binary%20system%3a%20two%27s%20complement%2c%20IEEE-754%20and%20more%2c%20explained" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>

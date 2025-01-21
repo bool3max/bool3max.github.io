@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -9,12 +9,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> How is shell redirection implemented? | bool3max&#39;s blog</title>
-  <link rel = 'canonical' href = 'http://localhost:1313/posts/how_shell_redirection_is_implemented/'>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/how_shell_redirection_is_implemented/'>
   <meta name="description" content="A collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:url" content="http://localhost:1313/posts/how_shell_redirection_is_implemented/">
+  <meta property="og:url" content="https://bool3max.win/posts/how_shell_redirection_is_implemented/">
   <meta property="og:site_name" content="bool3max&#39;s blog">
   <meta property="og:title" content="How is shell redirection implemented?">
   <meta property="og:description" content="Shell redirection allows you to redirect a process’ standard streams to paths other than the controlling terminal. This post will focus on explaining how it is implemented by shells (such as bash). If you are unfamiliar with redirection and would like to familiarize yourself with the concept and syntax (as far as bash is concerned), then GNU Bash Reference Manual - Redirections is a good place to start.
@@ -36,7 +36,7 @@ The fundamentals A running shell process maintains a set of open standard file d
     
   
   
-  <link rel="stylesheet" href="http://localhost:1313/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
 
   
   
@@ -48,7 +48,7 @@ The fundamentals A running shell process maintains a set of open standard file d
   
 
   
-<link rel="icon" type="image/png" href="http://localhost:1313/images/favicon.ico" />
+<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
 
   
   
@@ -78,14 +78,14 @@ The fundamentals A running shell process maintains a set of open standard file d
       <ul>
         
         <li>
-          <a class="icon" href=" http://localhost:1313/posts/c_strip_whitespace/" aria-label="Previous">
+          <a class="icon" href=" https://bool3max.win/posts/c_strip_whitespace/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
         
         
         <li>
-          <a class="icon" href="http://localhost:1313/posts/threads_and_processes_dont_exist/" aria-label="Next">
+          <a class="icon" href="https://bool3max.win/posts/threads_and_processes_dont_exist/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -116,47 +116,47 @@ The fundamentals A running shell process maintains a set of open standard file d
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&text=How%20is%20shell%20redirection%20implemented%3f" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&text=How%20is%20shell%20redirection%20implemented%3f" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&is_video=false&description=How%20is%20shell%20redirection%20implemented%3f" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&is_video=false&description=How%20is%20shell%20redirection%20implemented%3f" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=How%20is%20shell%20redirection%20implemented%3f&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=How%20is%20shell%20redirection%20implemented%3f&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&name=How%20is%20shell%20redirection%20implemented%3f&description=%3cp%3eShell%20redirection%20allows%20you%20to%20redirect%20a%20process%26rsquo%3b%20standard%20streams%20to%20paths%20other%20than%20the%20controlling%20terminal.%20This%20post%20will%20focus%20on%20explaining%20how%20it%20is%20implemented%0aby%20shells%20%28such%20as%20%3ccode%3ebash%3c%2fcode%3e%29.%20If%20you%20are%20unfamiliar%20with%20redirection%20and%20would%20like%20to%20familiarize%20yourself%20with%20the%20concept%20and%20syntax%20%28as%20far%20as%20bash%20is%20concerned%29%2c%20then%0a%3ca%20href%3d%22https%3a%2f%2fwww.gnu.org%2fsoftware%2fbash%2fmanual%2fhtml_node%2fRedirections.html%22%3eGNU%20Bash%20Reference%20Manual%20-%20Redirections%3c%2fa%3e%20is%20a%20good%20place%20to%20start.%3c%2fp%3e%0a%3ch2%20id%3d%22the-fundamentals%22%3eThe%20fundamentals%3c%2fh2%3e%0a%3cp%3eA%20running%20shell%20process%20maintains%20a%20set%20of%20open%20standard%20file%20descriptors%20for%20stdout%20%281%29%2c%20stderr%282%29%20and%20stdin%20%280%29%20that%20are%0atied%20to%20the%20controlling%20terminal.%20This%20can%20be%20observed%20by%20querying%20the%20%3ccode%3e%2fproc%3c%2fcode%3e%20virtual%20filesystem.%20For%20example%2c%20in%20%3ccode%3ebash%3c%2fcode%3e%3a%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&name=How%20is%20shell%20redirection%20implemented%3f&description=%3cp%3eShell%20redirection%20allows%20you%20to%20redirect%20a%20process%26rsquo%3b%20standard%20streams%20to%20paths%20other%20than%20the%20controlling%20terminal.%20This%20post%20will%20focus%20on%20explaining%20how%20it%20is%20implemented%0aby%20shells%20%28such%20as%20%3ccode%3ebash%3c%2fcode%3e%29.%20If%20you%20are%20unfamiliar%20with%20redirection%20and%20would%20like%20to%20familiarize%20yourself%20with%20the%20concept%20and%20syntax%20%28as%20far%20as%20bash%20is%20concerned%29%2c%20then%0a%3ca%20href%3d%22https%3a%2f%2fwww.gnu.org%2fsoftware%2fbash%2fmanual%2fhtml_node%2fRedirections.html%22%3eGNU%20Bash%20Reference%20Manual%20-%20Redirections%3c%2fa%3e%20is%20a%20good%20place%20to%20start.%3c%2fp%3e%0a%3ch2%20id%3d%22the-fundamentals%22%3eThe%20fundamentals%3c%2fh2%3e%0a%3cp%3eA%20running%20shell%20process%20maintains%20a%20set%20of%20open%20standard%20file%20descriptors%20for%20stdout%20%281%29%2c%20stderr%282%29%20and%20stdin%20%280%29%20that%20are%0atied%20to%20the%20controlling%20terminal.%20This%20can%20be%20observed%20by%20querying%20the%20%3ccode%3e%2fproc%3c%2fcode%3e%20virtual%20filesystem.%20For%20example%2c%20in%20%3ccode%3ebash%3c%2fcode%3e%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&t=How%20is%20shell%20redirection%20implemented%3f" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&t=How%20is%20shell%20redirection%20implemented%3f" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -319,47 +319,47 @@ by Viacheslav Biriukov sheds light on and solidifies the difference between the 
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&text=How%20is%20shell%20redirection%20implemented%3f" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&text=How%20is%20shell%20redirection%20implemented%3f" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&is_video=false&description=How%20is%20shell%20redirection%20implemented%3f" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&is_video=false&description=How%20is%20shell%20redirection%20implemented%3f" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=How%20is%20shell%20redirection%20implemented%3f&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=How%20is%20shell%20redirection%20implemented%3f&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&title=How%20is%20shell%20redirection%20implemented%3f" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&name=How%20is%20shell%20redirection%20implemented%3f&description=%3cp%3eShell%20redirection%20allows%20you%20to%20redirect%20a%20process%26rsquo%3b%20standard%20streams%20to%20paths%20other%20than%20the%20controlling%20terminal.%20This%20post%20will%20focus%20on%20explaining%20how%20it%20is%20implemented%0aby%20shells%20%28such%20as%20%3ccode%3ebash%3c%2fcode%3e%29.%20If%20you%20are%20unfamiliar%20with%20redirection%20and%20would%20like%20to%20familiarize%20yourself%20with%20the%20concept%20and%20syntax%20%28as%20far%20as%20bash%20is%20concerned%29%2c%20then%0a%3ca%20href%3d%22https%3a%2f%2fwww.gnu.org%2fsoftware%2fbash%2fmanual%2fhtml_node%2fRedirections.html%22%3eGNU%20Bash%20Reference%20Manual%20-%20Redirections%3c%2fa%3e%20is%20a%20good%20place%20to%20start.%3c%2fp%3e%0a%3ch2%20id%3d%22the-fundamentals%22%3eThe%20fundamentals%3c%2fh2%3e%0a%3cp%3eA%20running%20shell%20process%20maintains%20a%20set%20of%20open%20standard%20file%20descriptors%20for%20stdout%20%281%29%2c%20stderr%282%29%20and%20stdin%20%280%29%20that%20are%0atied%20to%20the%20controlling%20terminal.%20This%20can%20be%20observed%20by%20querying%20the%20%3ccode%3e%2fproc%3c%2fcode%3e%20virtual%20filesystem.%20For%20example%2c%20in%20%3ccode%3ebash%3c%2fcode%3e%3a%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&name=How%20is%20shell%20redirection%20implemented%3f&description=%3cp%3eShell%20redirection%20allows%20you%20to%20redirect%20a%20process%26rsquo%3b%20standard%20streams%20to%20paths%20other%20than%20the%20controlling%20terminal.%20This%20post%20will%20focus%20on%20explaining%20how%20it%20is%20implemented%0aby%20shells%20%28such%20as%20%3ccode%3ebash%3c%2fcode%3e%29.%20If%20you%20are%20unfamiliar%20with%20redirection%20and%20would%20like%20to%20familiarize%20yourself%20with%20the%20concept%20and%20syntax%20%28as%20far%20as%20bash%20is%20concerned%29%2c%20then%0a%3ca%20href%3d%22https%3a%2f%2fwww.gnu.org%2fsoftware%2fbash%2fmanual%2fhtml_node%2fRedirections.html%22%3eGNU%20Bash%20Reference%20Manual%20-%20Redirections%3c%2fa%3e%20is%20a%20good%20place%20to%20start.%3c%2fp%3e%0a%3ch2%20id%3d%22the-fundamentals%22%3eThe%20fundamentals%3c%2fh2%3e%0a%3cp%3eA%20running%20shell%20process%20maintains%20a%20set%20of%20open%20standard%20file%20descriptors%20for%20stdout%20%281%29%2c%20stderr%282%29%20and%20stdin%20%280%29%20that%20are%0atied%20to%20the%20controlling%20terminal.%20This%20can%20be%20observed%20by%20querying%20the%20%3ccode%3e%2fproc%3c%2fcode%3e%20virtual%20filesystem.%20For%20example%2c%20in%20%3ccode%3ebash%3c%2fcode%3e%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fhow_shell_redirection_is_implemented%2f&t=How%20is%20shell%20redirection%20implemented%3f" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fhow_shell_redirection_is_implemented%2f&t=How%20is%20shell%20redirection%20implemented%3f" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>

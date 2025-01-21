@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -9,12 +9,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> A HashMap speedup tale: The number of allocations matters | bool3max&#39;s blog</title>
-  <link rel = 'canonical' href = 'http://localhost:1313/posts/hashmap_speedup/'>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/hashmap_speedup/'>
   <meta name="description" content="A collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:url" content="http://localhost:1313/posts/hashmap_speedup/">
+  <meta property="og:url" content="https://bool3max.win/posts/hashmap_speedup/">
   <meta property="og:site_name" content="bool3max&#39;s blog">
   <meta property="og:title" content="A HashMap speedup tale: The number of allocations matters">
   <meta property="og:description" content="I recently wrote bhashmap - a C11 hash table implementation library. This post will document one of the latest optimizations, which is in hindsight extremely simple to understand and implement, but which resulted in a ~30% runtime speedup.
@@ -38,7 +38,7 @@ At the core of every hash table implementation is a key-value pair, and here the
     
   
   
-  <link rel="stylesheet" href="http://localhost:1313/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
 
   
   
@@ -50,7 +50,7 @@ At the core of every hash table implementation is a key-value pair, and here the
   
 
   
-<link rel="icon" type="image/png" href="http://localhost:1313/images/favicon.ico" />
+<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
 
   
   
@@ -80,14 +80,14 @@ At the core of every hash table implementation is a key-value pair, and here the
       <ul>
         
         <li>
-          <a class="icon" href=" http://localhost:1313/posts/time_sleep_cpython_implementation/" aria-label="Previous">
+          <a class="icon" href=" https://bool3max.win/posts/time_sleep_cpython_implementation/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
         
         
         <li>
-          <a class="icon" href="http://localhost:1313/posts/c_strip_whitespace/" aria-label="Next">
+          <a class="icon" href="https://bool3max.win/posts/c_strip_whitespace/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -118,47 +118,47 @@ At the core of every hash table implementation is a key-value pair, and here the
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&text=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&text=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&is_video=false&description=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&is_video=false&description=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&name=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&description=%3cp%3eI%20recently%20wrote%20%3ca%20href%3d%22https%3a%2f%2fgithub.com%2fbool3max%2fbhashmap%22%3e%3cstrong%3e%3ccode%3ebhashmap%3c%2fcode%3e%3c%2fstrong%3e%3c%2fa%3e%20-%20a%20C11%20hash%20table%20implementation%0alibrary.%20This%20post%20will%20document%20one%20of%20the%20latest%20optimizations%2c%20which%20is%20in%20hindsight%20extremely%0asimple%20to%20understand%20and%20implement%2c%20but%20which%20resulted%20in%20a%20~30%25%20runtime%20speedup.%3c%2fp%3e%0a%3ch1%20id%3d%22background%22%3eBackground%3c%2fh1%3e%0a%3cp%3eBefore%20talking%20about%20the%20optimization%2c%20let%26rsquo%3bs%20quickly%20get%20up%20to%20speed%20with%20how%20things%20worked%20before.%0aI%20will%20focus%20only%20on%20the%20details%20relevant%20to%20this%20particular%20optimization.%3c%2fp%3e%0a%3cp%3eAt%20the%20core%20of%20every%20hash%20table%20implementation%20is%20a%20key-value%20pair%2c%20and%20here%20the%20case%20is%20no%20different%3a%0aevery%20such%20pair%20is%20represented%20by%20a%20%3ccode%3eHashPair%3c%2fcode%3e%20struct%3a%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&name=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&description=%3cp%3eI%20recently%20wrote%20%3ca%20href%3d%22https%3a%2f%2fgithub.com%2fbool3max%2fbhashmap%22%3e%3cstrong%3e%3ccode%3ebhashmap%3c%2fcode%3e%3c%2fstrong%3e%3c%2fa%3e%20-%20a%20C11%20hash%20table%20implementation%0alibrary.%20This%20post%20will%20document%20one%20of%20the%20latest%20optimizations%2c%20which%20is%20in%20hindsight%20extremely%0asimple%20to%20understand%20and%20implement%2c%20but%20which%20resulted%20in%20a%20~30%25%20runtime%20speedup.%3c%2fp%3e%0a%3ch1%20id%3d%22background%22%3eBackground%3c%2fh1%3e%0a%3cp%3eBefore%20talking%20about%20the%20optimization%2c%20let%26rsquo%3bs%20quickly%20get%20up%20to%20speed%20with%20how%20things%20worked%20before.%0aI%20will%20focus%20only%20on%20the%20details%20relevant%20to%20this%20particular%20optimization.%3c%2fp%3e%0a%3cp%3eAt%20the%20core%20of%20every%20hash%20table%20implementation%20is%20a%20key-value%20pair%2c%20and%20here%20the%20case%20is%20no%20different%3a%0aevery%20such%20pair%20is%20represented%20by%20a%20%3ccode%3eHashPair%3c%2fcode%3e%20struct%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&t=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&t=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -345,47 +345,47 @@ benchmark, which inserts 466,550 key-value pairs into the map.</p>
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&text=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&text=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&is_video=false&description=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&is_video=false&description=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&body=Check out this article: http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&title=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&name=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&description=%3cp%3eI%20recently%20wrote%20%3ca%20href%3d%22https%3a%2f%2fgithub.com%2fbool3max%2fbhashmap%22%3e%3cstrong%3e%3ccode%3ebhashmap%3c%2fcode%3e%3c%2fstrong%3e%3c%2fa%3e%20-%20a%20C11%20hash%20table%20implementation%0alibrary.%20This%20post%20will%20document%20one%20of%20the%20latest%20optimizations%2c%20which%20is%20in%20hindsight%20extremely%0asimple%20to%20understand%20and%20implement%2c%20but%20which%20resulted%20in%20a%20~30%25%20runtime%20speedup.%3c%2fp%3e%0a%3ch1%20id%3d%22background%22%3eBackground%3c%2fh1%3e%0a%3cp%3eBefore%20talking%20about%20the%20optimization%2c%20let%26rsquo%3bs%20quickly%20get%20up%20to%20speed%20with%20how%20things%20worked%20before.%0aI%20will%20focus%20only%20on%20the%20details%20relevant%20to%20this%20particular%20optimization.%3c%2fp%3e%0a%3cp%3eAt%20the%20core%20of%20every%20hash%20table%20implementation%20is%20a%20key-value%20pair%2c%20and%20here%20the%20case%20is%20no%20different%3a%0aevery%20such%20pair%20is%20represented%20by%20a%20%3ccode%3eHashPair%3c%2fcode%3e%20struct%3a%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&name=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters&description=%3cp%3eI%20recently%20wrote%20%3ca%20href%3d%22https%3a%2f%2fgithub.com%2fbool3max%2fbhashmap%22%3e%3cstrong%3e%3ccode%3ebhashmap%3c%2fcode%3e%3c%2fstrong%3e%3c%2fa%3e%20-%20a%20C11%20hash%20table%20implementation%0alibrary.%20This%20post%20will%20document%20one%20of%20the%20latest%20optimizations%2c%20which%20is%20in%20hindsight%20extremely%0asimple%20to%20understand%20and%20implement%2c%20but%20which%20resulted%20in%20a%20~30%25%20runtime%20speedup.%3c%2fp%3e%0a%3ch1%20id%3d%22background%22%3eBackground%3c%2fh1%3e%0a%3cp%3eBefore%20talking%20about%20the%20optimization%2c%20let%26rsquo%3bs%20quickly%20get%20up%20to%20speed%20with%20how%20things%20worked%20before.%0aI%20will%20focus%20only%20on%20the%20details%20relevant%20to%20this%20particular%20optimization.%3c%2fp%3e%0a%3cp%3eAt%20the%20core%20of%20every%20hash%20table%20implementation%20is%20a%20key-value%20pair%2c%20and%20here%20the%20case%20is%20no%20different%3a%0aevery%20such%20pair%20is%20represented%20by%20a%20%3ccode%3eHashPair%3c%2fcode%3e%20struct%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=http%3a%2f%2flocalhost%3a1313%2fposts%2fhashmap_speedup%2f&t=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fhashmap_speedup%2f&t=A%20HashMap%20speedup%20tale%3a%20The%20number%20of%20allocations%20matters" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>
