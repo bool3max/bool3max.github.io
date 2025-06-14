@@ -336,6 +336,7 @@ to determine whether we&rsquo;re on an album or a playlist (<code>&quot;album-pa
 whenever the view inside Spotify changes (i.e. the user navigates to another page), this <code>section</code> DOM node is removed and replaced by a new one.
 So if we register an observer to watch for changes on that existing <code>section</code>, we never receive any notification - the callback never gets called - because
 the <code>section</code> is deleted quickly after navigation.</p>
+<p>Dealing with this kind of stuff is just the consequences of interacting with the DOM directly as opposed to hooking up to React.</p>
 <p>With both the <code>setView</code> function implemented and the observer registered, <strong>the experiment was a success</strong>. I&rsquo;m able to navigate from album to playlist
 and from playlist to album and the View mode updates seamlessly.</p>
 <h1 id="persistance">Persistance</h1>
