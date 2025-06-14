@@ -234,29 +234,29 @@ times one on top of another:</p>
 at once - it gives me a better idea of the tracklist.</p>
 <p>Okay - so I should use List mode when viewing playlists, to help me better differentiate between tracks from multiple different albums, and
 Compact mode when viewing specific albums.</p>
-<p><strong>The problem is that Spotify&rsquo;s UI doesn&rsquo;t retain the List/Compact view preference on a per-resource basis.</strong> When you choose an option, you&rsquo;re stuck with it
+<p><strong>The problem is that Spotify&rsquo;s UI doesn&rsquo;t retain the List/Compact view preference on a per-resource basis.</strong> When you choose View style, you&rsquo;re stuck with it globally
 until you change it manually again - and as having to do that every time depending on context is of course a big no-go, I set a goal to modify this behavior
 of the Spotify desktop client.</p>
 <h1 id="spicetify">Spicetify</h1>
 <p>My first idea was to take a look at <a href="https://spicetify.app">Spicetify</a>, an unofficial 3rd party tool for modding pretty much all aspects of the Spotify client.
-I had vaguely remembered using it a long time ago, and so I downloaded it in hopes that someone had already encountered the issue I was facing and developed
+I had vaguely remembered using it a long time ago, so I downloaded it in hopes that someone had already encountered the issue I was facing and developed
 an <a href="https://spicetify.app/docs/advanced-usage/extensions">extension</a> for it.</p>
-<p>No such luck though. While the available extensions are impressive (especially so the <a href="https://spicetify.app/docs/advanced-usage/extensions#keyboard-shortcut">Keyboard Shortcut</a>)
+<p>No such luck. While the available extensions are impressive (especially so the <a href="https://spicetify.app/docs/advanced-usage/extensions#keyboard-shortcut">Keyboard Shortcut</a>)
 one, none of them seemed to address my issue.</p>
 <p>The next logical step was for me to create my own extension. Spicetify&rsquo;s developers went throgh the process of reverse engineering parts of the client.
 They even provide an <a href="https://spicetify.app/docs/development/api-wrapper/">API wrapper</a>, and seeing as Spotify uses React for its UI, and despite not having much experience
 with it, I thought it&rsquo;d be a piece of cake: hook into the methods responsible for views/routing or what have you, and update the state responsible for the &lsquo;View as&rsquo;
 preference depending on the current page (album or playlist).</p>
-<p>Just as I was about to begin though I noticed my CPU fans making way more noise than usual during similar workflows. Opening <code>htop</code> revealed that it was Spotify using
+<p>Just as I was about to begin though I noticed my CPU fan making way more noise than usual during similar workflows. Opening <code>htop</code> revealed that it was Spotify using
 15-25% CPU at idle, without any media playing. I tried restarting it, enabling/disabling hardware acceleration, but eventually only uninstalling Spicetify managed
 to bring it back down to an acceptable percentage.</p>
-<p>I probably should&rsquo;ve opened an issue regarding Spicetify&rsquo;s CPU usage and forgotten about it, but I really wanted to fix my primary problem as soon as possible,
-and so I abandoned Spicetify and decided to find another way.</p>
+<p>I probably should&rsquo;ve opened an issue regarding Spicetify&rsquo;s CPU usage and forgotten about it, but I really wanted to fix the main problem at hand as soon as possible,
+and so I abandoned Spicetify and decided to go another route.</p>
 <h1 id="the-manual-way">The manual way</h1>
 <p>Prior to uninstalling Spicetify I had ran its CLI&rsquo;s <code>enable-devtools</code> command to allow me to open the Chrome Developer Tools inside a running client:
 Spotify uses the Chromium Embedded Framework (CEF) for its desktop clients - it&rsquo;s essentially a webpage.</p>
 <blockquote>
-<p>You most definitely don&rsquo;t need the Spicetify CLI to enable devtools access in Spotify - it most likely changes a flag in some file somewhere. But I&rsquo;d already
+<p>You most definitely don&rsquo;t need the Spicetify CLI to enable devtools access in Spotify - it most likely changes a flag in some config somewhere. But I&rsquo;d already
 ran it and it saved me the trouble.</p></blockquote>
 <p>This gave me access to the JS console and allowed me to inspect the DOM in real-time. I then changed the View mode from Compact to List using the
 dropdown multiple times, observing the changes taking place in the DOM. The first step was to write a simple function that changes the current
@@ -295,7 +295,7 @@ of the UI.</p>
 <p>We loop through the available buttons and click the one corresponding to the passed in argument - &lsquo;Compact&rsquo; if the argument is <code>true</code>, &lsquo;List&rsquo; otherwise.</p>
 </li>
 </ul>
-<p>The function is pretty simple and very hacky - but it works. <code>setView(true)</code> sets the mode to Compact and <code>setView(false)</code> sets it to List
+<p>The function is pretty simple and somewhat hacky as it simulates the actions of a real users as they would interact with the app, but it works. <code>setView(true)</code> sets the mode to Compact and <code>setView(false)</code> sets it to List
 regardless of the current page in the app (playlist, album, etc&hellip;).</p>
 <hr>
 <p>The next step was to somehow call this function automatically whenever the view/page inside the app changes.</p>
@@ -365,8 +365,8 @@ nor calls to <code>console.log</code> would never manifest in the devtools conso
 <p>Eventually, I opened a Spotify instance and the devtools, and I noticed a specific <code>&lt;script&gt;</code> - <code>xpui-snapshot.js</code> referenced at the top of <code>&lt;head&gt;</code> - a perfect place
 to place my changes - and this time it actually worked. However despite firing after the <code>window</code>&rsquo;s <code>load</code> event, the queries for the DOM element
 were still failing.</p>
-<p>Instead of spending more time solving this in a clean way, I opted for a very quick hack: periodically query the DOM for the <code>main</code> in a set interval until
-it&rsquo;s created, and then hooking up the observer:</p>
+<p>Instead of spending more time attemping to solve this in a more pragmatic manner, I yet again opted for a quick hack: periodically query the DOM for the <code>main</code> in a set interval until
+it&rsquo;s created, and then hook up the observer:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">addEventListener</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;load&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">i</span> <span style="color:#0550ae">=</span> <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">setInterval</span><span style="color:#1f2328">(()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#cf222e">try</span> <span style="color:#1f2328">{</span>
@@ -379,7 +379,7 @@ it&rsquo;s created, and then hooking up the observer:</p>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#1f2328">},</span> <span style="color:#0550ae">200</span><span style="color:#1f2328">);</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#1f2328">})</span>
-</span></span></code></pre></div><p>I then saved the file, minified it, updated the <code>xpui.spa</code> ZIP with the new version, and booted up Spotify.
+</span></span></code></pre></div><p>I saved the file, minified it, updated the <code>xpui.spa</code> ZIP with the new version, and booted up Spotify.
 The end result is a working initial modification that persists between Spotify client restarts and reboots.</p>
 <h1 id="hackiness">Hackiness</h1>
 <p>This solution is hacky from beginning to end:</p>
