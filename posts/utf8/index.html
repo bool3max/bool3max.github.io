@@ -203,8 +203,7 @@
     <div class="content" itemprop="articleBody">
       <p>As of writing, <a href="https://en.wikipedia.org/wiki/Unicode">Unicode</a> contains <strong>1,112,064</strong> possible codepoints.</p>
 <blockquote>
-<p>Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in <strong>1,112,064</strong> actually available codepoints.</p>
-</blockquote>
+<p>Actual codepoints range from 0 through 0x10FFFF though a part is reserved for backwards compatibility of other codecs with UTF-16, resulting in <strong>1,112,064</strong> actually available codepoints.</p></blockquote>
 <p>It&rsquo;s important to note that not all (in fact most) <strong>codepoints</strong> are not <strong>characters</strong>. A common example is the <a href="https://unicode-table.com/en/0308/">Combining Diaeresis (e.g. ï)</a> or the &ldquo;double dot above&rdquo; mark that, when rendered, simply appears above the adjecent previous character. In fact I can&rsquo;t even paste it in <code>neovim</code> on its own, it simply appears above the previously typed character.</p>
 <hr>
 <h1 id="utf-8">UTF-8</h1>
@@ -287,8 +286,7 @@
 </span></span></code></pre></div><h1 id="writing-an-utf-8-decoder">Writing an UTF-8 decoder</h1>
 <p>This is something I&rsquo;ve wanted to do for a long time just because of how vital a part UTF-8 plays, well, everywhere. Literally all text that you see nowadays on screen was at some point encoded as UTF-8, then decoded to get all invididual codepoints, and then rendered to the screen with a relevant font.</p>
 <blockquote>
-<p>String related functions in C&rsquo;s stdlib pay no attention to any sort of encoding at all. They follow the &lsquo;1 byte = 1 character&rsquo; mantra. Support for different encodings exists via <a href="https://en.cppreference.com/w/c/string/wide">Wide strings</a> and <a href="https://en.cppreference.com/w/c/string/multibyte">Multi-byte strings</a> but I&rsquo;ve never had a reason to use those functions. They are also very intertwined with the C locale, which is also a very complicated topic as evident by the infamous <a href="https://github.com/mpv-player/mpv/commit/1e70e82baa9193f6f027338b0fab0f5078971fbe">mpv developer C locale rant</a>.</p>
-</blockquote>
+<p>String related functions in C&rsquo;s stdlib pay no attention to any sort of encoding at all. They follow the &lsquo;1 byte = 1 character&rsquo; mantra. Support for different encodings exists via <a href="https://en.cppreference.com/w/c/string/wide">Wide strings</a> and <a href="https://en.cppreference.com/w/c/string/multibyte">Multi-byte strings</a> but I&rsquo;ve never had a reason to use those functions. They are also very intertwined with the C locale, which is also a very complicated topic as evident by the infamous <a href="https://github.com/mpv-player/mpv/commit/1e70e82baa9193f6f027338b0fab0f5078971fbe">mpv developer C locale rant</a>.</p></blockquote>
 <p>Writing a <em>decoder</em> turned out to be way easier than I thought. The gist of basically the entire operation is the following: peek at the first byte of the string -&gt; find out how many bytes the codepoint that it&rsquo;s a part of occupies -&gt; construct a codepoint from those bytes -&gt; seek that many bytes forward in the stream -&gt; return. Repeat for the entire string.</p>
 <p>The only part I struggled with for a bit was the bitwise manipulation regarding specific bytes as I had little experience with that prior to this project - that is now <a href="https://github.com/bool3max/butf8">on GitHub as <strong>butf8</strong></a>. In the future I&rsquo;m planning to add encoding as well as indexing support and error checking - all of which should be fairly trivial.</p>
 <h2 id="resources">Resources</h2>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Modifying the Spotify client to persist tracklist View style per playlists and albums | bool3max&#39;s blog</title>
+  <link rel = 'canonical' href = 'https://bool3max.win/posts/spotify_ui_hacking/'>
+  <meta name="description" content="A collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:url" content="https://bool3max.win/posts/spotify_ui_hacking/">
+  <meta property="og:site_name" content="bool3max&#39;s blog">
+  <meta property="og:title" content="Modifying the Spotify client to persist tracklist View style per playlists and albums">
+  <meta property="og:description" content="The web and desktop versions of the Spotify client provide two distinct ways of displaying track lists when viewing a resource such as a playlist or an album:
+Compact List They differ primarily in the amount of padding and spacing between the individual rows representing tracks, with the Compact mode also omitting the belonging album’s cover thumbnail to the left of each track:
+Above you can see the difference between the two modes.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-06-14T18:49:37+02:00">
+    <meta property="article:modified_time" content="2025-06-14T18:49:37+02:00">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Modifying the Spotify client to persist tracklist View style per playlists and albums">
+  <meta name="twitter:description" content="The web and desktop versions of the Spotify client provide two distinct ways of displaying track lists when viewing a resource such as a playlist or an album:
+Compact List They differ primarily in the amount of padding and spacing between the individual rows representing tracks, with the Compact mode also omitting the belonging album’s cover thumbnail to the left of each track:
+Above you can see the difference between the two modes.">
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://bool3max.win/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://bool3max.win/images/favicon.ico" />
+
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://bool3max.win/posts/threads_and_processes_dont_exist/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&text=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&is_video=false&description=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&name=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums&description=%3cp%3eThe%20web%20and%20desktop%20versions%20of%20the%20Spotify%20client%20provide%20two%20distinct%20ways%20of%20displaying%20track%20lists%20when%20viewing%20a%20resource%20such%20as%20a%20playlist%20or%20an%20album%3a%3c%2fp%3e%0a%3cul%3e%0a%3cli%3eCompact%3c%2fli%3e%0a%3cli%3eList%3c%2fli%3e%0a%3c%2ful%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2fctx_menu.png%22%20alt%3d%22context%20menu%22%3e%3c%2fp%3e%0a%3cp%3eThey%20differ%20primarily%20in%20the%20amount%20of%20padding%20and%20spacing%20between%20the%20individual%20rows%20representing%20tracks%2c%20with%20the%20%3cstrong%3eCompact%3c%2fstrong%3e%20mode%20also%20%3cem%3eomitting%0athe%20belonging%20album%26rsquo%3bs%20cover%20thumbnail%20to%20the%20left%20of%20each%20track%3c%2fem%3e%3a%3c%2fp%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2flist.png%22%20alt%3d%22list%22%3e%0a%3cimg%20src%3d%22imgs%2fcompact.png%22%20alt%3d%22list%22%3e%3c%2fp%3e%0a%3cp%3eAbove%20you%20can%20see%20the%20difference%20between%20the%20two%20modes.%3c%2fp%3e" aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&t=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents"></nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        Modifying the Spotify client to persist tracklist View style per playlists and albums
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2025-06-14 18:49:37 &#43;0200 CEST" itemprop="datePublished">2025-06-14</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    <div class="content" itemprop="articleBody">
+      <p>The web and desktop versions of the Spotify client provide two distinct ways of displaying track lists when viewing a resource such as a playlist or an album:</p>
+<ul>
+<li>Compact</li>
+<li>List</li>
+</ul>
+<p><img src="imgs/ctx_menu.png" alt="context menu"></p>
+<p>They differ primarily in the amount of padding and spacing between the individual rows representing tracks, with the <strong>Compact</strong> mode also <em>omitting
+the belonging album&rsquo;s cover thumbnail to the left of each track</em>:</p>
+<p><img src="imgs/list.png" alt="list">
+<img src="imgs/compact.png" alt="list"></p>
+<p>Above you can see the difference between the two modes.</p>
+<p>While the Compact mode does allow you to fit a larger number of tracks onto the screen at a time, the List mode isn&rsquo;t without its advantages: <strong>when viewing a mixed <strong>playlist</strong> with tracks
+from many different albums, having the belonging album&rsquo;s cover art next to the song is instrumental in identifying it quickly!</strong> I believe this is because humans
+are <em>really</em> good at pattern recognition, and images, with all their shapes and colors, are just faster to differentiate than text.</p>
+<blockquote>
+<p>In the comparison images above, try and notice just how much quicker it is to observe that the last four tracks all belong to the same album (and thus the
+same artist) in the List example compared to the Compact one - when using Compact mode you&rsquo;d have to look at the &lsquo;Album&rsquo; column, all the way over to the right.</p></blockquote>
+<p>When viewing an <strong>album</strong> tracklist in List mode, Spotify doesn&rsquo;t even display the covert art - because why would you want to see the same image repeated multiple
+times one on top of another:</p>
+<p><img src="imgs/album_list.png" alt="album_list"></p>
+<p>Not much point in using List mode when viewing albums. Makes sense. Plus when observing an individual album I <em>really</em> like seeing all the tracks on screen
+at once - it gives me a better idea of the tracklist.</p>
+<p>Okay - so I should use Compact mode when viewing playlists, to help me better differentiate between tracks from multiple different albums, and
+List mode when viewing specific albums.</p>
+<p><strong>The problem is that Spotify&rsquo;s UI doesn&rsquo;t retain the List/Compact view preference on a per-resource basis.</strong> When you choose an option, you&rsquo;re stuck with it
+until you change it manually again - and as having to do that every time depending on context is of course a big no-go, I set a goal to modify this behavior
+of the Spotify desktop client.</p>
+<h1 id="spicetify">Spicetify</h1>
+<p>My first idea was to take a look at <a href="https://spicetify.app">Spicetify</a>, an unofficial 3rd party tool for modding pretty much all aspects of the Spotify client.
+I had vaguely remembered using it a long time ago, and so I downloaded it in hopes that someone had already encountered the issue I was facing and developed
+an <a href="https://spicetify.app/docs/advanced-usage/extensions">extension</a> for it.</p>
+<p>No such luck though. While the available extensions are impressive (especially so the <a href="https://spicetify.app/docs/advanced-usage/extensions#keyboard-shortcut">Keyboard Shortcut</a>)
+one, none of them seemed to address my issue.</p>
+<p>The next logical step was for me to create my own extension. Spicetify&rsquo;s developers went throgh the process of reverse engineering parts of the client.
+They even provide an <a href="https://spicetify.app/docs/development/api-wrapper/">API wrapper</a>, and seeing as Spotify uses React for its UI, and despite not having much experience
+with it, I thought it&rsquo;d be a piece of cake: hook into the methods responsible for views/routing or what have you, and update the state responsible for the &lsquo;View as&rsquo;
+preference depending on the current page (album or playlist).</p>
+<p>Just as I was about to begin though I noticed my CPU fans making way more noise than usual during similar workflows. Opening <code>htop</code> revealed that it was Spotify using
+15-25% CPU at idle, without any media playing. I tried restarting it, enabling/disabling hardware acceleration, but eventually only uninstalling Spicetify managed
+to bring it back down to an acceptable percentage.</p>
+<p>I probably should&rsquo;ve opened an issue regarding Spicetify&rsquo;s CPU usage and forgotten about it, but I really wanted to fix my primary problem as soon as possible,
+and so I abandoned Spicetify and decided to find another way.</p>
+<h1 id="the-manual-way">The manual way</h1>
+<p>Prior to uninstalling Spicetify I had ran its CLI&rsquo;s <code>enable-devtools</code> command to allow me to open the Chrome Developer Tools inside a running client:
+Spotify uses the Chromium Embedded Framework (CEF) for its desktop clients - it&rsquo;s essentially a webpage.</p>
+<blockquote>
+<p>You most definitely don&rsquo;t need the Spicetify CLI to enable devtools access in Spotify - it most likely changes a flag in some file somewhere. But I&rsquo;d already
+ran it and it saved me the trouble.</p></blockquote>
+<p>This gave me access to the JS console and allowed me to inspect the DOM in real-time. I then changed the View mode from Compact to List using the
+dropdown multiple times, observing the changes taking place in the DOM. The first step was to write a simple function that changes the current
+View mode based on its single argument:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">setView</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">compact</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">btnExpandContextMenu</span> <span style="color:#0550ae">=</span> <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">querySelector</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;button[aria-controls^=&#34;sortboxlist&#34;]&#39;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#57606a">// Manually click button that expands view mode selector context menu
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#57606a"></span>    <span style="color:#1f2328">btnExpandContextMenu</span><span style="color:#1f2328">.</span><span style="color:#1f2328">click</span><span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#57606a">// select view mode based on &#34;compact&#34; argument
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#57606a"></span>    <span style="color:#1f2328">setTimeout</span><span style="color:#1f2328">(()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">querySelectorAll</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;#context-menu&gt;ul&gt;li&gt;button&#34;</span><span style="color:#1f2328">).</span><span style="color:#1f2328">forEach</span><span style="color:#1f2328">(</span><span style="color:#1f2328">btn</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>            <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">btn</span><span style="color:#1f2328">.</span><span style="color:#1f2328">querySelector</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;span&#34;</span><span style="color:#1f2328">).</span><span style="color:#1f2328">textContent</span> <span style="color:#0550ae">===</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">compact</span> <span style="color:#0550ae">?</span> <span style="color:#0a3069">&#34;Compact&#34;</span> <span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;List&#34;</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>                <span style="color:#1f2328">btn</span><span style="color:#1f2328">.</span><span style="color:#1f2328">click</span><span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>            <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        <span style="color:#1f2328">})</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        <span style="color:#57606a">// click button again to hide context menu
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#57606a"></span>        <span style="color:#1f2328">btnExpandContextMenu</span><span style="color:#1f2328">.</span><span style="color:#1f2328">click</span><span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    <span style="color:#1f2328">},</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><ul>
+<li>
+<p>First we obtain a reference to the button responsible for opening the little drop-down context menu with the sorting and Compact/List options.
+This is pretty easy considering it has an <code>aria-controls</code> attribute that always begins with <code>sortboxlist</code>, followed by a seemingly random stream of characters,
+that I can only assume represent some sort of random ID generated by React.</p>
+</li>
+<li>
+<p>We simulate a click on the button, opening the dropdown context menu containing the &lsquo;View as&rsquo; options</p>
+</li>
+<li>
+<p>We wait 10 milliseconds for the DOM to update - by issuing <code>.click()</code> calls ourselves we&rsquo;re pretending to be a real user and we have to abide by the rules
+of the UI.</p>
+</li>
+<li>
+<p>We loop through the available buttons and click the one corresponding to the passed in argument - &lsquo;Compact&rsquo; if the argument is <code>true</code>, &lsquo;List&rsquo; otherwise.</p>
+</li>
+</ul>
+<p>The function is pretty simple and very hacky - but it works. <code>setView(true)</code> sets the mode to Compact and <code>setView(false)</code> sets it to List
+regardless of the current page in the app (playlist, album, etc&hellip;).</p>
+<hr>
+<p>The next step was to somehow call this function automatically whenever the view/page inside the app changes.</p>
+<p>My first idea was to look for changes in <code>window.location</code>. I had hoped that maybe <code>window.location.hash</code> stored the path to the current resource.
+Unfortunately, in Spotify it&rsquo;s completely static and doesn&rsquo;t change at all from the moment the app is started.
+Which makes sense considering the user never sees the URL at all.</p>
+<p>Being somewhat out of ideas, I browsed through the <a href="https://developer.mozilla.org/en-US/docs/Web/Events">Event reference on MDN</a> for a possible
+event that I could hook onto and observe the page change. In the table listing Event types there&rsquo;s a <code>DOM mutation</code> row, linking to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver"><code>MutationObserver</code> API</a>.</p>
+<p>The <code>MutationObserver</code> API allows you to register callbacks for changes being made to a certain part of the DOM tree, such as node addition/removal
+or attribute changes. It seemed perfect - all I had to do was <em>observe</em> which parts of the DOM change as I change my app view between
+different albums and playlists.</p>
+<p>I very quickly noticed that within the DOM, there&rsquo;s a primary <code>main</code> tag whose <code>aria-label</code> tag contains a human-readable description of the current
+resource (such as <code>&quot;Spotify - Harlequin - an album by Lady Gaga&quot;</code>) that changes dynamically alongside the current view.</p>
+<p>So I had to create a <code>MutationObserver</code>, hook it up to watch for changes on this <code>main</code> tag, and then simply call my <code>setView</code> function from before,
+passing it <code>true/false</code> depending on the resource type the user&rsquo;s looking at:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">observer</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">MutationObserver</span><span style="color:#1f2328">((</span><span style="color:#1f2328">records</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">o</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#1f2328">records</span><span style="color:#1f2328">.</span><span style="color:#1f2328">forEach</span><span style="color:#1f2328">(</span><span style="color:#1f2328">record</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">record</span><span style="color:#1f2328">.</span><span style="color:#1f2328">attributeName</span> <span style="color:#0550ae">===</span> <span style="color:#0a3069">&#34;aria-label&#34;</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>            <span style="color:#1f2328">setView</span><span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>                <span style="color:#1f2328">record</span><span style="color:#1f2328">.</span><span style="color:#1f2328">target</span><span style="color:#1f2328">.</span><span style="color:#1f2328">children</span><span style="color:#1f2328">[</span><span style="color:#0550ae">0</span><span style="color:#1f2328">].</span><span style="color:#1f2328">getAttribute</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;data-testid&#34;</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">===</span> <span style="color:#0a3069">&#34;album-page&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>            <span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#1f2328">})</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#1f2328">})</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#1f2328">observer</span><span style="color:#1f2328">.</span><span style="color:#1f2328">observe</span><span style="color:#1f2328">(</span><span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">querySelector</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;main&#34;</span><span style="color:#1f2328">),</span> <span style="color:#1f2328">{</span><span style="color:#1f2328">attributes</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">})</span>
+</span></span></code></pre></div><ul>
+<li>We create a new <code>MutationObserver</code>, passing in a callback function that&rsquo;s called whenever a change of interest occurs.</li>
+<li>In this case we&rsquo;re only interested in <em>attribute changes</em> on the one <code>main</code> element, and we register the observer as such on line 11</li>
+<li>In the callback, we loop through all the &ldquo;records&rdquo; - which represent DOM changes that had occured, and if there&rsquo;s a record which resulted
+in the change of the tag&rsquo;s <code>aria-label</code> attribute, meaning that the user had navigated to another page, we call <code>setView</code>, passing in <code>true</code>
+if the user landed on an <strong>album</strong> page (meaning we switch to Compact mode), and false otherwise (meaning we switch to List mode)</li>
+</ul>
+<p>You may have noticed that the call to <code>setView</code> uses an attribute of one of <code>main</code>&rsquo;s children to determine the page type. This is because
+the <code>main</code> has an only child - a <code>section</code> tag with a <code>data-testid</code> attribute that contains a more easily &ldquo;parsable&rdquo; value that we can use
+to determine whether we&rsquo;re on an album or a playlist (<code>&quot;album-page&quot;</code> or <code>&quot;playlist-page&quot;</code>).</p>
+<p>You may also then be wondering why we don&rsquo;t watch for changes of attributes on that <code>section</code> instead of on its parent? This is because
+whenever the view inside Spotify changes (i.e. the user navigates to another page), this <code>section</code> DOM node is removed and replaced by a new one.
+So if we register an observer to watch for changes on that existing <code>section</code>, we never receive any notification - the callback never gets called - because
+the <code>section</code> is deleted quickly after navigation.</p>
+<p>With both the <code>setView</code> function implemented and the observer registered, <strong>the experiment was a success</strong>. I&rsquo;m able to navigate from album to playlist
+and from playlist to album and the View mode updates seamlessly.</p>
+<h1 id="persistance">Persistance</h1>
+<p>There was one final task - make this modification persistent across Spotify client restarts. Sure, I could save the modification in a file and
+copy-paste it into the Devtools console whenever I start Spotify, but why would I settle for that when I could spend the following 2 hours making it feel complete?</p>
+<p>I needed to find and modify a script that&rsquo;s loaded by the Spotify client at runtime. Knowing as this is a CEF app it was pretty likely that the .js
+files were just sitting somewhere on the filesystem. I navigated to the directory under which Spotify is installed on my system - <code>/opt/Spotify/</code>,
+and started looking.</p>
+<p>Among all the files the only ones of interest were <code>spotify</code>, a 50MB executable which I assumed contained the entire CEF, and an <code>Apps</code> directory,
+containing two <code>.spa</code> files:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>/opt/Spotify/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>├─ spotify
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>├─ Apps/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>│  ├─ login.spa
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>│  ├─ xpui.spa
+</span></span></code></pre></div><p>The <code>.spa</code> files were my only hope. Due to the acronym (SPA - &lsquo;Single Page Application&rsquo;) I&rsquo;d assumed that they&rsquo;d contain the JS source,
+but I was skeptical as I&rsquo;d never encountered the extension before. Anyway, <code>file</code> came to the rescue:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ file ./Apps/xpui.spa
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Apps/xpui.spa: Zip archive data, at least v2.0 to extract, compression <span style="color:#953800">method</span><span style="color:#0550ae">=</span>deflate
+</span></span></code></pre></div><p>Turns out they were just standard ZIPs with a different extension. Extracting <code>xpui.spa</code> revealed a large number of minified
+Javascript source files, some of which with cryptic, digit-only names.</p>
+<p>All I had to do was figure out which one I could freeload off of to register and observer and hook it onto the existing DOM elements.
+Considering the calls to <code>document.querySeclector[All]</code> which made references to existing elements deep in DOM tree, I looked for references
+to strings such as <code>'window'</code>, <code>'onload'</code>, <code>'onready'</code> and such, trying multiple different files and their sections, but my changes
+nor calls to <code>console.log</code> would never manifest in the devtools console.</p>
+<p>Eventually, I opened a Spotify instance and the devtools, and I noticed a specific <code>&lt;script&gt;</code> - <code>xpui-snapshot.js</code> referenced at the top of <code>&lt;head&gt;</code> - a perfect place
+to place my changes - and this time it actually worked. However despite firing after the <code>window</code>&rsquo;s <code>load</code> event, the queries for the DOM element
+were still failing.</p>
+<p>Instead of spending more time solving this in a clean way, I opted for a very quick hack: periodically query the DOM for the <code>main</code> in a set interval until
+it&rsquo;s created, and then hooking up the observer:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">addEventListener</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;load&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">i</span> <span style="color:#0550ae">=</span> <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">setInterval</span><span style="color:#1f2328">(()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#cf222e">try</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>            <span style="color:#1f2328">observer</span><span style="color:#1f2328">.</span><span style="color:#1f2328">observe</span><span style="color:#1f2328">(</span><span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">querySelector</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;main&#34;</span><span style="color:#1f2328">),</span> <span style="color:#1f2328">{</span><span style="color:#1f2328">attributes</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">})</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>            <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">clearInterval</span><span style="color:#1f2328">(</span><span style="color:#1f2328">i</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        <span style="color:#1f2328">}</span> <span style="color:#cf222e">catch</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">err</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>            <span style="color:#1f2328">console</span><span style="color:#1f2328">.</span><span style="color:#1f2328">error</span><span style="color:#1f2328">(</span><span style="color:#1f2328">err</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>            <span style="color:#cf222e">return</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#1f2328">},</span> <span style="color:#0550ae">200</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#1f2328">})</span>
+</span></span></code></pre></div><p>I then saved the file, minified it, updated the <code>xpui.spa</code> ZIP with the new version, and booted up Spotify.
+The end result is a working initial modification that persists between Spotify client restarts and reboots.</p>
+<h1 id="hackiness">Hackiness</h1>
+<p>This solution is hacky from beginning to end:</p>
+<ol>
+<li>It relies on DOM manipulation
+<ul>
+<li>As such it is not only inefficient - e.g. having to wait ~10ms for the dropdown to appear and the DOM to update</li>
+<li>But also prone to changes in future Spotify updates that may change the DOM layout, tag names, attribute names, or any other component of the system that the current solution relies on</li>
+</ul>
+</li>
+<li>Future Spotify updates <em>most likely</em> overwrite either the entire <code>xpui.spa</code> ZIP or at least the files contained within, leading to a full loss of the changes</li>
+</ol>
+<p>But it was a pretty fun way to spend a few hours and it&rsquo;s pretty satisfying seeing the change work every time!</p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts/">All posts</a></li>
+         
+          <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents"></nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&text=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&is_video=false&description=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&name=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums&description=%3cp%3eThe%20web%20and%20desktop%20versions%20of%20the%20Spotify%20client%20provide%20two%20distinct%20ways%20of%20displaying%20track%20lists%20when%20viewing%20a%20resource%20such%20as%20a%20playlist%20or%20an%20album%3a%3c%2fp%3e%0a%3cul%3e%0a%3cli%3eCompact%3c%2fli%3e%0a%3cli%3eList%3c%2fli%3e%0a%3c%2ful%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2fctx_menu.png%22%20alt%3d%22context%20menu%22%3e%3c%2fp%3e%0a%3cp%3eThey%20differ%20primarily%20in%20the%20amount%20of%20padding%20and%20spacing%20between%20the%20individual%20rows%20representing%20tracks%2c%20with%20the%20%3cstrong%3eCompact%3c%2fstrong%3e%20mode%20also%20%3cem%3eomitting%0athe%20belonging%20album%26rsquo%3bs%20cover%20thumbnail%20to%20the%20left%20of%20each%20track%3c%2fem%3e%3a%3c%2fp%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2flist.png%22%20alt%3d%22list%22%3e%0a%3cimg%20src%3d%22imgs%2fcompact.png%22%20alt%3d%22list%22%3e%3c%2fp%3e%0a%3cp%3eAbove%20you%20can%20see%20the%20difference%20between%20the%20two%20modes.%3c%2fp%3e" aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&t=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2025  Bogdan Mitrović 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts/">All posts</a></li>
+         
+        <li><a href="https://github.com/bool3max/">GitHub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+
+</html>
