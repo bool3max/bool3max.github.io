@@ -340,10 +340,10 @@ the <code>section</code> is deleted quickly after navigation.</p>
 <p>With both the <code>setView</code> function implemented and the observer registered, <strong>the experiment was a success</strong>. I&rsquo;m able to navigate from album to playlist
 and from playlist to album and the View mode updates seamlessly.</p>
 <h1 id="persistance">Persistance</h1>
-<p>There was one final task - make this modification persistent across Spotify client restarts. Sure, I could save the modification in a file and
-copy-paste it into the Devtools console whenever I start Spotify, but why would I settle for that when I could spend the following 2 hours making it feel complete?</p>
-<p>I needed to find and modify a script that&rsquo;s loaded by the Spotify client at runtime. Knowing as this is a CEF app it was pretty likely that the .js
-files were just sitting somewhere on the filesystem. I navigated to the directory under which Spotify is installed on my system - <code>/opt/Spotify/</code>,
+<p>There was one final task - make this modification persistent across Spotify client restarts. Sure, I could save the JS snippets to a file and
+copy-paste them into the Devtools console manully whenever I start Spotify, but why would I settle for that when I could spend the following 2 hours making it feel complete?</p>
+<p>To do that, I needed a way to inject the JS code I wrote (the <code>setView</code> function and the observer hooks) into a running Spotify instance once it finished loading and once the DOM is fully up.</p>
+<p>Knowing as this is a CEF app, I reckoned it was pretty likely that the <code>.js</code> source files were just sitting somewhere on the filesystem. I navigated to the directory under which Spotify is installed on my system - <code>/opt/Spotify/</code>,
 and started looking.</p>
 <p>Among all the files the only ones of interest were <code>spotify</code>, a 50MB executable which I assumed contained the entire CEF, and an <code>Apps</code> directory,
 containing two <code>.spa</code> files:</p>
