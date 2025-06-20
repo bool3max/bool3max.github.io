@@ -8,7 +8,7 @@
   
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Modifying the Spotify client to persist tracklist View style per playlists and albums | bool3max&#39;s blog</title>
+  <title> Modifying the Spotify client to persist tracklist View style between playlists and albums | bool3max&#39;s blog</title>
   <link rel = 'canonical' href = 'https://bool3max.win/posts/spotify_ui_hacking/'>
   <meta name="description" content="A collection of posts primarily about topics I&#39;m exploring or that I&#39;m interested in, some of them being quick references written for future use.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +16,7 @@
   <meta name="googlebot" content="index,follow,snippet,archive">
   <meta property="og:url" content="https://bool3max.win/posts/spotify_ui_hacking/">
   <meta property="og:site_name" content="bool3max&#39;s blog">
-  <meta property="og:title" content="Modifying the Spotify client to persist tracklist View style per playlists and albums">
+  <meta property="og:title" content="Modifying the Spotify client to persist tracklist View style between playlists and albums">
   <meta property="og:description" content="The web and desktop versions of the Spotify client provide two distinct ways of displaying track lists when viewing a resource such as a playlist or an album:
 Compact List They differ primarily in the amount of padding and spacing between the individual rows representing tracks, with the Compact mode also omitting the belonging album’s cover thumbnail to the left of each track:
 Above you can see the difference between the two modes.">
@@ -28,7 +28,7 @@ Above you can see the difference between the two modes.">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Modifying the Spotify client to persist tracklist View style per playlists and albums">
+  <meta name="twitter:title" content="Modifying the Spotify client to persist tracklist View style between playlists and albums">
   <meta name="twitter:description" content="The web and desktop versions of the Spotify client provide two distinct ways of displaying track lists when viewing a resource such as a playlist or an album:
 Compact List They differ primarily in the amount of padding and spacing between the individual rows representing tracks, with the Compact mode also omitting the belonging album’s cover thumbnail to the left of each track:
 Above you can see the difference between the two modes.">
@@ -117,42 +117,42 @@ Above you can see the difference between the two modes.">
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&text=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&text=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&is_video=false&description=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&is_video=false&description=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&name=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums&description=%3cp%3eThe%20web%20and%20desktop%20versions%20of%20the%20Spotify%20client%20provide%20two%20distinct%20ways%20of%20displaying%20track%20lists%20when%20viewing%20a%20resource%20such%20as%20a%20playlist%20or%20an%20album%3a%3c%2fp%3e%0a%3cul%3e%0a%3cli%3eCompact%3c%2fli%3e%0a%3cli%3eList%3c%2fli%3e%0a%3c%2ful%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2fctx_menu.png%22%20alt%3d%22context%20menu%22%3e%3c%2fp%3e%0a%3cp%3eThey%20differ%20primarily%20in%20the%20amount%20of%20padding%20and%20spacing%20between%20the%20individual%20rows%20representing%20tracks%2c%20with%20the%20%3cstrong%3eCompact%3c%2fstrong%3e%20mode%20also%20%3cem%3eomitting%0athe%20belonging%20album%26rsquo%3bs%20cover%20thumbnail%20to%20the%20left%20of%20each%20track%3c%2fem%3e%3a%3c%2fp%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2flist.png%22%20alt%3d%22list%22%3e%0a%3cimg%20src%3d%22imgs%2fcompact.png%22%20alt%3d%22list%22%3e%3c%2fp%3e%0a%3cp%3eAbove%20you%20can%20see%20the%20difference%20between%20the%20two%20modes.%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&name=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums&description=%3cp%3eThe%20web%20and%20desktop%20versions%20of%20the%20Spotify%20client%20provide%20two%20distinct%20ways%20of%20displaying%20track%20lists%20when%20viewing%20a%20resource%20such%20as%20a%20playlist%20or%20an%20album%3a%3c%2fp%3e%0a%3cul%3e%0a%3cli%3eCompact%3c%2fli%3e%0a%3cli%3eList%3c%2fli%3e%0a%3c%2ful%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2fctx_menu.png%22%20alt%3d%22context%20menu%22%3e%3c%2fp%3e%0a%3cp%3eThey%20differ%20primarily%20in%20the%20amount%20of%20padding%20and%20spacing%20between%20the%20individual%20rows%20representing%20tracks%2c%20with%20the%20%3cstrong%3eCompact%3c%2fstrong%3e%20mode%20also%20%3cem%3eomitting%0athe%20belonging%20album%26rsquo%3bs%20cover%20thumbnail%20to%20the%20left%20of%20each%20track%3c%2fem%3e%3a%3c%2fp%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2flist.png%22%20alt%3d%22list%22%3e%0a%3cimg%20src%3d%22imgs%2fcompact.png%22%20alt%3d%22list%22%3e%3c%2fp%3e%0a%3cp%3eAbove%20you%20can%20see%20the%20difference%20between%20the%20two%20modes.%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&t=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&t=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -171,7 +171,7 @@ Above you can see the difference between the two modes.">
   <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
     <header>
       <h1 class="posttitle" itemprop="name headline">
-        Modifying the Spotify client to persist tracklist View style per playlists and albums
+        Modifying the Spotify client to persist tracklist View style between playlists and albums
       </h1>
       <div class="meta">
         
@@ -441,42 +441,42 @@ The end result is a working initial modification that persists between Spotify c
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&text=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&text=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&is_video=false&description=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&is_video=false&description=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums&body=Check out this article: https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&title=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&name=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums&description=%3cp%3eThe%20web%20and%20desktop%20versions%20of%20the%20Spotify%20client%20provide%20two%20distinct%20ways%20of%20displaying%20track%20lists%20when%20viewing%20a%20resource%20such%20as%20a%20playlist%20or%20an%20album%3a%3c%2fp%3e%0a%3cul%3e%0a%3cli%3eCompact%3c%2fli%3e%0a%3cli%3eList%3c%2fli%3e%0a%3c%2ful%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2fctx_menu.png%22%20alt%3d%22context%20menu%22%3e%3c%2fp%3e%0a%3cp%3eThey%20differ%20primarily%20in%20the%20amount%20of%20padding%20and%20spacing%20between%20the%20individual%20rows%20representing%20tracks%2c%20with%20the%20%3cstrong%3eCompact%3c%2fstrong%3e%20mode%20also%20%3cem%3eomitting%0athe%20belonging%20album%26rsquo%3bs%20cover%20thumbnail%20to%20the%20left%20of%20each%20track%3c%2fem%3e%3a%3c%2fp%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2flist.png%22%20alt%3d%22list%22%3e%0a%3cimg%20src%3d%22imgs%2fcompact.png%22%20alt%3d%22list%22%3e%3c%2fp%3e%0a%3cp%3eAbove%20you%20can%20see%20the%20difference%20between%20the%20two%20modes.%3c%2fp%3e" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&name=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums&description=%3cp%3eThe%20web%20and%20desktop%20versions%20of%20the%20Spotify%20client%20provide%20two%20distinct%20ways%20of%20displaying%20track%20lists%20when%20viewing%20a%20resource%20such%20as%20a%20playlist%20or%20an%20album%3a%3c%2fp%3e%0a%3cul%3e%0a%3cli%3eCompact%3c%2fli%3e%0a%3cli%3eList%3c%2fli%3e%0a%3c%2ful%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2fctx_menu.png%22%20alt%3d%22context%20menu%22%3e%3c%2fp%3e%0a%3cp%3eThey%20differ%20primarily%20in%20the%20amount%20of%20padding%20and%20spacing%20between%20the%20individual%20rows%20representing%20tracks%2c%20with%20the%20%3cstrong%3eCompact%3c%2fstrong%3e%20mode%20also%20%3cem%3eomitting%0athe%20belonging%20album%26rsquo%3bs%20cover%20thumbnail%20to%20the%20left%20of%20each%20track%3c%2fem%3e%3a%3c%2fp%3e%0a%3cp%3e%3cimg%20src%3d%22imgs%2flist.png%22%20alt%3d%22list%22%3e%0a%3cimg%20src%3d%22imgs%2fcompact.png%22%20alt%3d%22list%22%3e%3c%2fp%3e%0a%3cp%3eAbove%20you%20can%20see%20the%20difference%20between%20the%20two%20modes.%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&t=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20per%20playlists%20and%20albums" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fbool3max.win%2fposts%2fspotify_ui_hacking%2f&t=Modifying%20the%20Spotify%20client%20to%20persist%20tracklist%20View%20style%20between%20playlists%20and%20albums" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>
