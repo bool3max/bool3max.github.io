@@ -238,15 +238,15 @@ Compact mode when viewing specific albums.</p>
 until you change it manually again - and as having to do that every time depending on context is of course a big no-go, I set a goal to modify this behavior
 of the Spotify desktop client.</p>
 <h1 id="spicetify">Spicetify</h1>
-<p>My first idea was to take a look at <a href="https://spicetify.app">Spicetify</a>, an unofficial 3rd party tool for modding pretty much all aspects of the Spotify client.
+<p>My first idea was to check out <a href="https://spicetify.app">Spicetify</a>, an unofficial 3rd party tool for modding pretty much all aspects of the Spotify client.
 I had vaguely remembered using it a long time ago, so I downloaded it in hopes that someone had already encountered the issue I was facing and developed
 an <a href="https://spicetify.app/docs/advanced-usage/extensions">extension</a> for it.</p>
 <p>No such luck. While the available extensions are impressive (especially so the <a href="https://spicetify.app/docs/advanced-usage/extensions#keyboard-shortcut">Keyboard Shortcut</a>)
 one, none of them seemed to address my issue.</p>
-<p>The next logical step was for me to create my own extension. Spicetify&rsquo;s developers went throgh the process of reverse engineering parts of the client.
-They even provide an <a href="https://spicetify.app/docs/development/api-wrapper/">API wrapper</a>, and seeing as Spotify uses React for its UI, and despite not having much experience
-with it, I thought it&rsquo;d be a piece of cake: hook into the methods responsible for views/routing or what have you, and update the state responsible for the &lsquo;View as&rsquo;
-preference depending on the current page (album or playlist).</p>
+<p>The next logical step was for me to create my own extension. Spicetify&rsquo;s developers went through the process of reverse engineering parts of the client,
+and they even provide an <a href="https://spicetify.app/docs/development/api-wrapper/">API wrapper</a> for easy access to many of the app&rsquo;s internals. After learning that Spotify uses React for its UI, despite not having much experience
+with it I thought it&rsquo;d be a piece of cake: hook into the methods responsible for views/routing or what have you, and update the state responsible for the &lsquo;View as&rsquo;
+preference depending on the current page&rsquo;s type (album or playlist).</p>
 <p>Just as I was about to begin though I noticed my CPU fan making way more noise than usual during similar workflows. Opening <code>htop</code> revealed that it was Spotify using
 15-25% CPU at idle, without any media playing. I tried restarting it, clearing the cache, enabling/disabling hardware acceleration, but eventually only uninstalling Spicetify managed
 to bring it back down to an acceptable percentage.</p>
@@ -259,8 +259,8 @@ Spotify uses the Chromium Embedded Framework (CEF) for its desktop apps - it&rsq
 <p>You most definitely don&rsquo;t need the Spicetify CLI to enable devtools access in Spotify - it most likely changes a flag in some config somewhere. But I&rsquo;d already
 ran it and it saved me the trouble.</p></blockquote>
 <p>This gave me access to the JS console and allowed me to inspect the DOM in real-time. I then changed the View mode from Compact to List using the
-dropdown multiple times, observing the changes taking place in the DOM. The first step was to write a simple function that changes the current
-View mode based on its single argument:</p>
+dropdown a few times, observing the changes taking place in the DOM.</p>
+<p>The first step was to write a simple function that changes the current View mode based on an argument:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">setView</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">compact</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">btnExpandContextMenu</span> <span style="color:#0550ae">=</span> <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">querySelector</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;button[aria-controls^=&#34;sortboxlist&#34;]&#39;</span><span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#57606a">// Manually click button that expands view mode selector context menu
@@ -295,7 +295,7 @@ of the DOM.</p>
 <p>We loop through the available buttons and click the one corresponding to the passed in argument - &lsquo;Compact&rsquo; if the argument is <code>true</code>, &lsquo;List&rsquo; otherwise.</p>
 </li>
 </ul>
-<p>The function is pretty simple and somewhat hacky as it simulates the actions of a real users as they would interact with the app, but it works. <code>setView(true)</code> sets the mode to Compact and <code>setView(false)</code> sets it to List
+<p>The function is pretty simple and somewhat hacky as it simulates the actions a real would perform as they interact with the app, but it works. <code>setView(true)</code> sets the mode to Compact and <code>setView(false)</code> sets it to List
 regardless of the current page in the app (playlist, album, etc&hellip;).</p>
 <hr>
 <p>The next step was to somehow call this function automatically whenever the view/page inside the app changes.</p>
@@ -329,29 +329,30 @@ passing it <code>true/false</code> depending on the type of the resource the use
 in the change of the tag&rsquo;s <code>aria-label</code> attribute, meaning that the user had navigated to another page, we call <code>setView</code>, passing in <code>true</code>
 if the user landed on an <strong>album</strong> page (meaning we switch to Compact mode), and false otherwise (meaning we switch to List mode)</li>
 </ul>
-<p>You may have noticed that the call to <code>setView</code> uses an attribute of one of <code>main</code>&rsquo;s children to determine the page type. This is because
+<p>You may have noticed that the call to <code>setView</code> uses an attribute of one of <code>main</code>&rsquo;s <em>children</em> to determine the page type. This is because
 the <code>main</code> has an only child - a <code>section</code> tag with a <code>data-testid</code> attribute that contains a more easily &ldquo;parsable&rdquo; value that we can use
 to determine whether we&rsquo;re on an album or a playlist (<code>&quot;album-page&quot;</code> or <code>&quot;playlist-page&quot;</code>).</p>
 <p>You may also then be wondering why we don&rsquo;t watch for changes of attributes on that <code>section</code> instead of on its parent? This is because
 whenever the view inside Spotify changes (i.e. the user navigates to another page), this <code>section</code> DOM node is removed and replaced by a new one.
-So if we register an observer to watch for changes on that existing <code>section</code>, we never receive any notification - the callback never gets called - because
+So if we were to register an observer to watch for changes on that existing <code>section</code>, the callback function would never get called - because
 the <code>section</code> is deleted quickly after navigation.</p>
-<p>Dealing with this kind of stuff is just the consequences of interacting with the DOM directly as opposed to hooking up to React.</p>
+<blockquote>
+<p>Dealing with this kind of stuff is just one of the consequences of interacting with the DOM directly as opposed to hooking up to React.</p></blockquote>
 <p>With both the <code>setView</code> function implemented and the observer registered, <strong>the experiment was a success</strong>. I&rsquo;m able to navigate from album to playlist
-and from playlist to album and the View mode updates seamlessly.</p>
+and from playlist to album and the View mode updates seamlessly!</p>
 <h1 id="persistance">Persistance</h1>
 <p>There was one final task - make this modification persistent across Spotify client restarts. Sure, I could save the JS snippets to a file and
-copy-paste them into the Devtools console manully whenever I start Spotify, but why would I settle for that when I could spend the following 2 hours making it feel complete?</p>
-<p>To do that, I needed a way to inject the JS code I wrote (the <code>setView</code> function and the observer hooks) into a running Spotify instance once it finished loading and once the DOM is fully up.</p>
-<p>Knowing as this is a CEF app, I reckoned it was pretty likely that the <code>.js</code> source files were just sitting somewhere on the filesystem. I navigated to the directory under which Spotify is installed on my system - <code>/opt/Spotify/</code>,
+copy-paste them into the developer console manully whenever I start Spotify, but why would I settle for that when I could spend the following 2 hours making it feel complete?</p>
+<p>To achieve that, I needed a way to inject the JS code I wrote (the <code>setView</code> function and the observer hooks) into a running Spotify instance once it finished loading and once the DOM is fully up.</p>
+<p>Keeping in mind that I&rsquo;m dealing with a CEF app, I reckoned it was pretty likely that the <code>.js</code> source files were just sitting somewhere on the filesystem. I navigated to the directory under which Spotify is installed on my system - <code>/opt/Spotify/</code>,
 and started looking.</p>
 <p>Among all the files the only ones of interest were <code>spotify</code>, a 50MB executable which I assumed contained the entire CEF, and an <code>Apps</code> directory,
 containing two <code>.spa</code> files:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>/opt/Spotify/
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>├─ spotify
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>├─ spotify      &lt;--- 50MB executable
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>├─ Apps/
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>│  ├─ login.spa
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>│  ├─ xpui.spa
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>│  ├─ login.spa &lt;--- huh?
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>│  ├─ xpui.spa  &lt;--- huh?
 </span></span></code></pre></div><p>The <code>.spa</code> files were my only hope. Due to the acronym (SPA - &lsquo;Single Page Application&rsquo;) I&rsquo;d assumed that they&rsquo;d contain the JS source,
 but I was skeptical as I&rsquo;d never encountered the extension before. Anyway, <code>file</code> came to the rescue:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ file ./Apps/xpui.spa
@@ -359,14 +360,14 @@ but I was skeptical as I&rsquo;d never encountered the extension before. Anyway,
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Apps/xpui.spa: Zip archive data, at least v2.0 to extract, compression <span style="color:#953800">method</span><span style="color:#0550ae">=</span>deflate
 </span></span></code></pre></div><p>Turns out they were just standard ZIPs with a different extension. Extracting <code>xpui.spa</code> revealed a large number of minified
 Javascript source files, some of which with cryptic, digit-only names.</p>
-<p>All I had to do was figure out which one I could freeload off of to register and observer and hook it onto the existing DOM elements.
+<p>All I had to do was figure out which one I could freeload off of to register the observer and hook it onto the existing DOM elements.
 Considering the calls to <code>document.querySeclector[All]</code> which made references to existing elements deep in DOM tree, I looked for references
 to strings such as <code>'window'</code>, <code>'onload'</code>, <code>'onready'</code> and such, trying multiple different files and their sections, but my changes
 nor calls to <code>console.log</code> would never manifest in the devtools console.</p>
-<p>Eventually, I opened a Spotify instance and the devtools, and I noticed a specific <code>&lt;script&gt;</code> - <code>xpui-snapshot.js</code> referenced at the top of <code>&lt;head&gt;</code> - a perfect place
-to place my changes - and this time it actually worked. However despite firing after the <code>window</code>&rsquo;s <code>load</code> event, the queries for the DOM element
-were still failing.</p>
-<p>Instead of spending more time attemping to solve this in a more pragmatic manner, I yet again opted for a quick hack: periodically query the DOM for the <code>main</code> in a set interval until
+<p>Eventually, I opened a Spotify instance and the devtools, and I noticed a specific <code>&lt;script&gt;</code> - <code>xpui-snapshot.js</code>, referenced at the top of <code>&lt;head&gt;</code> - a perfect place
+to place my changes. The calls to <code>console.log</code> that I&rsquo;d placed in that file, in a function set to fire after the window&rsquo;s <code>load</code> event were actually being logged this time, however the queries for the <code>&lt;main&gt;</code> element
+were still failing. It seemed that despite firing after the window&rsquo;s <code>load</code>, my code was still executing before the app has had enough time to set up the entire DOM.</p>
+<p>Instead of spending more time attemping to solve this in a more pragmatic manner, I yet again opted for a quick hack: periodically query the DOM for the <code>&lt;main&gt;</code> in a set interval until
 it&rsquo;s created, and then hook up the observer:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">addEventListener</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;load&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">i</span> <span style="color:#0550ae">=</span> <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">setInterval</span><span style="color:#1f2328">(()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
@@ -380,8 +381,9 @@ it&rsquo;s created, and then hook up the observer:</p>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#1f2328">},</span> <span style="color:#0550ae">200</span><span style="color:#1f2328">);</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#1f2328">})</span>
-</span></span></code></pre></div><p>I saved the file, minified it, updated the <code>xpui.spa</code> ZIP with the new version, and booted up Spotify.
+</span></span></code></pre></div><p>I saved the file, minified it (though there&rsquo;s really no reason to), updated the <code>xpui.spa</code> ZIP with the new version, and booted up Spotify.
 The end result is a working initial modification that persists between Spotify client restarts and reboots.</p>
+<p>Thankfully, Spotify seems to perform no integrity checks against <code>xpui.spa</code> or any of the files within. That would&rsquo;ve certainly made things more difficult.</p>
 <h1 id="hackiness">Hackiness</h1>
 <p>This solution is hacky from beginning to end:</p>
 <ol>
@@ -393,7 +395,7 @@ The end result is a working initial modification that persists between Spotify c
 </li>
 <li>Future Spotify updates <em>most likely</em> overwrite either the entire <code>xpui.spa</code> ZIP or at least the files contained within, leading to a full loss of the changes</li>
 </ol>
-<p>But it was a pretty fun way to spend a few hours and it&rsquo;s pretty satisfying seeing the change work every time!</p>
+<p>Nevertheless it was a pretty fun way to spend a few hours and it&rsquo;s pretty satisfying seeing the improvement in action every time!</p>
 
     </div>
   </article>
