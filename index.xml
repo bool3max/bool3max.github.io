@@ -73,13 +73,6 @@
       <description>&lt;p&gt;When you normally execute, say &lt;code&gt;man 3 printf&lt;/code&gt;, &lt;code&gt;man&lt;/code&gt; simply does the job of looking up and fetching the particular manpage. The actual&#xA;act of &lt;em&gt;displaying&lt;/em&gt; it, is done by a &lt;strong&gt;pager&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;p&gt;The default pager that &lt;code&gt;man&lt;/code&gt; uses, &lt;strong&gt;&lt;code&gt;less&lt;/code&gt;&lt;/strong&gt;, is in essence a simple TUI program that allows for easy navigation of a particular text&#xA;buffer (scrolling, searching, etc&amp;hellip; all using vi-like keybindings). It can output stylized text (bolds, underlines, etc&amp;hellip;) which it does&#xA;by default for manpages.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Userspace programs for process management on Linux</title>
-      <link>https://bool3max.win/posts/linux_userspace_programs_for_process_management/</link>
-      <pubDate>Tue, 26 Jan 2021 16:10:17 +0100</pubDate>
-      <guid>https://bool3max.win/posts/linux_userspace_programs_for_process_management/</guid>
-      <description>&lt;h1 id=&#34;kill&#34;&gt;kill&lt;/h1&gt;&#xA;&lt;p&gt;Despite its name (that it&amp;rsquo;s gotten from its most popular usecase), &lt;code&gt;kill&lt;/code&gt; is very versatile tool used to send specified signals to individual&#xA;processes, or process groups.&lt;/p&gt;&#xA;&lt;p&gt;It is part of the &lt;code&gt;util-linux&lt;/code&gt; collection of programs and is widely available.&lt;/p&gt;&#xA;&lt;p&gt;Here area a couple of usage examples. If no signal name/number is specified, &lt;strong&gt;&lt;code&gt;SIGTERM (15)&lt;/code&gt;&lt;/strong&gt; is assumed:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;kill firefox&lt;/code&gt;:&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Send a &lt;code&gt;SIGTERM&lt;/code&gt; (15) signal to every process invoked as &lt;code&gt;&#39;firefox&#39;&lt;/code&gt;.&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>Guide to screensharing on Sway from Firefox/Chromium</title>
       <link>https://bool3max.win/posts/sway_screenshare_guide/</link>
       <pubDate>Mon, 25 Jan 2021 14:01:59 +0100</pubDate>
@@ -134,13 +127,6 @@
       <pubDate>Fri, 16 Oct 2020 14:23:54 +0200</pubDate>
       <guid>https://bool3max.win/posts/languages_versus_implementations/</guid>
       <description>&lt;p&gt;&lt;strong&gt;Python&lt;/strong&gt; is a programming language. It is nothing more but one large document of text and code examples (a &lt;em&gt;standard&lt;/em&gt;) that describes exactly how the language is to behave. You can&amp;rsquo;t run it, download it, or execute it. That&amp;rsquo;s it, it&amp;rsquo;s just text.&lt;/p&gt;&#xA;&lt;p&gt;The latest edition of it is up on the official Python website as the &lt;a href=&#34;https://docs.python.org/3/reference/index.html&#34;&gt;&lt;strong&gt;The Python Language Reference&lt;/strong&gt;&lt;/a&gt;. As Python also consists of a standard library of functions, a document that describes how the modules and their respective functions are to behave is also readily available as&#xA;&lt;a href=&#34;https://docs.python.org/3/library/index.html&#34;&gt;&lt;strong&gt;The Python Standard Library&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Python3 OOP gotchas</title>
-      <link>https://bool3max.win/posts/python3_oop_guide/</link>
-      <pubDate>Mon, 12 Oct 2020 16:22:05 +0200</pubDate>
-      <guid>https://bool3max.win/posts/python3_oop_guide/</guid>
-      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;This is not a tutorial, but rather a personal document that I write for myself in order to cement the knowledge and explain &amp;ldquo;tricky&amp;rdquo; concepts and gotchas when it comes to OOP and classes in &lt;code&gt;python3&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;Useful resources:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://docs.python.org/3/tutorial/classes.html&#34;&gt;Official python &amp;lsquo;Classes&amp;rsquo; tutorial&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://docs.python.org/3/reference/datamodel.html&#34;&gt;Data model section of the official python &amp;lsquo;Language Reference&amp;rsquo;&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://realpython.com/python-super/#an-overview-of-pythons-super-function&#34;&gt;&amp;ldquo;Supercharge your classes with Python super() article on realpython.org&amp;rdquo;&lt;/a&gt; - &lt;em&gt;a really good read&lt;/em&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h1 id=&#34;how-does-self-actually-work&#34;&gt;How does &lt;code&gt;self&lt;/code&gt; actually work?&lt;/h1&gt;&#xA;&lt;p&gt;Consider the following class definition:&lt;/p&gt;</description>
     </item>
     <item>
       <title>Why I prefer fish over bash for scripting</title>
