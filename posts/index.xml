@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>en-us</language>
     <copyright>Bogdan Mitrović</copyright>
-    <lastBuildDate>Sat, 14 Jun 2025 18:49:37 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 13 Jul 2025 01:25:21 +0200</lastBuildDate>
     <atom:link href="https://bool3max.win/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The importance of a good Table-of-Contents implementation</title>
+      <link>https://bool3max.win/posts/toc/</link>
+      <pubDate>Sun, 13 Jul 2025 01:25:21 +0200</pubDate>
+      <guid>https://bool3max.win/posts/toc/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve always found it invaluable to have a &lt;strong&gt;clear&lt;/strong&gt;, &lt;strong&gt;complete&lt;/strong&gt; and &lt;strong&gt;omnipresent&lt;/strong&gt; overview of any text-based resource I&amp;rsquo;m absorbing. Having a &amp;ldquo;bird&amp;rsquo;s eye view&amp;rdquo; of all available information aleviates&#xA;the feeling that I may have missed or skipped over something, and it helps me discern the way a section I&amp;rsquo;m reading at any given moment relates to the rest of the resource.&#xA;It gives me a sense of security that I can&amp;rsquo;t really describe.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Modifying the Spotify client to persist tracklist View style between playlists and albums</title>
       <link>https://bool3max.win/posts/spotify_ui_hacking/</link>
