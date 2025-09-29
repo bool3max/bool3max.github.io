@@ -346,7 +346,7 @@ the <code>section</code> is deleted quickly after navigation.</p>
 <p>Dealing with this kind of stuff is just one of the consequences of interacting with the DOM directly as opposed to hooking up to React.</p></blockquote>
 <p>With both the <code>setView</code> function implemented and the observer registered, <strong>the experiment was a success</strong>. I&rsquo;m able to navigate from album to playlist
 and from playlist to album and the View mode updates seamlessly!</p>
-<h1 id="persistance">Persistance</h1>
+<h1 id="persistence">Persistence</h1>
 <p>There was one final task - make this modification persistent across Spotify client restarts. Sure, I could save the JS snippets to a file and
 copy-paste them into the developer console manully whenever I start Spotify, but why would I settle for that when I could spend the following 2 hours making it feel complete?</p>
 <p>To achieve that, I needed a way to inject the JS code I wrote (the <code>setView</code> function and the observer hooks) into a running Spotify instance once it finished loading and once the DOM is fully up.</p>
