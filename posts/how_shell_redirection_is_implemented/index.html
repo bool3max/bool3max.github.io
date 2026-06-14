@@ -15,20 +15,20 @@
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
   <meta property="og:url" content="https://bool3max.win/posts/how_shell_redirection_is_implemented/">
-  <meta property="og:site_name" content="bool3max&#39;s blog">
-  <meta property="og:title" content="How is shell redirection implemented?">
-  <meta property="og:description" content="Shell redirection allows you to redirect a process’ standard streams to paths other than the controlling terminal. This post will focus on explaining how it is implemented by shells (such as bash). If you are unfamiliar with redirection and would like to familiarize yourself with the concept and syntax (as far as bash is concerned), then GNU Bash Reference Manual - Redirections is a good place to start.
+	<meta property="og:site_name" content="bool3max&#39;s blog">
+	<meta property="og:title" content="How is shell redirection implemented?">
+	<meta property="og:description" content="Shell redirection allows you to redirect a process’ standard streams to paths other than the controlling terminal. This post will focus on explaining how it is implemented by shells (such as bash). If you are unfamiliar with redirection and would like to familiarize yourself with the concept and syntax (as far as bash is concerned), then GNU Bash Reference Manual - Redirections is a good place to start.
 The fundamentals A running shell process maintains a set of open standard file descriptors for stdout (1), stderr(2) and stdin (0) that are tied to the controlling terminal. This can be observed by querying the /proc virtual filesystem. For example, in bash:">
-  <meta property="og:locale" content="en_us">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2023-07-17T09:37:12+02:00">
-    <meta property="article:modified_time" content="2023-07-17T09:37:12+02:00">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2023-07-17T09:37:12+02:00">
+		<meta property="article:modified_time" content="2023-07-17T09:37:12+02:00">
 
   
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="How is shell redirection implemented?">
-  <meta name="twitter:description" content="Shell redirection allows you to redirect a process’ standard streams to paths other than the controlling terminal. This post will focus on explaining how it is implemented by shells (such as bash). If you are unfamiliar with redirection and would like to familiarize yourself with the concept and syntax (as far as bash is concerned), then GNU Bash Reference Manual - Redirections is a good place to start.
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="How is shell redirection implemented?">
+	<meta name="twitter:description" content="Shell redirection allows you to redirect a process’ standard streams to paths other than the controlling terminal. This post will focus on explaining how it is implemented by shells (such as bash). If you are unfamiliar with redirection and would like to familiarize yourself with the concept and syntax (as far as bash is concerned), then GNU Bash Reference Manual - Redirections is a good place to start.
 The fundamentals A running shell process maintains a set of open standard file descriptors for stdout (1), stderr(2) and stdin (0) that are tied to the controlling terminal. This can be observed by querying the /proc virtual filesystem. For example, in bash:">
 
   
@@ -78,7 +78,7 @@ The fundamentals A running shell process maintains a set of open standard file d
       <ul>
         
         <li>
-          <a class="icon" href=" https://bool3max.win/posts/c_strip_whitespace/" aria-label="Previous">
+          <a class="icon" href=" https://bool3max.win/posts/hashmap_speedup/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
@@ -206,8 +206,8 @@ by shells (such as <code>bash</code>). If you are unfamiliar with redirection an
 <h2 id="the-fundamentals">The fundamentals</h2>
 <p>A running shell process maintains a set of open standard file descriptors for stdout (1), stderr(2) and stdin (0) that are
 tied to the controlling terminal. This can be observed by querying the <code>/proc</code> virtual filesystem. For example, in <code>bash</code>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ls -l /proc/<span style="color:#953800">$$</span>/fd
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Permissions Size User   Group  Date Modified Name
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ls -l /proc/<span style="color:#953800">$$</span>/fd
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Permissions Size User   Group  Date Modified Name
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>lrwx------    <span style="color:#0550ae">64</span> bogdan bogdan <span style="color:#0550ae">17</span> Jul 16:22  <span style="color:#0550ae">0</span> -&gt; /dev/pts/3
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>lrwx------    <span style="color:#0550ae">64</span> bogdan bogdan <span style="color:#0550ae">17</span> Jul 16:22  <span style="color:#0550ae">1</span> -&gt; /dev/pts/3
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>lrwx------    <span style="color:#0550ae">64</span> bogdan bogdan <span style="color:#0550ae">17</span> Jul 16:22  <span style="color:#0550ae">2</span> -&gt; /dev/pts/3
@@ -215,7 +215,7 @@ tied to the controlling terminal. This can be observed by querying the <code>/pr
 </span></span></code></pre></div><p>Above, <code>$$</code> is a <code>bash</code> variable that expands to the PID of the running shell process, and <code>0</code>, <code>1</code>, <code>2</code> are file nodes in the virtual filesystem,
 all symlinked to the running terminal character device.</p>
 <p>If I start another instance of my terminal emulator, and in the shell I issue the following command:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Hello from another terminal!&#34;</span> &gt;/dev/pts/3
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Hello from another terminal!&#34;</span> &gt;/dev/pts/3
 </span></span></code></pre></div><p>I will see the text pop up in my original terminal window. This fact doesn&rsquo;t have much to do with the shell, or redirection, but it&rsquo;s still
 pretty neat to recognize that the terminal is interfaceable with via a node on the filesystem.</p>
 <h2 id="redirection">Redirection</h2>
@@ -224,14 +224,14 @@ pretty neat to recognize that the terminal is interfaceable with via a node on t
 shell. At that point, before it yields control to the process it was instructed to spawn, or rather before it calls <code>execve</code>, the new process
 has a chance to <em>redirect</em> any of its file descriptors to a new destination. <strong>It would do this using the <a href="https://www.man7.org/linux/man-pages/man2/dup.2.html"><code>dup2(2)</code></a> system call</strong>.</p>
 <p><code>dup2</code>&rsquo;s signature is very simple:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">dup2</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> oldfd<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> newfd<span style="color:#1f2328">);</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">dup2</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> oldfd<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> newfd<span style="color:#1f2328">);</span>
 </span></span></code></pre></div><p>It accepts two file descriptors, <code>oldfd</code> and <code>newfd</code> - and modifies <code>newfd</code> such that it points to the same destination as <code>oldfd</code>.
 It is thus very easy to see how the shell makes use of this syscall: when it is instructed to redirect one of the standard fds to a particular destination,
 it opens that destination (using <code>open(2)</code>), and runs <code>dup2(2)</code>, passing it the fd of one of the standard streams and the fd of the new, opened destination.</p>
 <h2 id="example">Example</h2>
 <p>Let&rsquo;s see it in action. Below is a simple Python script, <code>print.py</code>, that outputs two strings: one to stdout and one to stderr. It is marked as executable and has
 the appropriate <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a>:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#57606a">#!/usr/bin/python3</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#57606a">#!/usr/bin/python3</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#cf222e">from</span> <span style="color:#24292e">sys</span> <span style="color:#cf222e">import</span> stderr<span style="color:#1f2328">,</span> stdout
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>
@@ -239,10 +239,10 @@ the appropriate <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;To STDERR, from Python.&#34;</span><span style="color:#1f2328">,</span> file<span style="color:#0550ae">=</span>stderr<span style="color:#1f2328">)</span>
 </span></span></code></pre></div><p>What we&rsquo;ll do is run <code>bash</code>, instructing it to execute the Python script, and additionally to redirect both stdout and stderr to separate files in the current
 directory. We will trace all syscalls that happen using <code>strace</code>, and then observe the output:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ strace -f bash -c <span style="color:#0a3069">&#39;./print.py 1&gt;pyout.txt 2&gt;pyerr.txt&#39;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ strace -f bash -c <span style="color:#0a3069">&#39;./print.py 1&gt;pyout.txt 2&gt;pyerr.txt&#39;</span>
 </span></span></code></pre></div><p>The <code>-f</code> switch is necessary so that <code>strace</code> also tracks any forked processes that the main process spawns. Remember that the sycalls we are looking for
 happen in the forked child process. The interesting portion(s) of the output can be seen below:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#0550ae">...</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-gdscript3" data-lang="gdscript3"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#0550ae">...</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#0550ae">2103644</span> clone<span style="color:#1f2328">(</span>child_stack<span style="color:#0550ae">=</span>NULL<span style="color:#1f2328">,</span> flags<span style="color:#0550ae">=</span>CLONE_CHILD_CLEARTID<span style="color:#0550ae">|</span>CLONE_CHILD_SETTID<span style="color:#0550ae">|</span>SIGCHLD<span style="color:#1f2328">,</span> child_tidptr<span style="color:#0550ae">=</span><span style="color:#0550ae">0x7f020f1faa10</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">=</span> <span style="color:#0550ae">2103645</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#0550ae">...</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#0550ae">2103645</span> openat<span style="color:#1f2328">(</span>AT_FDCWD<span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;pyout.txt&#34;</span><span style="color:#1f2328">,</span> O_WRONLY<span style="color:#0550ae">|</span>O_CREAT<span style="color:#0550ae">|</span>O_TRUNC<span style="color:#1f2328">,</span> <span style="color:#0550ae">0666</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">=</span> <span style="color:#0550ae">3</span>
@@ -387,7 +387,7 @@ by Viacheslav Biriukov sheds light on and solidifies the difference between the 
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2025  Bogdan Mitrović 
+    Copyright  &copy; 2026  Bogdan Mitrović 
   </div>
   <div class="footer-right">
     <nav>

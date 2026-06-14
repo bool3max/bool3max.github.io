@@ -15,21 +15,21 @@
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
   <meta property="og:url" content="https://bool3max.win/posts/spotify_ui_hacking/">
-  <meta property="og:site_name" content="bool3max&#39;s blog">
-  <meta property="og:title" content="Modifying the Spotify client to persist tracklist View style between playlists and albums">
-  <meta property="og:description" content="The web and desktop versions of the Spotify client provide two distinct ways of displaying track lists when viewing a resource such as a playlist or an album:
+	<meta property="og:site_name" content="bool3max&#39;s blog">
+	<meta property="og:title" content="Modifying the Spotify client to persist tracklist View style between playlists and albums">
+	<meta property="og:description" content="The web and desktop versions of the Spotify client provide two distinct ways of displaying track lists when viewing a resource such as a playlist or an album:
 Compact List They differ primarily in the amount of padding and spacing between the individual rows representing tracks, with the Compact mode also omitting the belonging album’s cover thumbnail to the left of each track:
 Above you can see the difference between the two modes.">
-  <meta property="og:locale" content="en_us">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2025-06-14T18:49:37+02:00">
-    <meta property="article:modified_time" content="2025-06-14T18:49:37+02:00">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2025-06-14T18:49:37+02:00">
+		<meta property="article:modified_time" content="2025-06-14T18:49:37+02:00">
 
   
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Modifying the Spotify client to persist tracklist View style between playlists and albums">
-  <meta name="twitter:description" content="The web and desktop versions of the Spotify client provide two distinct ways of displaying track lists when viewing a resource such as a playlist or an album:
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Modifying the Spotify client to persist tracklist View style between playlists and albums">
+	<meta name="twitter:description" content="The web and desktop versions of the Spotify client provide two distinct ways of displaying track lists when viewing a resource such as a playlist or an album:
 Compact List They differ primarily in the amount of padding and spacing between the individual rows representing tracks, with the Compact mode also omitting the belonging album’s cover thumbnail to the left of each track:
 Above you can see the difference between the two modes.">
 
@@ -231,7 +231,8 @@ the belonging album&rsquo;s cover thumbnail to the left of each track</em>:</p>
 from multiple different albums, having the belonging album&rsquo;s cover art next to the song is instrumental in identifying it quickly!</strong></p>
 <blockquote>
 <p>In the comparison images above, try and notice just how much quicker it is to observe that the last four tracks all belong to the same album (and thus the
-same artist) in the List example compared to the Compact one - when using Compact mode you&rsquo;d have to look at the &lsquo;Album&rsquo; column, all the way over to the right. Not ideal.</p></blockquote>
+same artist) in the List example compared to the Compact one - when using Compact mode you&rsquo;d have to look at the &lsquo;Album&rsquo; column, all the way over to the right. Not ideal.</p>
+</blockquote>
 <p>When viewing an <strong>album</strong> tracklist in List mode, Spotify doesn&rsquo;t even display the covert art - which makes sense, because you probably wouldn&rsquo;t want to see the same image
 multiple times times one on top of another (unless you <em>really</em> love the covert art!)</p>
 <p><img src="imgs/album_list.png" alt="album_list"></p>
@@ -261,18 +262,19 @@ and so I abandoned Spicetify and decided to go another route.</p>
 Spotify uses the Chromium Embedded Framework (CEF) for its desktop apps - it&rsquo;s essentially a webpage.</p>
 <blockquote>
 <p>You most definitely don&rsquo;t need the Spicetify CLI to enable devtools access in Spotify - it most likely changes a flag in some config somewhere. But I&rsquo;d already
-ran it and it saved me the trouble.</p></blockquote>
+ran it and it saved me the trouble.</p>
+</blockquote>
 <p>This gave me access to the Console and allowed me to inspect the DOM in real-time. I then manually changed the View mode from Compact to List using the
 dropdown a few times, observing the changes taking place in the DOM.</p>
 <p>After noting exactly the element representing the button that triggers the appearance of the view-mode dropdown and the element representing the dropdown
 itself, I was quickly able to write a small function that switches the current view mode based on its single argument:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">setView</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">compact</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">setView</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">compact</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">btnExpandContextMenu</span> <span style="color:#0550ae">=</span> <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">querySelector</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;button[aria-controls^=&#34;sortboxlist&#34;]&#39;</span><span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#57606a">// Manually click button that expands view mode selector context menu
-</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#57606a"></span>    <span style="color:#1f2328">btnExpandContextMenu</span><span style="color:#1f2328">.</span><span style="color:#1f2328">click</span><span style="color:#1f2328">()</span>
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#1f2328">btnExpandContextMenu</span><span style="color:#1f2328">.</span><span style="color:#1f2328">click</span><span style="color:#1f2328">()</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#57606a">// select view mode based on &#34;compact&#34; argument
-</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#57606a"></span>    <span style="color:#1f2328">setTimeout</span><span style="color:#1f2328">(()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#1f2328">setTimeout</span><span style="color:#1f2328">(()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">querySelectorAll</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;#context-menu&gt;ul&gt;li&gt;button&#34;</span><span style="color:#1f2328">).</span><span style="color:#1f2328">forEach</span><span style="color:#1f2328">(</span><span style="color:#1f2328">btn</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>            <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">btn</span><span style="color:#1f2328">.</span><span style="color:#1f2328">querySelector</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;span&#34;</span><span style="color:#1f2328">).</span><span style="color:#1f2328">textContent</span> <span style="color:#0550ae">===</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">compact</span> <span style="color:#0550ae">?</span> <span style="color:#0a3069">&#34;Compact&#34;</span> <span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;List&#34;</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>                <span style="color:#1f2328">btn</span><span style="color:#1f2328">.</span><span style="color:#1f2328">click</span><span style="color:#1f2328">()</span>
@@ -280,7 +282,7 @@ itself, I was quickly able to write a small function that switches the current v
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        <span style="color:#1f2328">})</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        <span style="color:#57606a">// click button again to hide context menu
-</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#57606a"></span>        <span style="color:#1f2328">btnExpandContextMenu</span><span style="color:#1f2328">.</span><span style="color:#1f2328">click</span><span style="color:#1f2328">()</span>
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        <span style="color:#1f2328">btnExpandContextMenu</span><span style="color:#1f2328">.</span><span style="color:#1f2328">click</span><span style="color:#1f2328">()</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    <span style="color:#1f2328">},</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><ul>
@@ -303,7 +305,7 @@ of the DOM.</p>
 <p>The function is pretty simple and somewhat hacky as it simulates the actions a real user would perform as they interact with the app, but it works. <code>setView(true)</code> sets the mode to Compact and <code>setView(false)</code> sets it to List
 regardless of the current page in the app (playlist, album, etc&hellip;).</p>
 <hr>
-<p>The next step was to somehow automatically call this function automatically whenever the page inside the client changes, or rather when the user navigates to
+<p>The next step was to somehow automatically call this function whenever the page inside the client changes, or rather when the user navigates to
 another resource.</p>
 <p>My first idea was to look for changes in <code>window.location</code>. I had hoped that maybe <code>window.location.hash</code> stored the path to the current resource.
 Unfortunately, in Spotify it&rsquo;s completely static and doesn&rsquo;t change at all from the moment the app is started, which makes sense considering the user never sees the URL at all.</p>
@@ -316,7 +318,7 @@ different albums, playlists, and artists.</p>
 resource (such as <code>&quot;Spotify - Harlequin - an album by Lady Gaga&quot;</code>) that changes dynamically alongside the current view.</p>
 <p>So, I had to create a <code>MutationObserver</code>, hook it up to watch for changes on this <code>main</code> tag, and then simply call my <code>setView</code> function from before,
 passing it <code>true/false</code> depending on the type of the resource the user has navigated to.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">observer</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">MutationObserver</span><span style="color:#1f2328">((</span><span style="color:#1f2328">records</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">o</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">observer</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">MutationObserver</span><span style="color:#1f2328">((</span><span style="color:#1f2328">records</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">o</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#1f2328">records</span><span style="color:#1f2328">.</span><span style="color:#1f2328">forEach</span><span style="color:#1f2328">(</span><span style="color:#1f2328">record</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">record</span><span style="color:#1f2328">.</span><span style="color:#1f2328">attributeName</span> <span style="color:#0550ae">===</span> <span style="color:#0a3069">&#34;aria-label&#34;</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>            <span style="color:#1f2328">setView</span><span style="color:#1f2328">(</span>
@@ -343,7 +345,8 @@ whenever the view inside Spotify changes (i.e. the user navigates to another pag
 and if we were to register an observer to watch for changes on that existing <code>section</code>, the callback function would never get called - because
 the <code>section</code> is deleted quickly after navigation.</p>
 <blockquote>
-<p>Dealing with this kind of stuff is just one of the consequences of interacting with the DOM directly as opposed to hooking up to React.</p></blockquote>
+<p>Dealing with this kind of stuff is just one of the consequences of interacting with the DOM directly as opposed to hooking up to React.</p>
+</blockquote>
 <p>With both the <code>setView</code> function implemented and the observer registered, <strong>the experiment was a success</strong>. I&rsquo;m able to navigate from album to playlist
 and from playlist to album and the View mode updates seamlessly!</p>
 <h1 id="persistence">Persistence</h1>
@@ -354,14 +357,14 @@ settled with having to copy-paste them into the developer console manully whenev
 and started looking.</p>
 <p>Among the many different files, the only ones of interest were <code>spotify</code>, a 50MB executable which I assumed contained the entire CEF, and an <code>Apps</code> directory,
 containing two <code>.spa</code> files:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>/opt/Spotify/
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>/opt/Spotify/
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>├─ spotify      &lt;--- 50MB executable
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>├─ Apps/
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>│  ├─ login.spa &lt;--- huh?
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>│  ├─ xpui.spa  &lt;--- huh?
 </span></span></code></pre></div><p>The <code>.spa</code> files were my only hope. Due to the acronym (SPA - &lsquo;Single Page Application&rsquo;) I&rsquo;d assumed that they&rsquo;d contain the JS source,
 but I was skeptical as I&rsquo;d never encountered the extension before. Anyway, <code>file</code> came to the rescue:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ file ./Apps/xpui.spa
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ file ./Apps/xpui.spa
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Apps/xpui.spa: Zip archive data, at least v2.0 to extract, compression <span style="color:#953800">method</span><span style="color:#0550ae">=</span>deflate
 </span></span></code></pre></div><p>It turned out they were just standard ZIPs with a different extension. Extracting <code>xpui.spa</code> revealed a large number of minified
@@ -375,7 +378,7 @@ to place my changes. The calls to <code>console.log</code> that I&rsquo;d placed
 were still failing. It seemed that, despite firing after the window&rsquo;s <code>load</code>, my code was still executing before the app has had enough time to set up the entire DOM.</p>
 <p>Instead of spending more time attemping to solve this in a more pragmatic manner, I yet again opted for a quick hack: periodically query the DOM for the <code>&lt;main&gt;</code> in a set interval until
 it&rsquo;s created, and then hook up the observer:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">addEventListener</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;load&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">addEventListener</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;load&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">i</span> <span style="color:#0550ae">=</span> <span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">setInterval</span><span style="color:#1f2328">(()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#cf222e">try</span> <span style="color:#1f2328">{</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>            <span style="color:#1f2328">observer</span><span style="color:#1f2328">.</span><span style="color:#1f2328">observe</span><span style="color:#1f2328">(</span><span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">querySelector</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;main&#34;</span><span style="color:#1f2328">),</span> <span style="color:#1f2328">{</span><span style="color:#1f2328">attributes</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">})</span>
@@ -516,7 +519,7 @@ it&rsquo;s created, and then hook up the observer:</p>
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2025  Bogdan Mitrović 
+    Copyright  &copy; 2026  Bogdan Mitrović 
   </div>
   <div class="footer-right">
     <nav>

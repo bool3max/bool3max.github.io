@@ -15,19 +15,19 @@
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
   <meta property="og:url" content="https://bool3max.win/posts/python_generators/">
-  <meta property="og:site_name" content="bool3max&#39;s blog">
-  <meta property="og:title" content="Iterators and Generators in Python3">
-  <meta property="og:description" content="Describing how Iterators and Generators work under the hood.">
-  <meta property="og:locale" content="en_us">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2020-11-05T00:32:02+01:00">
-    <meta property="article:modified_time" content="2020-11-05T00:32:02+01:00">
+	<meta property="og:site_name" content="bool3max&#39;s blog">
+	<meta property="og:title" content="Iterators and Generators in Python3">
+	<meta property="og:description" content="Describing how Iterators and Generators work under the hood.">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2020-11-05T00:32:02+01:00">
+		<meta property="article:modified_time" content="2020-11-05T00:32:02+01:00">
 
   
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Iterators and Generators in Python3">
-  <meta name="twitter:description" content="Describing how Iterators and Generators work under the hood.">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Iterators and Generators in Python3">
+	<meta name="twitter:description" content="Describing how Iterators and Generators work under the hood.">
 
   
   
@@ -83,7 +83,7 @@
         
         
         <li>
-          <a class="icon" href="https://bool3max.win/posts/python_decorators_explained/" aria-label="Next">
+          <a class="icon" href="https://bool3max.win/posts/utf8/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -208,7 +208,7 @@
     
     <div class="content" itemprop="articleBody">
       <p>Recently I needed a way to infinitely loop over a list in Python. Traditionally, this is extremely easy to do with simple indexing if the size of the list is known in advance. For example, an approach could look something like this:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>l <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">]</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>l <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">]</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#cf222e">while</span> <span style="color:#cf222e">True</span><span style="color:#1f2328">:</span>
@@ -217,29 +217,32 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>    <span style="color:#cf222e">if</span> i <span style="color:#0550ae">==</span> <span style="color:#6639ba">len</span><span style="color:#1f2328">(</span>l<span style="color:#1f2328">):</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>        i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
 </span></span></code></pre></div><p>Eventually I settled on a an inbuilt approach using the <code>itertools</code> module from the standard library. Consequently the code became a lot cleaner:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#cf222e">import</span> <span style="color:#24292e">itertools</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#cf222e">import</span> <span style="color:#24292e">itertools</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>l <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">]</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#cf222e">for</span> n <span style="color:#0550ae">in</span> itertools<span style="color:#0550ae">.</span>cycle<span style="color:#1f2328">(</span>l<span style="color:#1f2328">):</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">)</span>
 </span></span></code></pre></div><p>But for the fun of it, I decided to try to re-implement <code>itertools.cycle</code> myself, and in order to do that, I first have to understand how generators work in <code>python3</code>. I already do, but I will explain it here, after which I will demonstrate the <code>itertools.cycle</code> re-implementation.</p>
 <blockquote>
-<p>Both iterators and generators have their own short sections in the offical <a href="https://docs.python.org/3/tutorial/classes.html#iterators">python3 tutorial</a>. This post is my own explanation of them.</p></blockquote>
+<p>Both iterators and generators have their own short sections in the offical <a href="https://docs.python.org/3/tutorial/classes.html#iterators">python3 tutorial</a>. This post is my own explanation of them.</p>
+</blockquote>
 <h1 id="iterators">Iterators</h1>
 <p>Iterators are objects that define a <strong><code>__next__</code></strong> method that is called every time the next value of the iterable is desired. They can be <em>iterated</em> over, yielding their members one by one.</p>
 <p>An object is said to be iterable if it defines an <strong><code>__iter__</code></strong> method that returns an above mentioned <em><strong>iterator</strong></em>.</p>
 <blockquote>
-<p>It can be a little confusing. Think of it like this: strings are <em>iterable</em> (able to be iterated over) because their base class (<strong><code>str</code></strong>) defines an <strong><code>__iter__</code></strong> method that returns an <strong>iterator</strong> object which has a <strong><code>__next__</code></strong> method.</p></blockquote>
+<p>It can be a little confusing. Think of it like this: strings are <em>iterable</em> (able to be iterated over) because their base class (<strong><code>str</code></strong>) defines an <strong><code>__iter__</code></strong> method that returns an <strong>iterator</strong> object which has a <strong><code>__next__</code></strong> method.</p>
+</blockquote>
 <p>For example, in the following code:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#cf222e">for</span> n <span style="color:#0550ae">in</span> <span style="color:#0a3069">&#34;abc&#34;</span><span style="color:#1f2328">:</span> 
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#cf222e">for</span> n <span style="color:#0550ae">in</span> <span style="color:#0a3069">&#34;abc&#34;</span><span style="color:#1f2328">:</span> 
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">)</span>
 </span></span></code></pre></div><p>, behind the scenes, <strong><code>for</code></strong> calls <code>iter()</code> on <code>&quot;abc&quot;</code>, which in turn calls <strong><code>&quot;abc&quot;.__iter__()</code></strong>. Since <strong><code>&quot;123&quot;</code></strong> is of type <strong><code>str</code></strong>, a class that defines the <code>__iter__</code> method, that one is called, and an iterator object is returned.</p>
 <p>Then, <strong><code>for</code></strong> simply calls the <strong><code>__next__</code></strong> method on that interator object, passing its return value to you in the form of a variable, until <strong><code>__next__</code></strong> raises a <strong><code>StopIteration</code></strong> exception, at which point the loop stops.</p>
 <blockquote>
-<p>It actually calls <code>next()</code> on the iterator object, which in turn calls its <code>__next__</code> method. The <code>next()</code> builtin is handy because it provides another parameter that can be used to specify a value to be returned if the iterator object is already exahusted.</p></blockquote>
+<p>It actually calls <code>next()</code> on the iterator object, which in turn calls its <code>__next__</code> method. The <code>next()</code> builtin is handy because it provides another parameter that can be used to specify a value to be returned if the iterator object is already exahusted.</p>
+</blockquote>
 <h3 id="example">Example</h3>
 <p>We can see this in action:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#0550ae">&gt;</span> string <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;abc&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#0550ae">&gt;</span> string <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;abc&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#0550ae">&gt;</span> iterator <span style="color:#0550ae">=</span> string<span style="color:#0550ae">.</span><span style="color:#6639ba">__iter__</span><span style="color:#1f2328">()</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#0550ae">&gt;</span> <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>iterator<span style="color:#0550ae">.</span><span style="color:#6639ba">__next__</span><span style="color:#1f2328">())</span>
@@ -255,7 +258,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>StopIteration
 </span></span></code></pre></div><p>As we can see, when we exhaust the iterator, a <code>StopIteration</code> exception is raised.</p>
 <p>Using the built-in <strong><code>next()</code></strong> function we have a greater degree of control: we can designate a value to be returned in the case where <code>__next__</code> would exhaust the object (and raise an exception):</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#0550ae">&gt;</span> string <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;abc&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#0550ae">&gt;</span> string <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;abc&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#0550ae">&gt;</span> iterator <span style="color:#0550ae">=</span> string<span style="color:#0550ae">.</span><span style="color:#6639ba">__iter__</span><span style="color:#1f2328">()</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#0550ae">&gt;</span> <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#6639ba">next</span><span style="color:#1f2328">(</span>iterator<span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">))</span>
@@ -269,10 +272,11 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#0550ae">&gt;</span> <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#6639ba">next</span><span style="color:#1f2328">(</span>iterator<span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">))</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#0550ae">3</span>
 </span></span></code></pre></div><blockquote>
-<p>Instead of directly calling <code>object.__iter__()</code>, you should probably use the built-in <a href="https://docs.python.org/3/library/functions.html#iter"><strong><code>iter()</code></strong></a> method, as it has a little added functionality depending on the use case, but ultimately does the same thing (iterate over an object, that is).</p></blockquote>
+<p>Instead of directly calling <code>object.__iter__()</code>, you should probably use the built-in <a href="https://docs.python.org/3/library/functions.html#iter"><strong><code>iter()</code></strong></a> method, as it has a little added functionality depending on the use case, but ultimately does the same thing (iterate over an object, that is).</p>
+</blockquote>
 <h2 id="re-implementing-itertoolscycle-using-iterators">Re-implementing <strong><code>itertools.cycle</code></strong> using iterators</h2>
 <p>Knowing all this, we can write a custom class that can infinitely iterate over another iterable:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">InfiniteIterable</span><span style="color:#1f2328">:</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">InfiniteIterable</span><span style="color:#1f2328">:</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#cf222e">def</span> <span style="color:#6639ba">__init__</span><span style="color:#1f2328">(</span><span style="color:#6a737d">self</span><span style="color:#1f2328">,</span> original<span style="color:#1f2328">):</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#6a737d">self</span><span style="color:#0550ae">.</span>original_iterable <span style="color:#0550ae">=</span> original
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        <span style="color:#6a737d">self</span><span style="color:#0550ae">.</span>len <span style="color:#0550ae">=</span> <span style="color:#6639ba">len</span><span style="color:#1f2328">(</span>original<span style="color:#1f2328">)</span>
@@ -292,12 +296,13 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">)</span>
 </span></span></code></pre></div><p>Since we never raise a <strong><code>StopIteration</code></strong> exception from our <code>__next__</code> method, the iterator never halts!</p>
 <blockquote>
-<p>Since our custom class is an iterable object in and of itself (i.e. it defines an <code>__next__</code> method), <code>__iter__</code> just returns <code>self</code>! But if we didn&rsquo;t want to implement iteration logic from within this class, we could make <code>__iter__</code> return an instance of some other class.</p></blockquote>
+<p>Since our custom class is an iterable object in and of itself (i.e. it defines an <code>__next__</code> method), <code>__iter__</code> just returns <code>self</code>! But if we didn&rsquo;t want to implement iteration logic from within this class, we could make <code>__iter__</code> return an instance of some other class.</p>
+</blockquote>
 <h1 id="generators">Generators</h1>
 <p>Generator functions are regular Python functions that ease the process of creating iterators. They are written exactly as normal functions, with the added requirement of including at least one <code>yield</code> statement.
 The return value of a <em>generator function</em> is a <em>generator</em>, which is a kind of iterator.</p>
 <blockquote>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>&gt;&gt;&gt; def g():
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>&gt;&gt;&gt; def g():
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>...     while True:
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>...             yield 3
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
@@ -314,7 +319,7 @@ The next time the generator is re-entered (via <code>next()</code>, the <code>.s
 it is wrapped by the <code>StopIteration</code> exception instance and can be subsequently accessed. This means that a <code>return value</code> statement from within a generator function is
 semantically equivalent to <code>raise StopIteration(value)</code> - except that the exception cannot be caught from within the containing generator function.</p>
 <h2 id="implementing-infiniteiterable-using-generators">Implementing <strong><code>InfiniteIterable</code></strong> using generators</h2>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">def</span> <span style="color:#6639ba">InfiniteIterable</span><span style="color:#1f2328">(</span>original_iterable<span style="color:#1f2328">):</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#cf222e">def</span> <span style="color:#6639ba">InfiniteIterable</span><span style="color:#1f2328">(</span>original_iterable<span style="color:#1f2328">):</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#cf222e">while</span> <span style="color:#cf222e">True</span><span style="color:#1f2328">:</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        <span style="color:#cf222e">yield</span> original_iterable<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span>
@@ -335,7 +340,7 @@ request the next value from the generator, while <code>.send</code> also sends s
 That is to say - the <code>yield from</code> syntax iterates over the requested generator, and then yields the values back out as they come in.</p>
 <p>The <code>yield from</code> expression also has an accessible result that is present if the associated subgenerator returned with a value.</p>
 <p>On the surface, it may seem that <code>yield from gen()</code> is just a shorthand for the following for loop:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#cf222e">for</span> v <span style="color:#0550ae">in</span> gen<span style="color:#1f2328">():</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#cf222e">for</span> v <span style="color:#0550ae">in</span> gen<span style="color:#1f2328">():</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#cf222e">yield</span> v
 </span></span></code></pre></div><p>While that is true for a number of simple use-cases - when the semantics of the iterator-generator methods <code>send</code>, <code>throw</code> and <code>close</code> is introduced,
 it becomes apparent that the <code>yield from</code> syntax performs a much more complicated job under the hood. This becomes evident after taking a look at the <a href="https://peps.python.org/pep-0380/#formal-semantics">Formal Semantics</a> of PEP 380.</p>
@@ -466,7 +471,7 @@ in the <code>yield from</code> expression. Alongside that, it also handles all t
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2025  Bogdan Mitrović 
+    Copyright  &copy; 2026  Bogdan Mitrović 
   </div>
   <div class="footer-right">
     <nav>
